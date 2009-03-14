@@ -1,0 +1,341 @@
+
+html body {
+	background-color: #000;
+	color: #CCC;
+	font-family: Lucida Grande,Helvetica,"Trebuchet MS",Arial,Verdana,Sans-Serif;
+	text-align: center;
+}
+
+#doc {
+	margin: 1% 2.5%;
+	text-align: left;
+	width: 95%;
+}
+
+/**
+ * @group Header
+ */
+
+#doc div#header {
+	background: #000 url(../images/icons/Browser-64.png) no-repeat 1em 0.5em;
+	border: 1px solid #444;
+	margin: 0pt auto 1em;
+}
+
+#doc div#headerWrap {
+	border: 1px solid #333;
+	margin: 0.5em;
+	padding: 1em 1em 1em 8em;
+}
+
+#doc div#header a#homelink {
+    float: left;
+    height: 5em;
+    margin-left: -6em;
+    margin-top: -1em;
+    text-decoration: none;
+    width: 5em;
+}
+
+#doc div#header h1,
+#doc div#header h2 {
+	margin: 0;
+	padding: 0;
+}
+
+#doc div#header h1 {
+	color: #CCC;
+	font-size: 200%;
+	letter-spacing: 0.2em;
+	line-height: 1.2em;
+	text-transform: uppercase;
+}
+
+#doc div#header h1 a {
+    font-size: inherit;
+    text-decoration: none;
+}
+
+#doc div#header h1 a:hover {
+    text-decoration: underline;
+}
+
+#doc div#header h2 {
+	color: #777;
+	letter-spacing: 0.2em;
+	line-height: 1.4em;
+	text-transform: uppercase;
+}
+
+#doc div#header a.mint {
+	display: block;
+	float: right;
+	margin-top: -4.15em;
+}
+
+#doc div#header a.mint img {
+    height: 4.65em;
+}
+
+/**
+ * @end Header
+ */
+
+/**
+ * @group Main
+ */
+ 
+#doc table#main {
+	border: 1px solid #444;
+	width: 100%;
+}
+ 
+#doc table#main td.column {
+}
+ 
+#doc table#main td#content {
+}
+
+#doc table#main td div.columnWrap {
+	padding: 0.5em;
+}
+ 
+#doc table#main td#sidebar {
+	width: 25em;
+}
+
+/**
+ * @end Main
+ */
+
+/**
+ * @group Module
+ */
+
+#doc table#main td#content div.module {
+	float: left;
+	min-width: 40em;
+	width: 90%;
+	max-width: 120em;
+	margin-bottom: 1em;
+}
+
+#doc table#main td div.module {
+
+}
+
+#doc table#main td div.moduleFooterOuter,
+#doc table#main td div.moduleContentOuter,
+#doc table#main td div.moduleHeaderOuter {
+	margin-left: 1em;
+	margin-right: 1em;
+	padding-right: 1em;
+}
+
+#doc table#main td div.moduleFooterInner,
+#doc table#main td div.moduleContentInner,
+#doc table#main td div.moduleHeaderInner {
+	padding: 0em 1em;
+}
+
+#doc table#main td div.module div.moduleHeaderOuter {
+    background: transparent url(../images/sprite/module_sprite.gif) no-repeat right -120px;
+}
+
+#doc table#main td div.module div.moduleHeaderInner {
+    background: transparent url(../images/sprite/module_sprite.gif) no-repeat left top;
+	padding: 0.2em 1em;
+}
+
+#doc table#main td div.moduleFooterOuter {
+    background: transparent url(../images/sprite/module_sprite.gif) no-repeat right -360px;
+}
+
+#doc table#main td div.moduleFooterInner {
+    background: transparent url(../images/sprite/module_sprite.gif) no-repeat left -240px;
+	height: 11px;
+}
+
+#doc table#main td div.moduleContentOuter {
+    background: transparent url(../images/bg/module_bg_right.gif) repeat-y right top;
+}
+
+#doc table#main td div.moduleContentInner {
+    background: transparent url(../images/bg/module_bg_left.gif) repeat-y left top;
+}
+
+#doc table#main td div.module h4 {
+	padding-bottom: 0.5em;
+}
+
+#doc table#main td div.module h3,
+#doc table#main td div.module h4,
+#doc table#main td div.module p {
+	color: #333;
+}
+
+#doc table#main td div.module p {
+	margin-bottom: 0;
+}
+
+/**
+ * @end Module
+ */
+
+/**
+ * @group Onion
+ */
+
+div.onion {
+    clear:both;
+	min-width: 40em;
+	width: 90%;
+	max-width: 120em;
+}
+
+div.onion div.onion-tl {
+    margin: 0 1em 1.5em;
+}
+
+div.onion div.onion-tl {
+    background: #444 url(../images/bg/onionTop.gif) left top no-repeat;
+}
+
+div.onion div.onion-tr {
+    background: transparent url(../images/bg/onionRight.gif) right top no-repeat;
+}
+
+div.onion div.onion-br {
+    background: transparent url(../images/bg/onionBottom.gif) right bottom no-repeat;
+    padding-top: 7px;
+}
+
+div.onion div.onion-bl {
+    background: transparent url(../images/bg/onionLeft.gif) left bottom no-repeat;
+    padding: 0.3em 1em 1em;
+}
+
+div.onion h3 {
+    color: #EFEFEF;
+    padding-bottom: 1em;
+}
+
+div.onion p span.spacer {
+    font-size: 1px;
+    margin-right: -0.1em;
+}
+
+div.onion dl {
+    margin-left: 0;
+}
+
+/**
+ * @end Onion
+ */
+
+/**
+ * @group Sidebar
+ */
+
+#doc table#main td#sidebar form#searchform {
+}
+
+#doc table#main td#sidebar form#searchform input {
+    background: #222 none repeat scroll 0%;
+    border: 1px solid #777;
+    color: #FFF;
+	display: block;
+    width: 15em;
+}
+
+#doc table#main td#sidebar form#searchform input#s {
+	margin-bottom: 0.2em;
+    width: 14.7em;
+}
+
+#doc table#main td#sidebar div.list {
+    
+}
+
+#doc table#main td#sidebar div.list h3 {
+    font-size: 10pt;
+    padding: 1em 0 0.3em;
+}
+
+#doc table#main td#sidebar div.list ul {
+    margin: 0;
+    padding-bottom: 1em;
+}
+
+#doc table#main td#sidebar div.list ul li {
+    list-style-image: url("../images/icons/right-arrow.gif");
+    list-style-position: outside;
+    list-style-type: none;
+    margin-left: 2em;
+}
+
+/**
+ * @end Sidebar
+ */
+
+/**
+ * @group List
+ */
+
+/**
+ * @end List
+ */
+
+/**
+ * @group ToC
+ */
+ 
+blockquote {
+	font-size: 10pt;
+}
+ 
+ol#toc {
+	padding-left: 4em;
+}
+ 
+ol#toc li {
+}
+ 
+ol#toc li.chapter {
+	list-style-type: upper-roman;
+	padding-bottom: 2em;
+}
+ 
+ol#toc li.chapter a {
+	font-size: 15pt;
+	font-variant: small-caps;
+	font-weight: bold;
+}
+ 
+ol#toc li.chapter-sub {
+	list-style-type: lower-roman;
+	padding-top: 0.5em;
+}
+ 
+ol#toc li.chapter li.chapter-sub a {
+	font-size: 12pt;
+	word-spacing: 0.1em;
+}
+ 
+ol#toc li.chapter-entry {
+	list-style-type: upper-latin;
+}
+ 
+ol#toc li.chapter li.chapter-sub li.chapter-entry a {
+	font-size: 10pt;
+	font-weight: normal;
+}
+
+
+/**
+ * @end ToC
+ */
+
+.pixel {
+	background-color: #000;
+}

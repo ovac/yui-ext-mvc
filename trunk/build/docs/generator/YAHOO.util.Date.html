@@ -1,0 +1,247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: datasource  YAHOO.util.Date   (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1237000656.59" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1237000656.59" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1237000656.59"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1237000656.59"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>DataSource Utility&nbsp; <span class="subtitle">1.0.01</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_datasource.html" title="datasource">datasource</a>
+                 &gt; YAHOO.util.Date 
+                
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <h2>
+                        
+
+                        <code>static</code>
+                        
+                            Class <b property="yui:name">YAHOO.util.Date</b>
+                        <span class="extends">
+                        </span>
+
+                    </h2>
+                    <!-- class tree goes here -->
+                    
+                
+  
+
+                    <div class="summary description" property="yui:description">
+                        The static Date class provides helper functions to deal with data of type Date.
+                    </div>
+
+                    
+                    <div rel="yui:properties" resource="#properties">
+
+                    </div>
+
+                    <div rel="yui:methods" resource="#methods">
+                        <div class="section method details">
+                            <h3 id="methods">Methods</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:method" resource="#method_format">
+                                    <h4>
+                                        <a name="method_format">format</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        String
+                                            <strong property="yui:name">format</strong>
+                                           (
+                                                
+                                                        
+                                                         oDate
+                                                    
+                                                
+                                                        , 
+                                                         oConfig
+                                                    
+                                                
+                                                        , 
+                                                         sLocale
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Takes a native JavaScript Date and formats to string for display to user.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">oDate</span>
+                                                        &lt;<span property="yui:type">Date</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Date.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">oConfig</span>
+                                                        &lt;<span property="yui:type">Object} (Optional) Optional configuration values:
+<dl>
+<dt>format {String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> </dt>
+<dd>Any format defined by strftime is supported</dd>
+</dl>
+strftime has several format specifiers defined by the Open group at 
+http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+PHP added a few of its own, defined at http://www.php.net/strftime
+This javascript implementation supports all the PHP specifiers and a few more.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">sLocale</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  (Optional) The locale to use when displaying days of week,
+months of the year, and other locale specific strings.  The following locales are
+built in:
+<dl>
+<dt>en</dt>
+<dd>English</dd>
+<dt>en-US</dt>
+<dd>US English</dd>
+<dt>en-GB</dt>
+<dd>British English</dd>
+<dt>en-AU</dt>
+<dd>Australian English (identical to British English)</dd>
+</dl>
+More locales may be added by subclassing of YAHOO.util.DateLocale.
+See YAHOO.util.DateLocale for more information.</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        String
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">Formatted date for display.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div rel="yui:events" resource="#events">
+
+
+                    </div>
+
+                    <div rel="yui:attributes" resource="#configattributes">
+
+                    </div>
+
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_animation.html" title="animation">animation</a></li>
+                                <li class=""><a href="module_autocomplete.html" title="autocomplete">autocomplete</a></li>
+                                <li class=""><a href="module_connection.html" title="connection">connection</a></li>
+                                <li class="selected"><a href="module_datasource.html" title="datasource">datasource</a></li>
+                                <li class=""><a href="module_dom.html" title="dom">dom</a></li>
+                                <li class=""><a href="module_event.html" title="event">event</a></li>
+                                <li class=""><a href="module_form.html" title="form">form</a></li>
+                                <li class=""><a href="module_json.html" title="json">json</a></li>
+                                <li class=""><a href="module_mvc.html" title="mvc">mvc</a></li>
+                                <li class=""><a href="module_window.html" title="window">window</a></li>
+                                <li class=""><a href="module_yahoo.html" title="yahoo">yahoo</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="YAHOO.util.DataSource.html" title="YAHOO.util.DataSource">YAHOO.util.DataSource</a></li>
+                                <li class=""><a href="YAHOO.util.DataSourceBase.html" title="YAHOO.util.DataSourceBase">YAHOO.util.DataSourceBase</a></li>
+                                <li class="selected"><a href="YAHOO.util.Date.html" title="YAHOO.util.Date">YAHOO.util.Date</a></li>
+                                <li class=""><a href="YAHOO.util.DateLocale.html" title="YAHOO.util.DateLocale">YAHOO.util.DateLocale</a></li>
+                                <li class=""><a href="YAHOO.util.FunctionDataSource.html" title="YAHOO.util.FunctionDataSource">YAHOO.util.FunctionDataSource</a></li>
+                                <li class=""><a href="YAHOO.util.LocalDataSource.html" title="YAHOO.util.LocalDataSource">YAHOO.util.LocalDataSource</a></li>
+                                <li class=""><a href="YAHOO.util.Number.html" title="YAHOO.util.Number">YAHOO.util.Number</a></li>
+                                <li class=""><a href="YAHOO.util.ScriptNodeDataSource.html" title="YAHOO.util.ScriptNodeDataSource">YAHOO.util.ScriptNodeDataSource</a></li>
+                                <li class=""><a href="YAHOO.util.XHRDataSource.html" title="YAHOO.util.XHRDataSource">YAHOO.util.XHRDataSource</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="datasource.js.html" title="datasource.js">datasource.js</a></li>
+                        </ul>
+                    </div>
+
+
+                    <div id="methodsList" class="module">
+                        <h4>Methods</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#method_format" title="format">format</a></li>
+                        </ul>
+                    </div>
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2009 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "YAHOO.util.DataSourceBase.html#method_addToCache", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "addToCache"}, {"url": "YAHOO.util.ScriptNodeDataSource.html#property_asyncMode", "access": "", "host": "YAHOO.util.ScriptNodeDataSource", "type": "property", "name": "asyncMode"}, {"url": "YAHOO.util.DataSourceBase.html#event_cacheFlushEvent", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "event", "name": "cacheFlushEvent"}, {"url": "YAHOO.util.DataSourceBase.html#event_cacheRequestEvent", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "event", "name": "cacheRequestEvent"}, {"url": "YAHOO.util.DataSourceBase.html#event_cacheResponseEvent", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "event", "name": "cacheResponseEvent"}, {"url": "YAHOO.util.ScriptNodeDataSource.html#property_callbacks", "access": "", "host": "YAHOO.util.ScriptNodeDataSource", "type": "property", "name": "callbacks"}, {"url": "YAHOO.util.DataSourceBase.html#method_clearAllIntervals", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "clearAllIntervals"}, {"url": "YAHOO.util.DataSourceBase.html#method_clearInterval", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "clearInterval"}, {"url": "YAHOO.util.XHRDataSource.html#property_connMethodPost", "access": "", "host": "YAHOO.util.XHRDataSource", "type": "property", "name": "connMethodPost"}, {"url": "YAHOO.util.XHRDataSource.html#property_connMgr", "access": "", "host": "YAHOO.util.XHRDataSource", "type": "property", "name": "connMgr"}, {"url": "YAHOO.util.XHRDataSource.html#property_connTimeout", "access": "", "host": "YAHOO.util.XHRDataSource", "type": "property", "name": "connTimeout"}, {"url": "YAHOO.util.XHRDataSource.html#property_connXhrMode", "access": "", "host": "YAHOO.util.XHRDataSource", "type": "property", "name": "connXhrMode"}, {"url": "YAHOO.util.DataSourceBase.html#event_dataErrorEvent", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "event", "name": "dataErrorEvent"}, {"url": "YAHOO.util.DataSourceBase.html#method_DataSourceBase.parseDate", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "DataSourceBase.parseDate"}, {"url": "YAHOO.util.DataSourceBase.html#method_DataSourceBase.parseNumber", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "DataSourceBase.parseNumber"}, {"url": "YAHOO.util.DataSourceBase.html#method_DataSourceBase.parseString", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "DataSourceBase.parseString"}, {"url": "YAHOO.util.DataSourceBase.html#property_DataSource.Parser", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "DataSource.Parser"}, {"url": "YAHOO.util.DataSourceBase.html#property_dataType", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "dataType"}, {"url": "YAHOO.util.DataSourceBase.html#method_doBeforeCallback", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "doBeforeCallback"}, {"url": "YAHOO.util.DataSourceBase.html#method_doBeforeParseData", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "doBeforeParseData"}, {"url": "YAHOO.util.DataSourceBase.html#property_ERROR_DATAINVALID", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "ERROR_DATAINVALID"}, {"url": "YAHOO.util.DataSourceBase.html#property_ERROR_DATANULL", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "ERROR_DATANULL"}, {"url": "YAHOO.util.DataSourceBase.html#method_flushCache", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "flushCache"}, {"url": "YAHOO.util.Number.html#method_format", "access": "", "host": "YAHOO.util.Number", "type": "method", "name": "format"}, {"url": "YAHOO.util.Date.html#method_format", "access": "", "host": "YAHOO.util.Date", "type": "method", "name": "format"}, {"url": "YAHOO.util.ScriptNodeDataSource.html#method_generateRequestCallback", "access": "", "host": "YAHOO.util.ScriptNodeDataSource", "type": "method", "name": "generateRequestCallback"}, {"url": "YAHOO.util.DataSourceBase.html#method_getCachedResponse", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "getCachedResponse"}, {"url": "YAHOO.util.ScriptNodeDataSource.html#property_getUtility", "access": "", "host": "YAHOO.util.ScriptNodeDataSource", "type": "property", "name": "getUtility"}, {"url": "YAHOO.util.DataSourceBase.html#method_handleResponse", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "handleResponse"}, {"url": "YAHOO.util.DataSourceBase.html#method_isCacheHit", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "isCacheHit"}, {"url": "YAHOO.util.DataSourceBase.html#method_issueCallback", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "issueCallback"}, {"url": "YAHOO.util.DataSourceBase.html#property_liveData", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "liveData"}, {"url": "YAHOO.util.DataSourceBase.html#method_makeConnection", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "makeConnection"}, {"url": "YAHOO.util.FunctionDataSource.html#method_makeConnection", "access": "", "host": "YAHOO.util.FunctionDataSource", "type": "method", "name": "makeConnection"}, {"url": "YAHOO.util.ScriptNodeDataSource.html#method_makeConnection", "access": "", "host": "YAHOO.util.ScriptNodeDataSource", "type": "method", "name": "makeConnection"}, {"url": "YAHOO.util.XHRDataSource.html#method_makeConnection", "access": "", "host": "YAHOO.util.XHRDataSource", "type": "method", "name": "makeConnection"}, {"url": "YAHOO.util.DataSourceBase.html#property_maxCacheEntries", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "maxCacheEntries"}, {"url": "YAHOO.util.DataSourceBase.html#method_parseArrayData", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "parseArrayData"}, {"url": "YAHOO.util.DataSourceBase.html#method_parseData", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "parseData"}, {"url": "YAHOO.util.DataSourceBase.html#method_parseHTMLTableData", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "parseHTMLTableData"}, {"url": "YAHOO.util.DataSourceBase.html#method_parseJSONData", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "parseJSONData"}, {"url": "YAHOO.util.DataSourceBase.html#method_parseTextData", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "parseTextData"}, {"url": "YAHOO.util.DataSourceBase.html#method_parseXMLData", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "parseXMLData"}, {"url": "YAHOO.util.DataSourceBase.html#method_parseXMLResult", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "parseXMLResult"}, {"url": "YAHOO.util.DataSourceBase.html#event_requestEvent", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "event", "name": "requestEvent"}, {"url": "YAHOO.util.DataSourceBase.html#event_responseCacheEvent", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "event", "name": "responseCacheEvent"}, {"url": "YAHOO.util.DataSourceBase.html#event_responseEvent", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "event", "name": "responseEvent"}, {"url": "YAHOO.util.DataSourceBase.html#event_responseParseEvent", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "event", "name": "responseParseEvent"}, {"url": "YAHOO.util.DataSourceBase.html#property_responseSchema", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "responseSchema"}, {"url": "YAHOO.util.DataSourceBase.html#property_responseType", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "responseType"}, {"url": "YAHOO.util.ScriptNodeDataSource.html#property_scriptCallbackParam", "access": "", "host": "YAHOO.util.ScriptNodeDataSource", "type": "property", "name": "scriptCallbackParam"}, {"url": "YAHOO.util.DataSourceBase.html#method_sendRequest", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "sendRequest"}, {"url": "YAHOO.util.DataSourceBase.html#method_setInterval", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "setInterval"}, {"url": "YAHOO.util.DataSourceBase.html#method_toString", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "method", "name": "toString"}, {"url": "YAHOO.util.DataSourceBase.html#property_TYPE_HTMLTABLE", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "TYPE_HTMLTABLE"}, {"url": "YAHOO.util.DataSourceBase.html#property_TYPE_JSARRAY", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "TYPE_JSARRAY"}, {"url": "YAHOO.util.DataSourceBase.html#property_TYPE_JSFUNCTION", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "TYPE_JSFUNCTION"}, {"url": "YAHOO.util.DataSourceBase.html#property_TYPE_JSON", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "TYPE_JSON"}, {"url": "YAHOO.util.DataSourceBase.html#property_TYPE_LOCAL", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "TYPE_LOCAL"}, {"url": "YAHOO.util.DataSourceBase.html#property_TYPE_SCRIPTNODE", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "TYPE_SCRIPTNODE"}, {"url": "YAHOO.util.DataSourceBase.html#property_TYPE_TEXT", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "TYPE_TEXT"}, {"url": "YAHOO.util.DataSourceBase.html#property_TYPE_UNKNOWN", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "TYPE_UNKNOWN"}, {"url": "YAHOO.util.DataSourceBase.html#property_TYPE_XHR", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "TYPE_XHR"}, {"url": "YAHOO.util.DataSourceBase.html#property_TYPE_XML", "access": "", "host": "YAHOO.util.DataSourceBase", "type": "property", "name": "TYPE_XML"}];
+</script>
+</body>
+</html>

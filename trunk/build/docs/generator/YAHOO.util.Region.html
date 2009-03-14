@@ -1,0 +1,600 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: dom  YAHOO.util.Region   (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1237000655.05" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1237000655.05" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1237000655.05"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1237000655.05"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>dom&nbsp; <span class="subtitle">1.0.01</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_dom.html" title="dom">dom</a>
+                 &gt; YAHOO.util.Region 
+                
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <h2>
+                        
+
+                        
+                        
+                            Class <b property="yui:name">YAHOO.util.Region</b>
+                        <span class="extends">
+                        </span>
+
+                    </h2>
+                    <!-- class tree goes here -->
+                    
+                        <dl class="subclasses" rel="yui:subclasses">
+                            <dt>Known Subclasses:</dt>
+                            <dd>
+                                    <span rel="yui:subclass" resource="YAHOO.util.Point.html">
+                                    <a href="YAHOO.util.Point.html" property="yui:name" title="YAHOO.util.Point">YAHOO.util.Point</a>
+                                    </span>
+                            </dd>
+                       </dl>
+                
+  
+
+                    <div class="summary description" property="yui:description">
+                        A region is a representation of an object on a grid.  It is defined
+by the top, right, bottom, left extents, so is rectangular by default.  If 
+other shapes are required, this class could be extended to support it.
+                    </div>
+
+                        <div class="section constructor details" rel="yui:constructor" resource="#constructor">
+                        <h3 id="constructor">Constructor</h3>
+                        <div class="content">
+                            <div class="detail">
+                                <strong property="yui:name">YAHOO.util.Region</strong>
+                                <code>
+                                    (
+  
+                                        
+                                                
+                                                t
+
+                                                , 
+                                                r
+
+                                                , 
+                                                b
+
+                                                , 
+                                                l
+                                    )
+                                </code>
+                                <div class="description">
+                                        <dl rel="yui:parameters">
+                                            <dt>Parameters:</dt>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">t</span>
+                                                    &lt;<span property="yui:type">Int</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description"> the top extent</span>
+                                                </dd>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">r</span>
+                                                    &lt;<span property="yui:type">Int</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description"> the right extent</span>
+                                                </dd>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">b</span>
+                                                    &lt;<span property="yui:type">Int</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description"> the bottom extent</span>
+                                                </dd>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">l</span>
+                                                    &lt;<span property="yui:type">Int</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description"> the left extent</span>
+                                                </dd>
+                                        </dl>
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div rel="yui:properties" resource="#properties">
+                        <div class="section field details">
+                            <h3 id="properties">Properties</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:property" resource="#property_0">
+                                    <h4><a name="property_0" property="yui:name">0</a>
+                                        - <code><span property="yui:type">Int</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            The region's left extent as index, for symmetry with set/getXY
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_1">
+                                    <h4><a name="property_1" property="yui:name">1</a>
+                                        - <code><span property="yui:type">Int</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            The region's top extent as index, for symmetry with set/getXY
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_bottom">
+                                    <h4><a name="property_bottom" property="yui:name">bottom</a>
+                                        - <code><span property="yui:type">Int</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            The region's bottom extent
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_left">
+                                    <h4><a name="property_left" property="yui:name">left</a>
+                                        - <code><span property="yui:type">Int</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            The region's left extent
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_right">
+                                    <h4><a name="property_right" property="yui:name">right</a>
+                                        - <code><span property="yui:type">int</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            The region's right extent
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_top">
+                                    <h4><a name="property_top" property="yui:name">top</a>
+                                        - <code><span property="yui:type">Int</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            The region's top extent
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div rel="yui:methods" resource="#methods">
+                        <div class="section method details">
+                            <h3 id="methods">Methods</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:method" resource="#method_contains">
+                                    <h4>
+                                        <a name="method_contains">contains</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Boolean
+                                            <strong property="yui:name">contains</strong>
+                                           (
+                                                
+                                                        
+                                                         region
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Returns true if this region contains the region passed in
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">region</span>
+                                                        &lt;<span property="yui:type">Region</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> The region to evaluate</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        Boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">True if the region is contained with this region, 
+else false</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getArea">
+                                    <h4>
+                                        <a name="method_getArea">getArea</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Int
+                                            <strong property="yui:name">getArea</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Returns the area of the region
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        Int
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the region's area</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getRegion">
+                                    <h4>
+                                        <a name="method_getRegion">getRegion</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        Region
+                                            <strong property="yui:name">getRegion</strong>
+                                           (
+                                                
+                                                        
+                                                         el
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Returns a region that is occupied by the DOM element
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">el</span>
+                                                        &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> The element</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        Region
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">The region that the element occupies</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_intersect">
+                                    <h4>
+                                        <a name="method_intersect">intersect</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Region
+                                            <strong property="yui:name">intersect</strong>
+                                           (
+                                                
+                                                        
+                                                         region
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Returns the region where the passed in region overlaps with this one
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">region</span>
+                                                        &lt;<span property="yui:type">Region</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> The region that intersects</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        Region
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">The overlap region, or null if there is no overlap</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_toString">
+                                    <h4>
+                                        <a name="method_toString">toString</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">toString</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            toString
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_union">
+                                    <h4>
+                                        <a name="method_union">union</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Region
+                                            <strong property="yui:name">union</strong>
+                                           (
+                                                
+                                                        
+                                                         region
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Returns the region representing the smallest region that can contain both
+the passed in region and this region.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">region</span>
+                                                        &lt;<span property="yui:type">Region</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> The region that to create the union with</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        Region
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">The union region</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div rel="yui:events" resource="#events">
+
+
+                    </div>
+
+                    <div rel="yui:attributes" resource="#configattributes">
+
+                    </div>
+
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_animation.html" title="animation">animation</a></li>
+                                <li class=""><a href="module_autocomplete.html" title="autocomplete">autocomplete</a></li>
+                                <li class=""><a href="module_connection.html" title="connection">connection</a></li>
+                                <li class=""><a href="module_datasource.html" title="datasource">datasource</a></li>
+                                <li class="selected"><a href="module_dom.html" title="dom">dom</a></li>
+                                <li class=""><a href="module_event.html" title="event">event</a></li>
+                                <li class=""><a href="module_form.html" title="form">form</a></li>
+                                <li class=""><a href="module_json.html" title="json">json</a></li>
+                                <li class=""><a href="module_mvc.html" title="mvc">mvc</a></li>
+                                <li class=""><a href="module_window.html" title="window">window</a></li>
+                                <li class=""><a href="module_yahoo.html" title="yahoo">yahoo</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="YAHOO.util.Dom.html" title="YAHOO.util.Dom">YAHOO.util.Dom</a></li>
+                                <li class=""><a href="YAHOO.util.Dom.html" title="YAHOO.util.Dom">YAHOO.util.Dom</a></li>
+                                <li class=""><a href="YAHOO.util.Point.html" title="YAHOO.util.Point">YAHOO.util.Point</a></li>
+                                <li class="selected"><a href="YAHOO.util.Region.html" title="YAHOO.util.Region">YAHOO.util.Region</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="dom-ext.js.html" title="dom-ext.js">dom-ext.js</a></li>
+                                <li class=""><a href="dom.js.html" title="dom.js">dom.js</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="propertyList" class="module">
+                        <h4>Properties</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#property_0" title="0">0</a></li>
+                                <li class=""><a href="#property_1" title="1">1</a></li>
+                                <li class=""><a href="#property_bottom" title="bottom">bottom</a></li>
+                                <li class=""><a href="#property_left" title="left">left</a></li>
+                                <li class=""><a href="#property_right" title="right">right</a></li>
+                                <li class=""><a href="#property_top" title="top">top</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="methodsList" class="module">
+                        <h4>Methods</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#method_contains" title="contains">contains</a></li>
+                                <li class=""><a href="#method_getArea" title="getArea">getArea</a></li>
+                                <li class=""><a href="#method_getRegion" title="getRegion">getRegion</a></li>
+                                <li class=""><a href="#method_intersect" title="intersect">intersect</a></li>
+                                <li class=""><a href="#method_toString" title="toString">toString</a></li>
+                                <li class=""><a href="#method_union" title="union">union</a></li>
+                        </ul>
+                    </div>
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2009 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "YAHOO.util.Region.html#property_0", "access": "", "host": "YAHOO.util.Region", "type": "property", "name": "0"}, {"url": "YAHOO.util.Region.html#property_1", "access": "", "host": "YAHOO.util.Region", "type": "property", "name": "1"}, {"url": "YAHOO.util.Dom.html#method_addClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "addClass"}, {"url": "YAHOO.util.Dom.html#method_addClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "addClass"}, {"url": "YAHOO.util.Dom.html#method_animate", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "animate"}, {"url": "YAHOO.util.Dom.html#method_animate", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "animate"}, {"url": "YAHOO.util.Dom.html#method_batch", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "batch"}, {"url": "YAHOO.util.Dom.html#method_batch", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "batch"}, {"url": "YAHOO.util.Region.html#property_bottom", "access": "", "host": "YAHOO.util.Region", "type": "property", "name": "bottom"}, {"url": "YAHOO.util.Dom.html#method_cleanWhitespace", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "cleanWhitespace"}, {"url": "YAHOO.util.Dom.html#method_cleanWhitespace", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "cleanWhitespace"}, {"url": "YAHOO.util.Dom.html#method_cloneDimensions", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "cloneDimensions"}, {"url": "YAHOO.util.Dom.html#method_cloneDimensions", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "cloneDimensions"}, {"url": "YAHOO.util.Region.html#method_contains", "access": "", "host": "YAHOO.util.Region", "type": "method", "name": "contains"}, {"url": "YAHOO.util.Dom.html#method_createNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "createNode"}, {"url": "YAHOO.util.Dom.html#method_createNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "createNode"}, {"url": "YAHOO.util.Dom.html#method_createTag", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "createTag"}, {"url": "YAHOO.util.Dom.html#method_createTag", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "createTag"}, {"url": "YAHOO.util.Dom.html#method_deleteNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "deleteNode"}, {"url": "YAHOO.util.Dom.html#method_deleteNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "deleteNode"}, {"url": "YAHOO.util.Dom.html#method_exec", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "exec"}, {"url": "YAHOO.util.Dom.html#method_exec", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "exec"}, {"url": "YAHOO.util.Dom.html#method_findFirstText", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "findFirstText"}, {"url": "YAHOO.util.Dom.html#method_findFirstText", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "findFirstText"}, {"url": "YAHOO.util.Dom.html#method_flashBackgroundColor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "flashBackgroundColor"}, {"url": "YAHOO.util.Dom.html#method_flashBackgroundColor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "flashBackgroundColor"}, {"url": "YAHOO.util.Dom.html#method_generateId", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "generateId"}, {"url": "YAHOO.util.Dom.html#method_generateId", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "generateId"}, {"url": "YAHOO.util.Dom.html#method_get", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "get"}, {"url": "YAHOO.util.Dom.html#method_get", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "get"}, {"url": "YAHOO.util.Dom.html#method_getAncestorBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getAncestorBy"}, {"url": "YAHOO.util.Dom.html#method_getAncestorBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getAncestorBy"}, {"url": "YAHOO.util.Dom.html#method_getAncestorByClassName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getAncestorByClassName"}, {"url": "YAHOO.util.Dom.html#method_getAncestorByClassName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getAncestorByClassName"}, {"url": "YAHOO.util.Dom.html#method_getAncestorByTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getAncestorByTagName"}, {"url": "YAHOO.util.Dom.html#method_getAncestorByTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getAncestorByTagName"}, {"url": "YAHOO.util.Region.html#method_getArea", "access": "", "host": "YAHOO.util.Region", "type": "method", "name": "getArea"}, {"url": "YAHOO.util.Dom.html#method_getBackgroundColor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getBackgroundColor"}, {"url": "YAHOO.util.Dom.html#method_getBackgroundColor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getBackgroundColor"}, {"url": "YAHOO.util.Dom.html#method_getBodyElement", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getBodyElement"}, {"url": "YAHOO.util.Dom.html#method_getBodyElement", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getBodyElement"}, {"url": "YAHOO.util.Dom.html#method_getChildNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getChildNode"}, {"url": "YAHOO.util.Dom.html#method_getChildNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getChildNode"}, {"url": "YAHOO.util.Dom.html#method_getChildren", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getChildren"}, {"url": "YAHOO.util.Dom.html#method_getChildren", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getChildren"}, {"url": "YAHOO.util.Dom.html#method_getChildrenBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getChildrenBy"}, {"url": "YAHOO.util.Dom.html#method_getChildrenBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getChildrenBy"}, {"url": "YAHOO.util.Dom.html#method_getClientHeight", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getClientHeight"}, {"url": "YAHOO.util.Dom.html#method_getClientHeight", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getClientHeight"}, {"url": "YAHOO.util.Dom.html#method_getClientRegion", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getClientRegion"}, {"url": "YAHOO.util.Dom.html#method_getClientRegion", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getClientRegion"}, {"url": "YAHOO.util.Dom.html#method_getClientWidth", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getClientWidth"}, {"url": "YAHOO.util.Dom.html#method_getClientWidth", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getClientWidth"}, {"url": "YAHOO.util.Dom.html#method_getCommonAncestor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getCommonAncestor"}, {"url": "YAHOO.util.Dom.html#method_getCommonAncestor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getCommonAncestor"}, {"url": "YAHOO.util.Dom.html#method_getContentAsFloat", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getContentAsFloat"}, {"url": "YAHOO.util.Dom.html#method_getContentAsFloat", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getContentAsFloat"}, {"url": "YAHOO.util.Dom.html#method_getContentAsInteger", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getContentAsInteger"}, {"url": "YAHOO.util.Dom.html#method_getContentAsInteger", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getContentAsInteger"}, {"url": "YAHOO.util.Dom.html#method_getContentAsString", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getContentAsString"}, {"url": "YAHOO.util.Dom.html#method_getContentAsString", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getContentAsString"}, {"url": "YAHOO.util.Dom.html#method_getDocumentHeight", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentHeight"}, {"url": "YAHOO.util.Dom.html#method_getDocumentHeight", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentHeight"}, {"url": "YAHOO.util.Dom.html#method_getDocumentScroll", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentScroll"}, {"url": "YAHOO.util.Dom.html#method_getDocumentScroll", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentScroll"}, {"url": "YAHOO.util.Dom.html#method_getDocumentScrollLeft", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentScrollLeft"}, {"url": "YAHOO.util.Dom.html#method_getDocumentScrollLeft", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentScrollLeft"}, {"url": "YAHOO.util.Dom.html#method_getDocumentScrollTop", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentScrollTop"}, {"url": "YAHOO.util.Dom.html#method_getDocumentScrollTop", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentScrollTop"}, {"url": "YAHOO.util.Dom.html#method_getDocumentSize", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentSize"}, {"url": "YAHOO.util.Dom.html#method_getDocumentSize", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentSize"}, {"url": "YAHOO.util.Dom.html#method_getDocumentWidth", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentWidth"}, {"url": "YAHOO.util.Dom.html#method_getDocumentWidth", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentWidth"}, {"url": "YAHOO.util.Dom.html#method_getElementsBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getElementsBy"}, {"url": "YAHOO.util.Dom.html#method_getElementsBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getElementsBy"}, {"url": "YAHOO.util.Dom.html#method_getElementsByClassName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getElementsByClassName"}, {"url": "YAHOO.util.Dom.html#method_getElementsByClassName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getElementsByClassName"}, {"url": "YAHOO.util.Dom.html#method_getElementsByTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getElementsByTagName"}, {"url": "YAHOO.util.Dom.html#method_getElementsByTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getElementsByTagName"}, {"url": "YAHOO.util.Dom.html#method_getFirstChild", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstChild"}, {"url": "YAHOO.util.Dom.html#method_getFirstChild", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstChild"}, {"url": "YAHOO.util.Dom.html#method_getFirstChildBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstChildBy"}, {"url": "YAHOO.util.Dom.html#method_getFirstChildBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstChildBy"}, {"url": "YAHOO.util.Dom.html#method_getFirstChildByTagAndClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstChildByTagAndClass"}, {"url": "YAHOO.util.Dom.html#method_getFirstChildByTagAndClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstChildByTagAndClass"}, {"url": "YAHOO.util.Dom.html#method_getFirstText", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstText"}, {"url": "YAHOO.util.Dom.html#method_getFirstText", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstText"}, {"url": "YAHOO.util.Dom.html#method_getImage", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getImage"}, {"url": "YAHOO.util.Dom.html#method_getImage", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getImage"}, {"url": "YAHOO.util.Dom.html#method_getLastChild", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getLastChild"}, {"url": "YAHOO.util.Dom.html#method_getLastChild", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getLastChild"}, {"url": "YAHOO.util.Dom.html#method_getLastChildBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getLastChildBy"}, {"url": "YAHOO.util.Dom.html#method_getLastChildBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getLastChildBy"}, {"url": "YAHOO.util.Dom.html#method_getNextSibling", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getNextSibling"}, {"url": "YAHOO.util.Dom.html#method_getNextSibling", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getNextSibling"}, {"url": "YAHOO.util.Dom.html#method_getNextSiblingBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getNextSiblingBy"}, {"url": "YAHOO.util.Dom.html#method_getNextSiblingBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getNextSiblingBy"}, {"url": "YAHOO.util.Dom.html#method_getPreviousSibling", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getPreviousSibling"}, {"url": "YAHOO.util.Dom.html#method_getPreviousSibling", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getPreviousSibling"}, {"url": "YAHOO.util.Dom.html#method_getPreviousSiblingBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getPreviousSiblingBy"}, {"url": "YAHOO.util.Dom.html#method_getPreviousSiblingBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getPreviousSiblingBy"}, {"url": "YAHOO.util.Dom.html#method_getRegion", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getRegion"}, {"url": "YAHOO.util.Dom.html#method_getRegion", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getRegion"}, {"url": "YAHOO.util.Region.html#method_getRegion", "access": "", "host": "YAHOO.util.Region", "type": "method", "name": "getRegion"}, {"url": "YAHOO.util.Dom.html#method_getStyle", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getStyle"}, {"url": "YAHOO.util.Dom.html#method_getStyle", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getStyle"}, {"url": "YAHOO.util.Dom.html#method_getTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getTagName"}, {"url": "YAHOO.util.Dom.html#method_getTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getTagName"}, {"url": "YAHOO.util.Dom.html#method_getViewport", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getViewport"}, {"url": "YAHOO.util.Dom.html#method_getViewport", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getViewport"}, {"url": "YAHOO.util.Dom.html#method_getViewportHeight", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getViewportHeight"}, {"url": "YAHOO.util.Dom.html#method_getViewportHeight", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getViewportHeight"}, {"url": "YAHOO.util.Dom.html#method_getViewportWidth", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getViewportWidth"}, {"url": "YAHOO.util.Dom.html#method_getViewportWidth", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getViewportWidth"}, {"url": "YAHOO.util.Dom.html#method_getX", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getX"}, {"url": "YAHOO.util.Dom.html#method_getX", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getX"}, {"url": "YAHOO.util.Dom.html#method_getXY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getXY"}, {"url": "YAHOO.util.Dom.html#method_getXY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getXY"}, {"url": "YAHOO.util.Dom.html#method_getY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getY"}, {"url": "YAHOO.util.Dom.html#method_getY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getY"}, {"url": "YAHOO.util.Dom.html#method_hasClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "hasClass"}, {"url": "YAHOO.util.Dom.html#method_hasClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "hasClass"}, {"url": "YAHOO.util.Dom.html#method_hide", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "hide"}, {"url": "YAHOO.util.Dom.html#method_hide", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "hide"}, {"url": "YAHOO.util.Dom.html#method_inDocument", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "inDocument"}, {"url": "YAHOO.util.Dom.html#method_inDocument", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "inDocument"}, {"url": "YAHOO.util.Dom.html#method_insertAfter", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "insertAfter"}, {"url": "YAHOO.util.Dom.html#method_insertAfter", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "insertAfter"}, {"url": "YAHOO.util.Dom.html#method_insertBefore", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "insertBefore"}, {"url": "YAHOO.util.Dom.html#method_insertBefore", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "insertBefore"}, {"url": "YAHOO.util.Region.html#method_intersect", "access": "", "host": "YAHOO.util.Region", "type": "method", "name": "intersect"}, {"url": "YAHOO.util.Dom.html#method_isAncestor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isAncestor"}, {"url": "YAHOO.util.Dom.html#method_isAncestor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isAncestor"}, {"url": "YAHOO.util.Dom.html#method_isAncestorOf", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isAncestorOf"}, {"url": "YAHOO.util.Dom.html#method_isAncestorOf", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isAncestorOf"}, {"url": "YAHOO.util.Dom.html#method_isElementType", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isElementType"}, {"url": "YAHOO.util.Dom.html#method_isElementType", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isElementType"}, {"url": "YAHOO.util.Dom.html#method_isTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isTagName"}, {"url": "YAHOO.util.Dom.html#method_isTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isTagName"}, {"url": "YAHOO.util.Dom.html#method_isTextNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isTextNode"}, {"url": "YAHOO.util.Dom.html#method_isTextNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isTextNode"}, {"url": "YAHOO.util.Region.html#property_left", "access": "", "host": "YAHOO.util.Region", "type": "property", "name": "left"}, {"url": "YAHOO.util.Dom.html#method_removeChildNodes", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "removeChildNodes"}, {"url": "YAHOO.util.Dom.html#method_removeChildNodes", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "removeChildNodes"}, {"url": "YAHOO.util.Dom.html#method_removeClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "removeClass"}, {"url": "YAHOO.util.Dom.html#method_removeClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "removeClass"}, {"url": "YAHOO.util.Dom.html#method_replace", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "replace"}, {"url": "YAHOO.util.Dom.html#method_replace", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "replace"}, {"url": "YAHOO.util.Dom.html#method_replaceClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "replaceClass"}, {"url": "YAHOO.util.Dom.html#method_replaceClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "replaceClass"}, {"url": "YAHOO.util.Region.html#property_right", "access": "", "host": "YAHOO.util.Region", "type": "property", "name": "right"}, {"url": "YAHOO.util.Dom.html#method_scrollTo", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "scrollTo"}, {"url": "YAHOO.util.Dom.html#method_scrollTo", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "scrollTo"}, {"url": "YAHOO.util.Dom.html#method_scrollTop", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "scrollTop"}, {"url": "YAHOO.util.Dom.html#method_scrollTop", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "scrollTop"}, {"url": "YAHOO.util.Dom.html#method_setFirstText", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setFirstText"}, {"url": "YAHOO.util.Dom.html#method_setFirstText", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setFirstText"}, {"url": "YAHOO.util.Dom.html#method_setStyle", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setStyle"}, {"url": "YAHOO.util.Dom.html#method_setStyle", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setStyle"}, {"url": "YAHOO.util.Dom.html#method_setX", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setX"}, {"url": "YAHOO.util.Dom.html#method_setX", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setX"}, {"url": "YAHOO.util.Dom.html#method_setXY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setXY"}, {"url": "YAHOO.util.Dom.html#method_setXY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setXY"}, {"url": "YAHOO.util.Dom.html#method_setY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setY"}, {"url": "YAHOO.util.Dom.html#method_setY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setY"}, {"url": "YAHOO.util.Dom.html#method_show", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "show"}, {"url": "YAHOO.util.Dom.html#method_show", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "show"}, {"url": "YAHOO.util.Dom.html#method_toggleClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "toggleClass"}, {"url": "YAHOO.util.Dom.html#method_toggleClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "toggleClass"}, {"url": "YAHOO.util.Dom.html#method_toggleDisplay", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "toggleDisplay"}, {"url": "YAHOO.util.Dom.html#method_toggleDisplay", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "toggleDisplay"}, {"url": "YAHOO.util.Region.html#property_top", "access": "", "host": "YAHOO.util.Region", "type": "property", "name": "top"}, {"url": "YAHOO.util.Region.html#method_toString", "access": "", "host": "YAHOO.util.Region", "type": "method", "name": "toString"}, {"url": "YAHOO.util.Region.html#method_union", "access": "", "host": "YAHOO.util.Region", "type": "method", "name": "union"}, {"url": "YAHOO.util.Dom.html#method_visibility", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "visibility"}, {"url": "YAHOO.util.Dom.html#method_visibility", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "visibility"}];
+</script>
+</body>
+</html>

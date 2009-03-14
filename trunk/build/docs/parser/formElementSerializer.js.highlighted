@@ -1,0 +1,124 @@
+<div class="highlight" ><pre><span class="c">/*</span>
+<span class="c"> * Copyright (c) 2009, Matt Snider, LLC All rights reserved.</span>
+<span class="c"> * Version: 1.0.01</span>
+<span class="c"> */</span>
+
+<span class="c">// Only use first inclusion of this class.</span>
+<span class="c"></span><span class="k">if</span> <span class="o">(!</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Form</span><span class="o">.</span><span class="nx">Element</span><span class="o">.</span><span class="nx">Serializers</span><span class="o">)</span> <span class="o">{</span>
+
+<span class="c">/**</span>
+<span class="c"> * These Form utility functions are thanks in a large part to the Prototype group. I have modified them to improve</span>
+<span class="c"> * 	performance, remove redundancy, and get rid of the magic array functionality.</span>
+<span class="c"> * @class Serializers</span>
+<span class="c"> * @namespace YAHOO.util.Form.Element</span>
+<span class="c"> * @static</span>
+<span class="c"> */</span>
+<span class="o">(</span><span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="nx">_YL</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">lang</span><span class="o">,</span>
+        <span class="nx">_YD</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span>
+        <span class="nx">_YF</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Form</span><span class="o">,</span>
+        <span class="nx">_YFE</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Form</span><span class="o">.</span><span class="nx">Element</span><span class="o">;</span>
+
+    <span class="k">if</span> <span class="o">(!</span> <span class="nx">_YD</span><span class="o">)</span> <span class="o">{</span><span class="nx">_YL</span><span class="o">.</span><span class="nx">throwError</span><span class="o">.</span><span class="nx">call</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">_YL</span><span class="o">.</span><span class="nx">ERROR_NOT_DEFINED</span><span class="o">,</span> <span class="s1">&#39;YAHOO.util.Dom&#39;</span><span class="o">,</span> <span class="s1">&#39;implement&#39;</span><span class="o">,</span> <span class="s1">&#39;yahoo-ext/form.js&#39;</span><span class="o">);}</span>
+    <span class="k">if</span> <span class="o">(!</span> <span class="nx">_YF</span><span class="o">)</span> <span class="o">{</span><span class="nx">_YL</span><span class="o">.</span><span class="nx">throwError</span><span class="o">.</span><span class="nx">call</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">_YL</span><span class="o">.</span><span class="nx">ERROR_NOT_DEFINED</span><span class="o">,</span> <span class="s1">&#39;YAHOO.util.Form&#39;</span><span class="o">,</span> <span class="s1">&#39;implement&#39;</span><span class="o">,</span> <span class="s1">&#39;yahoo-ext/form.js&#39;</span><span class="o">);}</span>
+    <span class="k">if</span> <span class="o">(!</span> <span class="nx">_YFE</span><span class="o">)</span> <span class="o">{</span><span class="nx">_YL</span><span class="o">.</span><span class="nx">throwError</span><span class="o">.</span><span class="nx">call</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">_YL</span><span class="o">.</span><span class="nx">ERROR_NOT_DEFINED</span><span class="o">,</span> <span class="s1">&#39;YAHOO.util.Form.Element&#39;</span><span class="o">,</span> <span class="s1">&#39;implement&#39;</span><span class="o">,</span> <span class="s1">&#39;yahoo-ext/form.js&#39;</span><span class="o">);}</span>
+    <span class="k">if</span> <span class="o">(!</span> <span class="nx">_YL</span><span class="o">.</span><span class="nx">arrayWalk</span><span class="o">)</span> <span class="o">{</span><span class="nx">_YL</span><span class="o">.</span><span class="nx">throwError</span><span class="o">.</span><span class="nx">call</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">_YL</span><span class="o">.</span><span class="nx">ERROR_NOT_IMPLEMENTED</span><span class="o">,</span> <span class="s1">&#39;YAHOO.util.Form&#39;</span><span class="o">,</span> <span class="s1">&#39;&#39;</span><span class="o">,</span> <span class="s1">&#39;yahoo-ext/lang.js&#39;</span><span class="o">);}</span>
+
+    <span class="k">var</span> <span class="nx">_YFS</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">namespace</span><span class="o">(</span><span class="s1">&#39;util.Form.Element.Serializers&#39;</span><span class="o">);</span>
+    
+    <span class="k">var</span> <span class="nx">_that</span> <span class="o">=</span> <span class="o">{</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Finds the value of a checkbox/radio input element.</span>
+<span class="c">         * @method input</span>
+<span class="c">         * @param element {String|Element} Required. The input node.</span>
+<span class="c">         * @return {Array} The name/value pairs.</span>
+<span class="c">         * @static</span>
+<span class="c">         */</span>
+        <span class="nx">input</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">element</span><span class="o">)</span> <span class="o">{</span>		
+            <span class="nx">switch</span> <span class="o">(</span><span class="nx">_YFE</span><span class="o">.</span><span class="nx">getType</span><span class="o">(</span><span class="nx">element</span><span class="o">))</span> <span class="o">{</span>
+                <span class="nx">case</span> <span class="s1">&#39;checkbox&#39;</span><span class="o">:</span>
+                <span class="nx">case</span> <span class="s1">&#39;radio&#39;</span><span class="o">:</span>
+                    <span class="k">return</span> <span class="nx">_YFS</span><span class="o">.</span><span class="nx">inputSelector</span><span class="o">(</span><span class="nx">element</span><span class="o">);</span>
+                <span class="nx">default</span><span class="o">:</span>
+                    <span class="k">return</span> <span class="nx">_YFS</span><span class="o">.</span><span class="nx">textarea</span><span class="o">(</span><span class="nx">element</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Finds the value of a checkbox/radio input element.</span>
+<span class="c">         * @method inputSelector</span>
+<span class="c">         * @param element {String|Element} Required. The input node.</span>
+<span class="c">         * @return {Array} The name/value pairs.</span>
+<span class="c">         * @static</span>
+<span class="c">         */</span>
+        <span class="nx">inputSelector</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">element</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="nx">element</span><span class="o">.</span><span class="nx">checked</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="o">[</span><span class="nx">element</span><span class="o">.</span><span class="nx">name</span><span class="o">,</span> <span class="nx">element</span><span class="o">.</span><span class="nx">value</span><span class="o">];</span>
+            <span class="o">}</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Finds the value of a select-one element.</span>
+<span class="c">         * @method textarea</span>
+<span class="c">         * @param element {String|Element} Required. The select node.</span>
+<span class="c">         * @return {Array} The name/value pairs.</span>
+<span class="c">         * @static</span>
+<span class="c">         */</span>
+        <span class="nx">textarea</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">element</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="o">[</span><span class="nx">element</span><span class="o">.</span><span class="nx">name</span><span class="o">,</span> <span class="nx">element</span><span class="o">.</span><span class="nx">value</span><span class="o">];</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Finds the value of a select tag element.</span>
+<span class="c">         * @method select</span>
+<span class="c">         * @param element {String|Element} Required. The select node.</span>
+<span class="c">         * @return {Array} The name/value pairs.</span>
+<span class="c">         * @static</span>
+<span class="c">         */</span>
+        <span class="nx">select</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">element</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nx">_YFS</span><span class="o">[</span><span class="s1">&#39;select-one&#39;</span> <span class="o">===</span> <span class="nx">_YFE</span><span class="o">.</span><span class="nx">getType</span><span class="o">(</span><span class="nx">element</span><span class="o">)</span> <span class="o">?</span> <span class="s1">&#39;selectOne&#39;</span> <span class="o">:</span> <span class="s1">&#39;selectMany&#39;</span><span class="o">](</span><span class="nx">element</span><span class="o">);</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Finds the value of a select-one element.</span>
+<span class="c">         * @method selectOne</span>
+<span class="c">         * @param element {String|Element} Required. The select node.</span>
+<span class="c">         * @return {Array} The name/value pairs.</span>
+<span class="c">         * @static</span>
+<span class="c">         */</span>
+        <span class="nx">selectOne</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">element</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">,</span> <span class="nx">opt</span><span class="o">,</span> <span class="nx">index</span> <span class="o">=</span> <span class="nx">element</span><span class="o">.</span><span class="nx">selectedIndex</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(</span><span class="m">0</span> <span class="o">&lt;=</span> <span class="nx">index</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nx">opt</span> <span class="o">=</span> <span class="nx">element</span><span class="o">.</span><span class="nx">options</span><span class="o">[</span><span class="nx">index</span><span class="o">];</span>
+                <span class="nx">value</span> <span class="o">=</span> <span class="nx">opt</span><span class="o">.</span><span class="nx">value</span> <span class="o">||</span> <span class="nx">opt</span><span class="o">.</span><span class="nx">text</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="o">[</span><span class="nx">element</span><span class="o">.</span><span class="nx">name</span><span class="o">,</span> <span class="nx">value</span><span class="o">];</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Finds the value of a select-many element.</span>
+<span class="c">         * @method selectMany</span>
+<span class="c">         * @param element {String|Element} Required. The select node.</span>
+<span class="c">         * @return {Array} The name/value pairs.</span>
+<span class="c">         * @static</span>
+<span class="c">         */</span>
+        <span class="nx">selectMany</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">element</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="o">[];</span>
+
+            <span class="k">for</span> <span class="o">(</span><span class="k">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="m">0</span><span class="o">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">element</span><span class="o">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">var</span> <span class="nx">opt</span> <span class="o">=</span> <span class="nx">element</span><span class="o">.</span><span class="nx">options</span><span class="o">[</span><span class="nx">i</span><span class="o">];</span>
+                <span class="k">if</span> <span class="o">(</span><span class="nx">opt</span><span class="o">.</span><span class="nx">selected</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="nx">value</span><span class="o">.</span><span class="nx">push</span><span class="o">(</span><span class="nx">opt</span><span class="o">.</span><span class="nx">value</span> <span class="o">||</span> <span class="nx">opt</span><span class="o">.</span><span class="nx">text</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+
+            <span class="k">return</span> <span class="o">[</span><span class="nx">element</span><span class="o">.</span><span class="nx">name</span><span class="o">,</span> <span class="nx">value</span><span class="o">];</span>
+        <span class="o">}</span>
+    <span class="o">};</span>
+
+    <span class="nx">_YL</span><span class="o">.</span><span class="nx">augmentObject</span><span class="o">(</span><span class="nx">_YFS</span><span class="o">,</span> <span class="nx">_that</span><span class="o">);</span>
+<span class="o">})();</span>
+
+<span class="o">}</span>
+</pre></div>

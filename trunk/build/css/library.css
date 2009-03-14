@@ -1,0 +1,225 @@
+
+/**
+ * Copyright (c) 2007, Matt Snider, LLC. All rights reserved.
+ * version: 1.0.0
+ */
+
+/* remove default element padding */
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td {
+	margin: 0;
+	padding: 0;
+}
+
+/* default color scheme */
+html body {
+	background: #fff;
+	color: #000;
+}
+
+/* remove borders and possible underlining */
+a, img, a img, iframe, form, fieldset, abbr, acronym, object, applet {
+	border: none;
+	font-variant: normal;
+}
+
+/* remove stylized font-variations */
+address, caption, cite, code, dfn, em, strong, th, var, i, b {
+	font-style: normal;
+	font-weight: normal;
+}
+
+/* table and center elements should always be top left aligned */
+caption, th, td, center {
+	text-align: left;
+	vertical-align: top;
+}
+
+q:before, q:after {
+	content: '';
+}
+
+/* remove cellpadding and cellspacing */
+table {
+	border: none;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* clear possible list-styles; should override in design */
+ul, ol, dir, menu, li {
+	list-style: none;
+}
+
+/* clear possible heading styles; should override in design */
+h1, h2, h3, h4, h5, h6 {
+	font-size: 100%;
+	font-weight: normal;
+}
+
+/* prevent default browser coloring of links */
+a { color: inherit; }
+
+/* reset position of sup and sub */
+sup, sub {
+	vertical-align: text-top;
+}
+
+/* clear form field font settings */
+input, textarea, select {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+}/**
+ * Copyright (c) 2007, Matt Snider, LLC. All rights reserved.
+ * Version: 1.0.01
+ */
+
+html {
+	font-size: 100.01%;
+}
+
+html body {
+	/**
+	 *	Browser font-heirarcy:
+	 *		1) Mozilla, Opera on PC - arial
+	 *		2) IE verdana
+ 	 *		3) Other browsers
+	 */
+	font: 62.5% arial, verdana, sans-serif;
+	line-height: 1.6em;
+	text-align: left;
+}
+
+h1 {
+	font-size: 14pt;
+}
+
+h2 {
+	font-size: 12pt;
+}
+
+h3 {
+	font-size: 11pt;
+}
+
+h1, h2 {
+	margin: 1em 0;
+}
+
+h4 {
+	font-size: 10pt;
+}
+
+h5 {
+	font-size: 10pt;
+}
+
+h1, h2, h3, h4, h5, h6, strong {
+	font-weight: bold;
+}
+
+abbr, acronym {
+	border-bottom: 1px dotted #000;
+	cursor: help;
+}
+
+em {
+	font-style: italic;
+}
+
+blockquote, ul, ol, dl {
+	margin: 1em;
+}
+
+ol, ul, dl {
+	margin-left: 2em;
+}
+
+ol li {
+	list-style: decimal outside;
+}
+
+ul li {
+	list-style: disc outside;
+}
+
+dl dd {
+	margin-left: 1em;
+}
+
+th, td {
+	/*border: 1px solid #000;*/
+	padding: .5em;
+}
+
+th {
+	font-weight: bold;
+	text-align: center;
+}
+
+caption {
+	margin-bottom: .5em;
+	text-align: center;
+}
+
+p, fieldset, table {
+	margin-bottom: 1em;
+}
+
+p, a, label {
+	font-size: 10pt;
+}
+
+sub {
+	vertical-align: text-bottom;
+}
+
+.clear {
+	clear: both;
+}
+
+/* (en) clearfix method for clearing floats */
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+/* (en) essential for Safari browser !! */
+.clearfix {
+	display: block;
+}
+
+/**
+ * @group Forms 
+ */
+
+input {
+	font-size: 11pt;
+	padding: 0.1em;
+}
+
+input.text {
+}
+
+/**
+ * @end Forms 
+ */
+
+/**
+ * @group Display
+ */
+
+.displayNone {
+    display: none;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+/**
+ * @end Display
+ */
