@@ -1,0 +1,3078 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: autocomplete  YAHOO.widget.AutoComplete   (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1237000655.83" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1237000655.83" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1237000655.83"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1237000655.83"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>AutoComplete Widget&nbsp; <span class="subtitle">1.0.01</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_autocomplete.html" title="autocomplete">autocomplete</a>
+                 &gt; YAHOO.widget.AutoComplete 
+                
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <h2>
+                        
+
+                        
+                        
+                            Class <b property="yui:name">YAHOO.widget.AutoComplete</b>
+                        <span class="extends">
+                        </span>
+
+                    </h2>
+                    <!-- class tree goes here -->
+                    
+                
+  
+
+                    <div class="summary description" property="yui:description">
+                        The AutoComplete class provides the customizable functionality of a plug-and-play DHTML
+auto completion widget.  Some key features:
+<ul>
+<li>Navigate with up/down arrow keys and/or mouse to pick a selection</li>
+<li>The drop down container can "roll down" or "fly out" via configurable
+animation</li>
+<li>UI look-and-feel customizable through CSS, including container
+attributes, borders, position, fonts, etc</li>
+</ul>
+                    </div>
+
+                        <div class="section constructor details" rel="yui:constructor" resource="#constructor">
+                        <h3 id="constructor">Constructor</h3>
+                        <div class="content">
+                            <div class="detail">
+                                <strong property="yui:name">YAHOO.widget.AutoComplete</strong>
+                                <code>
+                                    (
+  
+                                        
+                                                
+                                                elInput
+
+
+                                                , 
+                                                elContainer
+
+
+                                                , 
+                                                oDataSource
+
+                                                , 
+                                                oConfigs
+                                    )
+                                </code>
+                                <div class="description">
+                                        <dl rel="yui:parameters">
+                                            <dt>Parameters:</dt>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">elInput</span>
+                                                    &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description">  DOM element reference of an input field.</span>
+                                                </dd>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">elInput</span>
+                                                    &lt;<span property="yui:type">String</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description">  String ID of an input field.</span>
+                                                </dd>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">elContainer</span>
+                                                    &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description">  DOM element reference of an existing DIV.</span>
+                                                </dd>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">elContainer</span>
+                                                    &lt;<span property="yui:type">String</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description">  String ID of an existing DIV.</span>
+                                                </dd>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">oDataSource</span>
+                                                    &lt;<span property="yui:type">YAHOO.widget.DataSource</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description">  DataSource instance.</span>
+                                                </dd>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">oConfigs</span>
+                                                    &lt;<span property="yui:type">Object</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description">  (optional) Object literal of configuration params.</span>
+                                                </dd>
+                                        </dl>
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div rel="yui:properties" resource="#properties">
+                        <div class="section field details">
+                            <h3 id="properties">Properties</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:property" resource="#property_allowBrowserAutocomplete">
+                                    <h4><a name="property_allowBrowserAutocomplete" property="yui:name">allowBrowserAutocomplete</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not to allow browsers to cache user-typed input in the input
+field. Disabling this feature will prevent the widget from setting the
+autocomplete="off" on the input field. When autocomplete="off"
+and users click the back button after form submission, user-typed input can
+be prefilled by the browser from its cache. This caching of user input may
+not be desired for sensitive data, such as credit card numbers, in which
+case, implementers should consider setting allowBrowserAutocomplete to false.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: true
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_alwaysShowContainer">
+                                    <h4><a name="property_alwaysShowContainer" property="yui:name">alwaysShowContainer</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Enabling this feature prevents the toggling of the container to a collapsed state.
+Setting to true does not automatically trigger the opening of the container.
+Implementers are advised to pre-load the container with an explicit "sendQuery()" call.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: false
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_animHoriz">
+                                    <h4><a name="property_animHoriz" property="yui:name">animHoriz</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not to animate the expansion/collapse of the results container in the
+horizontal direction.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: false
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_animSpeed">
+                                    <h4><a name="property_animSpeed" property="yui:name">animSpeed</a>
+                                        - <code><span property="yui:type">Number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Speed of container expand/collapse animation, in seconds..
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: 0.3
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_animVert">
+                                    <h4><a name="property_animVert" property="yui:name">animVert</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not to animate the expansion/collapse of the results container in the
+vertical direction.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: true
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_applyLocalFilter">
+                                    <h4><a name="property_applyLocalFilter" property="yui:name">applyLocalFilter</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            By default, results from local DataSources will pass through the filterResults
+method to apply a client-side matching algorithm.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: true for local arrays and json, otherwise false
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_autoHighlight">
+                                    <h4><a name="property_autoHighlight" property="yui:name">autoHighlight</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not the first item in results container should be automatically highlighted
+on expand.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: true
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_dataSource">
+                                    <h4><a name="property_dataSource" property="yui:name">dataSource</a>
+                                        - <code><span property="yui:type">YAHOO.widget.DataSource</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            The DataSource object that encapsulates the data used for auto completion.
+This object should be an inherited object from YAHOO.widget.DataSource.
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_delimChar">
+                                    <h4><a name="property_delimChar" property="yui:name">delimChar</a>
+                                        - <code><span property="yui:type">String | String[]</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Query delimiter. A single character separator for multiple delimited
+selections. Multiple delimiter characteres may be defined as an array of
+strings. A null value or empty string indicates that query results cannot
+be delimited. This feature is not recommended if you need forceSelection to
+be true.
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_forceSelection">
+                                    <h4><a name="property_forceSelection" property="yui:name">forceSelection</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not to force the user's selection to match one of the query
+results. Enabling this feature essentially transforms the input field into a
+&lt;select&gt; field. This feature is not recommended with delimiter character(s)
+defined.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: false
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_highlightClassName">
+                                    <h4><a name="property_highlightClassName" property="yui:name">highlightClassName</a>
+                                        - <code><span property="yui:type">String</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Class name of a highlighted item within results container.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: "yui-ac-highlight"
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_maxResultsDisplayed">
+                                    <h4><a name="property_maxResultsDisplayed" property="yui:name">maxResultsDisplayed</a>
+                                        - <code><span property="yui:type">Number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Maximum number of results to display in results container.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: 10
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_minQueryLength">
+                                    <h4><a name="property_minQueryLength" property="yui:name">minQueryLength</a>
+                                        - <code><span property="yui:type">Number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Number of characters that must be entered before querying for results. A negative value
+effectively turns off the widget. A value of 0 allows queries of null or empty string
+values.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: 1
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_prehighlightClassName">
+                                    <h4><a name="property_prehighlightClassName" property="yui:name">prehighlightClassName</a>
+                                        - <code><span property="yui:type">String</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Class name of a pre-highlighted item within results container.
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_queryDelay">
+                                    <h4><a name="property_queryDelay" property="yui:name">queryDelay</a>
+                                        - <code><span property="yui:type">Number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Number of seconds to delay before submitting a query request.  If a query
+request is received before a previous one has completed its delay, the
+previous request is cancelled and the new request is set to the delay. If 
+typeAhead is also enabled, this value must always be less than the typeAheadDelay
+in order to avoid certain race conditions.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: 0.2
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_queryInterval">
+                                    <h4><a name="property_queryInterval" property="yui:name">queryInterval</a>
+                                        - <code><span property="yui:type">Number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            When IME usage is detected, AutoComplete will switch to querying the input
+value at the given interval rather than per key event.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: 500
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_queryMatchCase">
+                                    <h4><a name="property_queryMatchCase" property="yui:name">queryMatchCase</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            When applyLocalFilter is true, the local filtering algorthim can have case sensitivity
+enabled.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: false
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_queryMatchContains">
+                                    <h4><a name="property_queryMatchContains" property="yui:name">queryMatchContains</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            When applyLocalFilter is true, results can  be locally filtered to return
+matching strings that "contain" the query string rather than simply "start with"
+the query string.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: false
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_queryMatchSubset">
+                                    <h4><a name="property_queryMatchSubset" property="yui:name">queryMatchSubset</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Enables query subset matching. When the DataSource's cache is enabled and queryMatchSubset is
+true, substrings of queries will return matching cached results. For
+instance, if the first query is for "abc" susequent queries that start with
+"abc", like "abcd", will be queried against the cache, and not the live data
+source. Recommended only for DataSources that return comprehensive results
+for queries with very few characters.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: false
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_queryQuestionMark">
+                                    <h4><a name="property_queryQuestionMark" property="yui:name">queryQuestionMark</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            For XHR DataSources, AutoComplete will automatically insert a "?" between the server URI and 
+the "query" param/value pair. To prevent this behavior, implementers should
+set this value to false. To more fully customize the query syntax, implementers
+should override the generateRequest() method.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: true
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_resultTypeList">
+                                    <h4><a name="property_resultTypeList" property="yui:name">resultTypeList</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            For backward compatibility to pre-2.6.0 formatResults() signatures, setting
+resultsTypeList to true will take each object literal result returned by
+DataSource and flatten into an array.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: true
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_supressInputUpdate">
+                                    <h4><a name="property_supressInputUpdate" property="yui:name">supressInputUpdate</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not the input field should be updated with selections.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: false
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_typeAhead">
+                                    <h4><a name="property_typeAhead" property="yui:name">typeAhead</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            If autohighlight is enabled, whether or not the input field should be automatically updated
+with the first query result as the user types, auto-selecting the substring portion
+of the first result that the user has not yet typed.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: false
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_typeAheadDelay">
+                                    <h4><a name="property_typeAheadDelay" property="yui:name">typeAheadDelay</a>
+                                        - <code><span property="yui:type">Number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            If typeAhead is true, number of seconds to delay before updating input with
+typeAhead value. In order to prevent certain race conditions, this value must
+always be greater than the queryDelay.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: 0.5
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_useIFrame">
+                                    <h4><a name="property_useIFrame" property="yui:name">useIFrame</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not to use an iFrame to layer over Windows form elements in
+IE. Set to true only when the results container will be on top of a
+&lt;select&gt; field in IE and thus exposed to the IE z-index bug (i.e.,
+5.5 < IE < 7).
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: false
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_useShadow">
+                                    <h4><a name="property_useShadow" property="yui:name">useShadow</a>
+                                        - <code><span property="yui:type">Boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not the results container should have a shadow.
+                                        </div>
+                                    </div>
+     
+                                        
+                                    <div class="default" property="yui:defaultValue">
+                                        Default Value: false
+                                    </div>        
+
+
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div rel="yui:methods" resource="#methods">
+                        <div class="section method details">
+                            <h3 id="methods">Methods</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:method" resource="#method_collapseContainer">
+                                    <h4>
+                                        <a name="method_collapseContainer">collapseContainer</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">collapseContainer</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Collapses container.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_destroy">
+                                    <h4>
+                                        <a name="method_destroy">destroy</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">destroy</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Nulls out the entire AutoComplete instance and related objects, removes attached
+event listeners, and clears out DOM elements inside the container. After
+calling this method, the instance reference should be expliclitly nulled by
+implementer, as in myDataTable = null. Use with caution!
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_doBeforeExpandContainer">
+                                    <h4>
+                                        <a name="method_doBeforeExpandContainer">doBeforeExpandContainer</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Boolean
+                                            <strong property="yui:name">doBeforeExpandContainer</strong>
+                                           (
+                                                
+                                                        
+                                                         elTextbox
+                                                    
+                                                
+                                                        , 
+                                                         elContainer
+                                                    
+                                                
+                                                        , 
+                                                         sQuery
+                                                    
+                                                
+                                                        , 
+                                                         aResults
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Overridable method called before container expands allows implementers to access data
+and DOM elements.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">elTextbox</span>
+                                                        &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  The text input box.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">elContainer</span>
+                                                        &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  The container element.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">sQuery</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  The query string.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">aResults</span>
+                                                        &lt;<span property="yui:type">Object[]</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">   An array of query results.</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        Boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">Return true to continue expanding container, false to cancel the expand.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_doBeforeLoadData">
+                                    <h4>
+                                        <a name="method_doBeforeLoadData">doBeforeLoadData</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Boolean
+                                            <strong property="yui:name">doBeforeLoadData</strong>
+                                           (
+                                                
+                                                        
+                                                         sQuery
+                                                    
+                                                
+                                                        , 
+                                                         oResponse
+                                                    
+                                                
+                                                        , 
+                                                         oPayload
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Overridable method called before container is loaded with result data.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">sQuery</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Original request.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">oResponse</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Response object.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">oPayload</span>
+                                                        &lt;<span property="yui:type">MIXED</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  (optional) Additional argument(s)</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        Boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">Return true to continue loading data, false to cancel.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class=" deprecated" rel="yui:method" resource="#method_doBeforeSendQuery">
+                                    <h4>
+                                        <a name="method_doBeforeSendQuery">doBeforeSendQuery</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">doBeforeSendQuery</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+                                            <div class="deprecated">
+                                                <strong>Deprecated</strong> Use generateRequest.
+                                            </div>        
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_filterResults">
+                                    <h4>
+                                        <a name="method_filterResults">filterResults</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Object
+                                            <strong property="yui:name">filterResults</strong>
+                                           (
+                                                
+                                                        
+                                                         sQuery
+                                                    
+                                                
+                                                        , 
+                                                         oFullResponse
+                                                    
+                                                
+                                                        , 
+                                                         oParsedResponse
+                                                    
+                                                
+                                                        , 
+                                                         oCallback
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Executed by DataSource (within DataSource scope via doBeforeCallback()) to
+filter results through a simple client-side matching algorithm.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">sQuery</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Original request.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">oFullResponse</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Full response object.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">oParsedResponse</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Parsed response object.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">oCallback</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Callback object.</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        Object
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">Filtered response object.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_formatResult">
+                                    <h4>
+                                        <a name="method_formatResult">formatResult</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        String
+                                            <strong property="yui:name">formatResult</strong>
+                                           (
+                                                
+                                                        
+                                                         oResultData
+                                                    
+                                                
+                                                        , 
+                                                         sQuery
+                                                    
+                                                
+                                                        , 
+                                                         sResultMatch
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Overridable method that returns HTML markup for one result to be populated
+as innerHTML of an &lt;LI&gt; element.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">oResultData</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Result data object.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">sQuery</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  The corresponding query string.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">sResultMatch</span>
+                                                        &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  The current query string.</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        String
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">HTML markup of formatted result data.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_generateRequest">
+                                    <h4>
+                                        <a name="method_generateRequest">generateRequest</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">generateRequest</strong>
+                                           (
+                                                
+                                                        
+                                                         sQuery
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            A function that converts an AutoComplete query into a request value which is then
+passed to the DataSource's sendRequest method in order to retrieve data for 
+the query. By default, returns a String with the syntax: "query={query}"
+Implementers can customize this method for custom request syntaxes.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">sQuery</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Query string</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getContainerEl">
+                                    <h4>
+                                        <a name="method_getContainerEl">getContainerEl</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        HTMLELement
+                                            <strong property="yui:name">getContainerEl</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Returns DOM reference to container element.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        HTMLELement
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">DOM reference to container element.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getInputEl">
+                                    <h4>
+                                        <a name="method_getInputEl">getInputEl</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        HTMLELement
+                                            <strong property="yui:name">getInputEl</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Returns DOM reference to input element.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        HTMLELement
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">DOM reference to input element.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getListEl">
+                                    <h4>
+                                        <a name="method_getListEl">getListEl</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        HTMLElement[]
+                                            <strong property="yui:name">getListEl</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Public accessor to the &lt;ul&gt; element that displays query results within the results container.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        HTMLElement[]
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">Reference to &lt;ul&gt; element within the results container.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getListItemData">
+                                    <h4>
+                                        <a name="method_getListItemData">getListItemData</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Object
+                                            <strong property="yui:name">getListItemData</strong>
+                                           (
+                                                
+                                                        
+                                                         elListItem
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Public accessor to the result data associated with a given &lt;li&gt; result.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">elListItem</span>
+                                                        &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Reference to &lt;LI&gt; element.</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        Object
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">Result data.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getListItemIndex">
+                                    <h4>
+                                        <a name="method_getListItemIndex">getListItemIndex</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Number
+                                            <strong property="yui:name">getListItemIndex</strong>
+                                           (
+                                                
+                                                        
+                                                         elListItem
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Public accessor to the index of the associated with a given &lt;li&gt; result.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">elListItem</span>
+                                                        &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Reference to &lt;LI&gt; element.</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        Number
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">Index.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getListItemMatch">
+                                    <h4>
+                                        <a name="method_getListItemMatch">getListItemMatch</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        String
+                                            <strong property="yui:name">getListItemMatch</strong>
+                                           (
+                                                
+                                                        
+                                                         elListItem
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Public accessor to the matching string associated with a given &lt;li&gt; result.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">elListItem</span>
+                                                        &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Reference to &lt;LI&gt; element.</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        String
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">Matching string.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class=" deprecated" rel="yui:method" resource="#method_getListItems">
+                                    <h4>
+                                        <a name="method_getListItems">getListItems</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">getListItems</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+                                            <div class="deprecated">
+                                                <strong>Deprecated</strong> Use getListEl().childNodes.
+                                            </div>        
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getSubsetMatches">
+                                    <h4>
+                                        <a name="method_getSubsetMatches">getSubsetMatches</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Object
+                                            <strong property="yui:name">getSubsetMatches</strong>
+                                           (
+                                                
+                                                        
+                                                         sQuery
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Handles subset matching for when queryMatchSubset is enabled.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">sQuery</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Query string.</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        Object
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">oParsedResponse or null.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_handleResponse">
+                                    <h4>
+                                        <a name="method_handleResponse">handleResponse</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">handleResponse</strong>
+                                           (
+                                                
+                                                        
+                                                         sQuery
+                                                    
+                                                
+                                                        , 
+                                                         oResponse
+                                                    
+                                                
+                                                        , 
+                                                         oPayload
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Handles response for display. This is the callback function method passed to
+YAHOO.util.DataSourceBase#sendRequest so results from the DataSource are
+returned to the AutoComplete instance.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">sQuery</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Original request.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">oResponse</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Response object.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">oPayload</span>
+                                                        &lt;<span property="yui:type">MIXED</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  (optional) Additional argument(s)</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_isContainerOpen">
+                                    <h4>
+                                        <a name="method_isContainerOpen">isContainerOpen</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Boolean
+                                            <strong property="yui:name">isContainerOpen</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Returns true if container is in an expanded state, false otherwise.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        Boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">Returns true if container is in an expanded state, false otherwise.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_isFocused">
+                                    <h4>
+                                        <a name="method_isFocused">isFocused</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Boolean
+                                            <strong property="yui:name">isFocused</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Returns true if widget instance is currently focused.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        Boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">Returns true if widget instance is currently focused.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_preparseRawResponse">
+                                    <h4>
+                                        <a name="method_preparseRawResponse">preparseRawResponse</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Object
+                                            <strong property="yui:name">preparseRawResponse</strong>
+                                           (
+                                                
+                                                        
+                                                         sQuery
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Executed by DataSource (within DataSource scope via doBeforeParseData()) to
+handle responseStripAfter cleanup.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">sQuery</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Query string.</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        Object
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">oParsedResponse or null.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_sendQuery">
+                                    <h4>
+                                        <a name="method_sendQuery">sendQuery</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">sendQuery</strong>
+                                           (
+                                                
+                                                        
+                                                         sQuery
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Makes query request to the DataSource.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">sQuery</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Query string.</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_setBody">
+                                    <h4>
+                                        <a name="method_setBody">setBody</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">setBody</strong>
+                                           (
+                                                
+                                                        
+                                                         sBody
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Sets HTML markup for the results container body. This markup will be
+inserted within a &lt;div&gt; tag with a class of "yui-ac-bd".
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">sBody</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  HTML markup for results container body.</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_setFooter">
+                                    <h4>
+                                        <a name="method_setFooter">setFooter</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">setFooter</strong>
+                                           (
+                                                
+                                                        
+                                                         sFooter
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Sets HTML markup for the results container footer. This markup will be
+inserted within a &lt;div&gt; tag with a class of "yui-ac-ft".
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">sFooter</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  HTML markup for results container footer.</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_setHeader">
+                                    <h4>
+                                        <a name="method_setHeader">setHeader</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">setHeader</strong>
+                                           (
+                                                
+                                                        
+                                                         sHeader
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Sets HTML markup for the results container header. This markup will be
+inserted within a &lt;div&gt; tag with a class of "yui-ac-hd".
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">sHeader</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  HTML markup for results container header.</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_toString">
+                                    <h4>
+                                        <a name="method_toString">toString</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        String
+                                            <strong property="yui:name">toString</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Public accessor to the unique name of the AutoComplete instance.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        String
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">Unique name of the AutoComplete instance.</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div rel="yui:events" resource="#events">
+                        <div class="section method details">
+                            <h3 id="events">Events</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:event" resource="#event_containerCollapseEvent">
+                                    <h4>
+                                        <a name="event_containerCollapseEvent">containerCollapseEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">containerCollapseEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when the results container is collapsed.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_containerExpandEvent">
+                                    <h4>
+                                        <a name="event_containerExpandEvent">containerExpandEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">containerExpandEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                                        , 
+                                                         sQuery
+                                                    
+                                                
+                                                        , 
+                                                         aResults
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when the results container is expanded.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">sQuery</span>
+                                                                &lt;<span property="yui:type">String</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The query string.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">aResults</span>
+                                                                &lt;<span property="yui:type">Object[]</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  Results array.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_containerPopulateEvent">
+                                    <h4>
+                                        <a name="event_containerPopulateEvent">containerPopulateEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">containerPopulateEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when the results container is populated.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_dataErrorEvent">
+                                    <h4>
+                                        <a name="event_dataErrorEvent">dataErrorEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">dataErrorEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                                        , 
+                                                         sQuery
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when the AutoComplete instance does not receive query results from the
+DataSource due to an error.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">sQuery</span>
+                                                                &lt;<span property="yui:type">String</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The query string.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_dataRequestEvent">
+                                    <h4>
+                                        <a name="event_dataRequestEvent">dataRequestEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">dataRequestEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                                        , 
+                                                         sQuery
+                                                    
+                                                
+                                                        , 
+                                                         oRequest
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when the AutoComplete instance makes a request to the DataSource.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">sQuery</span>
+                                                                &lt;<span property="yui:type">String</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The query string.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oRequest</span>
+                                                                &lt;<span property="yui:type">Object</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The request.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_dataReturnEvent">
+                                    <h4>
+                                        <a name="event_dataReturnEvent">dataReturnEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">dataReturnEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                                        , 
+                                                         sQuery
+                                                    
+                                                
+                                                        , 
+                                                         aResults
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when the AutoComplete instance receives query results from the data
+source.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">sQuery</span>
+                                                                &lt;<span property="yui:type">String</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The query string.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">aResults</span>
+                                                                &lt;<span property="yui:type">Object[]</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  Results array.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_itemArrowFromEvent">
+                                    <h4>
+                                        <a name="event_itemArrowFromEvent">itemArrowFromEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">itemArrowFromEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                                        , 
+                                                         elItem
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when result item has been arrowed away from.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">elItem</span>
+                                                                &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The &lt;li&gt; element item arrowed from.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_itemArrowToEvent">
+                                    <h4>
+                                        <a name="event_itemArrowToEvent">itemArrowToEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">itemArrowToEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                                        , 
+                                                         elItem
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when result item has been arrowed to.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">elItem</span>
+                                                                &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The &lt;li&gt; element item arrowed to.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_itemMouseOutEvent">
+                                    <h4>
+                                        <a name="event_itemMouseOutEvent">itemMouseOutEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">itemMouseOutEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                                        , 
+                                                         elItem
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when result item has been moused out.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">elItem</span>
+                                                                &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The &lt;li&gt; element item moused from.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_itemMouseOverEvent">
+                                    <h4>
+                                        <a name="event_itemMouseOverEvent">itemMouseOverEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">itemMouseOverEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                                        , 
+                                                         elItem
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when result item has been moused over.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">elItem</span>
+                                                                &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The &lt;li&gt element item moused to.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_itemSelectEvent">
+                                    <h4>
+                                        <a name="event_itemSelectEvent">itemSelectEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">itemSelectEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                                        , 
+                                                         elItem
+                                                    
+                                                
+                                                        , 
+                                                         oData
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when an item is selected via mouse click, ENTER key, or TAB key.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">elItem</span>
+                                                                &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The selected &lt;li&gt; element item.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oData</span>
+                                                                &lt;<span property="yui:type">Object</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The data returned for the item, either as an object,
+or mapped from the schema into an array.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_selectionEnforceEvent">
+                                    <h4>
+                                        <a name="event_selectionEnforceEvent">selectionEnforceEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">selectionEnforceEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired if forceSelection is enabled and the user's input has been cleared
+because it did not match one of the returned query results.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_textboxBlurEvent">
+                                    <h4>
+                                        <a name="event_textboxBlurEvent">textboxBlurEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">textboxBlurEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when the input field loses focus.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_textboxChangeEvent">
+                                    <h4>
+                                        <a name="event_textboxChangeEvent">textboxChangeEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">textboxChangeEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when the input field value has changed when it loses focus.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_textboxFocusEvent">
+                                    <h4>
+                                        <a name="event_textboxFocusEvent">textboxFocusEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">textboxFocusEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when the input field receives focus.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_textboxKeyEvent">
+                                    <h4>
+                                        <a name="event_textboxKeyEvent">textboxKeyEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">textboxKeyEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                                        , 
+                                                         nKeycode
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when the input field receives key input.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">nKeycode</span>
+                                                                &lt;<span property="yui:type">Number</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The keycode number.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_typeAheadEvent">
+                                    <h4>
+                                        <a name="event_typeAheadEvent">typeAheadEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">typeAheadEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                                        , 
+                                                         sQuery
+                                                    
+                                                
+                                                        , 
+                                                         sPrefill
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when the input field has been prefilled by the type-ahead
+feature.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">sQuery</span>
+                                                                &lt;<span property="yui:type">String</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The query string.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">sPrefill</span>
+                                                                &lt;<span property="yui:type">String</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The prefill string.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_unmatchedItemSelectEvent">
+                                    <h4>
+                                        <a name="event_unmatchedItemSelectEvent">unmatchedItemSelectEvent</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">unmatchedItemSelectEvent</strong>
+
+                                            (
+                                                
+                                                        
+                                                         oSelf
+                                                    
+                                                
+                                                        , 
+                                                         sSelection
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fired when a user selection does not match any of the displayed result items.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">oSelf</span>
+                                                                &lt;<span property="yui:type">YAHOO.widget.AutoComplete</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The AutoComplete instance.</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">sSelection</span>
+                                                                &lt;<span property="yui:type">String</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  The selected string.</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div rel="yui:attributes" resource="#configattributes">
+
+                    </div>
+
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_animation.html" title="animation">animation</a></li>
+                                <li class="selected"><a href="module_autocomplete.html" title="autocomplete">autocomplete</a></li>
+                                <li class=""><a href="module_connection.html" title="connection">connection</a></li>
+                                <li class=""><a href="module_datasource.html" title="datasource">datasource</a></li>
+                                <li class=""><a href="module_dom.html" title="dom">dom</a></li>
+                                <li class=""><a href="module_event.html" title="event">event</a></li>
+                                <li class=""><a href="module_form.html" title="form">form</a></li>
+                                <li class=""><a href="module_json.html" title="json">json</a></li>
+                                <li class=""><a href="module_mvc.html" title="mvc">mvc</a></li>
+                                <li class=""><a href="module_window.html" title="window">window</a></li>
+                                <li class=""><a href="module_yahoo.html" title="yahoo">yahoo</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="YAHOO.widget.AutoComplete.html" title="YAHOO.widget.AutoComplete">YAHOO.widget.AutoComplete</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="autocomplete.js.html" title="autocomplete.js">autocomplete.js</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="propertyList" class="module">
+                        <h4>Properties</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#property_allowBrowserAutocomplete" title="allowBrowserAutocomplete">allowBrowserAutocomplete</a></li>
+                                <li class=""><a href="#property_alwaysShowContainer" title="alwaysShowContainer">alwaysShowContainer</a></li>
+                                <li class=""><a href="#property_animHoriz" title="animHoriz">animHoriz</a></li>
+                                <li class=""><a href="#property_animSpeed" title="animSpeed">animSpeed</a></li>
+                                <li class=""><a href="#property_animVert" title="animVert">animVert</a></li>
+                                <li class=""><a href="#property_applyLocalFilter" title="applyLocalFilter">applyLocalFilter</a></li>
+                                <li class=""><a href="#property_autoHighlight" title="autoHighlight">autoHighlight</a></li>
+                                <li class=""><a href="#property_dataSource" title="dataSource">dataSource</a></li>
+                                <li class=""><a href="#property_delimChar" title="delimChar">delimChar</a></li>
+                                <li class=""><a href="#property_forceSelection" title="forceSelection">forceSelection</a></li>
+                                <li class=""><a href="#property_highlightClassName" title="highlightClassName">highlightClassName</a></li>
+                                <li class=""><a href="#property_maxResultsDisplayed" title="maxResultsDisplayed">maxResultsDisplayed</a></li>
+                                <li class=""><a href="#property_minQueryLength" title="minQueryLength">minQueryLength</a></li>
+                                <li class=""><a href="#property_prehighlightClassName" title="prehighlightClassName">prehighlightClassName</a></li>
+                                <li class=""><a href="#property_queryDelay" title="queryDelay">queryDelay</a></li>
+                                <li class=""><a href="#property_queryInterval" title="queryInterval">queryInterval</a></li>
+                                <li class=""><a href="#property_queryMatchCase" title="queryMatchCase">queryMatchCase</a></li>
+                                <li class=""><a href="#property_queryMatchContains" title="queryMatchContains">queryMatchContains</a></li>
+                                <li class=""><a href="#property_queryMatchSubset" title="queryMatchSubset">queryMatchSubset</a></li>
+                                <li class=""><a href="#property_queryQuestionMark" title="queryQuestionMark">queryQuestionMark</a></li>
+                                <li class=""><a href="#property_resultTypeList" title="resultTypeList">resultTypeList</a></li>
+                                <li class=""><a href="#property_supressInputUpdate" title="supressInputUpdate">supressInputUpdate</a></li>
+                                <li class=""><a href="#property_typeAhead" title="typeAhead">typeAhead</a></li>
+                                <li class=""><a href="#property_typeAheadDelay" title="typeAheadDelay">typeAheadDelay</a></li>
+                                <li class=""><a href="#property_useIFrame" title="useIFrame">useIFrame</a></li>
+                                <li class=""><a href="#property_useShadow" title="useShadow">useShadow</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="methodsList" class="module">
+                        <h4>Methods</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#method_collapseContainer" title="collapseContainer">collapseContainer</a></li>
+                                <li class=""><a href="#method_destroy" title="destroy">destroy</a></li>
+                                <li class=""><a href="#method_doBeforeExpandContainer" title="doBeforeExpandContainer">doBeforeExpandContainer</a></li>
+                                <li class=""><a href="#method_doBeforeLoadData" title="doBeforeLoadData">doBeforeLoadData</a></li>
+                                <li class=" deprecated"><a href="#method_doBeforeSendQuery" title="doBeforeSendQuery">doBeforeSendQuery</a></li>
+                                <li class=""><a href="#method_filterResults" title="filterResults">filterResults</a></li>
+                                <li class=""><a href="#method_formatResult" title="formatResult">formatResult</a></li>
+                                <li class=""><a href="#method_generateRequest" title="generateRequest">generateRequest</a></li>
+                                <li class=""><a href="#method_getContainerEl" title="getContainerEl">getContainerEl</a></li>
+                                <li class=""><a href="#method_getInputEl" title="getInputEl">getInputEl</a></li>
+                                <li class=""><a href="#method_getListEl" title="getListEl">getListEl</a></li>
+                                <li class=""><a href="#method_getListItemData" title="getListItemData">getListItemData</a></li>
+                                <li class=""><a href="#method_getListItemIndex" title="getListItemIndex">getListItemIndex</a></li>
+                                <li class=""><a href="#method_getListItemMatch" title="getListItemMatch">getListItemMatch</a></li>
+                                <li class=" deprecated"><a href="#method_getListItems" title="getListItems">getListItems</a></li>
+                                <li class=""><a href="#method_getSubsetMatches" title="getSubsetMatches">getSubsetMatches</a></li>
+                                <li class=""><a href="#method_handleResponse" title="handleResponse">handleResponse</a></li>
+                                <li class=""><a href="#method_isContainerOpen" title="isContainerOpen">isContainerOpen</a></li>
+                                <li class=""><a href="#method_isFocused" title="isFocused">isFocused</a></li>
+                                <li class=""><a href="#method_preparseRawResponse" title="preparseRawResponse">preparseRawResponse</a></li>
+                                <li class=""><a href="#method_sendQuery" title="sendQuery">sendQuery</a></li>
+                                <li class=""><a href="#method_setBody" title="setBody">setBody</a></li>
+                                <li class=""><a href="#method_setFooter" title="setFooter">setFooter</a></li>
+                                <li class=""><a href="#method_setHeader" title="setHeader">setHeader</a></li>
+                                <li class=""><a href="#method_toString" title="toString">toString</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="eventsList" class="module">
+                        <h4>Events</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#event_containerCollapseEvent" title="containerCollapseEvent">containerCollapseEvent</a></li>
+                                <li class=""><a href="#event_containerExpandEvent" title="containerExpandEvent">containerExpandEvent</a></li>
+                                <li class=""><a href="#event_containerPopulateEvent" title="containerPopulateEvent">containerPopulateEvent</a></li>
+                                <li class=""><a href="#event_dataErrorEvent" title="dataErrorEvent">dataErrorEvent</a></li>
+                                <li class=""><a href="#event_dataRequestEvent" title="dataRequestEvent">dataRequestEvent</a></li>
+                                <li class=""><a href="#event_dataReturnEvent" title="dataReturnEvent">dataReturnEvent</a></li>
+                                <li class=""><a href="#event_itemArrowFromEvent" title="itemArrowFromEvent">itemArrowFromEvent</a></li>
+                                <li class=""><a href="#event_itemArrowToEvent" title="itemArrowToEvent">itemArrowToEvent</a></li>
+                                <li class=""><a href="#event_itemMouseOutEvent" title="itemMouseOutEvent">itemMouseOutEvent</a></li>
+                                <li class=""><a href="#event_itemMouseOverEvent" title="itemMouseOverEvent">itemMouseOverEvent</a></li>
+                                <li class=""><a href="#event_itemSelectEvent" title="itemSelectEvent">itemSelectEvent</a></li>
+                                <li class=""><a href="#event_selectionEnforceEvent" title="selectionEnforceEvent">selectionEnforceEvent</a></li>
+                                <li class=""><a href="#event_textboxBlurEvent" title="textboxBlurEvent">textboxBlurEvent</a></li>
+                                <li class=""><a href="#event_textboxChangeEvent" title="textboxChangeEvent">textboxChangeEvent</a></li>
+                                <li class=""><a href="#event_textboxFocusEvent" title="textboxFocusEvent">textboxFocusEvent</a></li>
+                                <li class=""><a href="#event_textboxKeyEvent" title="textboxKeyEvent">textboxKeyEvent</a></li>
+                                <li class=""><a href="#event_typeAheadEvent" title="typeAheadEvent">typeAheadEvent</a></li>
+                                <li class=""><a href="#event_unmatchedItemSelectEvent" title="unmatchedItemSelectEvent">unmatchedItemSelectEvent</a></li>
+                        </ul>
+                    </div>
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2009 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "YAHOO.widget.AutoComplete.html#property_allowBrowserAutocomplete", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "allowBrowserAutocomplete"}, {"url": "YAHOO.widget.AutoComplete.html#property_alwaysShowContainer", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "alwaysShowContainer"}, {"url": "YAHOO.widget.AutoComplete.html#property_animHoriz", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "animHoriz"}, {"url": "YAHOO.widget.AutoComplete.html#property_animSpeed", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "animSpeed"}, {"url": "YAHOO.widget.AutoComplete.html#property_animVert", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "animVert"}, {"url": "YAHOO.widget.AutoComplete.html#property_applyLocalFilter", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "applyLocalFilter"}, {"url": "YAHOO.widget.AutoComplete.html#property_autoHighlight", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "autoHighlight"}, {"url": "YAHOO.widget.AutoComplete.html#method_collapseContainer", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "collapseContainer"}, {"url": "YAHOO.widget.AutoComplete.html#event_containerCollapseEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "containerCollapseEvent"}, {"url": "YAHOO.widget.AutoComplete.html#event_containerExpandEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "containerExpandEvent"}, {"url": "YAHOO.widget.AutoComplete.html#event_containerPopulateEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "containerPopulateEvent"}, {"url": "YAHOO.widget.AutoComplete.html#event_dataErrorEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "dataErrorEvent"}, {"url": "YAHOO.widget.AutoComplete.html#event_dataRequestEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "dataRequestEvent"}, {"url": "YAHOO.widget.AutoComplete.html#event_dataReturnEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "dataReturnEvent"}, {"url": "YAHOO.widget.AutoComplete.html#property_dataSource", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "dataSource"}, {"url": "YAHOO.widget.AutoComplete.html#property_delimChar", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "delimChar"}, {"url": "YAHOO.widget.AutoComplete.html#method_destroy", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "destroy"}, {"url": "YAHOO.widget.AutoComplete.html#method_doBeforeExpandContainer", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "doBeforeExpandContainer"}, {"url": "YAHOO.widget.AutoComplete.html#method_doBeforeLoadData", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "doBeforeLoadData"}, {"url": "YAHOO.widget.AutoComplete.html#method_doBeforeSendQuery", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "doBeforeSendQuery"}, {"url": "YAHOO.widget.AutoComplete.html#method_filterResults", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "filterResults"}, {"url": "YAHOO.widget.AutoComplete.html#property_forceSelection", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "forceSelection"}, {"url": "YAHOO.widget.AutoComplete.html#method_formatResult", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "formatResult"}, {"url": "YAHOO.widget.AutoComplete.html#method_generateRequest", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "generateRequest"}, {"url": "YAHOO.widget.AutoComplete.html#method_getContainerEl", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "getContainerEl"}, {"url": "YAHOO.widget.AutoComplete.html#method_getInputEl", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "getInputEl"}, {"url": "YAHOO.widget.AutoComplete.html#method_getListEl", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "getListEl"}, {"url": "YAHOO.widget.AutoComplete.html#method_getListItemData", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "getListItemData"}, {"url": "YAHOO.widget.AutoComplete.html#method_getListItemIndex", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "getListItemIndex"}, {"url": "YAHOO.widget.AutoComplete.html#method_getListItemMatch", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "getListItemMatch"}, {"url": "YAHOO.widget.AutoComplete.html#method_getListItems", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "getListItems"}, {"url": "YAHOO.widget.AutoComplete.html#method_getSubsetMatches", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "getSubsetMatches"}, {"url": "YAHOO.widget.AutoComplete.html#method_handleResponse", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "handleResponse"}, {"url": "YAHOO.widget.AutoComplete.html#property_highlightClassName", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "highlightClassName"}, {"url": "YAHOO.widget.AutoComplete.html#method_isContainerOpen", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "isContainerOpen"}, {"url": "YAHOO.widget.AutoComplete.html#method_isFocused", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "isFocused"}, {"url": "YAHOO.widget.AutoComplete.html#event_itemArrowFromEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "itemArrowFromEvent"}, {"url": "YAHOO.widget.AutoComplete.html#event_itemArrowToEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "itemArrowToEvent"}, {"url": "YAHOO.widget.AutoComplete.html#event_itemMouseOutEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "itemMouseOutEvent"}, {"url": "YAHOO.widget.AutoComplete.html#event_itemMouseOverEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "itemMouseOverEvent"}, {"url": "YAHOO.widget.AutoComplete.html#event_itemSelectEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "itemSelectEvent"}, {"url": "YAHOO.widget.AutoComplete.html#property_maxResultsDisplayed", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "maxResultsDisplayed"}, {"url": "YAHOO.widget.AutoComplete.html#property_minQueryLength", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "minQueryLength"}, {"url": "YAHOO.widget.AutoComplete.html#property_prehighlightClassName", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "prehighlightClassName"}, {"url": "YAHOO.widget.AutoComplete.html#method_preparseRawResponse", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "preparseRawResponse"}, {"url": "YAHOO.widget.AutoComplete.html#property_queryDelay", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "queryDelay"}, {"url": "YAHOO.widget.AutoComplete.html#property_queryInterval", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "queryInterval"}, {"url": "YAHOO.widget.AutoComplete.html#property_queryMatchCase", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "queryMatchCase"}, {"url": "YAHOO.widget.AutoComplete.html#property_queryMatchContains", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "queryMatchContains"}, {"url": "YAHOO.widget.AutoComplete.html#property_queryMatchSubset", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "queryMatchSubset"}, {"url": "YAHOO.widget.AutoComplete.html#property_queryQuestionMark", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "queryQuestionMark"}, {"url": "YAHOO.widget.AutoComplete.html#property_resultTypeList", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "resultTypeList"}, {"url": "YAHOO.widget.AutoComplete.html#event_selectionEnforceEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "selectionEnforceEvent"}, {"url": "YAHOO.widget.AutoComplete.html#method_sendQuery", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "sendQuery"}, {"url": "YAHOO.widget.AutoComplete.html#method_setBody", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "setBody"}, {"url": "YAHOO.widget.AutoComplete.html#method_setFooter", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "setFooter"}, {"url": "YAHOO.widget.AutoComplete.html#method_setHeader", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "setHeader"}, {"url": "YAHOO.widget.AutoComplete.html#property_supressInputUpdate", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "supressInputUpdate"}, {"url": "YAHOO.widget.AutoComplete.html#event_textboxBlurEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "textboxBlurEvent"}, {"url": "YAHOO.widget.AutoComplete.html#event_textboxChangeEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "textboxChangeEvent"}, {"url": "YAHOO.widget.AutoComplete.html#event_textboxFocusEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "textboxFocusEvent"}, {"url": "YAHOO.widget.AutoComplete.html#event_textboxKeyEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "textboxKeyEvent"}, {"url": "YAHOO.widget.AutoComplete.html#method_toString", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "method", "name": "toString"}, {"url": "YAHOO.widget.AutoComplete.html#property_typeAhead", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "typeAhead"}, {"url": "YAHOO.widget.AutoComplete.html#property_typeAheadDelay", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "typeAheadDelay"}, {"url": "YAHOO.widget.AutoComplete.html#event_typeAheadEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "typeAheadEvent"}, {"url": "YAHOO.widget.AutoComplete.html#event_unmatchedItemSelectEvent", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "event", "name": "unmatchedItemSelectEvent"}, {"url": "YAHOO.widget.AutoComplete.html#property_useIFrame", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "useIFrame"}, {"url": "YAHOO.widget.AutoComplete.html#property_useShadow", "access": "", "host": "YAHOO.widget.AutoComplete", "type": "property", "name": "useShadow"}];
+</script>
+</body>
+</html>

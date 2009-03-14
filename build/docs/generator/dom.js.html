@@ -1,0 +1,1349 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: dom   dom.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1237000655.05" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1237000655.05" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1237000655.05"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1237000655.05"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>dom&nbsp; <span class="subtitle">1.0.01</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_dom.html" title="dom">dom</a>
+                
+                 &gt; dom.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+<div class="highlight" ><pre><span class="c">/*</span>
+<span class="c">Copyright (c) 2008, Yahoo! Inc. All rights reserved.</span>
+<span class="c">Code licensed under the BSD License:</span>
+<span class="c">http://developer.yahoo.net/yui/license.txt</span>
+<span class="c">version: 2.6.0</span>
+<span class="c">*/</span>
+<span class="c">/**</span>
+<span class="c"> * The dom module provides helper methods for manipulating Dom elements.</span>
+<span class="c"> * @module dom</span>
+<span class="c"> *</span>
+<span class="c"> */</span>
+
+<span class="o">(</span><span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="nx">Y</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">,</span>     <span class="c">// internal shorthand</span>
+<span class="c"></span>        <span class="nx">lang</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">lang</span><span class="o">,</span>
+        <span class="nx">getStyle</span><span class="o">,</span>           <span class="c">// for load time browser branching</span>
+<span class="c"></span>        <span class="nx">setStyle</span><span class="o">,</span>           <span class="c">// ditto</span>
+<span class="c"></span>        <span class="nx">propertyCache</span> <span class="o">=</span> <span class="o">{},</span> <span class="c">// for faster hyphen converts</span>
+<span class="c"></span>        <span class="nx">reClassNameCache</span> <span class="o">=</span> <span class="o">{},</span>          <span class="c">// cache regexes for className</span>
+<span class="c"></span>        <span class="nb">document</span> <span class="o">=</span> <span class="nb">window</span><span class="o">.</span><span class="nb">document</span><span class="o">;</span>     <span class="c">// cache for faster lookups</span>
+<span class="c"></span>    
+    <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span><span class="o">.</span><span class="nx">_id_counter</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span><span class="o">.</span><span class="nx">_id_counter</span> <span class="o">||</span> <span class="m">0</span><span class="o">;</span>     <span class="c">// for use with generateId (global to save state if Dom is overwritten)</span>
+<span class="c"></span>
+    <span class="c">// brower detection</span>
+<span class="c"></span>    <span class="k">var</span> <span class="nx">isOpera</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span><span class="o">.</span><span class="nx">ua</span><span class="o">.</span><span class="nx">opera</span><span class="o">,</span>
+        <span class="nx">isSafari</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span><span class="o">.</span><span class="nx">ua</span><span class="o">.</span><span class="nx">webkit</span><span class="o">,</span> 
+        <span class="nx">isGecko</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span><span class="o">.</span><span class="nx">ua</span><span class="o">.</span><span class="nx">gecko</span><span class="o">,</span>
+        <span class="nx">isIE</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span><span class="o">.</span><span class="nx">ua</span><span class="o">.</span><span class="nx">ie</span><span class="o">;</span> 
+    
+    <span class="c">// regex cache</span>
+<span class="c"></span>    <span class="k">var</span> <span class="nx">patterns</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="nx">HYPHEN</span><span class="o">:</span> <span class="sr">/(-[a-z])/i</span><span class="o">,</span> <span class="c">// to normalize get/setStyle</span>
+<span class="c"></span>        <span class="nx">ROOT_TAG</span><span class="o">:</span> <span class="sr">/^body|html$/i</span><span class="o">,</span> <span class="c">// body for quirks mode, html for standards,</span>
+<span class="c"></span>        <span class="nx">OP_SCROLL</span><span class="o">:</span><span class="sr">/^(?:inline|table-row)$/i</span>
+    <span class="o">};</span>
+
+    <span class="k">var</span> <span class="nx">toCamel</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">property</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="o">!</span><span class="nx">patterns</span><span class="o">.</span><span class="nx">HYPHEN</span><span class="o">.</span><span class="nx">test</span><span class="o">(</span><span class="nx">property</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nx">property</span><span class="o">;</span> <span class="c">// no hyphens</span>
+<span class="c"></span>        <span class="o">}</span>
+        
+        <span class="k">if</span> <span class="o">(</span><span class="nx">propertyCache</span><span class="o">[</span><span class="nx">property</span><span class="o">])</span> <span class="o">{</span> <span class="c">// already converted</span>
+<span class="c"></span>            <span class="k">return</span> <span class="nx">propertyCache</span><span class="o">[</span><span class="nx">property</span><span class="o">];</span>
+        <span class="o">}</span>
+       
+        <span class="k">var</span> <span class="nx">converted</span> <span class="o">=</span> <span class="nx">property</span><span class="o">;</span>
+ 
+        <span class="k">while</span><span class="o">(</span> <span class="nx">patterns</span><span class="o">.</span><span class="nx">HYPHEN</span><span class="o">.</span><span class="nx">exec</span><span class="o">(</span><span class="nx">converted</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="nx">converted</span> <span class="o">=</span> <span class="nx">converted</span><span class="o">.</span><span class="nx">replace</span><span class="o">(</span><span class="nb">RegExp</span><span class="o">.</span><span class="nx">$1</span><span class="o">,</span>
+                    <span class="nb">RegExp</span><span class="o">.</span><span class="nx">$1</span><span class="o">.</span><span class="nx">substr</span><span class="o">(</span><span class="m">1</span><span class="o">).</span><span class="nx">toUpperCase</span><span class="o">());</span>
+        <span class="o">}</span>
+        
+        <span class="nx">propertyCache</span><span class="o">[</span><span class="nx">property</span><span class="o">]</span> <span class="o">=</span> <span class="nx">converted</span><span class="o">;</span>
+        <span class="k">return</span> <span class="nx">converted</span><span class="o">;</span>
+        <span class="c">//return property.replace(/-([a-z])/gi, function(m0, m1) {return m1.toUpperCase()}) // cant use function as 2nd arg yet due to safari bug</span>
+<span class="c"></span>    <span class="o">};</span>
+    
+    <span class="k">var</span> <span class="nx">getClassRegEx</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">className</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">var</span> <span class="nx">re</span> <span class="o">=</span> <span class="nx">reClassNameCache</span><span class="o">[</span><span class="nx">className</span><span class="o">];</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="nx">re</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">re</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="o">(</span><span class="s1">&#39;(?:^|\\s+)&#39;</span> <span class="o">+</span> <span class="nx">className</span> <span class="o">+</span> <span class="s1">&#39;(?:\\s+|$)&#39;</span><span class="o">);</span>
+            <span class="nx">reClassNameCache</span><span class="o">[</span><span class="nx">className</span><span class="o">]</span> <span class="o">=</span> <span class="nx">re</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="nx">re</span><span class="o">;</span>
+    <span class="o">};</span>
+
+    <span class="c">// branching at load instead of runtime</span>
+<span class="c"></span>    <span class="k">if</span> <span class="o">(</span><span class="nb">document</span><span class="o">.</span><span class="nx">defaultView</span> <span class="o">&amp;&amp;</span> <span class="nb">document</span><span class="o">.</span><span class="nx">defaultView</span><span class="o">.</span><span class="nx">getComputedStyle</span><span class="o">)</span> <span class="o">{</span> <span class="c">// W3C DOM method</span>
+<span class="c"></span>        <span class="nx">getStyle</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">property</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+            
+            <span class="k">if</span> <span class="o">(</span><span class="nx">property</span> <span class="o">==</span> <span class="s1">&#39;float&#39;</span><span class="o">)</span> <span class="o">{</span> <span class="c">// fix reserved word</span>
+<span class="c"></span>                <span class="nx">property</span> <span class="o">=</span> <span class="s1">&#39;cssFloat&#39;</span><span class="o">;</span>
+            <span class="o">}</span>
+
+            <span class="k">var</span> <span class="nx">computed</span> <span class="o">=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">ownerDocument</span><span class="o">.</span><span class="nx">defaultView</span><span class="o">.</span><span class="nx">getComputedStyle</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="s1">&#39;&#39;</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="nx">computed</span><span class="o">)</span> <span class="o">{</span> <span class="c">// test computed before touching for safari</span>
+<span class="c"></span>                <span class="nx">value</span> <span class="o">=</span> <span class="nx">computed</span><span class="o">[</span><span class="nx">toCamel</span><span class="o">(</span><span class="nx">property</span><span class="o">)];</span>
+            <span class="o">}</span>
+            
+            <span class="k">return</span> <span class="nx">el</span><span class="o">.</span><span class="nx">style</span><span class="o">[</span><span class="nx">property</span><span class="o">]</span> <span class="o">||</span> <span class="nx">value</span><span class="o">;</span>
+        <span class="o">};</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="nb">document</span><span class="o">.</span><span class="nx">documentElement</span><span class="o">.</span><span class="nx">currentStyle</span> <span class="o">&amp;&amp;</span> <span class="nx">isIE</span><span class="o">)</span> <span class="o">{</span> <span class="c">// IE method</span>
+<span class="c"></span>        <span class="nx">getStyle</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">property</span><span class="o">)</span> <span class="o">{</span>                         
+            <span class="nx">switch</span><span class="o">(</span> <span class="nx">toCamel</span><span class="o">(</span><span class="nx">property</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="nx">case</span> <span class="s1">&#39;opacity&#39;</span> <span class="o">:</span><span class="c">// IE opacity uses filter</span>
+<span class="c"></span>                    <span class="k">var</span> <span class="nx">val</span> <span class="o">=</span> <span class="m">100</span><span class="o">;</span>
+                    <span class="k">try</span> <span class="o">{</span> <span class="c">// will error if no DXImageTransform</span>
+<span class="c"></span>                        <span class="nx">val</span> <span class="o">=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">filters</span><span class="o">[</span><span class="s1">&#39;DXImageTransform.Microsoft.Alpha&#39;</span><span class="o">].</span><span class="nx">opacity</span><span class="o">;</span>
+
+                    <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="nx">e</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="k">try</span> <span class="o">{</span> <span class="c">// make sure its in the document</span>
+<span class="c"></span>                            <span class="nx">val</span> <span class="o">=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">filters</span><span class="o">(</span><span class="s1">&#39;alpha&#39;</span><span class="o">).</span><span class="nx">opacity</span><span class="o">;</span>
+                        <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="nx">e</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="o">}</span>
+                    <span class="o">}</span>
+                    <span class="k">return</span> <span class="nx">val</span> <span class="o">/</span> <span class="m">100</span><span class="o">;</span>
+                <span class="nx">case</span> <span class="s1">&#39;float&#39;</span><span class="o">:</span> <span class="c">// fix reserved word</span>
+<span class="c"></span>                    <span class="nx">property</span> <span class="o">=</span> <span class="s1">&#39;styleFloat&#39;</span><span class="o">;</span> <span class="c">// fall through</span>
+<span class="c"></span>                <span class="nx">default</span><span class="o">:</span> 
+                    <span class="c">// test currentStyle before touching</span>
+<span class="c"></span>                    <span class="k">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">currentStyle</span> <span class="o">?</span> <span class="nx">el</span><span class="o">.</span><span class="nx">currentStyle</span><span class="o">[</span><span class="nx">property</span><span class="o">]</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+                    <span class="k">return</span> <span class="o">(</span> <span class="nx">el</span><span class="o">.</span><span class="nx">style</span><span class="o">[</span><span class="nx">property</span><span class="o">]</span> <span class="o">||</span> <span class="nx">value</span> <span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">};</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span> <span class="c">// default to inline only</span>
+<span class="c"></span>        <span class="nx">getStyle</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">property</span><span class="o">)</span> <span class="o">{</span> <span class="k">return</span> <span class="nx">el</span><span class="o">.</span><span class="nx">style</span><span class="o">[</span><span class="nx">property</span><span class="o">];</span> <span class="o">};</span>
+    <span class="o">}</span>
+    
+    <span class="k">if</span> <span class="o">(</span><span class="nx">isIE</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nx">setStyle</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">property</span><span class="o">,</span> <span class="nx">val</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">switch</span> <span class="o">(</span><span class="nx">property</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nx">case</span> <span class="s1">&#39;opacity&#39;</span><span class="o">:</span>
+                    <span class="k">if</span> <span class="o">(</span> <span class="nx">lang</span><span class="o">.</span><span class="nx">isString</span><span class="o">(</span><span class="nx">el</span><span class="o">.</span><span class="nx">style</span><span class="o">.</span><span class="nx">filter</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span> <span class="c">// in case not appended</span>
+<span class="c"></span>                        <span class="nx">el</span><span class="o">.</span><span class="nx">style</span><span class="o">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="s1">&#39;alpha(opacity=&#39;</span> <span class="o">+</span> <span class="nx">val</span> <span class="o">*</span> <span class="m">100</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="o">;</span>
+                        
+                        <span class="k">if</span> <span class="o">(!</span><span class="nx">el</span><span class="o">.</span><span class="nx">currentStyle</span> <span class="o">||</span> <span class="o">!</span><span class="nx">el</span><span class="o">.</span><span class="nx">currentStyle</span><span class="o">.</span><span class="nx">hasLayout</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="nx">el</span><span class="o">.</span><span class="nx">style</span><span class="o">.</span><span class="nx">zoom</span> <span class="o">=</span> <span class="m">1</span><span class="o">;</span> <span class="c">// when no layout or cant tell</span>
+<span class="c"></span>                        <span class="o">}</span>
+                    <span class="o">}</span>
+                    <span class="k">break</span><span class="o">;</span>
+                <span class="nx">case</span> <span class="s1">&#39;float&#39;</span><span class="o">:</span>
+                    <span class="nx">property</span> <span class="o">=</span> <span class="s1">&#39;styleFloat&#39;</span><span class="o">;</span>
+                <span class="nx">default</span><span class="o">:</span>
+                <span class="nx">el</span><span class="o">.</span><span class="nx">style</span><span class="o">[</span><span class="nx">property</span><span class="o">]</span> <span class="o">=</span> <span class="nx">val</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">};</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="nx">setStyle</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">property</span><span class="o">,</span> <span class="nx">val</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="nx">property</span> <span class="o">==</span> <span class="s1">&#39;float&#39;</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nx">property</span> <span class="o">=</span> <span class="s1">&#39;cssFloat&#39;</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="nx">el</span><span class="o">.</span><span class="nx">style</span><span class="o">[</span><span class="nx">property</span><span class="o">]</span> <span class="o">=</span> <span class="nx">val</span><span class="o">;</span>
+        <span class="o">};</span>
+    <span class="o">}</span>
+
+    <span class="k">var</span> <span class="nx">testElement</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">method</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nx">node</span> <span class="o">&amp;&amp;</span> <span class="nx">node</span><span class="o">.</span><span class="nx">nodeType</span> <span class="o">==</span> <span class="m">1</span> <span class="o">&amp;&amp;</span> <span class="o">(</span> <span class="o">!</span><span class="nx">method</span> <span class="o">||</span> <span class="nx">method</span><span class="o">(</span><span class="nx">node</span><span class="o">)</span> <span class="o">);</span>
+    <span class="o">};</span>
+
+    <span class="c">/**</span>
+<span class="c">     * Provides helper methods for DOM elements.</span>
+<span class="c">     * @namespace YAHOO.util</span>
+<span class="c">     * @class Dom</span>
+<span class="c">     */</span>
+    <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Dom</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="c">/**</span>
+<span class="c">         * Returns an HTMLElement reference.</span>
+<span class="c">         * @method get</span>
+<span class="c">         * @param {String | HTMLElement |Array} el Accepts a string to use as an ID for getting a DOM reference, an actual DOM reference, or an Array of IDs and/or HTMLElements.</span>
+<span class="c">         * @return {HTMLElement | Array} A DOM reference to an HTML element or an array of HTMLElements.</span>
+<span class="c">         */</span>
+        <span class="nx">get</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="nx">el</span><span class="o">.</span><span class="nx">nodeType</span> <span class="o">||</span> <span class="nx">el</span><span class="o">.</span><span class="nx">item</span><span class="o">)</span> <span class="o">{</span> <span class="c">// Node, or NodeList</span>
+<span class="c"></span>                    <span class="k">return</span> <span class="nx">el</span><span class="o">;</span>
+                <span class="o">}</span>
+
+                <span class="k">if</span> <span class="o">(</span><span class="k">typeof</span> <span class="nx">el</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span><span class="o">)</span> <span class="o">{</span> <span class="c">// id</span>
+<span class="c"></span>                    <span class="k">return</span> <span class="nb">document</span><span class="o">.</span><span class="nx">getElementById</span><span class="o">(</span><span class="nx">el</span><span class="o">);</span>
+                <span class="o">}</span>
+                
+                <span class="k">if</span> <span class="o">(</span><span class="s1">&#39;length&#39;</span> <span class="k">in</span> <span class="nx">el</span><span class="o">)</span> <span class="o">{</span> <span class="c">// array-like </span>
+<span class="c"></span>                    <span class="k">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="o">[];</span>
+                    <span class="k">for</span> <span class="o">(</span><span class="k">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="m">0</span><span class="o">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="o">;</span> <span class="o">++</span><span class="nx">i</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="nx">c</span><span class="o">[</span><span class="nx">c</span><span class="o">.</span><span class="nx">length</span><span class="o">]</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">el</span><span class="o">[</span><span class="nx">i</span><span class="o">]);</span>
+                    <span class="o">}</span>
+                    
+                    <span class="k">return</span> <span class="nx">c</span><span class="o">;</span>
+                <span class="o">}</span>
+
+                <span class="k">return</span> <span class="nx">el</span><span class="o">;</span> <span class="c">// some other object, just pass it back</span>
+<span class="c"></span>            <span class="o">}</span>
+
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">},</span>
+    
+        <span class="c">/**</span>
+<span class="c">         * Normalizes currentStyle and ComputedStyle.</span>
+<span class="c">         * @method getStyle</span>
+<span class="c">         * @param {String | HTMLElement |Array} el Accepts a string to use as an ID, an actual DOM reference, or an Array of IDs and/or HTMLElements.</span>
+<span class="c">         * @param {String} property The style property whose value is returned.</span>
+<span class="c">         * @return {String | Array} The current value of the style property for the element(s).</span>
+<span class="c">         */</span>
+        <span class="nx">getStyle</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">property</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">property</span> <span class="o">=</span> <span class="nx">toCamel</span><span class="o">(</span><span class="nx">property</span><span class="o">);</span>
+            
+            <span class="k">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">element</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="nx">getStyle</span><span class="o">(</span><span class="nx">element</span><span class="o">,</span> <span class="nx">property</span><span class="o">);</span>
+            <span class="o">};</span>
+            
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">batch</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+        <span class="o">},</span>
+    
+        <span class="c">/**</span>
+<span class="c">         * Wrapper for setting style properties of HTMLElements.  Normalizes &quot;opacity&quot; across modern browsers.</span>
+<span class="c">         * @method setStyle</span>
+<span class="c">         * @param {String | HTMLElement | Array} el Accepts a string to use as an ID, an actual DOM reference, or an Array of IDs and/or HTMLElements.</span>
+<span class="c">         * @param {String} property The style property to be set.</span>
+<span class="c">         * @param {String} val The value to apply to the given property.</span>
+<span class="c">         */</span>
+        <span class="nx">setStyle</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">property</span><span class="o">,</span> <span class="nx">val</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">property</span> <span class="o">=</span> <span class="nx">toCamel</span><span class="o">(</span><span class="nx">property</span><span class="o">);</span>
+            
+            <span class="k">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">element</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nx">setStyle</span><span class="o">(</span><span class="nx">element</span><span class="o">,</span> <span class="nx">property</span><span class="o">,</span> <span class="nx">val</span><span class="o">);</span>
+                
+            <span class="o">};</span>
+            
+            <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">batch</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Gets the current position of an element based on page coordinates.  Element must be part of the DOM tree to have page coordinates (display:none or elements not appended return false).</span>
+<span class="c">         * @method getXY</span>
+<span class="c">         * @param {String | HTMLElement | Array} el Accepts a string to use as an ID, an actual DOM reference, or an Array of IDs and/or HTMLElements</span>
+<span class="c">         * @return {Array} The XY position of the element(s)</span>
+<span class="c">         */</span>
+        <span class="nx">getXY</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c">// has to be part of document to have pageXY</span>
+<span class="c"></span>                <span class="k">if</span> <span class="o">(</span> <span class="o">(</span><span class="nx">el</span><span class="o">.</span><span class="nx">parentNode</span> <span class="o">===</span> <span class="kc">null</span> <span class="o">||</span> <span class="nx">el</span><span class="o">.</span><span class="nx">offsetParent</span> <span class="o">===</span> <span class="kc">null</span> <span class="o">||</span>
+                        <span class="k">this</span><span class="o">.</span><span class="nx">getStyle</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="s1">&#39;display&#39;</span><span class="o">)</span> <span class="o">==</span> <span class="s1">&#39;none&#39;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="nx">el</span> <span class="o">!=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">ownerDocument</span><span class="o">.</span><span class="nx">body</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+                <span class="o">}</span>
+                
+                <span class="k">return</span> <span class="nx">getXY</span><span class="o">(</span><span class="nx">el</span><span class="o">);</span>
+            <span class="o">};</span>
+            
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">batch</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Gets the current X position of an element based on page coordinates.  The element must be part of the DOM tree to have page coordinates (display:none or elements not appended return false).</span>
+<span class="c">         * @method getX</span>
+<span class="c">         * @param {String | HTMLElement | Array} el Accepts a string to use as an ID, an actual DOM reference, or an Array of IDs and/or HTMLElements</span>
+<span class="c">         * @return {Number | Array} The X position of the element(s)</span>
+<span class="c">         */</span>
+        <span class="nx">getX</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getXY</span><span class="o">(</span><span class="nx">el</span><span class="o">)[</span><span class="m">0</span><span class="o">];</span>
+            <span class="o">};</span>
+            
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">batch</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Gets the current Y position of an element based on page coordinates.  Element must be part of the DOM tree to have page coordinates (display:none or elements not appended return false).</span>
+<span class="c">         * @method getY</span>
+<span class="c">         * @param {String | HTMLElement | Array} el Accepts a string to use as an ID, an actual DOM reference, or an Array of IDs and/or HTMLElements</span>
+<span class="c">         * @return {Number | Array} The Y position of the element(s)</span>
+<span class="c">         */</span>
+        <span class="nx">getY</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getXY</span><span class="o">(</span><span class="nx">el</span><span class="o">)[</span><span class="m">1</span><span class="o">];</span>
+            <span class="o">};</span>
+            
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">batch</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Set the position of an html element in page coordinates, regardless of how the element is positioned.</span>
+<span class="c">         * The element(s) must be part of the DOM tree to have page coordinates (display:none or elements not appended return false).</span>
+<span class="c">         * @method setXY</span>
+<span class="c">         * @param {String | HTMLElement | Array} el Accepts a string to use as an ID, an actual DOM reference, or an Array of IDs and/or HTMLElements</span>
+<span class="c">         * @param {Array} pos Contains X &amp; Y values for new position (coordinates are page-based)</span>
+<span class="c">         * @param {Boolean} noRetry By default we try and set the position a second time if the first fails</span>
+<span class="c">         */</span>
+        <span class="nx">setXY</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">pos</span><span class="o">,</span> <span class="nx">noRetry</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">var</span> <span class="nx">style_pos</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="nx">getStyle</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="s1">&#39;position&#39;</span><span class="o">);</span>
+                <span class="k">if</span> <span class="o">(</span><span class="nx">style_pos</span> <span class="o">==</span> <span class="s1">&#39;static&#39;</span><span class="o">)</span> <span class="o">{</span> <span class="c">// default to relative</span>
+<span class="c"></span>                    <span class="k">this</span><span class="o">.</span><span class="nx">setStyle</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="s1">&#39;position&#39;</span><span class="o">,</span> <span class="s1">&#39;relative&#39;</span><span class="o">);</span>
+                    <span class="nx">style_pos</span> <span class="o">=</span> <span class="s1">&#39;relative&#39;</span><span class="o">;</span>
+                <span class="o">}</span>
+
+                <span class="k">var</span> <span class="nx">pageXY</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="nx">getXY</span><span class="o">(</span><span class="nx">el</span><span class="o">);</span>
+                <span class="k">if</span> <span class="o">(</span><span class="nx">pageXY</span> <span class="o">===</span> <span class="kc">false</span><span class="o">)</span> <span class="o">{</span> <span class="c">// has to be part of doc to have pageXY</span>
+<span class="c"></span>                    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span> 
+                <span class="o">}</span>
+                
+                <span class="k">var</span> <span class="nx">delta</span> <span class="o">=</span> <span class="o">[</span> <span class="c">// assuming pixels; if not we will have to retry</span>
+<span class="c"></span>                    <span class="nb">parseInt</span><span class="o">(</span> <span class="k">this</span><span class="o">.</span><span class="nx">getStyle</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="s1">&#39;left&#39;</span><span class="o">),</span> <span class="m">10</span> <span class="o">),</span>
+                    <span class="nb">parseInt</span><span class="o">(</span> <span class="k">this</span><span class="o">.</span><span class="nx">getStyle</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="s1">&#39;top&#39;</span><span class="o">),</span> <span class="m">10</span> <span class="o">)</span>
+                <span class="o">];</span>
+            
+                <span class="k">if</span> <span class="o">(</span> <span class="nb">isNaN</span><span class="o">(</span><span class="nx">delta</span><span class="o">[</span><span class="m">0</span><span class="o">])</span> <span class="o">)</span> <span class="o">{</span><span class="c">// in case of &#39;auto&#39;</span>
+<span class="c"></span>                    <span class="nx">delta</span><span class="o">[</span><span class="m">0</span><span class="o">]</span> <span class="o">=</span> <span class="o">(</span><span class="nx">style_pos</span> <span class="o">==</span> <span class="s1">&#39;relative&#39;</span><span class="o">)</span> <span class="o">?</span> <span class="m">0</span> <span class="o">:</span> <span class="nx">el</span><span class="o">.</span><span class="nx">offsetLeft</span><span class="o">;</span>
+                <span class="o">}</span> 
+                <span class="k">if</span> <span class="o">(</span> <span class="nb">isNaN</span><span class="o">(</span><span class="nx">delta</span><span class="o">[</span><span class="m">1</span><span class="o">])</span> <span class="o">)</span> <span class="o">{</span> <span class="c">// in case of &#39;auto&#39;</span>
+<span class="c"></span>                    <span class="nx">delta</span><span class="o">[</span><span class="m">1</span><span class="o">]</span> <span class="o">=</span> <span class="o">(</span><span class="nx">style_pos</span> <span class="o">==</span> <span class="s1">&#39;relative&#39;</span><span class="o">)</span> <span class="o">?</span> <span class="m">0</span> <span class="o">:</span> <span class="nx">el</span><span class="o">.</span><span class="nx">offsetTop</span><span class="o">;</span>
+                <span class="o">}</span> 
+        
+                <span class="k">if</span> <span class="o">(</span><span class="nx">pos</span><span class="o">[</span><span class="m">0</span><span class="o">]</span> <span class="o">!==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span> <span class="nx">el</span><span class="o">.</span><span class="nx">style</span><span class="o">.</span><span class="nx">left</span> <span class="o">=</span> <span class="nx">pos</span><span class="o">[</span><span class="m">0</span><span class="o">]</span> <span class="o">-</span> <span class="nx">pageXY</span><span class="o">[</span><span class="m">0</span><span class="o">]</span> <span class="o">+</span> <span class="nx">delta</span><span class="o">[</span><span class="m">0</span><span class="o">]</span> <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="o">;</span> <span class="o">}</span>
+                <span class="k">if</span> <span class="o">(</span><span class="nx">pos</span><span class="o">[</span><span class="m">1</span><span class="o">]</span> <span class="o">!==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span> <span class="nx">el</span><span class="o">.</span><span class="nx">style</span><span class="o">.</span><span class="nx">top</span> <span class="o">=</span> <span class="nx">pos</span><span class="o">[</span><span class="m">1</span><span class="o">]</span> <span class="o">-</span> <span class="nx">pageXY</span><span class="o">[</span><span class="m">1</span><span class="o">]</span> <span class="o">+</span> <span class="nx">delta</span><span class="o">[</span><span class="m">1</span><span class="o">]</span> <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="o">;</span> <span class="o">}</span>
+              
+                <span class="k">if</span> <span class="o">(!</span><span class="nx">noRetry</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">var</span> <span class="nx">newXY</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="nx">getXY</span><span class="o">(</span><span class="nx">el</span><span class="o">);</span>
+
+                    <span class="c">// if retry is true, try one more time if we miss </span>
+<span class="c"></span>                   <span class="k">if</span> <span class="o">(</span> <span class="o">(</span><span class="nx">pos</span><span class="o">[</span><span class="m">0</span><span class="o">]</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">newXY</span><span class="o">[</span><span class="m">0</span><span class="o">]</span> <span class="o">!=</span> <span class="nx">pos</span><span class="o">[</span><span class="m">0</span><span class="o">])</span> <span class="o">||</span> 
+                        <span class="o">(</span><span class="nx">pos</span><span class="o">[</span><span class="m">1</span><span class="o">]</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">newXY</span><span class="o">[</span><span class="m">1</span><span class="o">]</span> <span class="o">!=</span> <span class="nx">pos</span><span class="o">[</span><span class="m">1</span><span class="o">])</span> <span class="o">)</span> <span class="o">{</span>
+                       <span class="k">this</span><span class="o">.</span><span class="nx">setXY</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">pos</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+                   <span class="o">}</span>
+                <span class="o">}</span>        
+        
+            <span class="o">};</span>
+            
+            <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">batch</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Set the X position of an html element in page coordinates, regardless of how the element is positioned.</span>
+<span class="c">         * The element must be part of the DOM tree to have page coordinates (display:none or elements not appended return false).</span>
+<span class="c">         * @method setX</span>
+<span class="c">         * @param {String | HTMLElement | Array} el Accepts a string to use as an ID, an actual DOM reference, or an Array of IDs and/or HTMLElements.</span>
+<span class="c">         * @param {Int} x The value to use as the X coordinate for the element(s).</span>
+<span class="c">         */</span>
+        <span class="nx">setX</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">x</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">setXY</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="o">[</span><span class="nx">x</span><span class="o">,</span> <span class="kc">null</span><span class="o">]);</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Set the Y position of an html element in page coordinates, regardless of how the element is positioned.</span>
+<span class="c">         * The element must be part of the DOM tree to have page coordinates (display:none or elements not appended return false).</span>
+<span class="c">         * @method setY</span>
+<span class="c">         * @param {String | HTMLElement | Array} el Accepts a string to use as an ID, an actual DOM reference, or an Array of IDs and/or HTMLElements.</span>
+<span class="c">         * @param {Int} x To use as the Y coordinate for the element(s).</span>
+<span class="c">         */</span>
+        <span class="nx">setY</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">y</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">setXY</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="o">[</span><span class="kc">null</span><span class="o">,</span> <span class="nx">y</span><span class="o">]);</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Returns the region position of the given element.</span>
+<span class="c">         * The element must be part of the DOM tree to have a region (display:none or elements not appended return false).</span>
+<span class="c">         * @method getRegion</span>
+<span class="c">         * @param {String | HTMLElement | Array} el Accepts a string to use as an ID, an actual DOM reference, or an Array of IDs and/or HTMLElements.</span>
+<span class="c">         * @return {Region | Array} A Region or array of Region instances containing &quot;top, left, bottom, right&quot; member data.</span>
+<span class="c">         */</span>
+        <span class="nx">getRegion</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="o">(</span><span class="nx">el</span><span class="o">.</span><span class="nx">parentNode</span> <span class="o">===</span> <span class="kc">null</span> <span class="o">||</span> <span class="nx">el</span><span class="o">.</span><span class="nx">offsetParent</span> <span class="o">===</span> <span class="kc">null</span> <span class="o">||</span>
+                        <span class="k">this</span><span class="o">.</span><span class="nx">getStyle</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="s1">&#39;display&#39;</span><span class="o">)</span> <span class="o">==</span> <span class="s1">&#39;none&#39;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="nx">el</span> <span class="o">!=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">ownerDocument</span><span class="o">.</span><span class="nx">body</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+                <span class="o">}</span>
+
+                <span class="k">var</span> <span class="nx">region</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Region</span><span class="o">.</span><span class="nx">getRegion</span><span class="o">(</span><span class="nx">el</span><span class="o">);</span>
+                <span class="k">return</span> <span class="nx">region</span><span class="o">;</span>
+            <span class="o">};</span>
+            
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">batch</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Returns the width of the client (viewport).</span>
+<span class="c">         * @method getClientWidth</span>
+<span class="c">         * @deprecated Now using getViewportWidth.  This interface left intact for back compat.</span>
+<span class="c">         * @return {Int} The width of the viewable area of the page.</span>
+<span class="c">         */</span>
+        <span class="nx">getClientWidth</span><span class="o">:</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getViewportWidth</span><span class="o">();</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Returns the height of the client (viewport).</span>
+<span class="c">         * @method getClientHeight</span>
+<span class="c">         * @deprecated Now using getViewportHeight.  This interface left intact for back compat.</span>
+<span class="c">         * @return {Int} The height of the viewable area of the page.</span>
+<span class="c">         */</span>
+        <span class="nx">getClientHeight</span><span class="o">:</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getViewportHeight</span><span class="o">();</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Returns a array of HTMLElements with the given class.</span>
+<span class="c">         * For optimized performance, include a tag and/or root node when possible.</span>
+<span class="c">         * Note: This method operates against a live collection, so modifying the </span>
+<span class="c">         * collection in the callback (removing/appending nodes, etc.) will have</span>
+<span class="c">         * side effects.  Instead you should iterate the returned nodes array,</span>
+<span class="c">         * as you would with the native &quot;getElementsByTagName&quot; method. </span>
+<span class="c">         * @method getElementsByClassName</span>
+<span class="c">         * @param {String} className The class name to match against</span>
+<span class="c">         * @param {String} tag (optional) The tag name of the elements being collected</span>
+<span class="c">         * @param {String | HTMLElement} root (optional) The HTMLElement or an ID to use as the starting point </span>
+<span class="c">         * @param {Function} apply (optional) A function to apply to each element when found </span>
+<span class="c">         * @return {Array} An array of elements that have the given class name</span>
+<span class="c">         */</span>
+        <span class="nx">getElementsByClassName</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">className</span><span class="o">,</span> <span class="nx">tag</span><span class="o">,</span> <span class="nx">root</span><span class="o">,</span> <span class="nx">apply</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">className</span> <span class="o">=</span> <span class="nx">lang</span><span class="o">.</span><span class="nx">trim</span><span class="o">(</span><span class="nx">className</span><span class="o">);</span>
+            <span class="nx">tag</span> <span class="o">=</span> <span class="nx">tag</span> <span class="o">||</span> <span class="s1">&#39;*&#39;</span><span class="o">;</span>
+            <span class="nx">root</span> <span class="o">=</span> <span class="o">(</span><span class="nx">root</span><span class="o">)</span> <span class="o">?</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">root</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span> <span class="o">||</span> <span class="nb">document</span><span class="o">;</span> 
+            <span class="k">if</span> <span class="o">(!</span><span class="nx">root</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="o">[];</span>
+            <span class="o">}</span>
+
+            <span class="k">var</span> <span class="nx">nodes</span> <span class="o">=</span> <span class="o">[],</span>
+                <span class="nx">elements</span> <span class="o">=</span> <span class="nx">root</span><span class="o">.</span><span class="nx">getElementsByTagName</span><span class="o">(</span><span class="nx">tag</span><span class="o">),</span>
+                <span class="nx">re</span> <span class="o">=</span> <span class="nx">getClassRegEx</span><span class="o">(</span><span class="nx">className</span><span class="o">);</span>
+
+            <span class="k">for</span> <span class="o">(</span><span class="k">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="m">0</span><span class="o">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">elements</span><span class="o">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="o">;</span> <span class="o">++</span><span class="nx">i</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="nx">re</span><span class="o">.</span><span class="nx">test</span><span class="o">(</span><span class="nx">elements</span><span class="o">[</span><span class="nx">i</span><span class="o">].</span><span class="nx">className</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+                    <span class="nx">nodes</span><span class="o">[</span><span class="nx">nodes</span><span class="o">.</span><span class="nx">length</span><span class="o">]</span> <span class="o">=</span> <span class="nx">elements</span><span class="o">[</span><span class="nx">i</span><span class="o">];</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="nx">apply</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="nx">apply</span><span class="o">.</span><span class="nx">call</span><span class="o">(</span><span class="nx">elements</span><span class="o">[</span><span class="nx">i</span><span class="o">],</span> <span class="nx">elements</span><span class="o">[</span><span class="nx">i</span><span class="o">]);</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            
+            <span class="k">return</span> <span class="nx">nodes</span><span class="o">;</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Determines whether an HTMLElement has the given className.</span>
+<span class="c">         * @method hasClass</span>
+<span class="c">         * @param {String | HTMLElement | Array} el The element or collection to test</span>
+<span class="c">         * @param {String} className the class name to search for</span>
+<span class="c">         * @return {Boolean | Array} A boolean value or array of boolean values</span>
+<span class="c">         */</span>
+        <span class="nx">hasClass</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">className</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">re</span> <span class="o">=</span> <span class="nx">getClassRegEx</span><span class="o">(</span><span class="nx">className</span><span class="o">);</span>
+
+            <span class="k">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="nx">re</span><span class="o">.</span><span class="nx">test</span><span class="o">(</span><span class="nx">el</span><span class="o">.</span><span class="nx">className</span><span class="o">);</span>
+            <span class="o">};</span>
+            
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">batch</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+        <span class="o">},</span>
+    
+        <span class="c">/**</span>
+<span class="c">         * Adds a class name to a given element or collection of elements.</span>
+<span class="c">         * @method addClass         </span>
+<span class="c">         * @param {String | HTMLElement | Array} el The element or collection to add the class to</span>
+<span class="c">         * @param {String} className the class name to add to the class attribute</span>
+<span class="c">         * @return {Boolean | Array} A pass/fail boolean or array of booleans</span>
+<span class="c">         */</span>
+        <span class="nx">addClass</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">className</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="nx">hasClass</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">className</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span> <span class="c">// already present</span>
+<span class="c"></span>                <span class="o">}</span>
+                
+                
+                <span class="nx">el</span><span class="o">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">lang</span><span class="o">.</span><span class="nx">trim</span><span class="o">([</span><span class="nx">el</span><span class="o">.</span><span class="nx">className</span><span class="o">,</span> <span class="nx">className</span><span class="o">].</span><span class="nx">join</span><span class="o">(</span><span class="s1">&#39; &#39;</span><span class="o">));</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+            <span class="o">};</span>
+            
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">batch</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+        <span class="o">},</span>
+    
+        <span class="c">/**</span>
+<span class="c">         * Removes a class name from a given element or collection of elements.</span>
+<span class="c">         * @method removeClass         </span>
+<span class="c">         * @param {String | HTMLElement | Array} el The element or collection to remove the class from</span>
+<span class="c">         * @param {String} className the class name to remove from the class attribute</span>
+<span class="c">         * @return {Boolean | Array} A pass/fail boolean or array of booleans</span>
+<span class="c">         */</span>
+        <span class="nx">removeClass</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">className</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">re</span> <span class="o">=</span> <span class="nx">getClassRegEx</span><span class="o">(</span><span class="nx">className</span><span class="o">);</span>
+            
+            <span class="k">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">var</span> <span class="nx">ret</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span>
+                    <span class="nx">current</span> <span class="o">=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">className</span><span class="o">;</span>
+
+                <span class="k">if</span> <span class="o">(</span><span class="nx">className</span> <span class="o">&amp;&amp;</span> <span class="nx">current</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="o">.</span><span class="nx">hasClass</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">className</span><span class="o">))</span> <span class="o">{</span>
+                    
+                    <span class="nx">el</span><span class="o">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">current</span><span class="o">.</span><span class="nx">replace</span><span class="o">(</span><span class="nx">re</span><span class="o">,</span> <span class="s1">&#39; &#39;</span><span class="o">);</span>
+                    <span class="k">if</span> <span class="o">(</span> <span class="k">this</span><span class="o">.</span><span class="nx">hasClass</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">className</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span> <span class="c">// in case of multiple adjacent</span>
+<span class="c"></span>                        <span class="k">this</span><span class="o">.</span><span class="nx">removeClass</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">className</span><span class="o">);</span>
+                    <span class="o">}</span>
+
+                    <span class="nx">el</span><span class="o">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">lang</span><span class="o">.</span><span class="nx">trim</span><span class="o">(</span><span class="nx">el</span><span class="o">.</span><span class="nx">className</span><span class="o">);</span> <span class="c">// remove any trailing spaces</span>
+<span class="c"></span>                    <span class="k">if</span> <span class="o">(</span><span class="nx">el</span><span class="o">.</span><span class="nx">className</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="o">)</span> <span class="o">{</span> <span class="c">// remove class attribute if empty</span>
+<span class="c"></span>                        <span class="k">var</span> <span class="nx">attr</span> <span class="o">=</span> <span class="o">(</span><span class="nx">el</span><span class="o">.</span><span class="nx">hasAttribute</span><span class="o">)</span> <span class="o">?</span> <span class="s1">&#39;class&#39;</span> <span class="o">:</span> <span class="s1">&#39;className&#39;</span><span class="o">;</span>
+                        <span class="nx">el</span><span class="o">.</span><span class="nx">removeAttribute</span><span class="o">(</span><span class="nx">attr</span><span class="o">);</span>
+                    <span class="o">}</span>
+                    <span class="nx">ret</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+                <span class="o">}</span>                 
+                <span class="k">return</span> <span class="nx">ret</span><span class="o">;</span>
+            <span class="o">};</span>
+            
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">batch</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Replace a class with another class for a given element or collection of elements.</span>
+<span class="c">         * If no oldClassName is present, the newClassName is simply added.</span>
+<span class="c">         * @method replaceClass  </span>
+<span class="c">         * @param {String | HTMLElement | Array} el The element or collection to remove the class from</span>
+<span class="c">         * @param {String} oldClassName the class name to be replaced</span>
+<span class="c">         * @param {String} newClassName the class name that will be replacing the old class name</span>
+<span class="c">         * @return {Boolean | Array} A pass/fail boolean or array of booleans</span>
+<span class="c">         */</span>
+        <span class="nx">replaceClass</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">oldClassName</span><span class="o">,</span> <span class="nx">newClassName</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="nx">newClassName</span> <span class="o">||</span> <span class="nx">oldClassName</span> <span class="o">===</span> <span class="nx">newClassName</span><span class="o">)</span> <span class="o">{</span> <span class="c">// avoid infinite loop</span>
+<span class="c"></span>                <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span>
+            
+            <span class="k">var</span> <span class="nx">re</span> <span class="o">=</span> <span class="nx">getClassRegEx</span><span class="o">(</span><span class="nx">oldClassName</span><span class="o">);</span>
+
+            <span class="k">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+            
+                <span class="k">if</span> <span class="o">(</span> <span class="o">!</span><span class="k">this</span><span class="o">.</span><span class="nx">hasClass</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">oldClassName</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+                    <span class="k">this</span><span class="o">.</span><span class="nx">addClass</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">newClassName</span><span class="o">);</span> <span class="c">// just add it if nothing to replace</span>
+<span class="c"></span>                    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span> <span class="c">// NOTE: return</span>
+<span class="c"></span>                <span class="o">}</span>
+            
+                <span class="nx">el</span><span class="o">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">className</span><span class="o">.</span><span class="nx">replace</span><span class="o">(</span><span class="nx">re</span><span class="o">,</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">newClassName</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">);</span>
+
+                <span class="k">if</span> <span class="o">(</span> <span class="k">this</span><span class="o">.</span><span class="nx">hasClass</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">oldClassName</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span> <span class="c">// in case of multiple adjacent</span>
+<span class="c"></span>                    <span class="k">this</span><span class="o">.</span><span class="nx">removeClass</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">oldClassName</span><span class="o">);</span>
+                <span class="o">}</span>
+
+                <span class="nx">el</span><span class="o">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">lang</span><span class="o">.</span><span class="nx">trim</span><span class="o">(</span><span class="nx">el</span><span class="o">.</span><span class="nx">className</span><span class="o">);</span> <span class="c">// remove any trailing spaces</span>
+<span class="c"></span>                <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+            <span class="o">};</span>
+            
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">batch</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Returns an ID and applies it to the element &quot;el&quot;, if provided.</span>
+<span class="c">         * @method generateId  </span>
+<span class="c">         * @param {String | HTMLElement | Array} el (optional) An optional element array of elements to add an ID to (no ID is added if one is already present).</span>
+<span class="c">         * @param {String} prefix (optional) an optional prefix to use (defaults to &quot;yui-gen&quot;).</span>
+<span class="c">         * @return {String | Array} The generated ID, or array of generated IDs (or original ID if already present on an element)</span>
+<span class="c">         */</span>
+        <span class="nx">generateId</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">prefix</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">prefix</span> <span class="o">=</span> <span class="nx">prefix</span> <span class="o">||</span> <span class="s1">&#39;yui-gen&#39;</span><span class="o">;</span>
+
+            <span class="k">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="nx">el</span> <span class="o">&amp;&amp;</span> <span class="nx">el</span><span class="o">.</span><span class="nx">id</span><span class="o">)</span> <span class="o">{</span> <span class="c">// do not override existing ID</span>
+<span class="c"></span>                    <span class="k">return</span> <span class="nx">el</span><span class="o">.</span><span class="nx">id</span><span class="o">;</span>
+                <span class="o">}</span> 
+
+                <span class="k">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">prefix</span> <span class="o">+</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span><span class="o">.</span><span class="nx">_id_counter</span><span class="o">++;</span>
+
+                <span class="k">if</span> <span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="nx">el</span><span class="o">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">id</span><span class="o">;</span>
+                <span class="o">}</span>
+                
+                <span class="k">return</span> <span class="nx">id</span><span class="o">;</span>
+            <span class="o">};</span>
+
+            <span class="c">// batch fails when no element, so just generate and return single ID</span>
+<span class="c"></span>            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">batch</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span> <span class="o">||</span> <span class="nx">f</span><span class="o">.</span><span class="nx">apply</span><span class="o">(</span><span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span> <span class="nx">arguments</span><span class="o">);</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Determines whether an HTMLElement is an ancestor of another HTML element in the DOM hierarchy.</span>
+<span class="c">         * @method isAncestor</span>
+<span class="c">         * @param {String | HTMLElement} haystack The possible ancestor</span>
+<span class="c">         * @param {String | HTMLElement} needle The possible descendent</span>
+<span class="c">         * @return {Boolean} Whether or not the haystack is an ancestor of needle</span>
+<span class="c">         */</span>
+        <span class="nx">isAncestor</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">haystack</span><span class="o">,</span> <span class="nx">needle</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">haystack</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">haystack</span><span class="o">);</span>
+            <span class="nx">needle</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">needle</span><span class="o">);</span>
+            
+            <span class="k">var</span> <span class="nx">ret</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+            <span class="k">if</span> <span class="o">(</span> <span class="o">(</span><span class="nx">haystack</span> <span class="o">&amp;&amp;</span> <span class="nx">needle</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="nx">haystack</span><span class="o">.</span><span class="nx">nodeType</span> <span class="o">&amp;&amp;</span> <span class="nx">needle</span><span class="o">.</span><span class="nx">nodeType</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="nx">haystack</span><span class="o">.</span><span class="nx">contains</span> <span class="o">&amp;&amp;</span> <span class="nx">haystack</span> <span class="o">!==</span> <span class="nx">needle</span><span class="o">)</span> <span class="o">{</span> <span class="c">// contains returns true when equal</span>
+<span class="c"></span>                    <span class="nx">ret</span> <span class="o">=</span> <span class="nx">haystack</span><span class="o">.</span><span class="nx">contains</span><span class="o">(</span><span class="nx">needle</span><span class="o">);</span>
+                <span class="o">}</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="nx">haystack</span><span class="o">.</span><span class="nx">compareDocumentPosition</span><span class="o">)</span> <span class="o">{</span> <span class="c">// gecko</span>
+<span class="c"></span>                    <span class="nx">ret</span> <span class="o">=</span> <span class="o">!!(</span><span class="nx">haystack</span><span class="o">.</span><span class="nx">compareDocumentPosition</span><span class="o">(</span><span class="nx">needle</span><span class="o">)</span> <span class="o">&amp;</span> <span class="m">16</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="nx">ret</span><span class="o">;</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Determines whether an HTMLElement is present in the current document.</span>
+<span class="c">         * @method inDocument         </span>
+<span class="c">         * @param {String | HTMLElement} el The element to search for</span>
+<span class="c">         * @return {Boolean} Whether or not the element is present in the current document</span>
+<span class="c">         */</span>
+        <span class="nx">inDocument</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="nx">isAncestor</span><span class="o">(</span><span class="nb">document</span><span class="o">.</span><span class="nx">documentElement</span><span class="o">,</span> <span class="nx">el</span><span class="o">);</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Returns a array of HTMLElements that pass the test applied by supplied boolean method.</span>
+<span class="c">         * For optimized performance, include a tag and/or root node when possible.</span>
+<span class="c">         * Note: This method operates against a live collection, so modifying the </span>
+<span class="c">         * collection in the callback (removing/appending nodes, etc.) will have</span>
+<span class="c">         * side effects.  Instead you should iterate the returned nodes array,</span>
+<span class="c">         * as you would with the native &quot;getElementsByTagName&quot; method. </span>
+<span class="c">         * @method getElementsBy</span>
+<span class="c">         * @param {Function} method - A boolean method for testing elements which receives the element as its only argument.</span>
+<span class="c">         * @param {String} tag (optional) The tag name of the elements being collected</span>
+<span class="c">         * @param {String | HTMLElement} root (optional) The HTMLElement or an ID to use as the starting point </span>
+<span class="c">         * @param {Function} apply (optional) A function to apply to each element when found </span>
+<span class="c">         * @return {Array} Array of HTMLElements</span>
+<span class="c">         */</span>
+        <span class="nx">getElementsBy</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">method</span><span class="o">,</span> <span class="nx">tag</span><span class="o">,</span> <span class="nx">root</span><span class="o">,</span> <span class="nx">apply</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">tag</span> <span class="o">=</span> <span class="nx">tag</span> <span class="o">||</span> <span class="s1">&#39;*&#39;</span><span class="o">;</span>
+            <span class="nx">root</span> <span class="o">=</span> <span class="o">(</span><span class="nx">root</span><span class="o">)</span> <span class="o">?</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">root</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span> <span class="o">||</span> <span class="nb">document</span><span class="o">;</span> 
+
+            <span class="k">if</span> <span class="o">(!</span><span class="nx">root</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="o">[];</span>
+            <span class="o">}</span>
+
+            <span class="k">var</span> <span class="nx">nodes</span> <span class="o">=</span> <span class="o">[],</span>
+                <span class="nx">elements</span> <span class="o">=</span> <span class="nx">root</span><span class="o">.</span><span class="nx">getElementsByTagName</span><span class="o">(</span><span class="nx">tag</span><span class="o">);</span>
+            
+            <span class="k">for</span> <span class="o">(</span><span class="k">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="m">0</span><span class="o">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">elements</span><span class="o">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="o">;</span> <span class="o">++</span><span class="nx">i</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="nx">method</span><span class="o">(</span><span class="nx">elements</span><span class="o">[</span><span class="nx">i</span><span class="o">])</span> <span class="o">)</span> <span class="o">{</span>
+                    <span class="nx">nodes</span><span class="o">[</span><span class="nx">nodes</span><span class="o">.</span><span class="nx">length</span><span class="o">]</span> <span class="o">=</span> <span class="nx">elements</span><span class="o">[</span><span class="nx">i</span><span class="o">];</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="nx">apply</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="nx">apply</span><span class="o">(</span><span class="nx">elements</span><span class="o">[</span><span class="nx">i</span><span class="o">]);</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+
+            
+            <span class="k">return</span> <span class="nx">nodes</span><span class="o">;</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Runs the supplied method against each item in the Collection/Array.</span>
+<span class="c">         * The method is called with the element(s) as the first arg, and the optional param as the second ( method(el, o) ).</span>
+<span class="c">         * @method batch</span>
+<span class="c">         * @param {String | HTMLElement | Array} el (optional) An element or array of elements to apply the method to</span>
+<span class="c">         * @param {Function} method The method to apply to the element(s)</span>
+<span class="c">         * @param {Any} o (optional) An optional arg that is passed to the supplied method</span>
+<span class="c">         * @param {Boolean} override (optional) Whether or not to override the scope of &quot;method&quot; with &quot;o&quot;</span>
+<span class="c">         * @return {Any | Array} The return value(s) from the supplied method</span>
+<span class="c">         */</span>
+        <span class="nx">batch</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">method</span><span class="o">,</span> <span class="nx">o</span><span class="o">,</span> <span class="nx">override</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">el</span> <span class="o">=</span> <span class="o">(</span><span class="nx">el</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="nx">el</span><span class="o">.</span><span class="nx">tagName</span> <span class="o">||</span> <span class="nx">el</span><span class="o">.</span><span class="nx">item</span><span class="o">))</span> <span class="o">?</span> <span class="nx">el</span> <span class="o">:</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">el</span><span class="o">);</span> <span class="c">// skip get() when possible</span>
+<span class="c"></span>
+            <span class="k">if</span> <span class="o">(!</span><span class="nx">el</span> <span class="o">||</span> <span class="o">!</span><span class="nx">method</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span> 
+            <span class="k">var</span> <span class="nx">scope</span> <span class="o">=</span> <span class="o">(</span><span class="nx">override</span><span class="o">)</span> <span class="o">?</span> <span class="nx">o</span> <span class="o">:</span> <span class="nb">window</span><span class="o">;</span>
+            
+            <span class="k">if</span> <span class="o">(</span><span class="nx">el</span><span class="o">.</span><span class="nx">tagName</span> <span class="o">||</span> <span class="nx">el</span><span class="o">.</span><span class="nx">length</span> <span class="o">===</span> <span class="kc">undefined</span><span class="o">)</span> <span class="o">{</span> <span class="c">// element or not array-like </span>
+<span class="c"></span>                <span class="k">return</span> <span class="nx">method</span><span class="o">.</span><span class="nx">call</span><span class="o">(</span><span class="nx">scope</span><span class="o">,</span> <span class="nx">el</span><span class="o">,</span> <span class="nx">o</span><span class="o">);</span>
+            <span class="o">}</span> 
+
+            <span class="k">var</span> <span class="nx">collection</span> <span class="o">=</span> <span class="o">[];</span>
+            
+            <span class="k">for</span> <span class="o">(</span><span class="k">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="m">0</span><span class="o">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="o">;</span> <span class="o">++</span><span class="nx">i</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nx">collection</span><span class="o">[</span><span class="nx">collection</span><span class="o">.</span><span class="nx">length</span><span class="o">]</span> <span class="o">=</span> <span class="nx">method</span><span class="o">.</span><span class="nx">call</span><span class="o">(</span><span class="nx">scope</span><span class="o">,</span> <span class="nx">el</span><span class="o">[</span><span class="nx">i</span><span class="o">],</span> <span class="nx">o</span><span class="o">);</span>
+            <span class="o">}</span>
+            
+            <span class="k">return</span> <span class="nx">collection</span><span class="o">;</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Returns the height of the document.</span>
+<span class="c">         * @method getDocumentHeight</span>
+<span class="c">         * @return {Int} The height of the actual document (which includes the body and its margin).</span>
+<span class="c">         */</span>
+        <span class="nx">getDocumentHeight</span><span class="o">:</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">scrollHeight</span> <span class="o">=</span> <span class="o">(</span><span class="nb">document</span><span class="o">.</span><span class="nx">compatMode</span> <span class="o">!=</span> <span class="s1">&#39;CSS1Compat&#39;</span><span class="o">)</span> <span class="o">?</span> <span class="nb">document</span><span class="o">.</span><span class="nx">body</span><span class="o">.</span><span class="nx">scrollHeight</span> <span class="o">:</span> <span class="nb">document</span><span class="o">.</span><span class="nx">documentElement</span><span class="o">.</span><span class="nx">scrollHeight</span><span class="o">;</span>
+
+            <span class="k">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nb">Math</span><span class="o">.</span><span class="nx">max</span><span class="o">(</span><span class="nx">scrollHeight</span><span class="o">,</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getViewportHeight</span><span class="o">());</span>
+            <span class="k">return</span> <span class="nx">h</span><span class="o">;</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Returns the width of the document.</span>
+<span class="c">         * @method getDocumentWidth</span>
+<span class="c">         * @return {Int} The width of the actual document (which includes the body and its margin).</span>
+<span class="c">         */</span>
+        <span class="nx">getDocumentWidth</span><span class="o">:</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">scrollWidth</span> <span class="o">=</span> <span class="o">(</span><span class="nb">document</span><span class="o">.</span><span class="nx">compatMode</span> <span class="o">!=</span> <span class="s1">&#39;CSS1Compat&#39;</span><span class="o">)</span> <span class="o">?</span> <span class="nb">document</span><span class="o">.</span><span class="nx">body</span><span class="o">.</span><span class="nx">scrollWidth</span> <span class="o">:</span> <span class="nb">document</span><span class="o">.</span><span class="nx">documentElement</span><span class="o">.</span><span class="nx">scrollWidth</span><span class="o">;</span>
+            <span class="k">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="nb">Math</span><span class="o">.</span><span class="nx">max</span><span class="o">(</span><span class="nx">scrollWidth</span><span class="o">,</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getViewportWidth</span><span class="o">());</span>
+            <span class="k">return</span> <span class="nx">w</span><span class="o">;</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Returns the current height of the viewport.</span>
+<span class="c">         * @method getViewportHeight</span>
+<span class="c">         * @return {Int} The height of the viewable area of the page (excludes scrollbars).</span>
+<span class="c">         */</span>
+        <span class="nx">getViewportHeight</span><span class="o">:</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">height</span> <span class="o">=</span> <span class="nx">self</span><span class="o">.</span><span class="nx">innerHeight</span><span class="o">;</span> <span class="c">// Safari, Opera</span>
+<span class="c"></span>            <span class="k">var</span> <span class="nx">mode</span> <span class="o">=</span> <span class="nb">document</span><span class="o">.</span><span class="nx">compatMode</span><span class="o">;</span>
+        
+            <span class="k">if</span> <span class="o">(</span> <span class="o">(</span><span class="nx">mode</span> <span class="o">||</span> <span class="nx">isIE</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isOpera</span> <span class="o">)</span> <span class="o">{</span> <span class="c">// IE, Gecko</span>
+<span class="c"></span>                <span class="nx">height</span> <span class="o">=</span> <span class="o">(</span><span class="nx">mode</span> <span class="o">==</span> <span class="s1">&#39;CSS1Compat&#39;</span><span class="o">)</span> <span class="o">?</span>
+                        <span class="nb">document</span><span class="o">.</span><span class="nx">documentElement</span><span class="o">.</span><span class="nx">clientHeight</span> <span class="o">:</span> <span class="c">// Standards</span>
+<span class="c"></span>                        <span class="nb">document</span><span class="o">.</span><span class="nx">body</span><span class="o">.</span><span class="nx">clientHeight</span><span class="o">;</span> <span class="c">// Quirks</span>
+<span class="c"></span>            <span class="o">}</span>
+        
+            <span class="k">return</span> <span class="nx">height</span><span class="o">;</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Returns the current width of the viewport.</span>
+<span class="c">         * @method getViewportWidth</span>
+<span class="c">         * @return {Int} The width of the viewable area of the page (excludes scrollbars).</span>
+<span class="c">         */</span>
+        
+        <span class="nx">getViewportWidth</span><span class="o">:</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">width</span> <span class="o">=</span> <span class="nx">self</span><span class="o">.</span><span class="nx">innerWidth</span><span class="o">;</span>  <span class="c">// Safari</span>
+<span class="c"></span>            <span class="k">var</span> <span class="nx">mode</span> <span class="o">=</span> <span class="nb">document</span><span class="o">.</span><span class="nx">compatMode</span><span class="o">;</span>
+            
+            <span class="k">if</span> <span class="o">(</span><span class="nx">mode</span> <span class="o">||</span> <span class="nx">isIE</span><span class="o">)</span> <span class="o">{</span> <span class="c">// IE, Gecko, Opera</span>
+<span class="c"></span>                <span class="nx">width</span> <span class="o">=</span> <span class="o">(</span><span class="nx">mode</span> <span class="o">==</span> <span class="s1">&#39;CSS1Compat&#39;</span><span class="o">)</span> <span class="o">?</span>
+                        <span class="nb">document</span><span class="o">.</span><span class="nx">documentElement</span><span class="o">.</span><span class="nx">clientWidth</span> <span class="o">:</span> <span class="c">// Standards</span>
+<span class="c"></span>                        <span class="nb">document</span><span class="o">.</span><span class="nx">body</span><span class="o">.</span><span class="nx">clientWidth</span><span class="o">;</span> <span class="c">// Quirks</span>
+<span class="c"></span>            <span class="o">}</span>
+            <span class="k">return</span> <span class="nx">width</span><span class="o">;</span>
+        <span class="o">},</span>
+
+       <span class="c">/**</span>
+<span class="c">         * Returns the nearest ancestor that passes the test applied by supplied boolean method.</span>
+<span class="c">         * For performance reasons, IDs are not accepted and argument validation omitted.</span>
+<span class="c">         * @method getAncestorBy</span>
+<span class="c">         * @param {HTMLElement} node The HTMLElement to use as the starting point </span>
+<span class="c">         * @param {Function} method - A boolean method for testing elements which receives the element as its only argument.</span>
+<span class="c">         * @return {Object} HTMLElement or null if not found</span>
+<span class="c">         */</span>
+        <span class="nx">getAncestorBy</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">method</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">while</span> <span class="o">(</span> <span class="o">(</span><span class="nx">node</span> <span class="o">=</span> <span class="nx">node</span><span class="o">.</span><span class="nx">parentNode</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span> <span class="c">// NOTE: assignment</span>
+<span class="c"></span>                <span class="k">if</span> <span class="o">(</span> <span class="nx">testElement</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">method</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="nx">node</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span> 
+
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">},</span>
+        
+        <span class="c">/**</span>
+<span class="c">         * Returns the nearest ancestor with the given className.</span>
+<span class="c">         * @method getAncestorByClassName</span>
+<span class="c">         * @param {String | HTMLElement} node The HTMLElement or an ID to use as the starting point </span>
+<span class="c">         * @param {String} className</span>
+<span class="c">         * @return {Object} HTMLElement</span>
+<span class="c">         */</span>
+        <span class="nx">getAncestorByClassName</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">className</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">node</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">node</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">var</span> <span class="nx">method</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span> <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">hasClass</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="nx">className</span><span class="o">);</span> <span class="o">};</span>
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getAncestorBy</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">method</span><span class="o">);</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Returns the nearest ancestor with the given tagName.</span>
+<span class="c">         * @method getAncestorByTagName</span>
+<span class="c">         * @param {String | HTMLElement} node The HTMLElement or an ID to use as the starting point </span>
+<span class="c">         * @param {String} tagName</span>
+<span class="c">         * @return {Object} HTMLElement</span>
+<span class="c">         */</span>
+        <span class="nx">getAncestorByTagName</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">tagName</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">node</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">node</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">var</span> <span class="nx">method</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+                 <span class="k">return</span> <span class="nx">el</span><span class="o">.</span><span class="nx">tagName</span> <span class="o">&amp;&amp;</span> <span class="nx">el</span><span class="o">.</span><span class="nx">tagName</span><span class="o">.</span><span class="nx">toUpperCase</span><span class="o">()</span> <span class="o">==</span> <span class="nx">tagName</span><span class="o">.</span><span class="nx">toUpperCase</span><span class="o">();</span>
+            <span class="o">};</span>
+
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getAncestorBy</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">method</span><span class="o">);</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Returns the previous sibling that is an HTMLElement. </span>
+<span class="c">         * For performance reasons, IDs are not accepted and argument validation omitted.</span>
+<span class="c">         * Returns the nearest HTMLElement sibling if no method provided.</span>
+<span class="c">         * @method getPreviousSiblingBy</span>
+<span class="c">         * @param {HTMLElement} node The HTMLElement to use as the starting point </span>
+<span class="c">         * @param {Function} method A boolean function used to test siblings</span>
+<span class="c">         * that receives the sibling node being tested as its only argument</span>
+<span class="c">         * @return {Object} HTMLElement or null if not found</span>
+<span class="c">         */</span>
+        <span class="nx">getPreviousSiblingBy</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">method</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">while</span> <span class="o">(</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nx">node</span> <span class="o">=</span> <span class="nx">node</span><span class="o">.</span><span class="nx">previousSibling</span><span class="o">;</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="nx">testElement</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">method</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="nx">node</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">},</span> 
+
+        <span class="c">/**</span>
+<span class="c">         * Returns the previous sibling that is an HTMLElement </span>
+<span class="c">         * @method getPreviousSibling</span>
+<span class="c">         * @param {String | HTMLElement} node The HTMLElement or an ID to use as the starting point </span>
+<span class="c">         * @return {Object} HTMLElement or null if not found</span>
+<span class="c">         */</span>
+        <span class="nx">getPreviousSibling</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">node</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">node</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span>
+
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getPreviousSiblingBy</span><span class="o">(</span><span class="nx">node</span><span class="o">);</span>
+        <span class="o">},</span> 
+
+        <span class="c">/**</span>
+<span class="c">         * Returns the next HTMLElement sibling that passes the boolean method. </span>
+<span class="c">         * For performance reasons, IDs are not accepted and argument validation omitted.</span>
+<span class="c">         * Returns the nearest HTMLElement sibling if no method provided.</span>
+<span class="c">         * @method getNextSiblingBy</span>
+<span class="c">         * @param {HTMLElement} node The HTMLElement to use as the starting point </span>
+<span class="c">         * @param {Function} method A boolean function used to test siblings</span>
+<span class="c">         * that receives the sibling node being tested as its only argument</span>
+<span class="c">         * @return {Object} HTMLElement or null if not found</span>
+<span class="c">         */</span>
+        <span class="nx">getNextSiblingBy</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">method</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">while</span> <span class="o">(</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nx">node</span> <span class="o">=</span> <span class="nx">node</span><span class="o">.</span><span class="nx">nextSibling</span><span class="o">;</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="nx">testElement</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">method</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="nx">node</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">},</span> 
+
+        <span class="c">/**</span>
+<span class="c">         * Returns the next sibling that is an HTMLElement </span>
+<span class="c">         * @method getNextSibling</span>
+<span class="c">         * @param {String | HTMLElement} node The HTMLElement or an ID to use as the starting point </span>
+<span class="c">         * @return {Object} HTMLElement or null if not found</span>
+<span class="c">         */</span>
+        <span class="nx">getNextSibling</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">node</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">node</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span>
+
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getNextSiblingBy</span><span class="o">(</span><span class="nx">node</span><span class="o">);</span>
+        <span class="o">},</span> 
+
+        <span class="c">/**</span>
+<span class="c">         * Returns the first HTMLElement child that passes the test method. </span>
+<span class="c">         * @method getFirstChildBy</span>
+<span class="c">         * @param {HTMLElement} node The HTMLElement to use as the starting point </span>
+<span class="c">         * @param {Function} method A boolean function used to test children</span>
+<span class="c">         * that receives the node being tested as its only argument</span>
+<span class="c">         * @return {Object} HTMLElement or null if not found</span>
+<span class="c">         */</span>
+        <span class="nx">getFirstChildBy</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">method</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">child</span> <span class="o">=</span> <span class="o">(</span> <span class="nx">testElement</span><span class="o">(</span><span class="nx">node</span><span class="o">.</span><span class="nx">firstChild</span><span class="o">,</span> <span class="nx">method</span><span class="o">)</span> <span class="o">)</span> <span class="o">?</span> <span class="nx">node</span><span class="o">.</span><span class="nx">firstChild</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="k">return</span> <span class="nx">child</span> <span class="o">||</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getNextSiblingBy</span><span class="o">(</span><span class="nx">node</span><span class="o">.</span><span class="nx">firstChild</span><span class="o">,</span> <span class="nx">method</span><span class="o">);</span>
+        <span class="o">},</span> 
+
+        <span class="c">/**</span>
+<span class="c">         * Returns the first HTMLElement child. </span>
+<span class="c">         * @method getFirstChild</span>
+<span class="c">         * @param {String | HTMLElement} node The HTMLElement or an ID to use as the starting point </span>
+<span class="c">         * @return {Object} HTMLElement or null if not found</span>
+<span class="c">         */</span>
+        <span class="nx">getFirstChild</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">method</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">node</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">node</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getFirstChildBy</span><span class="o">(</span><span class="nx">node</span><span class="o">);</span>
+        <span class="o">},</span> 
+
+        <span class="c">/**</span>
+<span class="c">         * Returns the last HTMLElement child that passes the test method. </span>
+<span class="c">         * @method getLastChildBy</span>
+<span class="c">         * @param {HTMLElement} node The HTMLElement to use as the starting point </span>
+<span class="c">         * @param {Function} method A boolean function used to test children</span>
+<span class="c">         * that receives the node being tested as its only argument</span>
+<span class="c">         * @return {Object} HTMLElement or null if not found</span>
+<span class="c">         */</span>
+        <span class="nx">getLastChildBy</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">method</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">var</span> <span class="nx">child</span> <span class="o">=</span> <span class="o">(</span> <span class="nx">testElement</span><span class="o">(</span><span class="nx">node</span><span class="o">.</span><span class="nx">lastChild</span><span class="o">,</span> <span class="nx">method</span><span class="o">)</span> <span class="o">)</span> <span class="o">?</span> <span class="nx">node</span><span class="o">.</span><span class="nx">lastChild</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="k">return</span> <span class="nx">child</span> <span class="o">||</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getPreviousSiblingBy</span><span class="o">(</span><span class="nx">node</span><span class="o">.</span><span class="nx">lastChild</span><span class="o">,</span> <span class="nx">method</span><span class="o">);</span>
+        <span class="o">},</span> 
+
+        <span class="c">/**</span>
+<span class="c">         * Returns the last HTMLElement child. </span>
+<span class="c">         * @method getLastChild</span>
+<span class="c">         * @param {String | HTMLElement} node The HTMLElement or an ID to use as the starting point </span>
+<span class="c">         * @return {Object} HTMLElement or null if not found</span>
+<span class="c">         */</span>
+        <span class="nx">getLastChild</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">node</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">node</span><span class="o">);</span>
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getLastChildBy</span><span class="o">(</span><span class="nx">node</span><span class="o">);</span>
+        <span class="o">},</span> 
+
+        <span class="c">/**</span>
+<span class="c">         * Returns an array of HTMLElement childNodes that pass the test method. </span>
+<span class="c">         * @method getChildrenBy</span>
+<span class="c">         * @param {HTMLElement} node The HTMLElement to start from</span>
+<span class="c">         * @param {Function} method A boolean function used to test children</span>
+<span class="c">         * that receives the node being tested as its only argument</span>
+<span class="c">         * @return {Array} A static array of HTMLElements</span>
+<span class="c">         */</span>
+        <span class="nx">getChildrenBy</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">method</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">child</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getFirstChildBy</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">method</span><span class="o">);</span>
+            <span class="k">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">child</span> <span class="o">?</span> <span class="o">[</span><span class="nx">child</span><span class="o">]</span> <span class="o">:</span> <span class="o">[];</span>
+
+            <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getNextSiblingBy</span><span class="o">(</span><span class="nx">child</span><span class="o">,</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="o">!</span><span class="nx">method</span> <span class="o">||</span> <span class="nx">method</span><span class="o">(</span><span class="nx">node</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+                    <span class="nx">children</span><span class="o">[</span><span class="nx">children</span><span class="o">.</span><span class="nx">length</span><span class="o">]</span> <span class="o">=</span> <span class="nx">node</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="k">return</span> <span class="kc">false</span><span class="o">;</span> <span class="c">// fail test to collect all children</span>
+<span class="c"></span>            <span class="o">});</span>
+
+            <span class="k">return</span> <span class="nx">children</span><span class="o">;</span>
+        <span class="o">},</span>
+ 
+        <span class="c">/**</span>
+<span class="c">         * Returns an array of HTMLElement childNodes. </span>
+<span class="c">         * @method getChildren</span>
+<span class="c">         * @param {String | HTMLElement} node The HTMLElement or an ID to use as the starting point </span>
+<span class="c">         * @return {Array} A static array of HTMLElements</span>
+<span class="c">         */</span>
+        <span class="nx">getChildren</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">node</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">node</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+            <span class="o">}</span>
+
+            <span class="k">return</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getChildrenBy</span><span class="o">(</span><span class="nx">node</span><span class="o">);</span>
+        <span class="o">},</span>
+ 
+        <span class="c">/**</span>
+<span class="c">         * Returns the left scroll value of the document </span>
+<span class="c">         * @method getDocumentScrollLeft</span>
+<span class="c">         * @param {HTMLDocument} document (optional) The document to get the scroll value of</span>
+<span class="c">         * @return {Int}  The amount that the document is scrolled to the left</span>
+<span class="c">         */</span>
+        <span class="nx">getDocumentScrollLeft</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">doc</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">doc</span> <span class="o">=</span> <span class="nx">doc</span> <span class="o">||</span> <span class="nb">document</span><span class="o">;</span>
+            <span class="k">return</span> <span class="nb">Math</span><span class="o">.</span><span class="nx">max</span><span class="o">(</span><span class="nx">doc</span><span class="o">.</span><span class="nx">documentElement</span><span class="o">.</span><span class="nx">scrollLeft</span><span class="o">,</span> <span class="nx">doc</span><span class="o">.</span><span class="nx">body</span><span class="o">.</span><span class="nx">scrollLeft</span><span class="o">);</span>
+        <span class="o">},</span> 
+
+        <span class="c">/**</span>
+<span class="c">         * Returns the top scroll value of the document </span>
+<span class="c">         * @method getDocumentScrollTop</span>
+<span class="c">         * @param {HTMLDocument} document (optional) The document to get the scroll value of</span>
+<span class="c">         * @return {Int}  The amount that the document is scrolled to the top</span>
+<span class="c">         */</span>
+        <span class="nx">getDocumentScrollTop</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">doc</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">doc</span> <span class="o">=</span> <span class="nx">doc</span> <span class="o">||</span> <span class="nb">document</span><span class="o">;</span>
+            <span class="k">return</span> <span class="nb">Math</span><span class="o">.</span><span class="nx">max</span><span class="o">(</span><span class="nx">doc</span><span class="o">.</span><span class="nx">documentElement</span><span class="o">.</span><span class="nx">scrollTop</span><span class="o">,</span> <span class="nx">doc</span><span class="o">.</span><span class="nx">body</span><span class="o">.</span><span class="nx">scrollTop</span><span class="o">);</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Inserts the new node as the previous sibling of the reference node </span>
+<span class="c">         * @method insertBefore</span>
+<span class="c">         * @param {String | HTMLElement} newNode The node to be inserted</span>
+<span class="c">         * @param {String | HTMLElement} referenceNode The node to insert the new node before </span>
+<span class="c">         * @return {HTMLElement} The node that was inserted (or null if insert fails) </span>
+<span class="c">         */</span>
+        <span class="nx">insertBefore</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">newNode</span><span class="o">,</span> <span class="nx">referenceNode</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">newNode</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">newNode</span><span class="o">);</span> 
+            <span class="nx">referenceNode</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">referenceNode</span><span class="o">);</span> 
+            
+            <span class="k">if</span> <span class="o">(!</span><span class="nx">newNode</span> <span class="o">||</span> <span class="o">!</span><span class="nx">referenceNode</span> <span class="o">||</span> <span class="o">!</span><span class="nx">referenceNode</span><span class="o">.</span><span class="nx">parentNode</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span>       
+
+            <span class="k">return</span> <span class="nx">referenceNode</span><span class="o">.</span><span class="nx">parentNode</span><span class="o">.</span><span class="nx">insertBefore</span><span class="o">(</span><span class="nx">newNode</span><span class="o">,</span> <span class="nx">referenceNode</span><span class="o">);</span> 
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Inserts the new node as the next sibling of the reference node </span>
+<span class="c">         * @method insertAfter</span>
+<span class="c">         * @param {String | HTMLElement} newNode The node to be inserted</span>
+<span class="c">         * @param {String | HTMLElement} referenceNode The node to insert the new node after </span>
+<span class="c">         * @return {HTMLElement} The node that was inserted (or null if insert fails) </span>
+<span class="c">         */</span>
+        <span class="nx">insertAfter</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">newNode</span><span class="o">,</span> <span class="nx">referenceNode</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">newNode</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">newNode</span><span class="o">);</span> 
+            <span class="nx">referenceNode</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">get</span><span class="o">(</span><span class="nx">referenceNode</span><span class="o">);</span> 
+            
+            <span class="k">if</span> <span class="o">(!</span><span class="nx">newNode</span> <span class="o">||</span> <span class="o">!</span><span class="nx">referenceNode</span> <span class="o">||</span> <span class="o">!</span><span class="nx">referenceNode</span><span class="o">.</span><span class="nx">parentNode</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span>       
+
+            <span class="k">if</span> <span class="o">(</span><span class="nx">referenceNode</span><span class="o">.</span><span class="nx">nextSibling</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="nx">referenceNode</span><span class="o">.</span><span class="nx">parentNode</span><span class="o">.</span><span class="nx">insertBefore</span><span class="o">(</span><span class="nx">newNode</span><span class="o">,</span> <span class="nx">referenceNode</span><span class="o">.</span><span class="nx">nextSibling</span><span class="o">);</span> 
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="nx">referenceNode</span><span class="o">.</span><span class="nx">parentNode</span><span class="o">.</span><span class="nx">appendChild</span><span class="o">(</span><span class="nx">newNode</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Creates a Region based on the viewport relative to the document. </span>
+<span class="c">         * @method getClientRegion</span>
+<span class="c">         * @return {Region} A Region object representing the viewport which accounts for document scroll</span>
+<span class="c">         */</span>
+        <span class="nx">getClientRegion</span><span class="o">:</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getDocumentScrollTop</span><span class="o">(),</span>
+                <span class="nx">l</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getDocumentScrollLeft</span><span class="o">(),</span>
+                <span class="nx">r</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getViewportWidth</span><span class="o">()</span> <span class="o">+</span> <span class="nx">l</span><span class="o">,</span>
+                <span class="nx">b</span> <span class="o">=</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getViewportHeight</span><span class="o">()</span> <span class="o">+</span> <span class="nx">t</span><span class="o">;</span>
+
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Region</span><span class="o">(</span><span class="nx">t</span><span class="o">,</span> <span class="nx">r</span><span class="o">,</span> <span class="nx">b</span><span class="o">,</span> <span class="nx">l</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">};</span>
+    
+    <span class="k">var</span> <span class="nx">getXY</span> <span class="o">=</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nb">document</span><span class="o">.</span><span class="nx">documentElement</span><span class="o">.</span><span class="nx">getBoundingClientRect</span><span class="o">)</span> <span class="o">{</span> <span class="c">// IE</span>
+<span class="c"></span>            <span class="k">return</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">var</span> <span class="nx">box</span> <span class="o">=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">getBoundingClientRect</span><span class="o">(),</span>
+                    <span class="nx">round</span> <span class="o">=</span> <span class="nb">Math</span><span class="o">.</span><span class="nx">round</span><span class="o">;</span>
+
+                <span class="k">var</span> <span class="nx">rootNode</span> <span class="o">=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">ownerDocument</span><span class="o">;</span>
+                <span class="k">return</span> <span class="o">[</span><span class="nx">round</span><span class="o">(</span><span class="nx">box</span><span class="o">.</span><span class="nx">left</span> <span class="o">+</span> <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getDocumentScrollLeft</span><span class="o">(</span><span class="nx">rootNode</span><span class="o">)),</span> <span class="nx">round</span><span class="o">(</span><span class="nx">box</span><span class="o">.</span><span class="nx">top</span> <span class="o">+</span>
+                        <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getDocumentScrollTop</span><span class="o">(</span><span class="nx">rootNode</span><span class="o">))];</span>
+            <span class="o">};</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span> <span class="c">// manually calculate by crawling up offsetParents</span>
+<span class="c"></span>                <span class="k">var</span> <span class="nx">pos</span> <span class="o">=</span> <span class="o">[</span><span class="nx">el</span><span class="o">.</span><span class="nx">offsetLeft</span><span class="o">,</span> <span class="nx">el</span><span class="o">.</span><span class="nx">offsetTop</span><span class="o">];</span>
+                <span class="k">var</span> <span class="nx">parentNode</span> <span class="o">=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">offsetParent</span><span class="o">;</span>
+
+                <span class="c">// safari: subtract body offsets if el is abs (or any offsetParent), unless body is offsetParent</span>
+<span class="c"></span>                <span class="k">var</span> <span class="nx">accountForBody</span> <span class="o">=</span> <span class="o">(</span><span class="nx">isSafari</span> <span class="o">&amp;&amp;</span>
+                        <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getStyle</span><span class="o">(</span><span class="nx">el</span><span class="o">,</span> <span class="s1">&#39;position&#39;</span><span class="o">)</span> <span class="o">==</span> <span class="s1">&#39;absolute&#39;</span> <span class="o">&amp;&amp;</span>
+                        <span class="nx">el</span><span class="o">.</span><span class="nx">offsetParent</span> <span class="o">==</span> <span class="nx">el</span><span class="o">.</span><span class="nx">ownerDocument</span><span class="o">.</span><span class="nx">body</span><span class="o">);</span>
+
+                <span class="k">if</span> <span class="o">(</span><span class="nx">parentNode</span> <span class="o">!=</span> <span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">while</span> <span class="o">(</span><span class="nx">parentNode</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="nx">pos</span><span class="o">[</span><span class="m">0</span><span class="o">]</span> <span class="o">+=</span> <span class="nx">parentNode</span><span class="o">.</span><span class="nx">offsetLeft</span><span class="o">;</span>
+                        <span class="nx">pos</span><span class="o">[</span><span class="m">1</span><span class="o">]</span> <span class="o">+=</span> <span class="nx">parentNode</span><span class="o">.</span><span class="nx">offsetTop</span><span class="o">;</span>
+                        <span class="k">if</span> <span class="o">(!</span><span class="nx">accountForBody</span> <span class="o">&amp;&amp;</span> <span class="nx">isSafari</span> <span class="o">&amp;&amp;</span> 
+                                <span class="nx">Y</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getStyle</span><span class="o">(</span><span class="nx">parentNode</span><span class="o">,</span><span class="s1">&#39;position&#39;</span><span class="o">)</span> <span class="o">==</span> <span class="s1">&#39;absolute&#39;</span> <span class="o">)</span> <span class="o">{</span> 
+                            <span class="nx">accountForBody</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+                        <span class="o">}</span>
+                        <span class="nx">parentNode</span> <span class="o">=</span> <span class="nx">parentNode</span><span class="o">.</span><span class="nx">offsetParent</span><span class="o">;</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+
+                <span class="k">if</span> <span class="o">(</span><span class="nx">accountForBody</span><span class="o">)</span> <span class="o">{</span> <span class="c">//safari doubles in this case</span>
+<span class="c"></span>                    <span class="nx">pos</span><span class="o">[</span><span class="m">0</span><span class="o">]</span> <span class="o">-=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">ownerDocument</span><span class="o">.</span><span class="nx">body</span><span class="o">.</span><span class="nx">offsetLeft</span><span class="o">;</span>
+                    <span class="nx">pos</span><span class="o">[</span><span class="m">1</span><span class="o">]</span> <span class="o">-=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">ownerDocument</span><span class="o">.</span><span class="nx">body</span><span class="o">.</span><span class="nx">offsetTop</span><span class="o">;</span>
+                <span class="o">}</span> 
+                <span class="nx">parentNode</span> <span class="o">=</span> <span class="nx">el</span><span class="o">.</span><span class="nx">parentNode</span><span class="o">;</span>
+
+                <span class="c">// account for any scrolled ancestors</span>
+<span class="c"></span>                <span class="k">while</span> <span class="o">(</span> <span class="nx">parentNode</span><span class="o">.</span><span class="nx">tagName</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">patterns</span><span class="o">.</span><span class="nx">ROOT_TAG</span><span class="o">.</span><span class="nx">test</span><span class="o">(</span><span class="nx">parentNode</span><span class="o">.</span><span class="nx">tagName</span><span class="o">)</span> <span class="o">)</span> 
+                <span class="o">{</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="nx">parentNode</span><span class="o">.</span><span class="nx">scrollTop</span> <span class="o">||</span> <span class="nx">parentNode</span><span class="o">.</span><span class="nx">scrollLeft</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="nx">pos</span><span class="o">[</span><span class="m">0</span><span class="o">]</span> <span class="o">-=</span> <span class="nx">parentNode</span><span class="o">.</span><span class="nx">scrollLeft</span><span class="o">;</span>
+                        <span class="nx">pos</span><span class="o">[</span><span class="m">1</span><span class="o">]</span> <span class="o">-=</span> <span class="nx">parentNode</span><span class="o">.</span><span class="nx">scrollTop</span><span class="o">;</span>
+                    <span class="o">}</span>
+                    
+                    <span class="nx">parentNode</span> <span class="o">=</span> <span class="nx">parentNode</span><span class="o">.</span><span class="nx">parentNode</span><span class="o">;</span> 
+                <span class="o">}</span>
+
+                <span class="k">return</span> <span class="nx">pos</span><span class="o">;</span>
+            <span class="o">};</span>
+        <span class="o">}</span>
+    <span class="o">}()</span> <span class="c">// NOTE: Executing for loadtime branching</span>
+<span class="c"></span><span class="o">})();</span>
+<span class="c">/**</span>
+<span class="c"> * A region is a representation of an object on a grid.  It is defined</span>
+<span class="c"> * by the top, right, bottom, left extents, so is rectangular by default.  If </span>
+<span class="c"> * other shapes are required, this class could be extended to support it.</span>
+<span class="c"> * @namespace YAHOO.util</span>
+<span class="c"> * @class Region</span>
+<span class="c"> * @param {Int} t the top extent</span>
+<span class="c"> * @param {Int} r the right extent</span>
+<span class="c"> * @param {Int} b the bottom extent</span>
+<span class="c"> * @param {Int} l the left extent</span>
+<span class="c"> * @constructor</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Region</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">t</span><span class="o">,</span> <span class="nx">r</span><span class="o">,</span> <span class="nx">b</span><span class="o">,</span> <span class="nx">l</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="c">/**</span>
+<span class="c">     * The region&#39;s top extent</span>
+<span class="c">     * @property top</span>
+<span class="c">     * @type Int</span>
+<span class="c">     */</span>
+    <span class="k">this</span><span class="o">.</span><span class="nx">top</span> <span class="o">=</span> <span class="nx">t</span><span class="o">;</span>
+    
+    <span class="c">/**</span>
+<span class="c">     * The region&#39;s top extent as index, for symmetry with set/getXY</span>
+<span class="c">     * @property 1</span>
+<span class="c">     * @type Int</span>
+<span class="c">     */</span>
+    <span class="k">this</span><span class="o">[</span><span class="m">1</span><span class="o">]</span> <span class="o">=</span> <span class="nx">t</span><span class="o">;</span>
+
+    <span class="c">/**</span>
+<span class="c">     * The region&#39;s right extent</span>
+<span class="c">     * @property right</span>
+<span class="c">     * @type int</span>
+<span class="c">     */</span>
+    <span class="k">this</span><span class="o">.</span><span class="nx">right</span> <span class="o">=</span> <span class="nx">r</span><span class="o">;</span>
+
+    <span class="c">/**</span>
+<span class="c">     * The region&#39;s bottom extent</span>
+<span class="c">     * @property bottom</span>
+<span class="c">     * @type Int</span>
+<span class="c">     */</span>
+    <span class="k">this</span><span class="o">.</span><span class="nx">bottom</span> <span class="o">=</span> <span class="nx">b</span><span class="o">;</span>
+
+    <span class="c">/**</span>
+<span class="c">     * The region&#39;s left extent</span>
+<span class="c">     * @property left</span>
+<span class="c">     * @type Int</span>
+<span class="c">     */</span>
+    <span class="k">this</span><span class="o">.</span><span class="nx">left</span> <span class="o">=</span> <span class="nx">l</span><span class="o">;</span>
+    
+    <span class="c">/**</span>
+<span class="c">     * The region&#39;s left extent as index, for symmetry with set/getXY</span>
+<span class="c">     * @property 0</span>
+<span class="c">     * @type Int</span>
+<span class="c">     */</span>
+    <span class="k">this</span><span class="o">[</span><span class="m">0</span><span class="o">]</span> <span class="o">=</span> <span class="nx">l</span><span class="o">;</span>
+<span class="o">};</span>
+
+<span class="c">/**</span>
+<span class="c"> * Returns true if this region contains the region passed in</span>
+<span class="c"> * @method contains</span>
+<span class="c"> * @param  {Region}  region The region to evaluate</span>
+<span class="c"> * @return {Boolean}        True if the region is contained with this region, </span>
+<span class="c"> *                          else false</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Region</span><span class="o">.</span><span class="nx">prototype</span><span class="o">.</span><span class="nx">contains</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">region</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span> <span class="nx">region</span><span class="o">.</span><span class="nx">left</span>   <span class="o">&gt;=</span> <span class="k">this</span><span class="o">.</span><span class="nx">left</span>   <span class="o">&amp;&amp;</span> 
+             <span class="nx">region</span><span class="o">.</span><span class="nx">right</span>  <span class="o">&lt;=</span> <span class="k">this</span><span class="o">.</span><span class="nx">right</span>  <span class="o">&amp;&amp;</span> 
+             <span class="nx">region</span><span class="o">.</span><span class="nx">top</span>    <span class="o">&gt;=</span> <span class="k">this</span><span class="o">.</span><span class="nx">top</span>    <span class="o">&amp;&amp;</span> 
+             <span class="nx">region</span><span class="o">.</span><span class="nx">bottom</span> <span class="o">&lt;=</span> <span class="k">this</span><span class="o">.</span><span class="nx">bottom</span>    <span class="o">);</span>
+
+<span class="o">};</span>
+
+<span class="c">/**</span>
+<span class="c"> * Returns the area of the region</span>
+<span class="c"> * @method getArea</span>
+<span class="c"> * @return {Int} the region&#39;s area</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Region</span><span class="o">.</span><span class="nx">prototype</span><span class="o">.</span><span class="nx">getArea</span> <span class="o">=</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="k">this</span><span class="o">.</span><span class="nx">top</span><span class="o">)</span> <span class="o">*</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="nx">right</span> <span class="o">-</span> <span class="k">this</span><span class="o">.</span><span class="nx">left</span><span class="o">)</span> <span class="o">);</span>
+<span class="o">};</span>
+
+<span class="c">/**</span>
+<span class="c"> * Returns the region where the passed in region overlaps with this one</span>
+<span class="c"> * @method intersect</span>
+<span class="c"> * @param  {Region} region The region that intersects</span>
+<span class="c"> * @return {Region}        The overlap region, or null if there is no overlap</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Region</span><span class="o">.</span><span class="nx">prototype</span><span class="o">.</span><span class="nx">intersect</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">region</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nb">Math</span><span class="o">.</span><span class="nx">max</span><span class="o">(</span> <span class="k">this</span><span class="o">.</span><span class="nx">top</span><span class="o">,</span>    <span class="nx">region</span><span class="o">.</span><span class="nx">top</span>    <span class="o">);</span>
+    <span class="k">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nb">Math</span><span class="o">.</span><span class="nx">min</span><span class="o">(</span> <span class="k">this</span><span class="o">.</span><span class="nx">right</span><span class="o">,</span>  <span class="nx">region</span><span class="o">.</span><span class="nx">right</span>  <span class="o">);</span>
+    <span class="k">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nb">Math</span><span class="o">.</span><span class="nx">min</span><span class="o">(</span> <span class="k">this</span><span class="o">.</span><span class="nx">bottom</span><span class="o">,</span> <span class="nx">region</span><span class="o">.</span><span class="nx">bottom</span> <span class="o">);</span>
+    <span class="k">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="nb">Math</span><span class="o">.</span><span class="nx">max</span><span class="o">(</span> <span class="k">this</span><span class="o">.</span><span class="nx">left</span><span class="o">,</span>   <span class="nx">region</span><span class="o">.</span><span class="nx">left</span>   <span class="o">);</span>
+    
+    <span class="k">if</span> <span class="o">(</span><span class="nx">b</span> <span class="o">&gt;=</span> <span class="nx">t</span> <span class="o">&amp;&amp;</span> <span class="nx">r</span> <span class="o">&gt;=</span> <span class="nx">l</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Region</span><span class="o">(</span><span class="nx">t</span><span class="o">,</span> <span class="nx">r</span><span class="o">,</span> <span class="nx">b</span><span class="o">,</span> <span class="nx">l</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">};</span>
+
+<span class="c">/**</span>
+<span class="c"> * Returns the region representing the smallest region that can contain both</span>
+<span class="c"> * the passed in region and this region.</span>
+<span class="c"> * @method union</span>
+<span class="c"> * @param  {Region} region The region that to create the union with</span>
+<span class="c"> * @return {Region}        The union region</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Region</span><span class="o">.</span><span class="nx">prototype</span><span class="o">.</span><span class="nx">union</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">region</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nb">Math</span><span class="o">.</span><span class="nx">min</span><span class="o">(</span> <span class="k">this</span><span class="o">.</span><span class="nx">top</span><span class="o">,</span>    <span class="nx">region</span><span class="o">.</span><span class="nx">top</span>    <span class="o">);</span>
+    <span class="k">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nb">Math</span><span class="o">.</span><span class="nx">max</span><span class="o">(</span> <span class="k">this</span><span class="o">.</span><span class="nx">right</span><span class="o">,</span>  <span class="nx">region</span><span class="o">.</span><span class="nx">right</span>  <span class="o">);</span>
+    <span class="k">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nb">Math</span><span class="o">.</span><span class="nx">max</span><span class="o">(</span> <span class="k">this</span><span class="o">.</span><span class="nx">bottom</span><span class="o">,</span> <span class="nx">region</span><span class="o">.</span><span class="nx">bottom</span> <span class="o">);</span>
+    <span class="k">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="nb">Math</span><span class="o">.</span><span class="nx">min</span><span class="o">(</span> <span class="k">this</span><span class="o">.</span><span class="nx">left</span><span class="o">,</span>   <span class="nx">region</span><span class="o">.</span><span class="nx">left</span>   <span class="o">);</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Region</span><span class="o">(</span><span class="nx">t</span><span class="o">,</span> <span class="nx">r</span><span class="o">,</span> <span class="nx">b</span><span class="o">,</span> <span class="nx">l</span><span class="o">);</span>
+<span class="o">};</span>
+
+<span class="c">/**</span>
+<span class="c"> * toString</span>
+<span class="c"> * @method toString</span>
+<span class="c"> * @return string the region properties</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Region</span><span class="o">.</span><span class="nx">prototype</span><span class="o">.</span><span class="nx">toString</span> <span class="o">=</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span> <span class="s2">&quot;Region {&quot;</span>    <span class="o">+</span>
+             <span class="s2">&quot;top: &quot;</span>       <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="nx">top</span>    <span class="o">+</span> 
+             <span class="s2">&quot;, right: &quot;</span>   <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="nx">right</span>  <span class="o">+</span> 
+             <span class="s2">&quot;, bottom: &quot;</span>  <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="nx">bottom</span> <span class="o">+</span> 
+             <span class="s2">&quot;, left: &quot;</span>    <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="nx">left</span>   <span class="o">+</span> 
+             <span class="s2">&quot;}&quot;</span> <span class="o">);</span>
+<span class="o">};</span>
+
+<span class="c">/**</span>
+<span class="c"> * Returns a region that is occupied by the DOM element</span>
+<span class="c"> * @method getRegion</span>
+<span class="c"> * @param  {HTMLElement} el The element</span>
+<span class="c"> * @return {Region}         The region that the element occupies</span>
+<span class="c"> * @static</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Region</span><span class="o">.</span><span class="nx">getRegion</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">el</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Dom</span><span class="o">.</span><span class="nx">getXY</span><span class="o">(</span><span class="nx">el</span><span class="o">);</span>
+
+    <span class="k">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">p</span><span class="o">[</span><span class="m">1</span><span class="o">];</span>
+    <span class="k">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">p</span><span class="o">[</span><span class="m">0</span><span class="o">]</span> <span class="o">+</span> <span class="nx">el</span><span class="o">.</span><span class="nx">offsetWidth</span><span class="o">;</span>
+    <span class="k">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">p</span><span class="o">[</span><span class="m">1</span><span class="o">]</span> <span class="o">+</span> <span class="nx">el</span><span class="o">.</span><span class="nx">offsetHeight</span><span class="o">;</span>
+    <span class="k">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">p</span><span class="o">[</span><span class="m">0</span><span class="o">];</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Region</span><span class="o">(</span><span class="nx">t</span><span class="o">,</span> <span class="nx">r</span><span class="o">,</span> <span class="nx">b</span><span class="o">,</span> <span class="nx">l</span><span class="o">);</span>
+<span class="o">};</span>
+
+<span class="c">/////////////////////////////////////////////////////////////////////////////</span>
+<span class="c"></span>
+
+<span class="c">/**</span>
+<span class="c"> * A point is a region that is special in that it represents a single point on </span>
+<span class="c"> * the grid.</span>
+<span class="c"> * @namespace YAHOO.util</span>
+<span class="c"> * @class Point</span>
+<span class="c"> * @param {Int} x The X position of the point</span>
+<span class="c"> * @param {Int} y The Y position of the point</span>
+<span class="c"> * @constructor</span>
+<span class="c"> * @extends YAHOO.util.Region</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Point</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">x</span><span class="o">,</span> <span class="nx">y</span><span class="o">)</span> <span class="o">{</span>
+   <span class="k">if</span> <span class="o">(</span><span class="nx">YAHOO</span><span class="o">.</span><span class="nx">lang</span><span class="o">.</span><span class="nx">isArray</span><span class="o">(</span><span class="nx">x</span><span class="o">))</span> <span class="o">{</span> <span class="c">// accept input from Dom.getXY, Event.getXY, etc.</span>
+<span class="c"></span>      <span class="nx">y</span> <span class="o">=</span> <span class="nx">x</span><span class="o">[</span><span class="m">1</span><span class="o">];</span> <span class="c">// dont blow away x yet</span>
+<span class="c"></span>      <span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span><span class="o">[</span><span class="m">0</span><span class="o">];</span>
+   <span class="o">}</span>
+   
+    <span class="c">/**</span>
+<span class="c">     * The X position of the point, which is also the right, left and index zero (for Dom.getXY symmetry)</span>
+<span class="c">     * @property x</span>
+<span class="c">     * @type Int</span>
+<span class="c">     */</span>
+
+    <span class="k">this</span><span class="o">.</span><span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="nx">right</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="nx">left</span> <span class="o">=</span> <span class="k">this</span><span class="o">[</span><span class="m">0</span><span class="o">]</span> <span class="o">=</span> <span class="nx">x</span><span class="o">;</span>
+     
+    <span class="c">/**</span>
+<span class="c">     * The Y position of the point, which is also the top, bottom and index one (for Dom.getXY symmetry)</span>
+<span class="c">     * @property y</span>
+<span class="c">     * @type Int</span>
+<span class="c">     */</span>
+    <span class="k">this</span><span class="o">.</span><span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="nx">top</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="nx">bottom</span> <span class="o">=</span> <span class="k">this</span><span class="o">[</span><span class="m">1</span><span class="o">]</span> <span class="o">=</span> <span class="nx">y</span><span class="o">;</span>
+<span class="o">};</span>
+
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Point</span><span class="o">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Region</span><span class="o">();</span>
+
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">register</span><span class="o">(</span><span class="s2">&quot;dom&quot;</span><span class="o">,</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span> <span class="o">{</span><span class="nx">version</span><span class="o">:</span> <span class="s2">&quot;2.6.0&quot;</span><span class="o">,</span> <span class="nx">build</span><span class="o">:</span> <span class="s2">&quot;1321&quot;</span><span class="o">});</span>
+</pre></div>
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_animation.html" title="animation">animation</a></li>
+                                <li class=""><a href="module_autocomplete.html" title="autocomplete">autocomplete</a></li>
+                                <li class=""><a href="module_connection.html" title="connection">connection</a></li>
+                                <li class=""><a href="module_datasource.html" title="datasource">datasource</a></li>
+                                <li class="selected"><a href="module_dom.html" title="dom">dom</a></li>
+                                <li class=""><a href="module_event.html" title="event">event</a></li>
+                                <li class=""><a href="module_form.html" title="form">form</a></li>
+                                <li class=""><a href="module_json.html" title="json">json</a></li>
+                                <li class=""><a href="module_mvc.html" title="mvc">mvc</a></li>
+                                <li class=""><a href="module_window.html" title="window">window</a></li>
+                                <li class=""><a href="module_yahoo.html" title="yahoo">yahoo</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="YAHOO.util.Dom.html" title="YAHOO.util.Dom">YAHOO.util.Dom</a></li>
+                                <li class=""><a href="YAHOO.util.Dom.html" title="YAHOO.util.Dom">YAHOO.util.Dom</a></li>
+                                <li class=""><a href="YAHOO.util.Point.html" title="YAHOO.util.Point">YAHOO.util.Point</a></li>
+                                <li class=""><a href="YAHOO.util.Region.html" title="YAHOO.util.Region">YAHOO.util.Region</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="dom-ext.js.html" title="dom-ext.js">dom-ext.js</a></li>
+                                <li class="selected"><a href="dom.js.html" title="dom.js">dom.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2009 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "YAHOO.util.Region.html#property_0", "access": "", "host": "YAHOO.util.Region", "type": "property", "name": "0"}, {"url": "YAHOO.util.Region.html#property_1", "access": "", "host": "YAHOO.util.Region", "type": "property", "name": "1"}, {"url": "YAHOO.util.Dom.html#method_addClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "addClass"}, {"url": "YAHOO.util.Dom.html#method_addClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "addClass"}, {"url": "YAHOO.util.Dom.html#method_animate", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "animate"}, {"url": "YAHOO.util.Dom.html#method_animate", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "animate"}, {"url": "YAHOO.util.Dom.html#method_batch", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "batch"}, {"url": "YAHOO.util.Dom.html#method_batch", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "batch"}, {"url": "YAHOO.util.Region.html#property_bottom", "access": "", "host": "YAHOO.util.Region", "type": "property", "name": "bottom"}, {"url": "YAHOO.util.Dom.html#method_cleanWhitespace", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "cleanWhitespace"}, {"url": "YAHOO.util.Dom.html#method_cleanWhitespace", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "cleanWhitespace"}, {"url": "YAHOO.util.Dom.html#method_cloneDimensions", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "cloneDimensions"}, {"url": "YAHOO.util.Dom.html#method_cloneDimensions", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "cloneDimensions"}, {"url": "YAHOO.util.Region.html#method_contains", "access": "", "host": "YAHOO.util.Region", "type": "method", "name": "contains"}, {"url": "YAHOO.util.Dom.html#method_createNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "createNode"}, {"url": "YAHOO.util.Dom.html#method_createNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "createNode"}, {"url": "YAHOO.util.Dom.html#method_createTag", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "createTag"}, {"url": "YAHOO.util.Dom.html#method_createTag", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "createTag"}, {"url": "YAHOO.util.Dom.html#method_deleteNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "deleteNode"}, {"url": "YAHOO.util.Dom.html#method_deleteNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "deleteNode"}, {"url": "YAHOO.util.Dom.html#method_exec", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "exec"}, {"url": "YAHOO.util.Dom.html#method_exec", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "exec"}, {"url": "YAHOO.util.Dom.html#method_findFirstText", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "findFirstText"}, {"url": "YAHOO.util.Dom.html#method_findFirstText", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "findFirstText"}, {"url": "YAHOO.util.Dom.html#method_flashBackgroundColor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "flashBackgroundColor"}, {"url": "YAHOO.util.Dom.html#method_flashBackgroundColor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "flashBackgroundColor"}, {"url": "YAHOO.util.Dom.html#method_generateId", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "generateId"}, {"url": "YAHOO.util.Dom.html#method_generateId", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "generateId"}, {"url": "YAHOO.util.Dom.html#method_get", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "get"}, {"url": "YAHOO.util.Dom.html#method_get", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "get"}, {"url": "YAHOO.util.Dom.html#method_getAncestorBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getAncestorBy"}, {"url": "YAHOO.util.Dom.html#method_getAncestorBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getAncestorBy"}, {"url": "YAHOO.util.Dom.html#method_getAncestorByClassName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getAncestorByClassName"}, {"url": "YAHOO.util.Dom.html#method_getAncestorByClassName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getAncestorByClassName"}, {"url": "YAHOO.util.Dom.html#method_getAncestorByTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getAncestorByTagName"}, {"url": "YAHOO.util.Dom.html#method_getAncestorByTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getAncestorByTagName"}, {"url": "YAHOO.util.Region.html#method_getArea", "access": "", "host": "YAHOO.util.Region", "type": "method", "name": "getArea"}, {"url": "YAHOO.util.Dom.html#method_getBackgroundColor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getBackgroundColor"}, {"url": "YAHOO.util.Dom.html#method_getBackgroundColor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getBackgroundColor"}, {"url": "YAHOO.util.Dom.html#method_getBodyElement", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getBodyElement"}, {"url": "YAHOO.util.Dom.html#method_getBodyElement", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getBodyElement"}, {"url": "YAHOO.util.Dom.html#method_getChildNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getChildNode"}, {"url": "YAHOO.util.Dom.html#method_getChildNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getChildNode"}, {"url": "YAHOO.util.Dom.html#method_getChildren", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getChildren"}, {"url": "YAHOO.util.Dom.html#method_getChildren", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getChildren"}, {"url": "YAHOO.util.Dom.html#method_getChildrenBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getChildrenBy"}, {"url": "YAHOO.util.Dom.html#method_getChildrenBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getChildrenBy"}, {"url": "YAHOO.util.Dom.html#method_getClientHeight", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getClientHeight"}, {"url": "YAHOO.util.Dom.html#method_getClientHeight", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getClientHeight"}, {"url": "YAHOO.util.Dom.html#method_getClientRegion", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getClientRegion"}, {"url": "YAHOO.util.Dom.html#method_getClientRegion", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getClientRegion"}, {"url": "YAHOO.util.Dom.html#method_getClientWidth", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getClientWidth"}, {"url": "YAHOO.util.Dom.html#method_getClientWidth", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getClientWidth"}, {"url": "YAHOO.util.Dom.html#method_getCommonAncestor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getCommonAncestor"}, {"url": "YAHOO.util.Dom.html#method_getCommonAncestor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getCommonAncestor"}, {"url": "YAHOO.util.Dom.html#method_getContentAsFloat", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getContentAsFloat"}, {"url": "YAHOO.util.Dom.html#method_getContentAsFloat", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getContentAsFloat"}, {"url": "YAHOO.util.Dom.html#method_getContentAsInteger", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getContentAsInteger"}, {"url": "YAHOO.util.Dom.html#method_getContentAsInteger", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getContentAsInteger"}, {"url": "YAHOO.util.Dom.html#method_getContentAsString", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getContentAsString"}, {"url": "YAHOO.util.Dom.html#method_getContentAsString", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getContentAsString"}, {"url": "YAHOO.util.Dom.html#method_getDocumentHeight", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentHeight"}, {"url": "YAHOO.util.Dom.html#method_getDocumentHeight", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentHeight"}, {"url": "YAHOO.util.Dom.html#method_getDocumentScroll", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentScroll"}, {"url": "YAHOO.util.Dom.html#method_getDocumentScroll", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentScroll"}, {"url": "YAHOO.util.Dom.html#method_getDocumentScrollLeft", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentScrollLeft"}, {"url": "YAHOO.util.Dom.html#method_getDocumentScrollLeft", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentScrollLeft"}, {"url": "YAHOO.util.Dom.html#method_getDocumentScrollTop", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentScrollTop"}, {"url": "YAHOO.util.Dom.html#method_getDocumentScrollTop", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentScrollTop"}, {"url": "YAHOO.util.Dom.html#method_getDocumentSize", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentSize"}, {"url": "YAHOO.util.Dom.html#method_getDocumentSize", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentSize"}, {"url": "YAHOO.util.Dom.html#method_getDocumentWidth", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentWidth"}, {"url": "YAHOO.util.Dom.html#method_getDocumentWidth", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getDocumentWidth"}, {"url": "YAHOO.util.Dom.html#method_getElementsBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getElementsBy"}, {"url": "YAHOO.util.Dom.html#method_getElementsBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getElementsBy"}, {"url": "YAHOO.util.Dom.html#method_getElementsByClassName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getElementsByClassName"}, {"url": "YAHOO.util.Dom.html#method_getElementsByClassName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getElementsByClassName"}, {"url": "YAHOO.util.Dom.html#method_getElementsByTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getElementsByTagName"}, {"url": "YAHOO.util.Dom.html#method_getElementsByTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getElementsByTagName"}, {"url": "YAHOO.util.Dom.html#method_getFirstChild", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstChild"}, {"url": "YAHOO.util.Dom.html#method_getFirstChild", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstChild"}, {"url": "YAHOO.util.Dom.html#method_getFirstChildBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstChildBy"}, {"url": "YAHOO.util.Dom.html#method_getFirstChildBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstChildBy"}, {"url": "YAHOO.util.Dom.html#method_getFirstChildByTagAndClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstChildByTagAndClass"}, {"url": "YAHOO.util.Dom.html#method_getFirstChildByTagAndClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstChildByTagAndClass"}, {"url": "YAHOO.util.Dom.html#method_getFirstText", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstText"}, {"url": "YAHOO.util.Dom.html#method_getFirstText", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getFirstText"}, {"url": "YAHOO.util.Dom.html#method_getImage", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getImage"}, {"url": "YAHOO.util.Dom.html#method_getImage", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getImage"}, {"url": "YAHOO.util.Dom.html#method_getLastChild", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getLastChild"}, {"url": "YAHOO.util.Dom.html#method_getLastChild", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getLastChild"}, {"url": "YAHOO.util.Dom.html#method_getLastChildBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getLastChildBy"}, {"url": "YAHOO.util.Dom.html#method_getLastChildBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getLastChildBy"}, {"url": "YAHOO.util.Dom.html#method_getNextSibling", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getNextSibling"}, {"url": "YAHOO.util.Dom.html#method_getNextSibling", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getNextSibling"}, {"url": "YAHOO.util.Dom.html#method_getNextSiblingBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getNextSiblingBy"}, {"url": "YAHOO.util.Dom.html#method_getNextSiblingBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getNextSiblingBy"}, {"url": "YAHOO.util.Dom.html#method_getPreviousSibling", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getPreviousSibling"}, {"url": "YAHOO.util.Dom.html#method_getPreviousSibling", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getPreviousSibling"}, {"url": "YAHOO.util.Dom.html#method_getPreviousSiblingBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getPreviousSiblingBy"}, {"url": "YAHOO.util.Dom.html#method_getPreviousSiblingBy", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getPreviousSiblingBy"}, {"url": "YAHOO.util.Dom.html#method_getRegion", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getRegion"}, {"url": "YAHOO.util.Dom.html#method_getRegion", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getRegion"}, {"url": "YAHOO.util.Region.html#method_getRegion", "access": "", "host": "YAHOO.util.Region", "type": "method", "name": "getRegion"}, {"url": "YAHOO.util.Dom.html#method_getStyle", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getStyle"}, {"url": "YAHOO.util.Dom.html#method_getStyle", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getStyle"}, {"url": "YAHOO.util.Dom.html#method_getTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getTagName"}, {"url": "YAHOO.util.Dom.html#method_getTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getTagName"}, {"url": "YAHOO.util.Dom.html#method_getViewport", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getViewport"}, {"url": "YAHOO.util.Dom.html#method_getViewport", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getViewport"}, {"url": "YAHOO.util.Dom.html#method_getViewportHeight", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getViewportHeight"}, {"url": "YAHOO.util.Dom.html#method_getViewportHeight", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getViewportHeight"}, {"url": "YAHOO.util.Dom.html#method_getViewportWidth", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getViewportWidth"}, {"url": "YAHOO.util.Dom.html#method_getViewportWidth", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getViewportWidth"}, {"url": "YAHOO.util.Dom.html#method_getX", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getX"}, {"url": "YAHOO.util.Dom.html#method_getX", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getX"}, {"url": "YAHOO.util.Dom.html#method_getXY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getXY"}, {"url": "YAHOO.util.Dom.html#method_getXY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getXY"}, {"url": "YAHOO.util.Dom.html#method_getY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getY"}, {"url": "YAHOO.util.Dom.html#method_getY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "getY"}, {"url": "YAHOO.util.Dom.html#method_hasClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "hasClass"}, {"url": "YAHOO.util.Dom.html#method_hasClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "hasClass"}, {"url": "YAHOO.util.Dom.html#method_hide", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "hide"}, {"url": "YAHOO.util.Dom.html#method_hide", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "hide"}, {"url": "YAHOO.util.Dom.html#method_inDocument", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "inDocument"}, {"url": "YAHOO.util.Dom.html#method_inDocument", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "inDocument"}, {"url": "YAHOO.util.Dom.html#method_insertAfter", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "insertAfter"}, {"url": "YAHOO.util.Dom.html#method_insertAfter", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "insertAfter"}, {"url": "YAHOO.util.Dom.html#method_insertBefore", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "insertBefore"}, {"url": "YAHOO.util.Dom.html#method_insertBefore", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "insertBefore"}, {"url": "YAHOO.util.Region.html#method_intersect", "access": "", "host": "YAHOO.util.Region", "type": "method", "name": "intersect"}, {"url": "YAHOO.util.Dom.html#method_isAncestor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isAncestor"}, {"url": "YAHOO.util.Dom.html#method_isAncestor", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isAncestor"}, {"url": "YAHOO.util.Dom.html#method_isAncestorOf", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isAncestorOf"}, {"url": "YAHOO.util.Dom.html#method_isAncestorOf", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isAncestorOf"}, {"url": "YAHOO.util.Dom.html#method_isElementType", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isElementType"}, {"url": "YAHOO.util.Dom.html#method_isElementType", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isElementType"}, {"url": "YAHOO.util.Dom.html#method_isTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isTagName"}, {"url": "YAHOO.util.Dom.html#method_isTagName", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isTagName"}, {"url": "YAHOO.util.Dom.html#method_isTextNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isTextNode"}, {"url": "YAHOO.util.Dom.html#method_isTextNode", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "isTextNode"}, {"url": "YAHOO.util.Region.html#property_left", "access": "", "host": "YAHOO.util.Region", "type": "property", "name": "left"}, {"url": "YAHOO.util.Dom.html#method_removeChildNodes", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "removeChildNodes"}, {"url": "YAHOO.util.Dom.html#method_removeChildNodes", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "removeChildNodes"}, {"url": "YAHOO.util.Dom.html#method_removeClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "removeClass"}, {"url": "YAHOO.util.Dom.html#method_removeClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "removeClass"}, {"url": "YAHOO.util.Dom.html#method_replace", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "replace"}, {"url": "YAHOO.util.Dom.html#method_replace", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "replace"}, {"url": "YAHOO.util.Dom.html#method_replaceClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "replaceClass"}, {"url": "YAHOO.util.Dom.html#method_replaceClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "replaceClass"}, {"url": "YAHOO.util.Region.html#property_right", "access": "", "host": "YAHOO.util.Region", "type": "property", "name": "right"}, {"url": "YAHOO.util.Dom.html#method_scrollTo", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "scrollTo"}, {"url": "YAHOO.util.Dom.html#method_scrollTo", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "scrollTo"}, {"url": "YAHOO.util.Dom.html#method_scrollTop", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "scrollTop"}, {"url": "YAHOO.util.Dom.html#method_scrollTop", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "scrollTop"}, {"url": "YAHOO.util.Dom.html#method_setFirstText", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setFirstText"}, {"url": "YAHOO.util.Dom.html#method_setFirstText", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setFirstText"}, {"url": "YAHOO.util.Dom.html#method_setStyle", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setStyle"}, {"url": "YAHOO.util.Dom.html#method_setStyle", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setStyle"}, {"url": "YAHOO.util.Dom.html#method_setX", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setX"}, {"url": "YAHOO.util.Dom.html#method_setX", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setX"}, {"url": "YAHOO.util.Dom.html#method_setXY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setXY"}, {"url": "YAHOO.util.Dom.html#method_setXY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setXY"}, {"url": "YAHOO.util.Dom.html#method_setY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setY"}, {"url": "YAHOO.util.Dom.html#method_setY", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "setY"}, {"url": "YAHOO.util.Dom.html#method_show", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "show"}, {"url": "YAHOO.util.Dom.html#method_show", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "show"}, {"url": "YAHOO.util.Dom.html#method_toggleClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "toggleClass"}, {"url": "YAHOO.util.Dom.html#method_toggleClass", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "toggleClass"}, {"url": "YAHOO.util.Dom.html#method_toggleDisplay", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "toggleDisplay"}, {"url": "YAHOO.util.Dom.html#method_toggleDisplay", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "toggleDisplay"}, {"url": "YAHOO.util.Region.html#property_top", "access": "", "host": "YAHOO.util.Region", "type": "property", "name": "top"}, {"url": "YAHOO.util.Region.html#method_toString", "access": "", "host": "YAHOO.util.Region", "type": "method", "name": "toString"}, {"url": "YAHOO.util.Region.html#method_union", "access": "", "host": "YAHOO.util.Region", "type": "method", "name": "union"}, {"url": "YAHOO.util.Dom.html#method_visibility", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "visibility"}, {"url": "YAHOO.util.Dom.html#method_visibility", "access": "", "host": "YAHOO.util.Dom", "type": "method", "name": "visibility"}, {"url": "YAHOO.util.Point.html#property_x", "access": "", "host": "YAHOO.util.Point", "type": "property", "name": "x"}, {"url": "YAHOO.util.Point.html#property_y", "access": "", "host": "YAHOO.util.Point", "type": "property", "name": "y"}];
+</script>
+</body>
+</html>

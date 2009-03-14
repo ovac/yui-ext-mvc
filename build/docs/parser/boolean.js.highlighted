@@ -1,0 +1,43 @@
+<div class="highlight" ><pre><span class="c">/**</span>
+<span class="c"> * The JavaScript Boolean Object</span>
+<span class="c"> *  since FireFox 1.0, Netscape 2.0, and IE 4.0</span>
+<span class="c"> *</span>
+<span class="c"> * @class Boolean</span>
+<span class="c"> * @constructor</span>
+<span class="c"> */</span>
+
+<span class="c">/**</span>
+<span class="c"> * Allows you to add properties and methods to the object</span>
+<span class="c"> *  since FireFox 1.0, Netscape 2.0, and IE 4.0</span>
+<span class="c"> *</span>
+<span class="c"> * @property prototype</span>
+<span class="c"> * @type Object</span>
+<span class="c"> * @public</span>
+<span class="c"> */</span>
+
+<span class="c">/**</span>
+<span class="c"> * Returns the source-code used to generate Boolean.</span>
+<span class="c"> *  since FireFox 1.0 and Netscape 4.0</span>
+<span class="c"> *</span>
+<span class="c"> * @method toSource</span>
+<span class="c"> * @return {String} the source-code that generated the Boolean</span>
+<span class="c"> * @public</span>
+<span class="c"> */</span>
+
+<span class="c">/**</span>
+<span class="c"> * The toString() method converts a Boolean value to a string and returns the result.</span>
+<span class="c"> *</span>
+<span class="c"> * @method toString</span>
+<span class="c"> * @return {String} the Boolean as a String</span>
+<span class="c"> * @public</span>
+<span class="c"> */</span>
+
+<span class="c">/**</span>
+<span class="c"> * The valueOf() method returns the primitive value of a Boolean object.</span>
+<span class="c"> *  since FireFox 1.0 and IE 4.0</span>
+<span class="c"> *</span>
+<span class="c"> * @method valueOf</span>
+<span class="c"> * @return {boolean} the boolean primitive</span>
+<span class="c"> * @public</span>
+<span class="c"> */</span>
+</pre></div>

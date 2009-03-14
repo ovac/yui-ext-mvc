@@ -1,0 +1,1096 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: yahoo   yahoo.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1237000655.56" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1237000655.56" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1237000655.56"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1237000655.56"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>YAHOO Global&nbsp; <span class="subtitle">1.0.01</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_yahoo.html" title="yahoo">yahoo</a>
+                
+                 &gt; yahoo.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+<div class="highlight" ><pre><span class="c">/*</span>
+<span class="c">Copyright (c) 2008, Yahoo! Inc. All rights reserved.</span>
+<span class="c">Code licensed under the BSD License:</span>
+<span class="c">http://developer.yahoo.net/yui/license.txt</span>
+<span class="c">version: 2.6.0</span>
+<span class="c">*/</span>
+<span class="c">/**</span>
+<span class="c"> * The YAHOO object is the single global object used by YUI Library.  It</span>
+<span class="c"> * contains utility function for setting up namespaces, inheritance, and</span>
+<span class="c"> * logging.  YAHOO.util, YAHOO.widget, and YAHOO.example are namespaces</span>
+<span class="c"> * created automatically for and used by the library.</span>
+<span class="c"> * @module yahoo</span>
+<span class="c"> * @title  YAHOO Global</span>
+<span class="c"> */</span>
+
+<span class="c">/**</span>
+<span class="c"> * YAHOO_config is not included as part of the library.  Instead it is an </span>
+<span class="c"> * object that can be defined by the implementer immediately before </span>
+<span class="c"> * including the YUI library.  The properties included in this object</span>
+<span class="c"> * will be used to configure global properties needed as soon as the </span>
+<span class="c"> * library begins to load.</span>
+<span class="c"> * @class YAHOO_config</span>
+<span class="c"> * @static</span>
+<span class="c"> */</span>
+
+<span class="c">/**</span>
+<span class="c"> * A reference to a function that will be executed every time a YAHOO module</span>
+<span class="c"> * is loaded.  As parameter, this function will receive the version</span>
+<span class="c"> * information for the module. See &lt;a href=&quot;YAHOO.env.html#getVersion&quot;&gt;</span>
+<span class="c"> * YAHOO.env.getVersion&lt;/a&gt; for the description of the version data structure.</span>
+<span class="c"> * @property listener</span>
+<span class="c"> * @type Function</span>
+<span class="c"> * @static</span>
+<span class="c"> * @default undefined</span>
+<span class="c"> */</span>
+
+<span class="c">/**</span>
+<span class="c"> * Set to true if the library will be dynamically loaded after window.onload.</span>
+<span class="c"> * Defaults to false </span>
+<span class="c"> * @property injecting</span>
+<span class="c"> * @type boolean</span>
+<span class="c"> * @static</span>
+<span class="c"> * @default undefined</span>
+<span class="c"> */</span>
+
+<span class="c">/**</span>
+<span class="c"> * Instructs the yuiloader component to dynamically load yui components and</span>
+<span class="c"> * their dependencies.  See the yuiloader documentation for more information</span>
+<span class="c"> * about dynamic loading</span>
+<span class="c"> * @property load</span>
+<span class="c"> * @static</span>
+<span class="c"> * @default undefined</span>
+<span class="c"> * @see yuiloader</span>
+<span class="c"> */</span>
+
+<span class="c">/**</span>
+<span class="c"> * Forces the use of the supplied locale where applicable in the library</span>
+<span class="c"> * @property locale</span>
+<span class="c"> * @type string</span>
+<span class="c"> * @static</span>
+<span class="c"> * @default undefined</span>
+<span class="c"> */</span>
+
+<span class="k">if</span> <span class="o">(</span><span class="k">typeof</span> <span class="nx">YAHOO</span> <span class="o">==</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">||</span> <span class="o">!</span><span class="nx">YAHOO</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c">/**</span>
+<span class="c">     * The YAHOO global namespace object.  If YAHOO is already defined, the</span>
+<span class="c">     * existing YAHOO object will not be overwritten so that defined</span>
+<span class="c">     * namespaces are preserved.</span>
+<span class="c">     * @class YAHOO</span>
+<span class="c">     * @static</span>
+<span class="c">     */</span>
+    <span class="k">var</span> <span class="nx">YAHOO</span> <span class="o">=</span> <span class="o">{};</span>
+<span class="o">}</span>
+
+<span class="c">/**</span>
+<span class="c"> * Returns the namespace specified and creates it if it doesn&#39;t exist</span>
+<span class="c"> * &lt;pre&gt;</span>
+<span class="c"> * YAHOO.namespace(&quot;property.package&quot;);</span>
+<span class="c"> * YAHOO.namespace(&quot;YAHOO.property.package&quot;);</span>
+<span class="c"> * &lt;/pre&gt;</span>
+<span class="c"> * Either of the above would create YAHOO.property, then</span>
+<span class="c"> * YAHOO.property.package</span>
+<span class="c"> *</span>
+<span class="c"> * Be careful when naming packages. Reserved words may work in some browsers</span>
+<span class="c"> * and not others. For instance, the following will fail in Safari:</span>
+<span class="c"> * &lt;pre&gt;</span>
+<span class="c"> * YAHOO.namespace(&quot;really.long.nested.namespace&quot;);</span>
+<span class="c"> * &lt;/pre&gt;</span>
+<span class="c"> * This fails because &quot;long&quot; is a future reserved word in ECMAScript</span>
+<span class="c"> *</span>
+<span class="c"> * @method namespace</span>
+<span class="c"> * @static</span>
+<span class="c"> * @param  {String*} arguments 1-n namespaces to create </span>
+<span class="c"> * @return {Object}  A reference to the last namespace object created</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">namespace</span> <span class="o">=</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="nx">a</span><span class="o">=</span><span class="nx">arguments</span><span class="o">,</span> <span class="nx">o</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span> <span class="nx">i</span><span class="o">,</span> <span class="nx">j</span><span class="o">,</span> <span class="nx">d</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nx">i</span><span class="o">=</span><span class="m">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">a</span><span class="o">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nx">d</span><span class="o">=</span><span class="nx">a</span><span class="o">[</span><span class="nx">i</span><span class="o">].</span><span class="nx">split</span><span class="o">(</span><span class="s2">&quot;.&quot;</span><span class="o">);</span>
+        <span class="nx">o</span><span class="o">=</span><span class="nx">YAHOO</span><span class="o">;</span>
+
+        <span class="c">// YAHOO is implied, so it is ignored if it is included</span>
+<span class="c"></span>        <span class="k">for</span> <span class="o">(</span><span class="nx">j</span><span class="o">=(</span><span class="nx">d</span><span class="o">[</span><span class="m">0</span><span class="o">]</span> <span class="o">==</span> <span class="s2">&quot;YAHOO&quot;</span><span class="o">)</span> <span class="o">?</span> <span class="m">1</span> <span class="o">:</span> <span class="m">0</span><span class="o">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">d</span><span class="o">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">j</span><span class="o">=</span><span class="nx">j</span><span class="o">+</span><span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">o</span><span class="o">[</span><span class="nx">d</span><span class="o">[</span><span class="nx">j</span><span class="o">]]=</span><span class="nx">o</span><span class="o">[</span><span class="nx">d</span><span class="o">[</span><span class="nx">j</span><span class="o">]]</span> <span class="o">||</span> <span class="o">{};</span>
+            <span class="nx">o</span><span class="o">=</span><span class="nx">o</span><span class="o">[</span><span class="nx">d</span><span class="o">[</span><span class="nx">j</span><span class="o">]];</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="k">return</span> <span class="nx">o</span><span class="o">;</span>
+<span class="o">};</span>
+
+<span class="c">/**</span>
+<span class="c"> * Uses YAHOO.widget.Logger to output a log message, if the widget is</span>
+<span class="c"> * available.</span>
+<span class="c"> *</span>
+<span class="c"> * @method log</span>
+<span class="c"> * @static</span>
+<span class="c"> * @param  {String}  msg  The message to log.</span>
+<span class="c"> * @param  {String}  cat  The log category for the message.  Default</span>
+<span class="c"> *                        categories are &quot;info&quot;, &quot;warn&quot;, &quot;error&quot;, time&quot;.</span>
+<span class="c"> *                        Custom categories can be used as well. (opt)</span>
+<span class="c"> * @param  {String}  src  The source of the the message (opt)</span>
+<span class="c"> * @return {Boolean}      True if the log operation was successful.</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">log</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">msg</span><span class="o">,</span> <span class="nx">cat</span><span class="o">,</span> <span class="nx">src</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="nx">l</span><span class="o">=</span><span class="nx">YAHOO</span><span class="o">.</span><span class="nx">widget</span><span class="o">.</span><span class="nx">Logger</span><span class="o">;</span>
+    <span class="k">if</span><span class="o">(</span><span class="nx">l</span> <span class="o">&amp;&amp;</span> <span class="nx">l</span><span class="o">.</span><span class="nx">log</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nx">l</span><span class="o">.</span><span class="nx">log</span><span class="o">(</span><span class="nx">msg</span><span class="o">,</span> <span class="nx">cat</span><span class="o">,</span> <span class="nx">src</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">};</span>
+
+<span class="c">/**</span>
+<span class="c"> * Registers a module with the YAHOO object</span>
+<span class="c"> * @method register</span>
+<span class="c"> * @static</span>
+<span class="c"> * @param {String}   name    the name of the module (event, slider, etc)</span>
+<span class="c"> * @param {Function} mainClass a reference to class in the module.  This</span>
+<span class="c"> *                             class will be tagged with the version info</span>
+<span class="c"> *                             so that it will be possible to identify the</span>
+<span class="c"> *                             version that is in use when multiple versions</span>
+<span class="c"> *                             have loaded</span>
+<span class="c"> * @param {Object}   data      metadata object for the module.  Currently it</span>
+<span class="c"> *                             is expected to contain a &quot;version&quot; property</span>
+<span class="c"> *                             and a &quot;build&quot; property at minimum.</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">register</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">name</span><span class="o">,</span> <span class="nx">mainClass</span><span class="o">,</span> <span class="nx">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="nx">mods</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span><span class="o">.</span><span class="nx">modules</span><span class="o">;</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="nx">mods</span><span class="o">[</span><span class="nx">name</span><span class="o">])</span> <span class="o">{</span>
+        <span class="nx">mods</span><span class="o">[</span><span class="nx">name</span><span class="o">]</span> <span class="o">=</span> <span class="o">{</span> <span class="nx">versions</span><span class="o">:[],</span> <span class="nx">builds</span><span class="o">:[]</span> <span class="o">};</span>
+    <span class="o">}</span>
+    <span class="k">var</span> <span class="nx">m</span><span class="o">=</span><span class="nx">mods</span><span class="o">[</span><span class="nx">name</span><span class="o">],</span><span class="nx">v</span><span class="o">=</span><span class="nx">data</span><span class="o">.</span><span class="nx">version</span><span class="o">,</span><span class="nx">b</span><span class="o">=</span><span class="nx">data</span><span class="o">.</span><span class="nx">build</span><span class="o">,</span><span class="nx">ls</span><span class="o">=</span><span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span><span class="o">.</span><span class="nx">listeners</span><span class="o">;</span>
+    <span class="nx">m</span><span class="o">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="o">;</span>
+    <span class="nx">m</span><span class="o">.</span><span class="nx">version</span> <span class="o">=</span> <span class="nx">v</span><span class="o">;</span>
+    <span class="nx">m</span><span class="o">.</span><span class="nx">build</span> <span class="o">=</span> <span class="nx">b</span><span class="o">;</span>
+    <span class="nx">m</span><span class="o">.</span><span class="nx">versions</span><span class="o">.</span><span class="nx">push</span><span class="o">(</span><span class="nx">v</span><span class="o">);</span>
+    <span class="nx">m</span><span class="o">.</span><span class="nx">builds</span><span class="o">.</span><span class="nx">push</span><span class="o">(</span><span class="nx">b</span><span class="o">);</span>
+    <span class="nx">m</span><span class="o">.</span><span class="nx">mainClass</span> <span class="o">=</span> <span class="nx">mainClass</span><span class="o">;</span>
+    <span class="c">// fire the module load listeners</span>
+<span class="c"></span>    <span class="k">for</span> <span class="o">(</span><span class="k">var</span> <span class="nx">i</span><span class="o">=</span><span class="m">0</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">ls</span><span class="o">.</span><span class="nx">length</span><span class="o">;</span><span class="nx">i</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nx">ls</span><span class="o">[</span><span class="nx">i</span><span class="o">](</span><span class="nx">m</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="c">// label the main class</span>
+<span class="c"></span>    <span class="k">if</span> <span class="o">(</span><span class="nx">mainClass</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nx">mainClass</span><span class="o">.</span><span class="nx">VERSION</span> <span class="o">=</span> <span class="nx">v</span><span class="o">;</span>
+        <span class="nx">mainClass</span><span class="o">.</span><span class="nx">BUILD</span> <span class="o">=</span> <span class="nx">b</span><span class="o">;</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">log</span><span class="o">(</span><span class="s2">&quot;mainClass is undefined for module &quot;</span> <span class="o">+</span> <span class="nx">name</span><span class="o">,</span> <span class="s2">&quot;warn&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">};</span>
+
+<span class="c">/**</span>
+<span class="c"> * YAHOO.env is used to keep track of what is known about the YUI library and</span>
+<span class="c"> * the browsing environment</span>
+<span class="c"> * @class YAHOO.env</span>
+<span class="c"> * @static</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span> <span class="o">||</span> <span class="o">{</span>
+
+    <span class="c">/**</span>
+<span class="c">     * Keeps the version info for all YUI modules that have reported themselves</span>
+<span class="c">     * @property modules</span>
+<span class="c">     * @type Object[]</span>
+<span class="c">     */</span>
+    <span class="nx">modules</span><span class="o">:</span> <span class="o">[],</span>
+    
+    <span class="c">/**</span>
+<span class="c">     * List of functions that should be executed every time a YUI module</span>
+<span class="c">     * reports itself.</span>
+<span class="c">     * @property listeners</span>
+<span class="c">     * @type Function[]</span>
+<span class="c">     */</span>
+    <span class="nx">listeners</span><span class="o">:</span> <span class="o">[]</span>
+<span class="o">};</span>
+
+<span class="c">/**</span>
+<span class="c"> * Returns the version data for the specified module:</span>
+<span class="c"> *      &lt;dl&gt;</span>
+<span class="c"> *      &lt;dt&gt;name:&lt;/dt&gt;      &lt;dd&gt;The name of the module&lt;/dd&gt;</span>
+<span class="c"> *      &lt;dt&gt;version:&lt;/dt&gt;   &lt;dd&gt;The version in use&lt;/dd&gt;</span>
+<span class="c"> *      &lt;dt&gt;build:&lt;/dt&gt;     &lt;dd&gt;The build number in use&lt;/dd&gt;</span>
+<span class="c"> *      &lt;dt&gt;versions:&lt;/dt&gt;  &lt;dd&gt;All versions that were registered&lt;/dd&gt;</span>
+<span class="c"> *      &lt;dt&gt;builds:&lt;/dt&gt;    &lt;dd&gt;All builds that were registered.&lt;/dd&gt;</span>
+<span class="c"> *      &lt;dt&gt;mainClass:&lt;/dt&gt; &lt;dd&gt;An object that was was stamped with the</span>
+<span class="c"> *                 current version and build. If </span>
+<span class="c"> *                 mainClass.VERSION != version or mainClass.BUILD != build,</span>
+<span class="c"> *                 multiple versions of pieces of the library have been</span>
+<span class="c"> *                 loaded, potentially causing issues.&lt;/dd&gt;</span>
+<span class="c"> *       &lt;/dl&gt;</span>
+<span class="c"> *</span>
+<span class="c"> * @method getVersion</span>
+<span class="c"> * @static</span>
+<span class="c"> * @param {String}  name the name of the module (event, slider, etc)</span>
+<span class="c"> * @return {Object} The version info</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span><span class="o">.</span><span class="nx">getVersion</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">name</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span><span class="o">.</span><span class="nx">modules</span><span class="o">[</span><span class="nx">name</span><span class="o">]</span> <span class="o">||</span> <span class="kc">null</span><span class="o">;</span>
+<span class="o">};</span>
+
+<span class="c">/**</span>
+<span class="c"> * Do not fork for a browser if it can be avoided.  Use feature detection when</span>
+<span class="c"> * you can.  Use the user agent as a last resort.  YAHOO.env.ua stores a version</span>
+<span class="c"> * number for the browser engine, 0 otherwise.  This value may or may not map</span>
+<span class="c"> * to the version number of the browser using the engine.  The value is </span>
+<span class="c"> * presented as a float so that it can easily be used for boolean evaluation </span>
+<span class="c"> * as well as for looking for a particular range of versions.  Because of this, </span>
+<span class="c"> * some of the granularity of the version info may be lost (e.g., Gecko 1.8.0.9 </span>
+<span class="c"> * reports 1.8).</span>
+<span class="c"> * @class YAHOO.env.ua</span>
+<span class="c"> * @static</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span><span class="o">.</span><span class="nx">ua</span> <span class="o">=</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="nx">o</span><span class="o">={</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Internet Explorer version number or 0.  Example: 6</span>
+<span class="c">         * @property ie</span>
+<span class="c">         * @type float</span>
+<span class="c">         */</span>
+        <span class="nx">ie</span><span class="o">:</span><span class="m">0</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Opera version number or 0.  Example: 9.2</span>
+<span class="c">         * @property opera</span>
+<span class="c">         * @type float</span>
+<span class="c">         */</span>
+        <span class="nx">opera</span><span class="o">:</span><span class="m">0</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Gecko engine revision number.  Will evaluate to 1 if Gecko </span>
+<span class="c">         * is detected but the revision could not be found. Other browsers</span>
+<span class="c">         * will be 0.  Example: 1.8</span>
+<span class="c">         * &lt;pre&gt;</span>
+<span class="c">         * Firefox 1.0.0.4: 1.7.8   &lt;-- Reports 1.7</span>
+<span class="c">         * Firefox 1.5.0.9: 1.8.0.9 &lt;-- Reports 1.8</span>
+<span class="c">         * Firefox 2.0.0.3: 1.8.1.3 &lt;-- Reports 1.8</span>
+<span class="c">         * Firefox 3 alpha: 1.9a4   &lt;-- Reports 1.9</span>
+<span class="c">         * &lt;/pre&gt;</span>
+<span class="c">         * @property gecko</span>
+<span class="c">         * @type float</span>
+<span class="c">         */</span>
+        <span class="nx">gecko</span><span class="o">:</span><span class="m">0</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * AppleWebKit version.  KHTML browsers that are not WebKit browsers </span>
+<span class="c">         * will evaluate to 1, other browsers 0.  Example: 418.9.1</span>
+<span class="c">         * &lt;pre&gt;</span>
+<span class="c">         * Safari 1.3.2 (312.6): 312.8.1 &lt;-- Reports 312.8 -- currently the </span>
+<span class="c">         *                                   latest available for Mac OSX 10.3.</span>
+<span class="c">         * Safari 2.0.2:         416     &lt;-- hasOwnProperty introduced</span>
+<span class="c">         * Safari 2.0.4:         418     &lt;-- preventDefault fixed</span>
+<span class="c">         * Safari 2.0.4 (419.3): 418.9.1 &lt;-- One version of Safari may run</span>
+<span class="c">         *                                   different versions of webkit</span>
+<span class="c">         * Safari 2.0.4 (419.3): 419     &lt;-- Tiger installations that have been</span>
+<span class="c">         *                                   updated, but not updated</span>
+<span class="c">         *                                   to the latest patch.</span>
+<span class="c">         * Webkit 212 nightly:   522+    &lt;-- Safari 3.0 precursor (with native SVG</span>
+<span class="c">         *                                   and many major issues fixed).  </span>
+<span class="c">         * 3.x yahoo.com, flickr:422     &lt;-- Safari 3.x hacks the user agent</span>
+<span class="c">         *                                   string when hitting yahoo.com and </span>
+<span class="c">         *                                   flickr.com.</span>
+<span class="c">         * Safari 3.0.4 (523.12):523.12  &lt;-- First Tiger release - automatic update</span>
+<span class="c">         *                                   from 2.x via the 10.4.11 OS patch</span>
+<span class="c">         * Webkit nightly 1/2008:525+    &lt;-- Supports DOMContentLoaded event.</span>
+<span class="c">         *                                   yahoo.com user agent hack removed.</span>
+<span class="c">         *                                   </span>
+<span class="c">         * &lt;/pre&gt;</span>
+<span class="c">         * http://developer.apple.com/internet/safari/uamatrix.html</span>
+<span class="c">         * @property webkit</span>
+<span class="c">         * @type float</span>
+<span class="c">         */</span>
+        <span class="nx">webkit</span><span class="o">:</span> <span class="m">0</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * The mobile property will be set to a string containing any relevant</span>
+<span class="c">         * user agent information when a modern mobile browser is detected.</span>
+<span class="c">         * Currently limited to Safari on the iPhone/iPod Touch, Nokia N-series</span>
+<span class="c">         * devices with the WebKit-based browser, and Opera Mini.  </span>
+<span class="c">         * @property mobile </span>
+<span class="c">         * @type string</span>
+<span class="c">         */</span>
+        <span class="nx">mobile</span><span class="o">:</span> <span class="kc">null</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Adobe AIR version number or 0.  Only populated if webkit is detected.</span>
+<span class="c">         * Example: 1.0</span>
+<span class="c">         * @property air</span>
+<span class="c">         * @type float</span>
+<span class="c">         */</span>
+        <span class="nx">air</span><span class="o">:</span> <span class="m">0</span>
+
+    <span class="o">};</span>
+
+    <span class="k">var</span> <span class="nx">ua</span><span class="o">=</span><span class="nx">navigator</span><span class="o">.</span><span class="nx">userAgent</span><span class="o">,</span> <span class="nx">m</span><span class="o">;</span>
+
+    <span class="c">// Modern KHTML browsers should qualify as Safari X-Grade</span>
+<span class="c"></span>    <span class="k">if</span> <span class="o">((</span><span class="sr">/KHTML/</span><span class="o">).</span><span class="nx">test</span><span class="o">(</span><span class="nx">ua</span><span class="o">))</span> <span class="o">{</span>
+        <span class="nx">o</span><span class="o">.</span><span class="nx">webkit</span><span class="o">=</span><span class="m">1</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="c">// Modern WebKit browsers are at least X-Grade</span>
+<span class="c"></span>    <span class="nx">m</span><span class="o">=</span><span class="nx">ua</span><span class="o">.</span><span class="nx">match</span><span class="o">(</span><span class="sr">/AppleWebKit\/([^\s]*)/</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="nx">m</span><span class="o">&amp;&amp;</span><span class="nx">m</span><span class="o">[</span><span class="m">1</span><span class="o">])</span> <span class="o">{</span>
+        <span class="nx">o</span><span class="o">.</span><span class="nx">webkit</span><span class="o">=</span><span class="nb">parseFloat</span><span class="o">(</span><span class="nx">m</span><span class="o">[</span><span class="m">1</span><span class="o">]);</span>
+
+        <span class="c">// Mobile browser check</span>
+<span class="c"></span>        <span class="k">if</span> <span class="o">(</span><span class="sr">/ Mobile\//</span><span class="o">.</span><span class="nx">test</span><span class="o">(</span><span class="nx">ua</span><span class="o">))</span> <span class="o">{</span>
+            <span class="nx">o</span><span class="o">.</span><span class="nx">mobile</span> <span class="o">=</span> <span class="s2">&quot;Apple&quot;</span><span class="o">;</span> <span class="c">// iPhone or iPod Touch</span>
+<span class="c"></span>        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="nx">m</span><span class="o">=</span><span class="nx">ua</span><span class="o">.</span><span class="nx">match</span><span class="o">(</span><span class="sr">/NokiaN[^\/]*/</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="nx">m</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nx">o</span><span class="o">.</span><span class="nx">mobile</span> <span class="o">=</span> <span class="nx">m</span><span class="o">[</span><span class="m">0</span><span class="o">];</span> <span class="c">// Nokia N-series, ex: NokiaN95</span>
+<span class="c"></span>            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="nx">m</span><span class="o">=</span><span class="nx">ua</span><span class="o">.</span><span class="nx">match</span><span class="o">(</span><span class="sr">/AdobeAIR\/([^\s]*)/</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nx">m</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">o</span><span class="o">.</span><span class="nx">air</span> <span class="o">=</span> <span class="nx">m</span><span class="o">[</span><span class="m">0</span><span class="o">];</span> <span class="c">// Adobe AIR 1.0 or better</span>
+<span class="c"></span>        <span class="o">}</span>
+
+    <span class="o">}</span>
+
+    <span class="k">if</span> <span class="o">(!</span><span class="nx">o</span><span class="o">.</span><span class="nx">webkit</span><span class="o">)</span> <span class="o">{</span> <span class="c">// not webkit</span>
+<span class="c"></span>        <span class="c">// @todo check Opera/8.01 (J2ME/MIDP; Opera Mini/2.0.4509/1316; fi; U; ssr)</span>
+<span class="c"></span>        <span class="nx">m</span><span class="o">=</span><span class="nx">ua</span><span class="o">.</span><span class="nx">match</span><span class="o">(</span><span class="sr">/Opera[\s\/]([^\s]*)/</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nx">m</span><span class="o">&amp;&amp;</span><span class="nx">m</span><span class="o">[</span><span class="m">1</span><span class="o">])</span> <span class="o">{</span>
+            <span class="nx">o</span><span class="o">.</span><span class="nx">opera</span><span class="o">=</span><span class="nb">parseFloat</span><span class="o">(</span><span class="nx">m</span><span class="o">[</span><span class="m">1</span><span class="o">]);</span>
+            <span class="nx">m</span><span class="o">=</span><span class="nx">ua</span><span class="o">.</span><span class="nx">match</span><span class="o">(</span><span class="sr">/Opera Mini[^;]*/</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="nx">m</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nx">o</span><span class="o">.</span><span class="nx">mobile</span> <span class="o">=</span> <span class="nx">m</span><span class="o">[</span><span class="m">0</span><span class="o">];</span> <span class="c">// ex: Opera Mini/2.0.4509/1316</span>
+<span class="c"></span>            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span> <span class="c">// not opera or webkit</span>
+<span class="c"></span>            <span class="nx">m</span><span class="o">=</span><span class="nx">ua</span><span class="o">.</span><span class="nx">match</span><span class="o">(</span><span class="sr">/MSIE\s([^;]*)/</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="nx">m</span><span class="o">&amp;&amp;</span><span class="nx">m</span><span class="o">[</span><span class="m">1</span><span class="o">])</span> <span class="o">{</span>
+                <span class="nx">o</span><span class="o">.</span><span class="nx">ie</span><span class="o">=</span><span class="nb">parseFloat</span><span class="o">(</span><span class="nx">m</span><span class="o">[</span><span class="m">1</span><span class="o">]);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span> <span class="c">// not opera, webkit, or ie</span>
+<span class="c"></span>                <span class="nx">m</span><span class="o">=</span><span class="nx">ua</span><span class="o">.</span><span class="nx">match</span><span class="o">(</span><span class="sr">/Gecko\/([^\s]*)/</span><span class="o">);</span>
+                <span class="k">if</span> <span class="o">(</span><span class="nx">m</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="nx">o</span><span class="o">.</span><span class="nx">gecko</span><span class="o">=</span><span class="m">1</span><span class="o">;</span> <span class="c">// Gecko detected, look for revision</span>
+<span class="c"></span>                    <span class="nx">m</span><span class="o">=</span><span class="nx">ua</span><span class="o">.</span><span class="nx">match</span><span class="o">(</span><span class="sr">/rv:([^\s\)]*)/</span><span class="o">);</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="nx">m</span><span class="o">&amp;&amp;</span><span class="nx">m</span><span class="o">[</span><span class="m">1</span><span class="o">])</span> <span class="o">{</span>
+                        <span class="nx">o</span><span class="o">.</span><span class="nx">gecko</span><span class="o">=</span><span class="nb">parseFloat</span><span class="o">(</span><span class="nx">m</span><span class="o">[</span><span class="m">1</span><span class="o">]);</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    
+    <span class="k">return</span> <span class="nx">o</span><span class="o">;</span>
+<span class="o">}();</span>
+
+<span class="c">/*</span>
+<span class="c"> * Initializes the global by creating the default namespaces and applying</span>
+<span class="c"> * any new configuration information that is detected.  This is the setup</span>
+<span class="c"> * for env.</span>
+<span class="c"> * @method init</span>
+<span class="c"> * @static</span>
+<span class="c"> * @private</span>
+<span class="c"> */</span>
+<span class="o">(</span><span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">namespace</span><span class="o">(</span><span class="s2">&quot;util&quot;</span><span class="o">,</span> <span class="s2">&quot;widget&quot;</span><span class="o">,</span> <span class="s2">&quot;example&quot;</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="s2">&quot;undefined&quot;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">YAHOO_config</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">var</span> <span class="nx">l</span><span class="o">=</span><span class="nx">YAHOO_config</span><span class="o">.</span><span class="nx">listener</span><span class="o">,</span><span class="nx">ls</span><span class="o">=</span><span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span><span class="o">.</span><span class="nx">listeners</span><span class="o">,</span><span class="nx">unique</span><span class="o">=</span><span class="kc">true</span><span class="o">,</span><span class="nx">i</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nx">l</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c">// if YAHOO is loaded multiple times we need to check to see if</span>
+<span class="c"></span>            <span class="c">// this is a new config object.  If it is, add the new component</span>
+<span class="c"></span>            <span class="c">// load listener to the stack</span>
+<span class="c"></span>            <span class="k">for</span> <span class="o">(</span><span class="nx">i</span><span class="o">=</span><span class="m">0</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">ls</span><span class="o">.</span><span class="nx">length</span><span class="o">;</span><span class="nx">i</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="nx">ls</span><span class="o">[</span><span class="nx">i</span><span class="o">]==</span><span class="nx">l</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="nx">unique</span><span class="o">=</span><span class="kc">false</span><span class="o">;</span>
+                    <span class="k">break</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="k">if</span> <span class="o">(</span><span class="nx">unique</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nx">ls</span><span class="o">.</span><span class="nx">push</span><span class="o">(</span><span class="nx">l</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">})();</span>
+<span class="c">/**</span>
+<span class="c"> * Provides the language utilites and extensions used by the library</span>
+<span class="c"> * @class YAHOO.lang</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">lang</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">lang</span> <span class="o">||</span> <span class="o">{};</span>
+
+<span class="o">(</span><span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+
+<span class="k">var</span> <span class="nx">L</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">lang</span><span class="o">,</span>
+
+    <span class="c">// ADD = [&quot;toString&quot;, &quot;valueOf&quot;, &quot;hasOwnProperty&quot;],</span>
+<span class="c"></span>    <span class="nx">ADD</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;toString&quot;</span><span class="o">,</span> <span class="s2">&quot;valueOf&quot;</span><span class="o">],</span>
+
+    <span class="nx">OB</span> <span class="o">=</span> <span class="o">{</span>
+
+    <span class="c">/**</span>
+<span class="c">     * Determines whether or not the provided object is an array.</span>
+<span class="c">     * Testing typeof/instanceof/constructor of arrays across frame </span>
+<span class="c">     * boundaries isn&#39;t possible in Safari unless you have a reference</span>
+<span class="c">     * to the other frame to test against its Array prototype.  To</span>
+<span class="c">     * handle this case, we test well-known array properties instead.</span>
+<span class="c">     * properties.</span>
+<span class="c">     * @method isArray</span>
+<span class="c">     * @param {any} o The object being testing</span>
+<span class="c">     * @return {boolean} the result</span>
+<span class="c">     */</span>
+    <span class="nx">isArray</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">o</span><span class="o">)</span> <span class="o">{</span> 
+        <span class="k">if</span> <span class="o">(</span><span class="nx">o</span><span class="o">)</span> <span class="o">{</span>
+           <span class="k">return</span> <span class="nx">L</span><span class="o">.</span><span class="nx">isNumber</span><span class="o">(</span><span class="nx">o</span><span class="o">.</span><span class="nx">length</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="nx">L</span><span class="o">.</span><span class="nx">isFunction</span><span class="o">(</span><span class="nx">o</span><span class="o">.</span><span class="nx">splice</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">},</span>
+
+    <span class="c">/**</span>
+<span class="c">     * Determines whether or not the provided object is a boolean</span>
+<span class="c">     * @method isBoolean</span>
+<span class="c">     * @param {any} o The object being testing</span>
+<span class="c">     * @return {boolean} the result</span>
+<span class="c">     */</span>
+    <span class="nx">isBoolean</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">o</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">typeof</span> <span class="nx">o</span> <span class="o">===</span> <span class="s1">&#39;boolean&#39;</span><span class="o">;</span>
+    <span class="o">},</span>
+    
+    <span class="c">/**</span>
+<span class="c">     * Determines whether or not the provided object is a function</span>
+<span class="c">     * @method isFunction</span>
+<span class="c">     * @param {any} o The object being testing</span>
+<span class="c">     * @return {boolean} the result</span>
+<span class="c">     */</span>
+    <span class="nx">isFunction</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">o</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">typeof</span> <span class="nx">o</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="o">;</span>
+    <span class="o">},</span>
+        
+    <span class="c">/**</span>
+<span class="c">     * Determines whether or not the provided object is null</span>
+<span class="c">     * @method isNull</span>
+<span class="c">     * @param {any} o The object being testing</span>
+<span class="c">     * @return {boolean} the result</span>
+<span class="c">     */</span>
+    <span class="nx">isNull</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">o</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nx">o</span> <span class="o">===</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">},</span>
+        
+    <span class="c">/**</span>
+<span class="c">     * Determines whether or not the provided object is a legal number</span>
+<span class="c">     * @method isNumber</span>
+<span class="c">     * @param {any} o The object being testing</span>
+<span class="c">     * @return {boolean} the result</span>
+<span class="c">     */</span>
+    <span class="nx">isNumber</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">o</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">typeof</span> <span class="nx">o</span> <span class="o">===</span> <span class="s1">&#39;number&#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">isFinite</span><span class="o">(</span><span class="nx">o</span><span class="o">);</span>
+    <span class="o">},</span>
+      
+    <span class="c">/**</span>
+<span class="c">     * Determines whether or not the provided object is of type object</span>
+<span class="c">     * or function</span>
+<span class="c">     * @method isObject</span>
+<span class="c">     * @param {any} o The object being testing</span>
+<span class="c">     * @return {boolean} the result</span>
+<span class="c">     */</span>  
+    <span class="nx">isObject</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">o</span><span class="o">)</span> <span class="o">{</span>
+<span class="k">return</span> <span class="o">(</span><span class="nx">o</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="k">typeof</span> <span class="nx">o</span> <span class="o">===</span> <span class="s1">&#39;object&#39;</span> <span class="o">||</span> <span class="nx">L</span><span class="o">.</span><span class="nx">isFunction</span><span class="o">(</span><span class="nx">o</span><span class="o">)))</span> <span class="o">||</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">},</span>
+        
+    <span class="c">/**</span>
+<span class="c">     * Determines whether or not the provided object is a string</span>
+<span class="c">     * @method isString</span>
+<span class="c">     * @param {any} o The object being testing</span>
+<span class="c">     * @return {boolean} the result</span>
+<span class="c">     */</span>
+    <span class="nx">isString</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">o</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">typeof</span> <span class="nx">o</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span><span class="o">;</span>
+    <span class="o">},</span>
+        
+    <span class="c">/**</span>
+<span class="c">     * Determines whether or not the provided object is undefined</span>
+<span class="c">     * @method isUndefined</span>
+<span class="c">     * @param {any} o The object being testing</span>
+<span class="c">     * @return {boolean} the result</span>
+<span class="c">     */</span>
+    <span class="nx">isUndefined</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">o</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">typeof</span> <span class="nx">o</span> <span class="o">===</span> <span class="s1">&#39;undefined&#39;</span><span class="o">;</span>
+    <span class="o">},</span>
+    
+ 
+    <span class="c">/**</span>
+<span class="c">     * IE will not enumerate native functions in a derived object even if the</span>
+<span class="c">     * function was overridden.  This is a workaround for specific functions </span>
+<span class="c">     * we care about on the Object prototype. </span>
+<span class="c">     * @property _IEEnumFix</span>
+<span class="c">     * @param {Function} r  the object to receive the augmentation</span>
+<span class="c">     * @param {Function} s  the object that supplies the properties to augment</span>
+<span class="c">     * @static</span>
+<span class="c">     * @private</span>
+<span class="c">     */</span>
+    <span class="nx">_IEEnumFix</span><span class="o">:</span> <span class="o">(</span><span class="nx">YAHOO</span><span class="o">.</span><span class="nx">env</span><span class="o">.</span><span class="nx">ua</span><span class="o">.</span><span class="nx">ie</span><span class="o">)</span> <span class="o">?</span> <span class="k">function</span><span class="o">(</span><span class="nx">r</span><span class="o">,</span> <span class="nx">s</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">for</span> <span class="o">(</span><span class="k">var</span> <span class="nx">i</span><span class="o">=</span><span class="m">0</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">ADD</span><span class="o">.</span><span class="nx">length</span><span class="o">;</span><span class="nx">i</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">var</span> <span class="nx">fname</span><span class="o">=</span><span class="nx">ADD</span><span class="o">[</span><span class="nx">i</span><span class="o">],</span><span class="nx">f</span><span class="o">=</span><span class="nx">s</span><span class="o">[</span><span class="nx">fname</span><span class="o">];</span>
+                <span class="k">if</span> <span class="o">(</span><span class="nx">L</span><span class="o">.</span><span class="nx">isFunction</span><span class="o">(</span><span class="nx">f</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="nx">f</span><span class="o">!=</span><span class="nb">Object</span><span class="o">.</span><span class="nx">prototype</span><span class="o">[</span><span class="nx">fname</span><span class="o">])</span> <span class="o">{</span>
+                    <span class="nx">r</span><span class="o">[</span><span class="nx">fname</span><span class="o">]=</span><span class="nx">f</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+    <span class="o">}</span> <span class="o">:</span> <span class="k">function</span><span class="o">(){},</span>
+       
+    <span class="c">/**</span>
+<span class="c">     * Utility to set up the prototype, constructor and superclass properties to</span>
+<span class="c">     * support an inheritance strategy that can chain constructors and methods.</span>
+<span class="c">     * Static members will not be inherited.</span>
+<span class="c">     *</span>
+<span class="c">     * @method extend</span>
+<span class="c">     * @static</span>
+<span class="c">     * @param {Function} subc   the object to modify</span>
+<span class="c">     * @param {Function} superc the object to inherit</span>
+<span class="c">     * @param {Object} overrides  additional properties/methods to add to the</span>
+<span class="c">     *                              subclass prototype.  These will override the</span>
+<span class="c">     *                              matching items obtained from the superclass </span>
+<span class="c">     *                              if present.</span>
+<span class="c">     */</span>
+    <span class="nx">extend</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">subc</span><span class="o">,</span> <span class="nx">superc</span><span class="o">,</span> <span class="nx">overrides</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="nx">superc</span><span class="o">||!</span><span class="nx">subc</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="o">(</span><span class="s2">&quot;extend failed, please check that &quot;</span> <span class="o">+</span>
+                            <span class="s2">&quot;all dependencies are included.&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">var</span> <span class="nx">F</span> <span class="o">=</span> <span class="k">function</span><span class="o">()</span> <span class="o">{};</span>
+        <span class="nx">F</span><span class="o">.</span><span class="nx">prototype</span><span class="o">=</span><span class="nx">superc</span><span class="o">.</span><span class="nx">prototype</span><span class="o">;</span>
+        <span class="nx">subc</span><span class="o">.</span><span class="nx">prototype</span><span class="o">=</span><span class="k">new</span> <span class="nx">F</span><span class="o">();</span>
+        <span class="nx">subc</span><span class="o">.</span><span class="nx">prototype</span><span class="o">.</span><span class="nx">constructor</span><span class="o">=</span><span class="nx">subc</span><span class="o">;</span>
+        <span class="nx">subc</span><span class="o">.</span><span class="nx">superclass</span><span class="o">=</span><span class="nx">superc</span><span class="o">.</span><span class="nx">prototype</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nx">superc</span><span class="o">.</span><span class="nx">prototype</span><span class="o">.</span><span class="nx">constructor</span> <span class="o">==</span> <span class="nb">Object</span><span class="o">.</span><span class="nx">prototype</span><span class="o">.</span><span class="nx">constructor</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">superc</span><span class="o">.</span><span class="nx">prototype</span><span class="o">.</span><span class="nx">constructor</span><span class="o">=</span><span class="nx">superc</span><span class="o">;</span>
+        <span class="o">}</span>
+    
+        <span class="k">if</span> <span class="o">(</span><span class="nx">overrides</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">for</span> <span class="o">(</span><span class="k">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">overrides</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="nx">L</span><span class="o">.</span><span class="nx">hasOwnProperty</span><span class="o">(</span><span class="nx">overrides</span><span class="o">,</span> <span class="nx">i</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="nx">subc</span><span class="o">.</span><span class="nx">prototype</span><span class="o">[</span><span class="nx">i</span><span class="o">]=</span><span class="nx">overrides</span><span class="o">[</span><span class="nx">i</span><span class="o">];</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+
+            <span class="nx">L</span><span class="o">.</span><span class="nx">_IEEnumFix</span><span class="o">(</span><span class="nx">subc</span><span class="o">.</span><span class="nx">prototype</span><span class="o">,</span> <span class="nx">overrides</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">},</span>
+   
+    <span class="c">/**</span>
+<span class="c">     * Applies all properties in the supplier to the receiver if the</span>
+<span class="c">     * receiver does not have these properties yet.  Optionally, one or </span>
+<span class="c">     * more methods/properties can be specified (as additional </span>
+<span class="c">     * parameters).  This option will overwrite the property if receiver </span>
+<span class="c">     * has it already.  If true is passed as the third parameter, all </span>
+<span class="c">     * properties will be applied and _will_ overwrite properties in </span>
+<span class="c">     * the receiver.</span>
+<span class="c">     *</span>
+<span class="c">     * @method augmentObject</span>
+<span class="c">     * @static</span>
+<span class="c">     * @since 2.3.0</span>
+<span class="c">     * @param {Function} r  the object to receive the augmentation</span>
+<span class="c">     * @param {Function} s  the object that supplies the properties to augment</span>
+<span class="c">     * @param {String*|boolean}  arguments zero or more properties methods </span>
+<span class="c">     *        to augment the receiver with.  If none specified, everything</span>
+<span class="c">     *        in the supplier will be used unless it would</span>
+<span class="c">     *        overwrite an existing property in the receiver. If true</span>
+<span class="c">     *        is specified as the third parameter, all properties will</span>
+<span class="c">     *        be applied and will overwrite an existing property in</span>
+<span class="c">     *        the receiver</span>
+<span class="c">     */</span>
+    <span class="nx">augmentObject</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">r</span><span class="o">,</span> <span class="nx">s</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="nx">s</span><span class="o">||!</span><span class="nx">r</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="o">(</span><span class="s2">&quot;Absorb failed, verify dependencies.&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">var</span> <span class="nx">a</span><span class="o">=</span><span class="nx">arguments</span><span class="o">,</span> <span class="nx">i</span><span class="o">,</span> <span class="nx">p</span><span class="o">,</span> <span class="nx">override</span><span class="o">=</span><span class="nx">a</span><span class="o">[</span><span class="m">2</span><span class="o">];</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nx">override</span> <span class="o">&amp;&amp;</span> <span class="nx">override</span><span class="o">!==</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span> <span class="c">// only absorb the specified properties</span>
+<span class="c"></span>            <span class="k">for</span> <span class="o">(</span><span class="nx">i</span><span class="o">=</span><span class="m">2</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">a</span><span class="o">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nx">r</span><span class="o">[</span><span class="nx">a</span><span class="o">[</span><span class="nx">i</span><span class="o">]]</span> <span class="o">=</span> <span class="nx">s</span><span class="o">[</span><span class="nx">a</span><span class="o">[</span><span class="nx">i</span><span class="o">]];</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span> <span class="c">// take everything, overwriting only if the third parameter is true</span>
+<span class="c"></span>            <span class="k">for</span> <span class="o">(</span><span class="nx">p</span> <span class="k">in</span> <span class="nx">s</span><span class="o">)</span> <span class="o">{</span> 
+                <span class="k">if</span> <span class="o">(</span><span class="nx">override</span> <span class="o">||</span> <span class="o">!(</span><span class="nx">p</span> <span class="k">in</span> <span class="nx">r</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="nx">r</span><span class="o">[</span><span class="nx">p</span><span class="o">]</span> <span class="o">=</span> <span class="nx">s</span><span class="o">[</span><span class="nx">p</span><span class="o">];</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            
+            <span class="nx">L</span><span class="o">.</span><span class="nx">_IEEnumFix</span><span class="o">(</span><span class="nx">r</span><span class="o">,</span> <span class="nx">s</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">},</span>
+ 
+    <span class="c">/**</span>
+<span class="c">     * Same as YAHOO.lang.augmentObject, except it only applies prototype properties</span>
+<span class="c">     * @see YAHOO.lang.augmentObject</span>
+<span class="c">     * @method augmentProto</span>
+<span class="c">     * @static</span>
+<span class="c">     * @param {Function} r  the object to receive the augmentation</span>
+<span class="c">     * @param {Function} s  the object that supplies the properties to augment</span>
+<span class="c">     * @param {String*|boolean}  arguments zero or more properties methods </span>
+<span class="c">     *        to augment the receiver with.  If none specified, everything </span>
+<span class="c">     *        in the supplier will be used unless it would overwrite an existing </span>
+<span class="c">     *        property in the receiver.  if true is specified as the third </span>
+<span class="c">     *        parameter, all properties will be applied and will overwrite an </span>
+<span class="c">     *        existing property in the receiver</span>
+<span class="c">     */</span>
+    <span class="nx">augmentProto</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">r</span><span class="o">,</span> <span class="nx">s</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="nx">s</span><span class="o">||!</span><span class="nx">r</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="o">(</span><span class="s2">&quot;Augment failed, verify dependencies.&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="c">//var a=[].concat(arguments);</span>
+<span class="c"></span>        <span class="k">var</span> <span class="nx">a</span><span class="o">=[</span><span class="nx">r</span><span class="o">.</span><span class="nx">prototype</span><span class="o">,</span><span class="nx">s</span><span class="o">.</span><span class="nx">prototype</span><span class="o">];</span>
+        <span class="k">for</span> <span class="o">(</span><span class="k">var</span> <span class="nx">i</span><span class="o">=</span><span class="m">2</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">arguments</span><span class="o">.</span><span class="nx">length</span><span class="o">;</span><span class="nx">i</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">a</span><span class="o">.</span><span class="nx">push</span><span class="o">(</span><span class="nx">arguments</span><span class="o">[</span><span class="nx">i</span><span class="o">]);</span>
+        <span class="o">}</span>
+        <span class="nx">L</span><span class="o">.</span><span class="nx">augmentObject</span><span class="o">.</span><span class="nx">apply</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">a</span><span class="o">);</span>
+    <span class="o">},</span>
+
+      
+    <span class="c">/**</span>
+<span class="c">     * Returns a simple string representation of the object or array.</span>
+<span class="c">     * Other types of objects will be returned unprocessed.  Arrays</span>
+<span class="c">     * are expected to be indexed.  Use object notation for</span>
+<span class="c">     * associative arrays.</span>
+<span class="c">     * @method dump</span>
+<span class="c">     * @since 2.3.0</span>
+<span class="c">     * @param o {Object} The object to dump</span>
+<span class="c">     * @param d {int} How deep to recurse child objects, default 3</span>
+<span class="c">     * @return {String} the dump result</span>
+<span class="c">     */</span>
+    <span class="nx">dump</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">d</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">var</span> <span class="nx">i</span><span class="o">,</span><span class="nx">len</span><span class="o">,</span><span class="nx">s</span><span class="o">=[],</span><span class="nx">OBJ</span><span class="o">=</span><span class="s2">&quot;{...}&quot;</span><span class="o">,</span><span class="nx">FUN</span><span class="o">=</span><span class="s2">&quot;f(){...}&quot;</span><span class="o">,</span>
+            <span class="nx">COMMA</span><span class="o">=</span><span class="s1">&#39;, &#39;</span><span class="o">,</span> <span class="nx">ARROW</span><span class="o">=</span><span class="s1">&#39; =&gt; &#39;</span><span class="o">;</span>
+
+        <span class="c">// Cast non-objects to string</span>
+<span class="c"></span>        <span class="c">// Skip dates because the std toString is what we want</span>
+<span class="c"></span>        <span class="c">// Skip HTMLElement-like objects because trying to dump </span>
+<span class="c"></span>        <span class="c">// an element will cause an unhandled exception in FF 2.x</span>
+<span class="c"></span>        <span class="k">if</span> <span class="o">(!</span><span class="nx">L</span><span class="o">.</span><span class="nx">isObject</span><span class="o">(</span><span class="nx">o</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nx">o</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="nx">o</span> <span class="k">instanceof</span> <span class="nb">Date</span> <span class="o">||</span> <span class="o">(</span><span class="s2">&quot;nodeType&quot;</span> <span class="k">in</span> <span class="nx">o</span> <span class="o">&amp;&amp;</span> <span class="s2">&quot;tagName&quot;</span> <span class="k">in</span> <span class="nx">o</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nx">o</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span>  <span class="o">(</span><span class="nx">L</span><span class="o">.</span><span class="nx">isFunction</span><span class="o">(</span><span class="nx">o</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nx">FUN</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="c">// dig into child objects the depth specifed. Default 3</span>
+<span class="c"></span>        <span class="nx">d</span> <span class="o">=</span> <span class="o">(</span><span class="nx">L</span><span class="o">.</span><span class="nx">isNumber</span><span class="o">(</span><span class="nx">d</span><span class="o">))</span> <span class="o">?</span> <span class="nx">d</span> <span class="o">:</span> <span class="m">3</span><span class="o">;</span>
+
+        <span class="c">// arrays [1, 2, 3]</span>
+<span class="c"></span>        <span class="k">if</span> <span class="o">(</span><span class="nx">L</span><span class="o">.</span><span class="nx">isArray</span><span class="o">(</span><span class="nx">o</span><span class="o">))</span> <span class="o">{</span>
+            <span class="nx">s</span><span class="o">.</span><span class="nx">push</span><span class="o">(</span><span class="s2">&quot;[&quot;</span><span class="o">);</span>
+            <span class="k">for</span> <span class="o">(</span><span class="nx">i</span><span class="o">=</span><span class="m">0</span><span class="o">,</span><span class="nx">len</span><span class="o">=</span><span class="nx">o</span><span class="o">.</span><span class="nx">length</span><span class="o">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">len</span><span class="o">;</span><span class="nx">i</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="nx">L</span><span class="o">.</span><span class="nx">isObject</span><span class="o">(</span><span class="nx">o</span><span class="o">[</span><span class="nx">i</span><span class="o">]))</span> <span class="o">{</span>
+                    <span class="nx">s</span><span class="o">.</span><span class="nx">push</span><span class="o">((</span><span class="nx">d</span> <span class="o">&gt;</span> <span class="m">0</span><span class="o">)</span> <span class="o">?</span> <span class="nx">L</span><span class="o">.</span><span class="nx">dump</span><span class="o">(</span><span class="nx">o</span><span class="o">[</span><span class="nx">i</span><span class="o">],</span> <span class="nx">d</span><span class="o">-</span><span class="m">1</span><span class="o">)</span> <span class="o">:</span> <span class="nx">OBJ</span><span class="o">);</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="nx">s</span><span class="o">.</span><span class="nx">push</span><span class="o">(</span><span class="nx">o</span><span class="o">[</span><span class="nx">i</span><span class="o">]);</span>
+                <span class="o">}</span>
+                <span class="nx">s</span><span class="o">.</span><span class="nx">push</span><span class="o">(</span><span class="nx">COMMA</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="k">if</span> <span class="o">(</span><span class="nx">s</span><span class="o">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nx">s</span><span class="o">.</span><span class="nx">pop</span><span class="o">();</span>
+            <span class="o">}</span>
+            <span class="nx">s</span><span class="o">.</span><span class="nx">push</span><span class="o">(</span><span class="s2">&quot;]&quot;</span><span class="o">);</span>
+        <span class="c">// objects {k1 =&gt; v1, k2 =&gt; v2}</span>
+<span class="c"></span>        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="nx">s</span><span class="o">.</span><span class="nx">push</span><span class="o">(</span><span class="s2">&quot;{&quot;</span><span class="o">);</span>
+            <span class="k">for</span> <span class="o">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">o</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="nx">L</span><span class="o">.</span><span class="nx">hasOwnProperty</span><span class="o">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">i</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="nx">s</span><span class="o">.</span><span class="nx">push</span><span class="o">(</span><span class="nx">i</span> <span class="o">+</span> <span class="nx">ARROW</span><span class="o">);</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="nx">L</span><span class="o">.</span><span class="nx">isObject</span><span class="o">(</span><span class="nx">o</span><span class="o">[</span><span class="nx">i</span><span class="o">]))</span> <span class="o">{</span>
+                        <span class="nx">s</span><span class="o">.</span><span class="nx">push</span><span class="o">((</span><span class="nx">d</span> <span class="o">&gt;</span> <span class="m">0</span><span class="o">)</span> <span class="o">?</span> <span class="nx">L</span><span class="o">.</span><span class="nx">dump</span><span class="o">(</span><span class="nx">o</span><span class="o">[</span><span class="nx">i</span><span class="o">],</span> <span class="nx">d</span><span class="o">-</span><span class="m">1</span><span class="o">)</span> <span class="o">:</span> <span class="nx">OBJ</span><span class="o">);</span>
+                    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                        <span class="nx">s</span><span class="o">.</span><span class="nx">push</span><span class="o">(</span><span class="nx">o</span><span class="o">[</span><span class="nx">i</span><span class="o">]);</span>
+                    <span class="o">}</span>
+                    <span class="nx">s</span><span class="o">.</span><span class="nx">push</span><span class="o">(</span><span class="nx">COMMA</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="k">if</span> <span class="o">(</span><span class="nx">s</span><span class="o">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nx">s</span><span class="o">.</span><span class="nx">pop</span><span class="o">();</span>
+            <span class="o">}</span>
+            <span class="nx">s</span><span class="o">.</span><span class="nx">push</span><span class="o">(</span><span class="s2">&quot;}&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="nx">s</span><span class="o">.</span><span class="nx">join</span><span class="o">(</span><span class="s2">&quot;&quot;</span><span class="o">);</span>
+    <span class="o">},</span>
+
+    <span class="c">/**</span>
+<span class="c">     * Does variable substitution on a string. It scans through the string </span>
+<span class="c">     * looking for expressions enclosed in { } braces. If an expression </span>
+<span class="c">     * is found, it is used a key on the object.  If there is a space in</span>
+<span class="c">     * the key, the first word is used for the key and the rest is provided</span>
+<span class="c">     * to an optional function to be used to programatically determine the</span>
+<span class="c">     * value (the extra information might be used for this decision). If </span>
+<span class="c">     * the value for the key in the object, or what is returned from the</span>
+<span class="c">     * function has a string value, number value, or object value, it is </span>
+<span class="c">     * substituted for the bracket expression and it repeats.  If this</span>
+<span class="c">     * value is an object, it uses the Object&#39;s toString() if this has</span>
+<span class="c">     * been overridden, otherwise it does a shallow dump of the key/value</span>
+<span class="c">     * pairs.</span>
+<span class="c">     * @method substitute</span>
+<span class="c">     * @since 2.3.0</span>
+<span class="c">     * @param s {String} The string that will be modified.</span>
+<span class="c">     * @param o {Object} An object containing the replacement values</span>
+<span class="c">     * @param f {Function} An optional function that can be used to</span>
+<span class="c">     *                     process each match.  It receives the key,</span>
+<span class="c">     *                     value, and any extra metadata included with</span>
+<span class="c">     *                     the key inside of the braces.</span>
+<span class="c">     * @return {String} the substituted string</span>
+<span class="c">     */</span>
+    <span class="nx">substitute</span><span class="o">:</span> <span class="k">function</span> <span class="o">(</span><span class="nx">s</span><span class="o">,</span> <span class="nx">o</span><span class="o">,</span> <span class="nx">f</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">var</span> <span class="nx">i</span><span class="o">,</span> <span class="nx">j</span><span class="o">,</span> <span class="nx">k</span><span class="o">,</span> <span class="nx">key</span><span class="o">,</span> <span class="nx">v</span><span class="o">,</span> <span class="nx">meta</span><span class="o">,</span> <span class="nx">saved</span><span class="o">=[],</span> <span class="nx">token</span><span class="o">,</span> 
+            <span class="nx">DUMP</span><span class="o">=</span><span class="s1">&#39;dump&#39;</span><span class="o">,</span> <span class="nx">SPACE</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="o">,</span> <span class="nx">LBRACE</span><span class="o">=</span><span class="s1">&#39;{&#39;</span><span class="o">,</span> <span class="nx">RBRACE</span><span class="o">=</span><span class="s1">&#39;}&#39;</span><span class="o">;</span>
+
+
+        <span class="k">for</span> <span class="o">(;;)</span> <span class="o">{</span>
+            <span class="nx">i</span> <span class="o">=</span> <span class="nx">s</span><span class="o">.</span><span class="nx">lastIndexOf</span><span class="o">(</span><span class="nx">LBRACE</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="nx">i</span> <span class="o">&lt;</span> <span class="m">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="nx">j</span> <span class="o">=</span> <span class="nx">s</span><span class="o">.</span><span class="nx">indexOf</span><span class="o">(</span><span class="nx">RBRACE</span><span class="o">,</span> <span class="nx">i</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="nx">i</span> <span class="o">+</span> <span class="m">1</span> <span class="o">&gt;=</span> <span class="nx">j</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span>
+
+            <span class="c">//Extract key and meta info </span>
+<span class="c"></span>            <span class="nx">token</span> <span class="o">=</span> <span class="nx">s</span><span class="o">.</span><span class="nx">substring</span><span class="o">(</span><span class="nx">i</span> <span class="o">+</span> <span class="m">1</span><span class="o">,</span> <span class="nx">j</span><span class="o">);</span>
+            <span class="nx">key</span> <span class="o">=</span> <span class="nx">token</span><span class="o">;</span>
+            <span class="nx">meta</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="nx">k</span> <span class="o">=</span> <span class="nx">key</span><span class="o">.</span><span class="nx">indexOf</span><span class="o">(</span><span class="nx">SPACE</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="nx">k</span> <span class="o">&gt;</span> <span class="o">-</span><span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nx">meta</span> <span class="o">=</span> <span class="nx">key</span><span class="o">.</span><span class="nx">substring</span><span class="o">(</span><span class="nx">k</span> <span class="o">+</span> <span class="m">1</span><span class="o">);</span>
+                <span class="nx">key</span> <span class="o">=</span> <span class="nx">key</span><span class="o">.</span><span class="nx">substring</span><span class="o">(</span><span class="m">0</span><span class="o">,</span> <span class="nx">k</span><span class="o">);</span>
+            <span class="o">}</span>
+
+            <span class="c">// lookup the value</span>
+<span class="c"></span>            <span class="nx">v</span> <span class="o">=</span> <span class="nx">o</span><span class="o">[</span><span class="nx">key</span><span class="o">];</span>
+
+            <span class="c">// if a substitution function was provided, execute it</span>
+<span class="c"></span>            <span class="k">if</span> <span class="o">(</span><span class="nx">f</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nx">v</span> <span class="o">=</span> <span class="nx">f</span><span class="o">(</span><span class="nx">key</span><span class="o">,</span> <span class="nx">v</span><span class="o">,</span> <span class="nx">meta</span><span class="o">);</span>
+            <span class="o">}</span>
+
+            <span class="k">if</span> <span class="o">(</span><span class="nx">L</span><span class="o">.</span><span class="nx">isObject</span><span class="o">(</span><span class="nx">v</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="nx">L</span><span class="o">.</span><span class="nx">isArray</span><span class="o">(</span><span class="nx">v</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="nx">v</span> <span class="o">=</span> <span class="nx">L</span><span class="o">.</span><span class="nx">dump</span><span class="o">(</span><span class="nx">v</span><span class="o">,</span> <span class="nb">parseInt</span><span class="o">(</span><span class="nx">meta</span><span class="o">,</span> <span class="m">10</span><span class="o">));</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="nx">meta</span> <span class="o">=</span> <span class="nx">meta</span> <span class="o">||</span> <span class="s2">&quot;&quot;</span><span class="o">;</span>
+
+                    <span class="c">// look for the keyword &#39;dump&#39;, if found force obj dump</span>
+<span class="c"></span>                    <span class="k">var</span> <span class="nx">dump</span> <span class="o">=</span> <span class="nx">meta</span><span class="o">.</span><span class="nx">indexOf</span><span class="o">(</span><span class="nx">DUMP</span><span class="o">);</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="nx">dump</span> <span class="o">&gt;</span> <span class="o">-</span><span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="nx">meta</span> <span class="o">=</span> <span class="nx">meta</span><span class="o">.</span><span class="nx">substring</span><span class="o">(</span><span class="m">4</span><span class="o">);</span>
+                    <span class="o">}</span>
+
+                    <span class="c">// use the toString if it is not the Object toString </span>
+<span class="c"></span>                    <span class="c">// and the &#39;dump&#39; meta info was not found</span>
+<span class="c"></span>                    <span class="k">if</span> <span class="o">(</span><span class="nx">v</span><span class="o">.</span><span class="nx">toString</span><span class="o">===</span><span class="nb">Object</span><span class="o">.</span><span class="nx">prototype</span><span class="o">.</span><span class="nx">toString</span><span class="o">||</span><span class="nx">dump</span><span class="o">&gt;-</span><span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="nx">v</span> <span class="o">=</span> <span class="nx">L</span><span class="o">.</span><span class="nx">dump</span><span class="o">(</span><span class="nx">v</span><span class="o">,</span> <span class="nb">parseInt</span><span class="o">(</span><span class="nx">meta</span><span class="o">,</span> <span class="m">10</span><span class="o">));</span>
+                    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                        <span class="nx">v</span> <span class="o">=</span> <span class="nx">v</span><span class="o">.</span><span class="nx">toString</span><span class="o">();</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(!</span><span class="nx">L</span><span class="o">.</span><span class="nx">isString</span><span class="o">(</span><span class="nx">v</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">L</span><span class="o">.</span><span class="nx">isNumber</span><span class="o">(</span><span class="nx">v</span><span class="o">))</span> <span class="o">{</span>
+                <span class="c">// This {block} has no replace string. Save it for later.</span>
+<span class="c"></span>                <span class="nx">v</span> <span class="o">=</span> <span class="s2">&quot;~-&quot;</span> <span class="o">+</span> <span class="nx">saved</span><span class="o">.</span><span class="nx">length</span> <span class="o">+</span> <span class="s2">&quot;-~&quot;</span><span class="o">;</span>
+                <span class="nx">saved</span><span class="o">[</span><span class="nx">saved</span><span class="o">.</span><span class="nx">length</span><span class="o">]</span> <span class="o">=</span> <span class="nx">token</span><span class="o">;</span>
+
+                <span class="c">// break;</span>
+<span class="c"></span>            <span class="o">}</span>
+
+            <span class="nx">s</span> <span class="o">=</span> <span class="nx">s</span><span class="o">.</span><span class="nx">substring</span><span class="o">(</span><span class="m">0</span><span class="o">,</span> <span class="nx">i</span><span class="o">)</span> <span class="o">+</span> <span class="nx">v</span> <span class="o">+</span> <span class="nx">s</span><span class="o">.</span><span class="nx">substring</span><span class="o">(</span><span class="nx">j</span> <span class="o">+</span> <span class="m">1</span><span class="o">);</span>
+
+
+        <span class="o">}</span>
+
+        <span class="c">// restore saved {block}s</span>
+<span class="c"></span>        <span class="k">for</span> <span class="o">(</span><span class="nx">i</span><span class="o">=</span><span class="nx">saved</span><span class="o">.</span><span class="nx">length</span><span class="o">-</span><span class="m">1</span><span class="o">;</span> <span class="nx">i</span><span class="o">&gt;=</span><span class="m">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">=</span><span class="nx">i</span><span class="o">-</span><span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">s</span> <span class="o">=</span> <span class="nx">s</span><span class="o">.</span><span class="nx">replace</span><span class="o">(</span><span class="k">new</span> <span class="nb">RegExp</span><span class="o">(</span><span class="s2">&quot;~-&quot;</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">+</span> <span class="s2">&quot;-~&quot;</span><span class="o">),</span> <span class="s2">&quot;{&quot;</span>  <span class="o">+</span> <span class="nx">saved</span><span class="o">[</span><span class="nx">i</span><span class="o">]</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span><span class="o">,</span> <span class="s2">&quot;g&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="nx">s</span><span class="o">;</span>
+    <span class="o">},</span>
+
+
+    <span class="c">/**</span>
+<span class="c">     * Returns a string without any leading or trailing whitespace.  If </span>
+<span class="c">     * the input is not a string, the input will be returned untouched.</span>
+<span class="c">     * @method trim</span>
+<span class="c">     * @since 2.3.0</span>
+<span class="c">     * @param s {string} the string to trim</span>
+<span class="c">     * @return {string} the trimmed string</span>
+<span class="c">     */</span>
+    <span class="nx">trim</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">s</span><span class="o">){</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nx">s</span><span class="o">.</span><span class="nx">replace</span><span class="o">(</span><span class="sr">/^\s+|\s+$/g</span><span class="o">,</span> <span class="s2">&quot;&quot;</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="nx">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nx">s</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">},</span>
+
+    <span class="c">/**</span>
+<span class="c">     * Returns a new object containing all of the properties of</span>
+<span class="c">     * all the supplied objects.  The properties from later objects</span>
+<span class="c">     * will overwrite those in earlier objects.</span>
+<span class="c">     * @method merge</span>
+<span class="c">     * @since 2.3.0</span>
+<span class="c">     * @param arguments {Object*} the objects to merge</span>
+<span class="c">     * @return the new merged object</span>
+<span class="c">     */</span>
+    <span class="nx">merge</span><span class="o">:</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">var</span> <span class="nx">o</span><span class="o">={},</span> <span class="nx">a</span><span class="o">=</span><span class="nx">arguments</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="k">var</span> <span class="nx">i</span><span class="o">=</span><span class="m">0</span><span class="o">,</span> <span class="nx">l</span><span class="o">=</span><span class="nx">a</span><span class="o">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">l</span><span class="o">;</span> <span class="nx">i</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="m">1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nx">L</span><span class="o">.</span><span class="nx">augmentObject</span><span class="o">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">a</span><span class="o">[</span><span class="nx">i</span><span class="o">],</span> <span class="kc">true</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="nx">o</span><span class="o">;</span>
+    <span class="o">},</span>
+
+    <span class="c">/**</span>
+<span class="c">     * Executes the supplied function in the context of the supplied </span>
+<span class="c">     * object &#39;when&#39; milliseconds later.  Executes the function a </span>
+<span class="c">     * single time unless periodic is set to true.</span>
+<span class="c">     * @method later</span>
+<span class="c">     * @since 2.4.0</span>
+<span class="c">     * @param when {int} the number of milliseconds to wait until the fn </span>
+<span class="c">     * is executed</span>
+<span class="c">     * @param o the context object</span>
+<span class="c">     * @param fn {Function|String} the function to execute or the name of </span>
+<span class="c">     * the method in the &#39;o&#39; object to execute</span>
+<span class="c">     * @param data [Array] data that is provided to the function.  This accepts</span>
+<span class="c">     * either a single item or an array.  If an array is provided, the</span>
+<span class="c">     * function is executed with one parameter for each array item.  If</span>
+<span class="c">     * you need to pass a single array parameter, it needs to be wrapped in</span>
+<span class="c">     * an array [myarray]</span>
+<span class="c">     * @param periodic {boolean} if true, executes continuously at supplied </span>
+<span class="c">     * interval until canceled</span>
+<span class="c">     * @return a timer object. Call the cancel() method on this object to </span>
+<span class="c">     * stop the timer.</span>
+<span class="c">     */</span>
+    <span class="nx">later</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">when</span><span class="o">,</span> <span class="nx">o</span><span class="o">,</span> <span class="nx">fn</span><span class="o">,</span> <span class="nx">data</span><span class="o">,</span> <span class="nx">periodic</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nx">when</span> <span class="o">=</span> <span class="nx">when</span> <span class="o">||</span> <span class="m">0</span><span class="o">;</span> 
+        <span class="nx">o</span> <span class="o">=</span> <span class="nx">o</span> <span class="o">||</span> <span class="o">{};</span>
+        <span class="k">var</span> <span class="nx">m</span><span class="o">=</span><span class="nx">fn</span><span class="o">,</span> <span class="nx">d</span><span class="o">=</span><span class="nx">data</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">r</span><span class="o">;</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="nx">L</span><span class="o">.</span><span class="nx">isString</span><span class="o">(</span><span class="nx">fn</span><span class="o">))</span> <span class="o">{</span>
+            <span class="nx">m</span> <span class="o">=</span> <span class="nx">o</span><span class="o">[</span><span class="nx">fn</span><span class="o">];</span>
+        <span class="o">}</span>
+
+        <span class="k">if</span> <span class="o">(!</span><span class="nx">m</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="o">(</span><span class="s2">&quot;method undefined&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">if</span> <span class="o">(!</span><span class="nx">L</span><span class="o">.</span><span class="nx">isArray</span><span class="o">(</span><span class="nx">d</span><span class="o">))</span> <span class="o">{</span>
+            <span class="nx">d</span> <span class="o">=</span> <span class="o">[</span><span class="nx">data</span><span class="o">];</span>
+        <span class="o">}</span>
+
+        <span class="nx">f</span> <span class="o">=</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nx">m</span><span class="o">.</span><span class="nx">apply</span><span class="o">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">d</span><span class="o">);</span>
+        <span class="o">};</span>
+
+        <span class="nx">r</span> <span class="o">=</span> <span class="o">(</span><span class="nx">periodic</span><span class="o">)</span> <span class="o">?</span> <span class="nx">setInterval</span><span class="o">(</span><span class="nx">f</span><span class="o">,</span> <span class="nx">when</span><span class="o">)</span> <span class="o">:</span> <span class="nx">setTimeout</span><span class="o">(</span><span class="nx">f</span><span class="o">,</span> <span class="nx">when</span><span class="o">);</span>
+
+        <span class="k">return</span> <span class="o">{</span>
+            <span class="nx">interval</span><span class="o">:</span> <span class="nx">periodic</span><span class="o">,</span>
+            <span class="nx">cancel</span><span class="o">:</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="nx">interval</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="nx">clearInterval</span><span class="o">(</span><span class="nx">r</span><span class="o">);</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="nx">clearTimeout</span><span class="o">(</span><span class="nx">r</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">};</span>
+    <span class="o">},</span>
+    
+    <span class="c">/**</span>
+<span class="c">     * A convenience method for detecting a legitimate non-null value.</span>
+<span class="c">     * Returns false for null/undefined/NaN, true for other values, </span>
+<span class="c">     * including 0/false/&#39;&#39;</span>
+<span class="c">     * @method isValue</span>
+<span class="c">     * @since 2.3.0</span>
+<span class="c">     * @param o {any} the item to test</span>
+<span class="c">     * @return {boolean} true if it is not null/undefined/NaN || false</span>
+<span class="c">     */</span>
+    <span class="nx">isValue</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">o</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c">// return (o || o === false || o === 0 || o === &#39;&#39;); // Infinity fails</span>
+<span class="c"></span><span class="k">return</span> <span class="o">(</span><span class="nx">L</span><span class="o">.</span><span class="nx">isObject</span><span class="o">(</span><span class="nx">o</span><span class="o">)</span> <span class="o">||</span> <span class="nx">L</span><span class="o">.</span><span class="nx">isString</span><span class="o">(</span><span class="nx">o</span><span class="o">)</span> <span class="o">||</span> <span class="nx">L</span><span class="o">.</span><span class="nx">isNumber</span><span class="o">(</span><span class="nx">o</span><span class="o">)</span> <span class="o">||</span> <span class="nx">L</span><span class="o">.</span><span class="nx">isBoolean</span><span class="o">(</span><span class="nx">o</span><span class="o">));</span>
+    <span class="o">}</span>
+
+<span class="o">};</span>
+
+<span class="c">/**</span>
+<span class="c"> * Determines whether or not the property was added</span>
+<span class="c"> * to the object instance.  Returns false if the property is not present</span>
+<span class="c"> * in the object, or was inherited from the prototype.</span>
+<span class="c"> * This abstraction is provided to enable hasOwnProperty for Safari 1.3.x.</span>
+<span class="c"> * There is a discrepancy between YAHOO.lang.hasOwnProperty and</span>
+<span class="c"> * Object.prototype.hasOwnProperty when the property is a primitive added to</span>
+<span class="c"> * both the instance AND prototype with the same value:</span>
+<span class="c"> * &lt;pre&gt;</span>
+<span class="c"> * var A = function() {};</span>
+<span class="c"> * A.prototype.foo = &#39;foo&#39;;</span>
+<span class="c"> * var a = new A();</span>
+<span class="c"> * a.foo = &#39;foo&#39;;</span>
+<span class="c"> * alert(a.hasOwnProperty(&#39;foo&#39;)); // true</span>
+<span class="c"> * alert(YAHOO.lang.hasOwnProperty(a, &#39;foo&#39;)); // false when using fallback</span>
+<span class="c"> * &lt;/pre&gt;</span>
+<span class="c"> * @method hasOwnProperty</span>
+<span class="c"> * @param {any} o The object being testing</span>
+<span class="c"> * @param prop {string} the name of the property to test</span>
+<span class="c"> * @return {boolean} the result</span>
+<span class="c"> */</span>
+<span class="nx">L</span><span class="o">.</span><span class="nx">hasOwnProperty</span> <span class="o">=</span> <span class="o">(</span><span class="nb">Object</span><span class="o">.</span><span class="nx">prototype</span><span class="o">.</span><span class="nx">hasOwnProperty</span><span class="o">)</span> <span class="o">?</span>
+    <span class="k">function</span><span class="o">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">prop</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nx">o</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="o">.</span><span class="nx">hasOwnProperty</span><span class="o">(</span><span class="nx">prop</span><span class="o">);</span>
+    <span class="o">}</span> <span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">prop</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">!</span><span class="nx">L</span><span class="o">.</span><span class="nx">isUndefined</span><span class="o">(</span><span class="nx">o</span><span class="o">[</span><span class="nx">prop</span><span class="o">])</span> <span class="o">&amp;&amp;</span> 
+                <span class="nx">o</span><span class="o">.</span><span class="nx">constructor</span><span class="o">.</span><span class="nx">prototype</span><span class="o">[</span><span class="nx">prop</span><span class="o">]</span> <span class="o">!==</span> <span class="nx">o</span><span class="o">[</span><span class="nx">prop</span><span class="o">];</span>
+    <span class="o">};</span>
+
+<span class="c">// new lang wins</span>
+<span class="c"></span><span class="nx">OB</span><span class="o">.</span><span class="nx">augmentObject</span><span class="o">(</span><span class="nx">L</span><span class="o">,</span> <span class="nx">OB</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+
+<span class="c">/*</span>
+<span class="c"> * An alias for &lt;a href=&quot;YAHOO.lang.html&quot;&gt;YAHOO.lang&lt;/a&gt;</span>
+<span class="c"> * @class YAHOO.util.Lang</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Lang</span> <span class="o">=</span> <span class="nx">L</span><span class="o">;</span>
+ 
+<span class="c">/**</span>
+<span class="c"> * Same as YAHOO.lang.augmentObject, except it only applies prototype </span>
+<span class="c"> * properties.  This is an alias for augmentProto.</span>
+<span class="c"> * @see YAHOO.lang.augmentObject</span>
+<span class="c"> * @method augment</span>
+<span class="c"> * @static</span>
+<span class="c"> * @param {Function} r  the object to receive the augmentation</span>
+<span class="c"> * @param {Function} s  the object that supplies the properties to augment</span>
+<span class="c"> * @param {String*|boolean}  arguments zero or more properties methods to </span>
+<span class="c"> *        augment the receiver with.  If none specified, everything</span>
+<span class="c"> *        in the supplier will be used unless it would</span>
+<span class="c"> *        overwrite an existing property in the receiver.  if true</span>
+<span class="c"> *        is specified as the third parameter, all properties will</span>
+<span class="c"> *        be applied and will overwrite an existing property in</span>
+<span class="c"> *        the receiver</span>
+<span class="c"> */</span>
+<span class="nx">L</span><span class="o">.</span><span class="nx">augment</span> <span class="o">=</span> <span class="nx">L</span><span class="o">.</span><span class="nx">augmentProto</span><span class="o">;</span>
+
+<span class="c">/**</span>
+<span class="c"> * An alias for &lt;a href=&quot;YAHOO.lang.html#augment&quot;&gt;YAHOO.lang.augment&lt;/a&gt;</span>
+<span class="c"> * @for YAHOO</span>
+<span class="c"> * @method augment</span>
+<span class="c"> * @static</span>
+<span class="c"> * @param {Function} r  the object to receive the augmentation</span>
+<span class="c"> * @param {Function} s  the object that supplies the properties to augment</span>
+<span class="c"> * @param {String*}  arguments zero or more properties methods to </span>
+<span class="c"> *        augment the receiver with.  If none specified, everything</span>
+<span class="c"> *        in the supplier will be used unless it would</span>
+<span class="c"> *        overwrite an existing property in the receiver</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">augment</span> <span class="o">=</span> <span class="nx">L</span><span class="o">.</span><span class="nx">augmentProto</span><span class="o">;</span>
+       
+<span class="c">/**</span>
+<span class="c"> * An alias for &lt;a href=&quot;YAHOO.lang.html#extend&quot;&gt;YAHOO.lang.extend&lt;/a&gt;</span>
+<span class="c"> * @method extend</span>
+<span class="c"> * @static</span>
+<span class="c"> * @param {Function} subc   the object to modify</span>
+<span class="c"> * @param {Function} superc the object to inherit</span>
+<span class="c"> * @param {Object} overrides  additional properties/methods to add to the</span>
+<span class="c"> *        subclass prototype.  These will override the</span>
+<span class="c"> *        matching items obtained from the superclass if present.</span>
+<span class="c"> */</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">extend</span> <span class="o">=</span> <span class="nx">L</span><span class="o">.</span><span class="nx">extend</span><span class="o">;</span>
+
+<span class="o">})();</span>
+<span class="nx">YAHOO</span><span class="o">.</span><span class="nx">register</span><span class="o">(</span><span class="s2">&quot;yahoo&quot;</span><span class="o">,</span> <span class="nx">YAHOO</span><span class="o">,</span> <span class="o">{</span><span class="nx">version</span><span class="o">:</span> <span class="s2">&quot;2.6.0&quot;</span><span class="o">,</span> <span class="nx">build</span><span class="o">:</span> <span class="s2">&quot;1321&quot;</span><span class="o">});</span>
+</pre></div>
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_animation.html" title="animation">animation</a></li>
+                                <li class=""><a href="module_autocomplete.html" title="autocomplete">autocomplete</a></li>
+                                <li class=""><a href="module_connection.html" title="connection">connection</a></li>
+                                <li class=""><a href="module_datasource.html" title="datasource">datasource</a></li>
+                                <li class=""><a href="module_dom.html" title="dom">dom</a></li>
+                                <li class=""><a href="module_event.html" title="event">event</a></li>
+                                <li class=""><a href="module_form.html" title="form">form</a></li>
+                                <li class=""><a href="module_json.html" title="json">json</a></li>
+                                <li class=""><a href="module_mvc.html" title="mvc">mvc</a></li>
+                                <li class=""><a href="module_window.html" title="window">window</a></li>
+                                <li class="selected"><a href="module_yahoo.html" title="yahoo">yahoo</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="YAHOO.html" title="YAHOO">YAHOO</a></li>
+                                <li class=""><a href="YAHOO.env.html" title="YAHOO.env">YAHOO.env</a></li>
+                                <li class=""><a href="YAHOO.env.ua.html" title="YAHOO.env.ua">YAHOO.env.ua</a></li>
+                                <li class=""><a href="YAHOO.lang.html" title="YAHOO.lang">YAHOO.lang</a></li>
+                                <li class=""><a href="YAHOO.lang.html" title="YAHOO.lang">YAHOO.lang</a></li>
+                                <li class=""><a href="YAHOO_config.html" title="YAHOO_config">YAHOO_config</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="lang-ext.js.html" title="lang-ext.js">lang-ext.js</a></li>
+                                <li class="selected"><a href="yahoo.js.html" title="yahoo.js">yahoo.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2009 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "YAHOO.env.ua.html#property_air", "access": "", "host": "YAHOO.env.ua", "type": "property", "name": "air"}, {"url": "YAHOO.lang.html#method_arrayWalk", "access": "", "host": "YAHOO.lang", "type": "method", "name": "arrayWalk"}, {"url": "YAHOO.lang.html#method_arrayWalk", "access": "", "host": "YAHOO.lang", "type": "method", "name": "arrayWalk"}, {"url": "YAHOO.lang.html#method_augment", "access": "", "host": "YAHOO.lang", "type": "method", "name": "augment"}, {"url": "YAHOO.html#method_augment", "access": "", "host": "YAHOO", "type": "method", "name": "augment"}, {"url": "YAHOO.lang.html#method_augment", "access": "", "host": "YAHOO.lang", "type": "method", "name": "augment"}, {"url": "YAHOO.lang.html#method_augmentObject", "access": "", "host": "YAHOO.lang", "type": "method", "name": "augmentObject"}, {"url": "YAHOO.lang.html#method_augmentObject", "access": "", "host": "YAHOO.lang", "type": "method", "name": "augmentObject"}, {"url": "YAHOO.lang.html#method_augmentProto", "access": "", "host": "YAHOO.lang", "type": "method", "name": "augmentProto"}, {"url": "YAHOO.lang.html#method_augmentProto", "access": "", "host": "YAHOO.lang", "type": "method", "name": "augmentProto"}, {"url": "YAHOO.lang.html#method_callLazy", "access": "", "host": "YAHOO.lang", "type": "method", "name": "callLazy"}, {"url": "YAHOO.lang.html#method_callLazy", "access": "", "host": "YAHOO.lang", "type": "method", "name": "callLazy"}, {"url": "YAHOO.lang.html#method_dump", "access": "", "host": "YAHOO.lang", "type": "method", "name": "dump"}, {"url": "YAHOO.lang.html#method_dump", "access": "", "host": "YAHOO.lang", "type": "method", "name": "dump"}, {"url": "YAHOO.lang.html#property_ERROR_INVALID_PARAMETERS", "access": "", "host": "YAHOO.lang", "type": "property", "name": "ERROR_INVALID_PARAMETERS"}, {"url": "YAHOO.lang.html#property_ERROR_INVALID_PARAMETERS", "access": "", "host": "YAHOO.lang", "type": "property", "name": "ERROR_INVALID_PARAMETERS"}, {"url": "YAHOO.lang.html#property_ERROR_MALFORMED_OBJECT", "access": "", "host": "YAHOO.lang", "type": "property", "name": "ERROR_MALFORMED_OBJECT"}, {"url": "YAHOO.lang.html#property_ERROR_MALFORMED_OBJECT", "access": "", "host": "YAHOO.lang", "type": "property", "name": "ERROR_MALFORMED_OBJECT"}, {"url": "YAHOO.lang.html#property_ERROR_NOT_DEFINED", "access": "", "host": "YAHOO.lang", "type": "property", "name": "ERROR_NOT_DEFINED"}, {"url": "YAHOO.lang.html#property_ERROR_NOT_DEFINED", "access": "", "host": "YAHOO.lang", "type": "property", "name": "ERROR_NOT_DEFINED"}, {"url": "YAHOO.lang.html#property_ERROR_NOT_IMPLEMENTED", "access": "", "host": "YAHOO.lang", "type": "property", "name": "ERROR_NOT_IMPLEMENTED"}, {"url": "YAHOO.lang.html#property_ERROR_NOT_IMPLEMENTED", "access": "", "host": "YAHOO.lang", "type": "property", "name": "ERROR_NOT_IMPLEMENTED"}, {"url": "YAHOO.lang.html#method_extend", "access": "", "host": "YAHOO.lang", "type": "method", "name": "extend"}, {"url": "YAHOO.html#method_extend", "access": "", "host": "YAHOO", "type": "method", "name": "extend"}, {"url": "YAHOO.lang.html#method_extend", "access": "", "host": "YAHOO.lang", "type": "method", "name": "extend"}, {"url": "YAHOO.lang.html#method_forEach", "access": "", "host": "YAHOO.lang", "type": "method", "name": "forEach"}, {"url": "YAHOO.lang.html#method_forEach", "access": "", "host": "YAHOO.lang", "type": "method", "name": "forEach"}, {"url": "YAHOO.env.ua.html#property_gecko", "access": "", "host": "YAHOO.env.ua", "type": "property", "name": "gecko"}, {"url": "YAHOO.env.html#method_getVersion", "access": "", "host": "YAHOO.env", "type": "method", "name": "getVersion"}, {"url": "YAHOO.lang.html#method_hasOwnProperty", "access": "", "host": "YAHOO.lang", "type": "method", "name": "hasOwnProperty"}, {"url": "YAHOO.lang.html#method_hasOwnProperty", "access": "", "host": "YAHOO.lang", "type": "method", "name": "hasOwnProperty"}, {"url": "YAHOO.env.ua.html#property_ie", "access": "", "host": "YAHOO.env.ua", "type": "property", "name": "ie"}, {"url": "YAHOO_config.html#property_injecting", "access": "", "host": "YAHOO_config", "type": "property", "name": "injecting"}, {"url": "YAHOO.lang.html#method_isArgument", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isArgument"}, {"url": "YAHOO.lang.html#method_isArgument", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isArgument"}, {"url": "YAHOO.lang.html#method_isArray", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isArray"}, {"url": "YAHOO.lang.html#method_isArray", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isArray"}, {"url": "YAHOO.lang.html#method_isBoolean", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isBoolean"}, {"url": "YAHOO.lang.html#method_isBoolean", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isBoolean"}, {"url": "YAHOO.lang.html#method_isDate", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isDate"}, {"url": "YAHOO.lang.html#method_isDate", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isDate"}, {"url": "YAHOO.lang.html#method_isDefined", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isDefined"}, {"url": "YAHOO.lang.html#method_isDefined", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isDefined"}, {"url": "YAHOO.lang.html#method_isFireFox", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isFireFox"}, {"url": "YAHOO.lang.html#method_isFireFox", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isFireFox"}, {"url": "YAHOO.lang.html#method_isFunction", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isFunction"}, {"url": "YAHOO.lang.html#method_isFunction", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isFunction"}, {"url": "YAHOO.lang.html#method_isIE", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isIE"}, {"url": "YAHOO.lang.html#method_isIE", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isIE"}, {"url": "YAHOO.lang.html#method_isIE6", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isIE6"}, {"url": "YAHOO.lang.html#method_isIE6", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isIE6"}, {"url": "YAHOO.lang.html#method_isIE7", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isIE7"}, {"url": "YAHOO.lang.html#method_isIE7", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isIE7"}, {"url": "YAHOO.lang.html#method_isNull", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isNull"}, {"url": "YAHOO.lang.html#method_isNull", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isNull"}, {"url": "YAHOO.lang.html#method_isNumber", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isNumber"}, {"url": "YAHOO.lang.html#method_isNumber", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isNumber"}, {"url": "YAHOO.lang.html#method_isObject", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isObject"}, {"url": "YAHOO.lang.html#method_isObject", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isObject"}, {"url": "YAHOO.lang.html#method_isOpera", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isOpera"}, {"url": "YAHOO.lang.html#method_isOpera", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isOpera"}, {"url": "YAHOO.lang.html#method_isRegExp", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isRegExp"}, {"url": "YAHOO.lang.html#method_isRegExp", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isRegExp"}, {"url": "YAHOO.lang.html#method_isSafari", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isSafari"}, {"url": "YAHOO.lang.html#method_isSafari", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isSafari"}, {"url": "YAHOO.lang.html#method_isString", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isString"}, {"url": "YAHOO.lang.html#method_isString", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isString"}, {"url": "YAHOO.lang.html#method_isUndefined", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isUndefined"}, {"url": "YAHOO.lang.html#method_isUndefined", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isUndefined"}, {"url": "YAHOO.lang.html#method_isValue", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isValue"}, {"url": "YAHOO.lang.html#method_isValue", "access": "", "host": "YAHOO.lang", "type": "method", "name": "isValue"}, {"url": "YAHOO.lang.html#method_later", "access": "", "host": "YAHOO.lang", "type": "method", "name": "later"}, {"url": "YAHOO.lang.html#method_later", "access": "", "host": "YAHOO.lang", "type": "method", "name": "later"}, {"url": "YAHOO_config.html#property_listener", "access": "", "host": "YAHOO_config", "type": "property", "name": "listener"}, {"url": "YAHOO.env.html#property_listeners", "access": "", "host": "YAHOO.env", "type": "property", "name": "listeners"}, {"url": "YAHOO_config.html#property_load", "access": "", "host": "YAHOO_config", "type": "property", "name": "load"}, {"url": "YAHOO_config.html#property_locale", "access": "", "host": "YAHOO_config", "type": "property", "name": "locale"}, {"url": "YAHOO.html#method_log", "access": "", "host": "YAHOO", "type": "method", "name": "log"}, {"url": "YAHOO.lang.html#method_merge", "access": "", "host": "YAHOO.lang", "type": "method", "name": "merge"}, {"url": "YAHOO.lang.html#method_merge", "access": "", "host": "YAHOO.lang", "type": "method", "name": "merge"}, {"url": "YAHOO.env.ua.html#property_mobile", "access": "", "host": "YAHOO.env.ua", "type": "property", "name": "mobile"}, {"url": "YAHOO.env.html#property_modules", "access": "", "host": "YAHOO.env", "type": "property", "name": "modules"}, {"url": "YAHOO.html#method_namespace", "access": "", "host": "YAHOO", "type": "method", "name": "namespace"}, {"url": "YAHOO.env.ua.html#property_opera", "access": "", "host": "YAHOO.env.ua", "type": "property", "name": "opera"}, {"url": "YAHOO.html#method_register", "access": "", "host": "YAHOO", "type": "method", "name": "register"}, {"url": "YAHOO.lang.html#method_substitute", "access": "", "host": "YAHOO.lang", "type": "method", "name": "substitute"}, {"url": "YAHOO.lang.html#method_substitute", "access": "", "host": "YAHOO.lang", "type": "method", "name": "substitute"}, {"url": "YAHOO.lang.html#method_throwError", "access": "", "host": "YAHOO.lang", "type": "method", "name": "throwError"}, {"url": "YAHOO.lang.html#method_throwError", "access": "", "host": "YAHOO.lang", "type": "method", "name": "throwError"}, {"url": "YAHOO.lang.html#method_trim", "access": "", "host": "YAHOO.lang", "type": "method", "name": "trim"}, {"url": "YAHOO.lang.html#method_trim", "access": "", "host": "YAHOO.lang", "type": "method", "name": "trim"}, {"url": "YAHOO.env.ua.html#property_webkit", "access": "", "host": "YAHOO.env.ua", "type": "property", "name": "webkit"}];
+</script>
+</body>
+</html>

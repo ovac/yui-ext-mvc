@@ -1,0 +1,463 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: form   formElement.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1237000654.91" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1237000654.91" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1237000654.91"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1237000654.91"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>form Utility&nbsp; <span class="subtitle">1.0.01</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_form.html" title="form">form</a>
+                
+                 &gt; formElement.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+<div class="highlight" ><pre><span class="c">/*</span>
+<span class="c"> * Copyright (c) 2009, Matt Snider, LLC All rights reserved.</span>
+<span class="c"> * Version: 1.0.02</span>
+<span class="c"> */</span>
+
+<span class="c">// Only use first inclusion of this class.</span>
+<span class="c"></span><span class="k">if</span> <span class="o">(!</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Form</span><span class="o">.</span><span class="nx">Element</span><span class="o">)</span> <span class="o">{</span>
+
+<span class="c">/**</span>
+<span class="c"> * These Form utility functions are thanks in a large part to the Prototype group. I have modified them to improve</span>
+<span class="c"> * 	performance, remove redundancy, and get rid of the magic array crap. Use these functions to work with forms fields.</span>
+<span class="c"> * @class Element</span>
+<span class="c"> * @namespace YAHOO.util.Form</span>
+<span class="c"> * @static</span>
+<span class="c"> */</span>
+<span class="o">(</span><span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="nx">_YL</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">lang</span><span class="o">,</span>
+        <span class="nx">_YD</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Dom</span><span class="o">,</span>
+        <span class="nx">_YE</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Event</span><span class="o">,</span>
+        <span class="nx">_YF</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">util</span><span class="o">.</span><span class="nx">Form</span><span class="o">;</span>
+
+    <span class="k">if</span> <span class="o">(!</span> <span class="nx">_YD</span><span class="o">)</span> <span class="o">{</span><span class="nx">_YL</span><span class="o">.</span><span class="nx">throwError</span><span class="o">.</span><span class="nx">call</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">_YL</span><span class="o">.</span><span class="nx">ERROR_NOT_DEFINED</span><span class="o">,</span> <span class="s1">&#39;YAHOO.util.Dom&#39;</span><span class="o">,</span> <span class="s1">&#39;implement&#39;</span><span class="o">,</span> <span class="s1">&#39;yahoo-ext/form.js&#39;</span><span class="o">);}</span>
+    <span class="k">if</span> <span class="o">(!</span> <span class="nx">_YF</span><span class="o">)</span> <span class="o">{</span><span class="nx">_YL</span><span class="o">.</span><span class="nx">throwError</span><span class="o">.</span><span class="nx">call</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">_YL</span><span class="o">.</span><span class="nx">ERROR_NOT_DEFINED</span><span class="o">,</span> <span class="s1">&#39;YAHOO.util.Form&#39;</span><span class="o">,</span> <span class="s1">&#39;implement&#39;</span><span class="o">,</span> <span class="s1">&#39;yahoo-ext/form.js&#39;</span><span class="o">);}</span>
+    <span class="k">if</span> <span class="o">(!</span> <span class="nx">_YL</span><span class="o">.</span><span class="nx">arrayWalk</span><span class="o">)</span> <span class="o">{</span><span class="nx">_YL</span><span class="o">.</span><span class="nx">throwError</span><span class="o">.</span><span class="nx">call</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">_YL</span><span class="o">.</span><span class="nx">ERROR_NOT_IMPLEMENTED</span><span class="o">,</span> <span class="s1">&#39;YAHOO.util.Form&#39;</span><span class="o">,</span> <span class="s1">&#39;&#39;</span><span class="o">,</span> <span class="s1">&#39;yahoo-ext/lang.js&#39;</span><span class="o">);}</span>
+
+    <span class="k">var</span> <span class="nx">_throwNotImplemented</span> <span class="o">=</span> <span class="nx">_YL</span><span class="o">.</span><span class="nx">throwError</span> <span class="o">?</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span>
+		<span class="nx">_YL</span><span class="o">.</span><span class="nx">throwError</span><span class="o">.</span><span class="nx">call</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">_YL</span><span class="o">.</span><span class="nx">ERROR_NOT_IMPLEMENTED</span><span class="o">,</span> <span class="s1">&#39;YAHOO.util.Form&#39;</span><span class="o">,</span> <span class="nx">arguments</span><span class="o">);</span>
+	<span class="o">}:</span> <span class="k">function</span><span class="o">(</span><span class="nx">text</span><span class="o">)</span> <span class="o">{</span><span class="k">throw</span><span class="o">(</span><span class="nx">text</span><span class="o">);};</span>
+
+    <span class="k">var</span> <span class="nx">_YFE</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="o">.</span><span class="nx">namespace</span><span class="o">(</span><span class="s1">&#39;util.Form.Element&#39;</span><span class="o">),</span>
+        <span class="nx">$</span> <span class="o">=</span> <span class="nx">_YD</span><span class="o">.</span><span class="nx">get</span><span class="o">;</span>
+
+    <span class="k">var</span> <span class="nx">_that</span> <span class="o">=</span> <span class="o">{</span>
+
+        <span class="nx">attachFocusAndBlur</span><span class="o">:</span> <span class="k">function</span><span class="o">()</span> <span class="o">{</span><span class="nx">_throwNotImplemented</span><span class="o">(</span><span class="s1">&#39;attachFocusAndBlur&#39;</span><span class="o">,</span> <span class="s1">&#39;YAHOO.util.Event&#39;</span><span class="o">);},</span>
+
+        <span class="c">/**</span>
+<span class="c">		 * Short-cut method to do a browser safe check on any HTMLInputElement of type checkbox (possibly radio too).</span>
+<span class="c">		 * @method check</span>
+<span class="c">		 * @param elem {String|Element} Required. Pointer or string reference to checkable DOM element.</span>
+<span class="c">		 * @param fl {Boolean} Required. True when checkbox should be checked.</span>
+<span class="c">		 * @param doNotChangeValue {Boolean} Optional. True, when we should not change values.</span>
+<span class="c">		 * @static</span>
+<span class="c">		 */</span>
+		<span class="nx">check</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">elem</span><span class="o">,</span> <span class="nx">fl</span><span class="o">,</span> <span class="nx">doNotChangeValue</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">$</span><span class="o">(</span><span class="nx">elem</span><span class="o">);</span>
+
+			<span class="c">// node exists</span>
+<span class="c"></span>			<span class="k">if</span> <span class="o">(</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">_YFE</span><span class="o">.</span><span class="nx">getType</span><span class="o">(</span><span class="nx">node</span><span class="o">);</span>
+                
+                <span class="c">// node is of a valid type</span>
+<span class="c"></span>				<span class="k">if</span> <span class="o">(</span><span class="s1">&#39;checkbox&#39;</span> <span class="o">===</span> <span class="nx">type</span> <span class="o">||</span> <span class="s1">&#39;radio&#39;</span> <span class="o">===</span> <span class="nx">type</span><span class="o">)</span> <span class="o">{</span>
+					<span class="c">// if this check isn&#39;t in place Safari &amp; Opera will check false</span>
+<span class="c"></span>					<span class="k">if</span> <span class="o">(</span><span class="nx">node</span><span class="o">.</span><span class="nx">checked</span> <span class="o">!=</span> <span class="nx">fl</span><span class="o">)</span> <span class="o">{</span> <span class="c">// do not make strict</span>
+<span class="c"></span>						<span class="nx">node</span><span class="o">.</span><span class="nx">checked</span> <span class="o">=</span> <span class="nx">fl</span><span class="o">;</span>
+						<span class="k">if</span> <span class="o">(</span><span class="nx">node</span><span class="o">.</span><span class="nx">setAttribute</span><span class="o">)</span> <span class="o">{</span><span class="nx">node</span><span class="o">.</span><span class="nx">setAttribute</span><span class="o">(</span><span class="s1">&#39;checked&#39;</span><span class="o">,</span> <span class="nx">fl</span><span class="o">);}</span> <span class="c">// insurance against some browser issues</span>
+<span class="c"></span>						<span class="k">if</span> <span class="o">(</span><span class="s1">&#39;checkbox&#39;</span> <span class="o">===</span> <span class="nx">type</span> <span class="o">&amp;&amp;</span> <span class="o">!</span> <span class="nx">doNotChangeValue</span><span class="o">)</span> <span class="o">{</span><span class="nx">node</span><span class="o">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">fl</span> <span class="o">?</span> <span class="s1">&#39;on&#39;</span> <span class="o">:</span> <span class="s1">&#39;off&#39;</span><span class="o">;}</span> <span class="c">// required for Safari, don&#39;t change value of radios</span>
+<span class="c"></span>					<span class="o">}</span>
+				<span class="o">}</span>
+				<span class="c">// not of a valid type</span>
+<span class="c"></span>				<span class="k">else</span> <span class="o">{</span>
+					<span class="k">throw</span><span class="o">(</span><span class="s1">&#39;Attempting to check the wrong node type: &#39;</span> <span class="o">+</span> <span class="nx">type</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="o">);</span>
+				<span class="o">}</span>
+			<span class="o">}</span>
+			<span class="c">// node does not exist</span>
+<span class="c"></span>			<span class="k">else</span> <span class="o">{</span>
+				<span class="k">throw</span><span class="o">(</span><span class="s1">&#39;Attempting to check a non-existant node.&#39;</span><span class="o">);</span>
+			<span class="o">}</span>
+		<span class="o">},</span>
+
+		<span class="c">/**</span>
+<span class="c">		 * Resets the value of the field.</span>
+<span class="c">		 * @method clear</span>
+<span class="c">		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to clear.</span>
+<span class="c">		 * @static</span>
+<span class="c">		 */</span>
+		<span class="nx">clear</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">elem</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">var</span> <span class="nx">fld</span> <span class="o">=</span> <span class="nx">$</span><span class="o">(</span><span class="nx">elem</span><span class="o">);</span>
+			<span class="nx">fld</span><span class="o">.</span><span class="nx">value</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">;</span>
+			<span class="k">if</span> <span class="o">(</span><span class="nx">fld</span><span class="o">.</span><span class="nx">checked</span><span class="o">)</span> <span class="o">{</span><span class="nx">fld</span><span class="o">.</span><span class="nx">checked</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;}</span>
+			<span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="nx">fld</span><span class="o">.</span><span class="nx">selectedIndex</span><span class="o">)</span> <span class="o">{</span><span class="nx">fld</span><span class="o">.</span><span class="nx">selectedIndex</span> <span class="o">=</span> <span class="m">0</span><span class="o">;}</span>
+		<span class="o">},</span>
+
+		<span class="c">/**</span>
+<span class="c">		 * Disables the value of the field.</span>
+<span class="c">		 * @method disable</span>
+<span class="c">		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to disable.</span>
+<span class="c">		 * @static</span>
+<span class="c">		 */</span>
+		<span class="nx">disable</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">elem</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">var</span> <span class="nx">fld</span> <span class="o">=</span> <span class="nx">$</span><span class="o">(</span><span class="nx">elem</span><span class="o">);</span>
+			<span class="nx">_YD</span><span class="o">.</span><span class="nx">addClass</span><span class="o">(</span><span class="nx">fld</span><span class="o">,</span> <span class="nx">C</span><span class="o">.</span><span class="nx">HTML</span><span class="o">.</span><span class="nx">CLS</span><span class="o">.</span><span class="nx">DISABLED</span><span class="o">);</span>
+			<span class="nx">fld</span><span class="o">.</span><span class="nx">disabled</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span><span class="o">;</span>
+		<span class="o">},</span>
+
+		<span class="c">/**</span>
+<span class="c">		 * Enables the value of the field.</span>
+<span class="c">		 * @method enable</span>
+<span class="c">		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to enable.</span>
+<span class="c">		 * @static</span>
+<span class="c">		 */</span>
+		<span class="nx">enable</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">elem</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">var</span> <span class="nx">fld</span> <span class="o">=</span> <span class="nx">$</span><span class="o">(</span><span class="nx">elem</span><span class="o">);</span>
+			<span class="nx">fld</span><span class="o">.</span><span class="nx">disabled</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">;</span>
+			<span class="nx">_YD</span><span class="o">.</span><span class="nx">removeClass</span><span class="o">(</span><span class="nx">fld</span><span class="o">,</span> <span class="nx">C</span><span class="o">.</span><span class="nx">HTML</span><span class="o">.</span><span class="nx">CLS</span><span class="o">.</span><span class="nx">DISABLED</span><span class="o">);</span>
+		<span class="o">},</span>
+
+		<span class="c">/**</span>
+<span class="c">		 * Focuses on the field.</span>
+<span class="c">		 * @method focus</span>
+<span class="c">		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to enable.</span>
+<span class="c">		 * @param select {Boolean} Optional. True when text should be selected; may not be possible, but will attempt.</span>
+<span class="c">		 * @param i {Number} Optional. The recursion counter, should be managed by this function.</span>
+<span class="c">		 * @static</span>
+<span class="c">		 */</span>
+        <span class="nx">focus</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">elem</span><span class="o">,</span> <span class="nx">select</span><span class="o">,</span> <span class="nx">i</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">var</span> <span class="nx">nodeFocus</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">select</span><span class="o">,</span> <span class="nx">i</span><span class="o">)</span> <span class="o">{</span>
+				<span class="k">if</span> <span class="o">(</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+					<span class="k">try</span> <span class="o">{</span>
+						<span class="k">if</span> <span class="o">(</span><span class="nx">node</span><span class="o">.</span><span class="nx">focus</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="k">if</span> <span class="o">(</span><span class="nx">_YE</span><span class="o">.</span><span class="nx">simulateClick</span><span class="o">)</span> <span class="o">{</span><span class="nx">_YE</span><span class="o">.</span><span class="nx">simulateClick</span><span class="o">(</span><span class="nx">node</span><span class="o">);}</span>
+                            <span class="nx">node</span><span class="o">.</span><span class="nx">setAttribute</span><span class="o">(</span><span class="s1">&#39;autocomplete&#39;</span><span class="o">,</span> <span class="s1">&#39;off&#39;</span><span class="o">);</span> <span class="c">// this fixes possible &quot;Permission denied to set property XULElement.selectedIndex ...&quot; exception</span>
+<span class="c"></span>							<span class="nx">node</span><span class="o">.</span><span class="nx">focus</span><span class="o">();</span>
+						<span class="o">}</span>
+						<span class="k">if</span> <span class="o">(</span><span class="nx">node</span><span class="o">.</span><span class="nx">select</span> <span class="o">&amp;&amp;</span> <span class="nx">select</span><span class="o">)</span> <span class="o">{</span><span class="nx">node</span><span class="o">.</span><span class="nx">select</span><span class="o">();}</span>
+					<span class="o">}</span>
+					<span class="k">catch</span> <span class="o">(</span><span class="nx">e</span><span class="o">)</span> <span class="o">{</span>
+						<span class="k">if</span> <span class="o">(</span><span class="nx">e</span><span class="o">.</span><span class="nx">message</span> <span class="o">&amp;&amp;</span> <span class="o">-</span><span class="m">1</span> <span class="o">&lt;</span> <span class="o">(</span><span class="s1">&#39;&#39;</span> <span class="o">+</span> <span class="nx">e</span><span class="o">.</span><span class="nx">message</span><span class="o">).</span><span class="nx">indexOf</span><span class="o">(</span><span class="s2">&quot;object doesn&#39;t support&quot;</span><span class="o">))</span> <span class="o">{</span><span class="k">return</span><span class="o">;}</span> <span class="c">// squelch</span>
+<span class="c"></span>						<span class="k">if</span> <span class="o">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="m">10</span> <span class="o">&gt;</span> <span class="nx">i</span><span class="o">)</span> <span class="o">{</span>
+							<span class="nx">setTimeout</span><span class="o">(</span><span class="k">function</span><span class="o">()</span> <span class="o">{</span><span class="nx">nodeFocus</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">select</span><span class="o">,</span> <span class="nx">i</span> <span class="o">+</span> <span class="m">1</span><span class="o">);},</span> <span class="m">250</span><span class="o">);</span> <span class="c">// timeout, hopefully will catch IE exceptions</span>
+<span class="c"></span>						<span class="o">}</span>
+						<span class="c">// taking too long, after 2.5s stop process</span>
+<span class="c"></span>						<span class="k">else</span> <span class="o">{</span>
+							<span class="c">// do nothing for now, just stop recursion</span>
+<span class="c"></span>						<span class="o">}</span>
+					<span class="o">}</span>
+				<span class="o">}</span>
+			<span class="o">};</span>
+
+			<span class="nx">_YFE</span><span class="o">.</span><span class="nx">focus</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">elem</span><span class="o">,</span> <span class="nx">select</span><span class="o">,</span> <span class="nx">i</span><span class="o">)</span> <span class="o">{</span>
+				<span class="k">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">$</span><span class="o">(</span><span class="nx">elem</span><span class="o">);</span>
+				<span class="k">if</span> <span class="o">(!</span> <span class="nx">node</span><span class="o">)</span> <span class="o">{</span><span class="k">return</span><span class="o">;}</span>
+
+                <span class="k">var</span> <span class="nx">dim</span> <span class="o">=</span> <span class="nx">_YD</span><span class="o">.</span><span class="nx">getRegion</span><span class="o">(</span><span class="nx">node</span><span class="o">),</span>
+					<span class="nx">execN</span> <span class="o">=</span> <span class="m">0</span> <span class="o">&lt;</span> <span class="nx">i</span> <span class="o">?</span> <span class="nx">i</span> <span class="o">:</span> <span class="m">0</span><span class="o">;</span>
+
+                <span class="k">if</span> <span class="o">(</span><span class="m">10</span> <span class="o">&lt;</span> <span class="nx">execN</span><span class="o">)</span> <span class="o">{</span><span class="k">return</span><span class="o">;}</span> <span class="c">// stop recursion</span>
+<span class="c"></span>
+				<span class="c">// element only has dimensions when it is visible</span>
+<span class="c"></span>				<span class="k">if</span> <span class="o">(</span><span class="s1">&#39;hidden&#39;</span> <span class="o">===</span> <span class="nx">node</span><span class="o">.</span><span class="nx">type</span> <span class="o">||</span> <span class="o">!</span> <span class="o">(</span><span class="nx">dim</span><span class="o">.</span><span class="nx">width</span> <span class="o">||</span> <span class="nx">dim</span><span class="o">.</span><span class="nx">height</span><span class="o">))</span> <span class="o">{</span>
+					<span class="nx">setTimeout</span><span class="o">(</span><span class="k">function</span><span class="o">()</span> <span class="o">{</span><span class="nx">_YFE</span><span class="o">.</span><span class="nx">focus</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">select</span><span class="o">,</span> <span class="nx">i</span><span class="o">);},</span> <span class="m">250</span><span class="o">);</span> <span class="c">// timeout, hopefully will catch IE exceptions</span>
+<span class="c"></span>				<span class="o">}</span>
+				<span class="k">else</span> <span class="o">{</span> <span class="c">// has layout</span>
+<span class="c"></span>					<span class="nx">nodeFocus</span><span class="o">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">select</span><span class="o">,</span> <span class="m">0</span><span class="o">);</span>
+<span class="c">//					alert(node.outerHTML + &#39; | width: &#39; + dim.width + &#39; | height: &#39; + dim.height + &#39; | type: &#39; + node.type + &#39; | bool: &#39; + ! (dim.width || dim.height));</span>
+<span class="c"></span>				<span class="o">}</span>
+
+				<span class="k">return</span> <span class="nx">node</span><span class="o">;</span>
+			<span class="o">};</span>
+
+			<span class="k">return</span> <span class="nx">_YFE</span><span class="o">.</span><span class="nx">focus</span><span class="o">(</span><span class="nx">elem</span><span class="o">,</span> <span class="nx">select</span><span class="o">,</span> <span class="nx">i</span><span class="o">);</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">		 * Attempt to find the type attribute of the element.</span>
+<span class="c">		 * @method getType</span>
+<span class="c">		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to evaluate.</span>
+<span class="c">		 * @return {String} The type or empty string.</span>
+<span class="c">		 * @static</span>
+<span class="c">		 */</span>
+		<span class="nx">getType</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">elem</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">var</span> <span class="nx">fld</span> <span class="o">=</span> <span class="nx">$</span><span class="o">(</span><span class="nx">elem</span><span class="o">);</span>
+			<span class="k">if</span> <span class="o">(!</span> <span class="o">(</span><span class="nx">fld</span> <span class="o">||</span> <span class="nx">fld</span><span class="o">.</span><span class="nx">type</span> <span class="o">||</span> <span class="nx">fld</span><span class="o">.</span><span class="nx">getAttribute</span><span class="o">))</span> <span class="o">{</span><span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">;}</span>
+			<span class="k">return</span> <span class="o">(</span><span class="nx">fld</span><span class="o">.</span><span class="nx">type</span> <span class="o">||</span> <span class="nx">fld</span><span class="o">.</span><span class="nx">getAttribute</span><span class="o">(</span><span class="s1">&#39;type&#39;</span><span class="o">)</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="o">).</span><span class="nx">toLowerCase</span><span class="o">();</span>
+		<span class="o">},</span>
+
+		<span class="c">/**</span>
+<span class="c">		 * Attempt to find the value of field.</span>
+<span class="c">		 * @method getValue</span>
+<span class="c">		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to evaluate.</span>
+<span class="c">		 * @return {String} The field value or empty string.</span>
+<span class="c">		 * @static</span>
+<span class="c">		 */</span>
+		<span class="nx">getValue</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">elem</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">var</span> <span class="nx">fld</span> <span class="o">=</span> <span class="nx">$</span><span class="o">(</span><span class="nx">elem</span><span class="o">),</span>
+                <span class="nx">method</span> <span class="o">=</span> <span class="nx">_YD</span><span class="o">.</span><span class="nx">getTagName</span><span class="o">(</span><span class="nx">fld</span><span class="o">);</span>
+
+			<span class="c">//	missing element is the most common error when serializing; also don&#39;t serialize validators</span>
+<span class="c"></span>			<span class="k">if</span> <span class="o">(!</span> <span class="nx">method</span><span class="o">)</span> <span class="o">{</span><span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">;}</span>
+
+			<span class="k">var</span> <span class="nx">parameter</span> <span class="o">=</span> <span class="nx">_YFE</span><span class="o">.</span><span class="nx">Serializers</span><span class="o">[</span><span class="nx">method</span><span class="o">](</span><span class="nx">fld</span><span class="o">);</span>
+			<span class="k">if</span> <span class="o">(</span><span class="nx">parameter</span><span class="o">)</span> <span class="o">{</span><span class="k">return</span> <span class="nx">parameter</span><span class="o">[</span><span class="m">1</span><span class="o">];}</span>
+		<span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Tests if the element is a checkbox or radio.</span>
+<span class="c">         * @method isCheckable</span>
+<span class="c">		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to evaluate.</span>
+<span class="c">	     * @return {Boolean} The input is type checkbox or radio.</span>
+<span class="c">		 * @static</span>
+<span class="c">         */</span>
+        <span class="nx">isCheckable</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">elem</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nx">_YFE</span><span class="o">.</span><span class="nx">isType</span><span class="o">(</span><span class="nx">elem</span><span class="o">,</span> <span class="s1">&#39;checkbox&#39;</span><span class="o">,</span> <span class="s1">&#39;radio&#39;</span><span class="o">);</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">		 * Tests if the field has changed from the default.</span>
+<span class="c">		 * @method isChanged</span>
+<span class="c">		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to evaluate.</span>
+<span class="c">	     * @return {Boolean} The field has changed.</span>
+<span class="c">		 * @static</span>
+<span class="c">         */</span>
+        <span class="nx">isChanged</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">elem</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">fld</span> <span class="o">=</span> <span class="nx">$</span><span class="o">(</span><span class="nx">elem</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(!</span> <span class="nx">fld</span><span class="o">)</span> <span class="o">{</span><span class="k">return</span> <span class="kc">false</span><span class="o">;}</span>
+
+            <span class="k">if</span> <span class="o">(</span><span class="nx">_YFE</span><span class="o">.</span><span class="nx">isCheckable</span><span class="o">(</span><span class="nx">fld</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="nx">fld</span><span class="o">.</span><span class="nx">defaultChecked</span> <span class="o">!==</span> <span class="nx">fld</span><span class="o">.</span><span class="nx">checked</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">else</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="nx">fld</span><span class="o">.</span><span class="nx">defaultValue</span> <span class="o">!==</span> <span class="nx">fld</span><span class="o">.</span><span class="nx">value</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">		 * Tests if the field has a value.</span>
+<span class="c">		 * @method isSet</span>
+<span class="c">		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to evaluate.</span>
+<span class="c">	     * @return {Boolean} The field is empty or non-existing.</span>
+<span class="c">		 * @static</span>
+<span class="c">		 */</span>
+		<span class="nx">isSet</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">elem</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="s1">&#39;&#39;</span> <span class="o">!==</span> <span class="nx">_YFE</span><span class="o">.</span><span class="nx">getValue</span><span class="o">(</span><span class="nx">elem</span><span class="o">);</span>
+		<span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Tests if the field is one of the provided types.</span>
+<span class="c">         * @method isType</span>
+<span class="c">		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to evaluate.</span>
+<span class="c">		 * @param arg1 {String} Required. A type to evaluate.</span>
+<span class="c">		 * @param argX {String} Required. Aditional types to evaluate.</span>
+<span class="c">	     * @return {Boolean} The field is one of the provided types.</span>
+<span class="c">		 * @static</span>
+<span class="c">         */</span>
+        <span class="nx">isType</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">elem</span><span class="o">,</span> <span class="nx">arg1</span><span class="o">,</span> <span class="nx">argX</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">_YFE</span><span class="o">.</span><span class="nx">getType</span><span class="o">(</span><span class="nx">elem</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(!</span> <span class="nx">type</span><span class="o">)</span> <span class="o">{</span><span class="k">return</span> <span class="kc">false</span><span class="o">;}</span>
+
+            <span class="k">return</span> <span class="nx">_YL</span><span class="o">.</span><span class="nx">arrayWalk</span><span class="o">(</span><span class="nx">arguments</span><span class="o">,</span> <span class="k">function</span><span class="o">(</span><span class="nx">t</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="nx">type</span> <span class="o">===</span> <span class="nx">t</span><span class="o">)</span> <span class="o">{</span><span class="k">return</span> <span class="kc">true</span><span class="o">;}</span>
+            <span class="o">});</span>
+        <span class="o">},</span>
+
+        <span class="c">/**</span>
+<span class="c">		 * Serializes the form into a key value pair query string.</span>
+<span class="c">		 * @method serialize</span>
+<span class="c">		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to evaluate.</span>
+<span class="c">	     * @return {string} the key/value pairs as a query string.</span>
+<span class="c">		 * @static</span>
+<span class="c">		 */</span>
+		<span class="nx">serialize</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">elem</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">var</span> <span class="nx">fld</span> <span class="o">=</span> <span class="nx">$</span><span class="o">(</span><span class="nx">elem</span><span class="o">),</span>
+                <span class="nx">method</span> <span class="o">=</span> <span class="nx">_YD</span><span class="o">.</span><span class="nx">getTagName</span><span class="o">(</span><span class="nx">fld</span><span class="o">);</span>
+
+			<span class="c">//	missing element is the most common error when serializing; also don&#39;t serialize validators</span>
+<span class="c"></span>			<span class="k">if</span> <span class="o">(!</span> <span class="nx">method</span><span class="o">)</span> <span class="o">{</span><span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">;}</span>
+
+			<span class="k">var</span> <span class="nx">parameter</span> <span class="o">=</span> <span class="nx">_YFE</span><span class="o">.</span><span class="nx">Serializers</span><span class="o">[</span><span class="nx">method</span><span class="o">](</span><span class="nx">fld</span><span class="o">);</span>
+
+			<span class="k">if</span> <span class="o">(</span><span class="nx">parameter</span><span class="o">)</span> <span class="o">{</span>
+				<span class="k">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nb">encodeURIComponent</span><span class="o">(</span><span class="nx">parameter</span><span class="o">[</span><span class="m">0</span><span class="o">]);</span>
+				<span class="k">if</span> <span class="o">(</span><span class="m">0</span> <span class="o">===</span> <span class="nx">key</span><span class="o">.</span><span class="nx">length</span><span class="o">)</span> <span class="o">{</span><span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">;}</span>
+				<span class="k">if</span> <span class="o">(!</span> <span class="nx">_YL</span><span class="o">.</span><span class="nx">isArray</span><span class="o">(</span><span class="nx">parameter</span><span class="o">[</span><span class="m">1</span><span class="o">]))</span> <span class="o">{</span><span class="nx">parameter</span><span class="o">[</span><span class="m">1</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="nx">parameter</span><span class="o">[</span><span class="m">1</span><span class="o">]];}</span>
+
+				<span class="nx">_YL</span><span class="o">.</span><span class="nx">arrayWalk</span><span class="o">(</span><span class="nx">parameter</span><span class="o">[</span><span class="m">1</span><span class="o">],</span> <span class="k">function</span><span class="o">(</span><span class="nx">value</span><span class="o">,</span> <span class="nx">i</span><span class="o">)</span> <span class="o">{</span>
+					<span class="nx">parameter</span><span class="o">[</span><span class="m">1</span><span class="o">][</span><span class="nx">i</span><span class="o">]</span> <span class="o">=</span> <span class="nx">key</span> <span class="o">+</span> <span class="s1">&#39;=&#39;</span> <span class="o">+</span> <span class="nb">encodeURIComponent</span><span class="o">(</span><span class="nx">value</span><span class="o">);</span>
+				<span class="o">});</span>
+
+				<span class="k">return</span> <span class="nx">parameter</span><span class="o">[</span><span class="m">1</span><span class="o">].</span><span class="nx">join</span><span class="o">(</span><span class="s1">&#39;&amp;&#39;</span><span class="o">);</span>
+			<span class="o">}</span>
+		<span class="o">},</span>
+
+		<span class="c">/**</span>
+<span class="c">		 * Enables the value of the field.</span>
+<span class="c">		 * @method toggleEnabled</span>
+<span class="c">	     * @param elem {String|Element} Required. Pointer or string reference to DOM Form field element to enable.</span>
+<span class="c">		 * @param b {Boolean} Optional. True, when enabling, falsy to disable.</span>
+<span class="c">		 * @static</span>
+<span class="c">		 */</span>
+		<span class="nx">toggleEnabled</span><span class="o">:</span> <span class="k">function</span><span class="o">(</span><span class="nx">elem</span><span class="o">,</span> <span class="nx">b</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">$</span><span class="o">(</span><span class="nx">elem</span><span class="o">);</span>
+
+            <span class="k">if</span> <span class="o">(</span><span class="nx">node</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">var</span> <span class="nx">bool</span> <span class="o">=</span> <span class="nx">_YL</span><span class="o">.</span><span class="nx">isUndefined</span><span class="o">(</span><span class="nx">b</span><span class="o">)</span> <span class="o">?</span> <span class="o">!</span> <span class="nx">node</span><span class="o">.</span><span class="nx">disabled</span> <span class="o">:</span> <span class="nx">b</span><span class="o">;</span>
+                <span class="nx">_YFE</span><span class="o">[</span><span class="nx">bool</span> <span class="o">?</span> <span class="s1">&#39;enable&#39;</span> <span class="o">:</span> <span class="s1">&#39;disable&#39;</span><span class="o">](</span><span class="nx">node</span><span class="o">);</span>
+            <span class="o">}</span>
+		<span class="o">}</span>
+    <span class="o">};</span>
+
+    <span class="nx">_YL</span><span class="o">.</span><span class="nx">augmentObject</span><span class="o">(</span><span class="nx">_YFE</span><span class="o">,</span> <span class="nx">_that</span><span class="o">);</span>
+
+    <span class="c">// YAHOO.json extensions are included</span>
+<span class="c"></span>    <span class="k">if</span> <span class="o">(</span><span class="nx">_YE</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="c">/**</span>
+<span class="c">		 * Updates the onblur and onclick events of the element to show default text.</span>
+<span class="c">		 * @method onFocusAndBlur</span>
+<span class="c">		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to attach events to.</span>
+<span class="c">		 * @param text {String} Required. The default text.</span>
+<span class="c">		 * @param c {String} Optional. The color to set default text to.</span>
+<span class="c">		 * @static</span>
+<span class="c">		 */</span>
+        <span class="nx">_YFE</span><span class="o">.</span><span class="nx">attachFocusAndBlur</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">elem</span><span class="o">,</span> <span class="nx">text</span><span class="o">,</span> <span class="nx">c</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">var</span> <span class="nx">fld</span> <span class="o">=</span> <span class="nx">$</span><span class="o">(</span><span class="nx">elem</span><span class="o">);</span>
+
+			<span class="c">// validate</span>
+<span class="c"></span>	        <span class="k">if</span> <span class="o">(</span><span class="nx">fld</span><span class="o">)</span> <span class="o">{</span>
+		        <span class="k">if</span> <span class="o">(</span><span class="s1">&#39;text&#39;</span> <span class="o">!==</span> <span class="nx">_YFE</span><span class="o">.</span><span class="nx">getType</span><span class="o">(</span><span class="nx">fld</span><span class="o">))</span> <span class="o">{</span>
+					<span class="k">throw</span><span class="o">(</span><span class="s1">&#39;YAHOO.util.Form.Element.attachFocusAndBlur() Exception - invalid field type for type: &#39;</span> <span class="o">+</span> <span class="nx">_YFE</span><span class="o">.</span><span class="nx">getType</span><span class="o">(</span><span class="nx">fld</span><span class="o">));</span>
+				<span class="o">}</span>
+	        <span class="o">}</span>
+	        <span class="k">else</span> <span class="o">{</span>
+		        <span class="k">return</span><span class="o">;</span>
+	        <span class="o">}</span>
+
+			<span class="k">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="nx">c</span> <span class="o">||</span> <span class="s1">&#39;#999&#39;</span><span class="o">,</span>
+				<span class="nx">oColor</span> <span class="o">=</span> <span class="nx">fld</span><span class="o">.</span><span class="nx">style</span><span class="o">.</span><span class="nx">color</span> <span class="o">||</span> <span class="s1">&#39;#000&#39;</span><span class="o">;</span>
+
+			<span class="c">// function that resets to the default</span>
+<span class="c"></span>			<span class="k">var</span> <span class="nx">update</span> <span class="o">=</span> <span class="k">function</span><span class="o">(</span><span class="nx">fld</span><span class="o">,</span> <span class="nx">text</span><span class="o">,</span> <span class="nx">color</span><span class="o">)</span> <span class="o">{</span>
+				<span class="nx">fld</span><span class="o">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">text</span><span class="o">;</span>
+				<span class="nx">fld</span><span class="o">.</span><span class="nx">style</span><span class="o">.</span><span class="nx">color</span> <span class="o">=</span> <span class="nx">color</span><span class="o">;</span>
+			<span class="o">};</span>
+
+			<span class="c">// on focus clear value if equal to default</span>
+<span class="c"></span>			<span class="nx">_YE</span><span class="o">.</span><span class="nx">on</span><span class="o">(</span><span class="nx">fld</span><span class="o">,</span> <span class="s1">&#39;focus&#39;</span><span class="o">,</span> <span class="k">function</span><span class="o">(</span><span class="nx">e</span><span class="o">,</span> <span class="nx">fld</span><span class="o">)</span> <span class="o">{</span>
+				<span class="k">if</span> <span class="o">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="nx">text</span> <span class="o">===</span> <span class="nx">_YFE</span><span class="o">.</span><span class="nx">getValue</span><span class="o">(</span><span class="nx">fld</span><span class="o">).</span><span class="nx">trim</span><span class="o">())</span> <span class="o">{</span>
+					<span class="nx">update</span><span class="o">(</span><span class="nx">fld</span><span class="o">,</span> <span class="s1">&#39;&#39;</span><span class="o">,</span> <span class="nx">oColor</span><span class="o">);</span>
+				<span class="o">}</span>
+			<span class="o">},</span> <span class="nx">fld</span><span class="o">);</span>
+
+			<span class="c">// onblur reset default if no value entered</span>
+<span class="c"></span>			<span class="nx">_YE</span><span class="o">.</span><span class="nx">on</span><span class="o">(</span><span class="nx">fld</span><span class="o">,</span> <span class="s1">&#39;blur&#39;</span><span class="o">,</span> <span class="k">function</span><span class="o">(</span><span class="nx">e</span><span class="o">,</span> <span class="nx">fld</span><span class="o">)</span> <span class="o">{</span>
+				<span class="k">if</span> <span class="o">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="o">!</span> <span class="nx">_YFE</span><span class="o">.</span><span class="nx">getValue</span><span class="o">(</span><span class="nx">fld</span><span class="o">).</span><span class="nx">trim</span><span class="o">())</span> <span class="o">{</span><span class="nx">update</span><span class="o">(</span><span class="nx">fld</span><span class="o">,</span> <span class="nx">text</span><span class="o">,</span> <span class="nx">color</span><span class="o">);}</span>
+			<span class="o">},</span> <span class="nx">fld</span><span class="o">);</span>
+
+			<span class="c">// update the initial state if needed</span>
+<span class="c"></span>			<span class="k">var</span> <span class="nx">val</span> <span class="o">=</span> <span class="nx">_YFE</span><span class="o">.</span><span class="nx">getValue</span><span class="o">(</span><span class="nx">fld</span><span class="o">).</span><span class="nx">trim</span><span class="o">();</span>
+			<span class="k">if</span> <span class="o">(</span><span class="nx">text</span> <span class="o">===</span> <span class="nx">val</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span> <span class="o">===</span> <span class="nx">val</span><span class="o">)</span> <span class="o">{</span><span class="nx">update</span><span class="o">(</span><span class="nx">fld</span><span class="o">,</span> <span class="nx">text</span><span class="o">,</span> <span class="nx">color</span><span class="o">);}</span>
+		<span class="o">};</span>
+    <span class="o">}</span>
+<span class="o">})();</span>
+
+<span class="o">}</span>
+</pre></div>
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_animation.html" title="animation">animation</a></li>
+                                <li class=""><a href="module_autocomplete.html" title="autocomplete">autocomplete</a></li>
+                                <li class=""><a href="module_connection.html" title="connection">connection</a></li>
+                                <li class=""><a href="module_datasource.html" title="datasource">datasource</a></li>
+                                <li class=""><a href="module_dom.html" title="dom">dom</a></li>
+                                <li class=""><a href="module_event.html" title="event">event</a></li>
+                                <li class="selected"><a href="module_form.html" title="form">form</a></li>
+                                <li class=""><a href="module_json.html" title="json">json</a></li>
+                                <li class=""><a href="module_mvc.html" title="mvc">mvc</a></li>
+                                <li class=""><a href="module_window.html" title="window">window</a></li>
+                                <li class=""><a href="module_yahoo.html" title="yahoo">yahoo</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="YAHOO.util.Form.html" title="YAHOO.util.Form">YAHOO.util.Form</a></li>
+                                <li class=""><a href="YAHOO.util.Form.Element.html" title="YAHOO.util.Form.Element">YAHOO.util.Form.Element</a></li>
+                                <li class=""><a href="YAHOO.util.Form.Element.Serializers.html" title="YAHOO.util.Form.Element.Serializers">YAHOO.util.Form.Element.Serializers</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="form.js.html" title="form.js">form.js</a></li>
+                                <li class="selected"><a href="formElement.js.html" title="formElement.js">formElement.js</a></li>
+                                <li class=""><a href="formElementSerializer.js.html" title="formElementSerializer.js">formElementSerializer.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2009 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "YAHOO.util.Form.Element.html#method_check", "access": "", "host": "YAHOO.util.Form.Element", "type": "method", "name": "check"}, {"url": "YAHOO.util.Form.html#method_clear", "access": "", "host": "YAHOO.util.Form", "type": "method", "name": "clear"}, {"url": "YAHOO.util.Form.Element.html#method_clear", "access": "", "host": "YAHOO.util.Form.Element", "type": "method", "name": "clear"}, {"url": "YAHOO.util.Form.html#method_disable", "access": "", "host": "YAHOO.util.Form", "type": "method", "name": "disable"}, {"url": "YAHOO.util.Form.Element.html#method_disable", "access": "", "host": "YAHOO.util.Form.Element", "type": "method", "name": "disable"}, {"url": "YAHOO.util.Form.html#method_enable", "access": "", "host": "YAHOO.util.Form", "type": "method", "name": "enable"}, {"url": "YAHOO.util.Form.Element.html#method_enable", "access": "", "host": "YAHOO.util.Form.Element", "type": "method", "name": "enable"}, {"url": "YAHOO.util.Form.html#method_findFirstElement", "access": "", "host": "YAHOO.util.Form", "type": "method", "name": "findFirstElement"}, {"url": "YAHOO.util.Form.Element.html#method_focus", "access": "", "host": "YAHOO.util.Form.Element", "type": "method", "name": "focus"}, {"url": "YAHOO.util.Form.html#method_focusFirstElement", "access": "", "host": "YAHOO.util.Form", "type": "method", "name": "focusFirstElement"}, {"url": "YAHOO.util.Form.html#method_getElementsByName", "access": "", "host": "YAHOO.util.Form", "type": "method", "name": "getElementsByName"}, {"url": "YAHOO.util.Form.html#method_getFields", "access": "", "host": "YAHOO.util.Form", "type": "method", "name": "getFields"}, {"url": "YAHOO.util.Form.Element.html#method_getType", "access": "", "host": "YAHOO.util.Form.Element", "type": "method", "name": "getType"}, {"url": "YAHOO.util.Form.Element.html#method_getValue", "access": "", "host": "YAHOO.util.Form.Element", "type": "method", "name": "getValue"}, {"url": "YAHOO.util.Form.Element.Serializers.html#method_input", "access": "", "host": "YAHOO.util.Form.Element.Serializers", "type": "method", "name": "input"}, {"url": "YAHOO.util.Form.Element.Serializers.html#method_inputSelector", "access": "", "host": "YAHOO.util.Form.Element.Serializers", "type": "method", "name": "inputSelector"}, {"url": "YAHOO.util.Form.Element.html#method_isChanged", "access": "", "host": "YAHOO.util.Form.Element", "type": "method", "name": "isChanged"}, {"url": "YAHOO.util.Form.Element.html#method_isCheckable", "access": "", "host": "YAHOO.util.Form.Element", "type": "method", "name": "isCheckable"}, {"url": "YAHOO.util.Form.Element.html#method_isSet", "access": "", "host": "YAHOO.util.Form.Element", "type": "method", "name": "isSet"}, {"url": "YAHOO.util.Form.Element.html#method_isType", "access": "", "host": "YAHOO.util.Form.Element", "type": "method", "name": "isType"}, {"url": "YAHOO.util.Form.Element.html#method_onFocusAndBlur", "access": "", "host": "YAHOO.util.Form.Element", "type": "method", "name": "onFocusAndBlur"}, {"url": "YAHOO.util.Form.Element.Serializers.html#method_select", "access": "", "host": "YAHOO.util.Form.Element.Serializers", "type": "method", "name": "select"}, {"url": "YAHOO.util.Form.Element.Serializers.html#method_selectMany", "access": "", "host": "YAHOO.util.Form.Element.Serializers", "type": "method", "name": "selectMany"}, {"url": "YAHOO.util.Form.Element.Serializers.html#method_selectOne", "access": "", "host": "YAHOO.util.Form.Element.Serializers", "type": "method", "name": "selectOne"}, {"url": "YAHOO.util.Form.html#method_serialize", "access": "", "host": "YAHOO.util.Form", "type": "method", "name": "serialize"}, {"url": "YAHOO.util.Form.Element.html#method_serialize", "access": "", "host": "YAHOO.util.Form.Element", "type": "method", "name": "serialize"}, {"url": "YAHOO.util.Form.Element.Serializers.html#method_textarea", "access": "", "host": "YAHOO.util.Form.Element.Serializers", "type": "method", "name": "textarea"}, {"url": "YAHOO.util.Form.html#method_toggleEnabled", "access": "", "host": "YAHOO.util.Form", "type": "method", "name": "toggleEnabled"}, {"url": "YAHOO.util.Form.Element.html#method_toggleEnabled", "access": "", "host": "YAHOO.util.Form.Element", "type": "method", "name": "toggleEnabled"}];
+</script>
+</body>
+</html>
