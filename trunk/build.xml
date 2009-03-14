@@ -72,7 +72,7 @@ Version: 1.0.01
     The version of YUI the project is using.  This effects the output for YUI configuration attributes.
     This should start with '2' or '3'.
     -->
-	<property name="yuiversion" value="2.6"/>
+	<property name="yuiversion" value="2.7"/>
 
     <!--
     which tier am I
@@ -96,28 +96,31 @@ Version: 1.0.01
 	</target>
 
     <!-- @start consolidate YAHOO -->
-    <target name="reconsolidate.yahoo-2.6.js.check">
-		<condition property="yahoo-2.6.js.uptodate">
-			<uptodate targetfile="${builddir}/js/yahoo-2.6.js">
-				<srcfiles dir="${js_home}/yahoo-2.6" includes="yahoo.js"/>
-				<srcfiles dir="${js_home}/yahoo-2.6" includes="dom.js"/>
-				<srcfiles dir="${js_home}/yahoo-2.6" includes="event.js"/>
-				<srcfiles dir="${js_home}/yahoo-2.6" includes="json.js"/>
-				<srcfiles dir="${js_home}/yahoo-2.6" includes="animation.js"/>
-				<srcfiles dir="${js_home}/yahoo-2.6" includes="connection.js"/>
+    <target name="reconsolidate.yahoo.js.check">
+		<condition property="yahoo.js.uptodate">
+			<uptodate targetfile="${builddir}/js/yahoo.js">
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="yahoo.js"/>
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="dom.js"/>
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="event.js"/>
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="json.js"/>
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="animation.js"/>
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="connection.js"/>
                 <!--
-				<srcfiles dir="${js_home}/yahoo-2.6" includes="datasource.js"/>
-				<srcfiles dir="${js_home}/yahoo-2.6" includes="autocomplete.js"/>
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="datasource.js"/>
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="element.js"/>
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="autocomplete.js"/>
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="dragdrop.js"/>
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="slider.js"/>
 				-->
 			</uptodate>
 		</condition>
 	</target>
 	
-	<target name="consolidate.yahoo-2.6.js" depends="reconsolidate.yahoo-2.6.js.check" unless="yahoo-2.6.js.uptodate">
-		<echo message="processing yahoo-2.6.js"/>
+	<target name="consolidate.yahoo.js" depends="reconsolidate.yahoo.js.check" unless="yahoo.js.uptodate">
+		<echo message="processing yahoo.js"/>
         
-        <concat destfile="${builddir}/js/yahoo-2.6.js">
-			<filelist dir="${js_home}/yahoo-2.6">
+        <concat destfile="${builddir}/js/yahoo.js">
+			<filelist dir="${js_home}/yahoo-${yuiversion}">
 				<file name="yahoo.js"/>
 				<file name="dom.js"/>
 				<file name="event.js"/>
@@ -126,17 +129,20 @@ Version: 1.0.01
 				<file name="connection.js"/>
                 <!--
 				<file name="datasource.js"/>
+				<file name="element.js"/>
+				<file name="dragdrop.js"/>
 				<file name="autocomplete.js"/>
+				<file name="slider.js"/>
 				-->
 			</filelist>
 		</concat>
 
-		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/js/yahoo-2.6-min.js">
+		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/js/yahoo-min.js">
 			<arg value="--charset" />
 			<arg value="UTF-8" />
 			<arg value="--line-break" />
 			<arg value="0" />
-			<arg value="${builddir}/js/yahoo-2.6.js" />
+			<arg value="${builddir}/js/yahoo.js" />
 		</java>
 	</target>
     <!-- @end consolidate YAHOO -->
@@ -254,10 +260,10 @@ Version: 1.0.01
     <!-- @end consolidate mvc -->
 
     <!-- @start consolidate library.js; this is a compilation of the other 4 packages -->
-    <target name="reconsolidate.library.js.check" depends="create.consolidate.build.directories, consolidate.yahoo-2.6.js, consolidate.yui-ext.js, consolidate.native-ext.js, consolidate.mvc.js">
+    <target name="reconsolidate.library.js.check" depends="create.consolidate.build.directories, consolidate.yahoo.js, consolidate.yui-ext.js, consolidate.native-ext.js, consolidate.mvc.js">
 		<condition property="library.js.uptodate">
 			<uptodate targetfile="${builddir}/js/library.js">
-				<srcfiles dir="${builddir}/js" includes="yahoo-2.6.js"/>
+				<srcfiles dir="${builddir}/js" includes="yahoo.js"/>
 				<srcfiles dir="${builddir}/js" includes="yahoo-ext.js"/>
 				<srcfiles dir="${builddir}/js" includes="native-ext.js"/>
 				<srcfiles dir="${builddir}/js" includes="mvc.js"/>
@@ -270,7 +276,7 @@ Version: 1.0.01
         
         <concat destfile="${builddir}/js/library.js">
 			<filelist dir="${builddir}/js/">
-				<file name="yahoo-2.6.js"/>
+				<file name="yahoo.js"/>
 				<file name="yahoo-ext.js"/>
 				<file name="native-ext.js"/>
 				<file name="mvc.js"/>
@@ -290,7 +296,7 @@ Version: 1.0.01
     <!-- @end consolidate library.js -->
 
     <!-- @start consolidate library.css -->
-    <target name="reconsolidate.library.css.check" depends="create.consolidate.build.directories, consolidate.yahoo-2.6.js, consolidate.yui-ext.js, consolidate.native-ext.js">
+    <target name="reconsolidate.library.css.check" depends="create.consolidate.build.directories, consolidate.yahoo.js, consolidate.yui-ext.js, consolidate.native-ext.js">
 		<condition property="library.css.uptodate">
 			<uptodate targetfile="${builddir}/css/library.css">
 				<srcfiles dir="${basedir}/assets/css" includes="reset.css"/>
@@ -322,23 +328,23 @@ Version: 1.0.01
 		<delete dir="${doc_home}/"/>
 
         <!-- animation module -->
-        <copy file="${js_home}/yahoo-2.6/animation.js" tofile="${build_docjs}/animation/animation.js"/>
+        <copy file="${js_home}/yahoo-${yuiversion}/animation.js" tofile="${build_docjs}/animation/animation.js"/>
 
         <!-- autocomplete module -->
-        <copy file="${js_home}/yahoo-2.6/autocomplete.js" tofile="${build_docjs}/autocomplete/autocomplete.js"/>
+        <copy file="${js_home}/yahoo-${yuiversion}/autocomplete.js" tofile="${build_docjs}/autocomplete/autocomplete.js"/>
 
         <!-- connection module -->
-        <copy file="${js_home}/yahoo-2.6/connection.js" tofile="${build_docjs}/connection/connection.js"/>
+        <copy file="${js_home}/yahoo-${yuiversion}/connection.js" tofile="${build_docjs}/connection/connection.js"/>
 
         <!-- datasource module -->
-        <copy file="${js_home}/yahoo-2.6/datasource.js" tofile="${build_docjs}/datasource/datasource.js"/>
+        <copy file="${js_home}/yahoo-${yuiversion}/datasource.js" tofile="${build_docjs}/datasource/datasource.js"/>
 
         <!-- dom module -->
-        <copy file="${js_home}/yahoo-2.6/dom.js" tofile="${build_docjs}/dom/dom.js"/>
+        <copy file="${js_home}/yahoo-${yuiversion}/dom.js" tofile="${build_docjs}/dom/dom.js"/>
         <copy file="${js_home}/yahoo-ext/dom.js" tofile="${build_docjs}/dom/dom-ext.js"/>
 
         <!-- event module -->
-        <copy file="${js_home}/yahoo-2.6/event.js" tofile="${build_docjs}/event/event.js"/>
+        <copy file="${js_home}/yahoo-${yuiversion}/event.js" tofile="${build_docjs}/event/event.js"/>
         <copy file="${js_home}/yahoo-ext/event.js" tofile="${build_docjs}/event/event-ext.js"/>
 
         <!-- form module -->
@@ -347,7 +353,7 @@ Version: 1.0.01
         <copy file="${js_home}/yahoo-ext/formElementSerializer.js" tofile="${build_docjs}/form/formElementSerializer.js"/>
 
         <!-- json module -->
-        <copy file="${js_home}/yahoo-2.6/json.js" tofile="${build_docjs}/json/json.js"/>
+        <copy file="${js_home}/yahoo-${yuiversion}/json.js" tofile="${build_docjs}/json/json.js"/>
 
         <!-- mvc module -->
         <copy file="${js_home}/mvc/lib/core.js" tofile="${build_docjs}/mvc/core.js"/>
@@ -363,7 +369,7 @@ Version: 1.0.01
         <copy file="${js_home}/yahoo-ext/constant.js" tofile="${build_docjs}/window/constant.js"/>
 
         <!-- yahoo module -->
-        <copy file="${js_home}/yahoo-2.6/yahoo.js" tofile="${build_docjs}/yahoo/yahoo.js"/>
+        <copy file="${js_home}/yahoo-${yuiversion}/yahoo.js" tofile="${build_docjs}/yahoo/yahoo.js"/>
         <copy file="${js_home}/yahoo-ext/lang.js" tofile="${build_docjs}/yahoo/lang-ext.js"/>
 
         <echo message="${basedir}/python.sh ${yuidoc_home}/bin/yuidoc.py ${parser_in} -p ${parser_out} -o ${generator_out} -t ${template} -v ${version} -Y ${yuiversion}"/>

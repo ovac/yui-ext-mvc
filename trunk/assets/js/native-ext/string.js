@@ -581,6 +581,9 @@
 
     // YAHOO.json extensions are included
     if (''.parseJSON) {
+        // JSON changed for the better in v2.7
+        var _parseJSON = YAHOO.lang.JSON ? YAHOO.lang.JSON : function(s) {return s.parseJSON();};
+
         var _thatIfJSON = {
 
             /**
@@ -592,7 +595,7 @@
              */
             toJsonObject: function(forceEval) {
                 if (! this) {return [];}
-                return ((522 > YAHOO.env.ua.webkit && 4000 < this.length) || forceEval) ? eval("(" + this + ")") : this.parseJSON();
+                return ((522 > YAHOO.env.ua.webkit && 4000 < this.length) || forceEval) ? eval("(" + this + ")") : _parseJSON(this);
             }
         };
 
