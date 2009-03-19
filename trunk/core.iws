@@ -2,24 +2,28 @@
 <project relativePaths="false" version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-2.7/element.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-2.7" />
-      <change type="DELETED" beforePath="C:\projects\httproot\core\build.iws" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/mvc/util/console.js" afterPath="$PROJECT_DIR$/assets/js/mvc/util/console.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core.iws" afterPath="$PROJECT_DIR$/core.iws" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-2.7/cookie.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/yahoo-ext/constant.js" afterPath="$PROJECT_DIR$/assets/js/yahoo-ext/constant.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-2.7/yuiloader.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$" afterPath="$PROJECT_DIR$" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_json.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/yahoo-ext/lang.js" afterPath="$PROJECT_DIR$/assets/js/yahoo-ext/lang.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core.ipr" afterPath="$PROJECT_DIR$/core.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/native-ext/string.js" afterPath="$PROJECT_DIR$/assets/js/native-ext/string.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core.iws" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-2.7/dom.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-2.7/json.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-2.7/autocomplete.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/mvc/lib/core.js" afterPath="$PROJECT_DIR$/assets/js/mvc/lib/core.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/mvc/lib/controller.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-2.7/datasource.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-2.7/animation.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-2.7/slider.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-2.7/dragdrop.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core.ipr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-2.7/event.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-2.7/yahoo.js" />
-      <change type="DELETED" beforePath="C:\projects\httproot\core\build.ipr" afterPath="" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-2.7/connection.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/window/RegExp.js" afterPath="$PROJECT_DIR$/assets/js/window/RegExp.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js" afterPath="$PROJECT_DIR$/assets/js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_text.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_json.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/yahoo-ext/formElement.js" afterPath="$PROJECT_DIR$/assets/js/yahoo-ext/formElement.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_xml.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/yahoo-ext/dom.js" afterPath="$PROJECT_DIR$/assets/js/yahoo-ext/dom.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_controller.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-2.7/deconcept.js" />
     </list>
     <ignored path=".idea/workspace.xml" />
     <ignored path="core.iws" />
@@ -78,10 +82,136 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="test_yuiStorage.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test_yuiStorage.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="161" column="70" selection-start="5430" selection-end="5430" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="YUIDataStorage.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/YUIDataStorage.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="181" column="36" selection-start="6261" selection-end="6261" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="build.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/build.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="130" column="44" selection-start="4892" selection-end="4892" vertical-scroll-proportion="1.0718336">
+            <state line="254" column="42" selection-start="9821" selection-end="9821" vertical-scroll-proportion="0.6229117">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FlashStorage.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/FlashStorage.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="39" column="115" selection-start="1353" selection-end="1353" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="datastore.as" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/flash/datastore.as">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="105" column="48" selection-start="3910" selection-end="3922" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dom.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/dom.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DataStorage.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/DataStorage.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="14" column="13" selection-start="326" selection-end="326" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CookieStorage.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/CookieStorage.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="57" column="0" selection-start="2085" selection-end="2085" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="formElement.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/formElement.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="247" column="0" selection-start="8444" selection-end="8444" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="core.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/mvc/lib/core.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="83" column="18" selection-start="1798" selection-end="1798" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="controller.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/mvc/lib/controller.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="33" selection-start="333" selection-end="333" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="lang.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/lang.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="86" column="118" selection-start="3080" selection-end="3080" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_controller.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test_controller.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="73" column="92" selection-start="2605" selection-end="2605" vertical-scroll-proportion="-12.863636">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="string.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/native-ext/string.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="598" column="13" selection-start="21362" selection-end="21362" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="constant.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/constant.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="180" column="29" selection-start="4189" selection-end="4196" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -121,60 +251,6 @@
         <PATH_ELEMENT>
           <option name="myItemId" value="core" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="assets" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="js" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="assets" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
     </subPane>
@@ -237,6 +313,11 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="" />
       <envs />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
+      <JSDebuggerConfigurationSettings>
+        <option name="fileUrl" />
+      </JSDebuggerConfigurationSettings>
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit" enabled="false" merge="false" runner="emma">
       <module name="" />
@@ -313,25 +394,25 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1" y="1" width="1678" height="1018" extended-state="0" />
+    <frame x="-4" y="-4" width="1688" height="1028" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" />
+      <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32922733" sideWeight="0.5" order="1" side_tool="false" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" />
-      <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" />
+      <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922733" sideWeight="0.5" order="8" side_tool="false" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24723247" sideWeight="0.66293395" order="0" side_tool="false" />
-      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" />
-      <window_info id="Web Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24723247" sideWeight="0.66293395" order="0" side_tool="false" />
+      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
+      <window_info id="Web Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" />
@@ -408,37 +489,114 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-2.7/datasource.js">
+    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/YUIDataStorage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="913" column="5" selection-start="26010" selection-end="26010" vertical-scroll-proportion="0.026501767">
+        <state line="181" column="36" selection-start="6261" selection-end="6261" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-2.7/json.js">
+    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/FlashStorage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="395" column="23" selection-start="12915" selection-end="12930" vertical-scroll-proportion="0.0">
+        <state line="39" column="115" selection-start="1353" selection-end="1353" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/flash/datastore.as">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="105" column="48" selection-start="3910" selection-end="3922" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/dom.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/DataStorage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="13" selection-start="326" selection-end="326" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/CookieStorage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="57" column="0" selection-start="2085" selection-end="2085" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/formElement.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="247" column="0" selection-start="8444" selection-end="8444" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/mvc/lib/core.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="83" column="18" selection-start="1798" selection-end="1798" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/lang.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="86" column="118" selection-start="3080" selection-end="3080" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/native-ext/string.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="597" column="106" selection-start="21318" selection-end="21318" vertical-scroll-proportion="0.0">
+        <state line="598" column="13" selection-start="21362" selection-end="21362" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/native-ext/object.js">
+    <entry file="file://$PROJECT_DIR$/test_json.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="1" column="0" selection-start="77" selection-end="291" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_xml.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="0" selection-start="442" selection-end="442" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/constant.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="180" column="29" selection-start="4189" selection-end="4196" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_controller.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="73" column="92" selection-start="2605" selection-end="2605" vertical-scroll-proportion="-12.863636">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/mvc/lib/controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="33" selection-start="333" selection-end="333" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="130" column="44" selection-start="4892" selection-end="4892" vertical-scroll-proportion="1.0718336">
+        <state line="254" column="42" selection-start="9821" selection-end="9821" vertical-scroll-proportion="0.6229117">
           <folding />
         </state>
       </provider>

@@ -1,13 +1,13 @@
 /*
  * Copyright (c) 2009, Matt Snider, LLC All rights reserved.
- * Version: 1.0.00
+ * Version: 1.0.01
  */
 
 /**
  * The console pacakge extends the "mvc/core.js" package with additional console logging capabilities. This package
  *  first attempts to use the FireBug console logger, and then, when that is not available will open a new browser window
  *  and log there.
- * @class Core
+ * @class Console
  * @static
  */
 (function() {
@@ -227,6 +227,9 @@
                         if (_YL.isFunction(obj)) {
                             s += 'function()';
                         }
+                        else if (_YL.isDate(obj)) {
+                            s += obj.formatTime();
+                        }
                         else if (_YL.isObject(obj)) {
                             s += 'Object';
                         }
@@ -244,9 +247,6 @@
                         }
                         else if (_YL.isNull(obj)) {
                             s += 'Null';
-                        }
-                        else if (_YL.isDate(obj)) {
-                            s += obj.formatTime();
                         }
 
                         s += '</p>';

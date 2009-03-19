@@ -78,6 +78,17 @@
          */
         View: {},
 
+        /**
+         * This is a generic method to use instead of an anonymous function, allows for better debugging.
+         * @method emptyFunction
+         * @static
+         */
+        emptyFunction: function() {
+            //noinspection JSUnusedLocalSymbols
+            var args = arguments,
+               pause = '';
+        },
+
 		/**
 		 * Returns the log level of the application.
 		 * @method getLogLevel

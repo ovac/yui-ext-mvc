@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+    <title>Core Test - Controller Class</title>
+	
+	<style type="text/css">
+        div.content {
+            background-color:#000000;
+            border:1px solid #333333;
+            color:#00EE00;
+            display:block;
+            margin:1em;
+            overflow:auto;
+            padding:1em;
+            width:628px;
+        }
+    </style>
+</head>
+
+<body id="project">
+
+    <p>
+        <input id="triggerSimple" type="button" value=" Simple GET "/>
+        <input id="triggerText" type="button" value=" Text GET "/>
+        <input id="triggerJson" type="button" value=" JSON GET "/>
+        <input id="triggerXml" type="button" value=" XML GET "/>
+        <input id="triggerPost" type="button" value=" Simple POST "/>
+        <input id="triggerFailure" type="button" value=" Show Failure "/>
+        <input id="triggerClear" type="button" value=" Clear "/>
+    </p>
+
+    <div class="content" id="simpleRequest"></div>
+    <div class="content" id="textRequest"></div>
+    <div class="content" id="jsonRequest"></div>
+    <div class="content" id="xmlRequest"></div>
+    <div class="content" id="postRequest"></div>
+    <div class="content" id="failureRequest"></div>
+    
+    <script type="text/javascript" src="assets/js/library.js"></script>
+    <script type="text/javascript" src="assets/js/mvc/lib/controller.js"></script>
+
+<script type="text/javascript">(function() {
+    var _YD = YAHOO.util.Dom,
+        $ = _YD.get,
+        _YE = YAHOO.util.Event,
+        _YL = YAHOO.lang,
+        _CC = Core.Controller;
+
+    _YE.on('triggerSimple', 'click', function() {
+        _CC.get("python.sh", function(data) {
+            _YD.replace('simpleRequest', data.replace(/\n|\r/g, '<br/>'));
+        });
+    });
+
+    _YE.on('triggerClear', 'click', function() {
+        _YD.getElementsByClassName('content', 'div', _YD.getBodyElement()).walk(function(node) {
+            _YD.replace(node, '');
+        });
+    });
+    
+    _CC.registerAjaxCallback('textTest', Core.Controller.TYPE_TEXT, function(text) {
+        _YD.replace('textRequest', text);
+    });
+
+    _CC.registerAjaxCallback('jsonTest', Core.Controller.TYPE_JSON, function(json) {
+        _YD.replace('jsonRequest', json.toJsonString());
+    });
+
+    _CC.registerAjaxCallback('xmlTest', Core.Controller.TYPE_XML, function(xml) {
+        _YD.replace('xmlRequest', _YD.getContentAsString(xml).replace(/</g, '&lt;').replace(/>/g, '&gt;'));
+    });
+
+    _CC.registerAjaxCallback('postTest', Core.Controller.TYPE_TEXT, function(text, args, cfg) {
+        _YD.replace('postRequest', 'Post URL: ' + cfg.url);
+    });
+
+    _YE.on('triggerText', 'click', function() {
+        _CC.get('test_text.html', {requestId: 'textTest'});
+    });
+
+    _YE.on('triggerXml', 'click', function() {
+        _CC.get('test_xml.xml', {requestId: 'xmlTest'});
+    });
+
+    _YE.on('triggerJson', 'click', function() {
+        _CC.get('test_json.php', {requestId: 'jsonTest'});
+    });
+
+    _YE.on('triggerFailure', 'click', function() {
+        _CC.get('unknown.html', {requestId: 'failureTest', success: Core.emptyFunction, failure: function(data) {
+            _YD.replace('failureRequest', Object.toJsonString(data));
+        }});
+    });
+
+    _YE.on('triggerPost', 'click', function() {
+        _CC.post('test_text.html', [
+                'test1=value1',
+                'test2=value2',
+                'test3=value3'
+        ], {requestId: 'postTest'});
+    });
+})();</script>
+</body>
+</html>

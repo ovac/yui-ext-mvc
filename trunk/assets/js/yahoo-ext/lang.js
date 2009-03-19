@@ -84,8 +84,8 @@
             var cfg = _YL.isObject(conf) ? conf : {};
             if (! (0 < cfg.maxExec)) {cfg.maxExec = 25;}
             if (! (0 < cfg.timeout)) {cfg.timeout = 100;}
-            if (! _YL.isFunction(callback)) {_YL.throwError(_YL.ERROR_INVALID_PARAMETERS, 'YAHOO.lang', 'callLazy', typeof callback, callback);}
-            if (! _YL.isFunction(isReady)) {_YL.throwError(_YL.ERROR_INVALID_PARAMETERS, 'YAHOO.lang', 'callLazy', typeof isReady, isReady);}
+            if (! _YL.isFunction(callback)) {_YL.throwError(_YL.ERROR_INVALID_PARAMETERS, 'YAHOO.lang', 'callLazy', 'Function', callback);}
+            if (! _YL.isFunction(isReady)) {_YL.throwError(_YL.ERROR_INVALID_PARAMETERS, 'YAHOO.lang', 'callLazy', 'Function', isReady);}
 
             var fx = function(index) {
                 // index does not yet exceed maxExec
@@ -238,9 +238,11 @@
          * Throws the provided error text after performing text replacement.
          * @method throwError
          * @param text {String} Required. The error text.
+         * @param arg1 {String} Optional. A value to replace the first '??' with.
+         * @param argX {String} Optional. Addtional values to replace the corresponding '??' with.
          * @static
          */
-        throwError: function(text) {
+        throwError: function(text, arg1, argX) {
 			var params = [];
 			
 			var fx = function() {

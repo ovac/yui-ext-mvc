@@ -235,6 +235,18 @@ if (! YAHOO.util.Form.Element) {
 		},
 
         /**
+         * Tests if the element is a type text, password, or a textarea.
+         * @method isText
+		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to evaluate.
+	     * @return {Boolean} The element is type text or password or is a textarea.
+		 * @static
+         */
+        isText: function(elem) {
+            var tagName = _YD.getTagName(elem);
+            return 'textarea' === tagName || _YFE.isType(elem, 'text', 'password');
+        },
+
+        /**
          * Tests if the field is one of the provided types.
          * @method isType
 		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to evaluate.
