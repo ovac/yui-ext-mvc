@@ -33,7 +33,7 @@
     C.HTML.CLS={};
 
     /**
-     * The DOM class attribute for applying disabled styles and/or identifying element state.
+     * The DOM class attribute for applying "disabled" styles and/or identifying element state.
      * @property DISABLED
      * @type {String}
      * @static
@@ -43,7 +43,7 @@
     C.HTML.CLS.DISABLED='disabled';
 
     /**
-     * The DOM class attribute for applying error styles.
+     * The DOM class attribute for applying "error" styles.
      * @property ERROR
      * @type {String}
      * @static
@@ -53,7 +53,7 @@
     C.HTML.CLS.ERROR='error';
 
     /**
-     * The DOM class attribute for emulating :first-child psuedo class.
+     * The DOM class attribute for emulating ":first-child" psuedo class.
      * @property FIRST
      * @type {String}
      * @static
@@ -83,7 +83,7 @@
     C.HTML.CLS.HIDE='displayNone';
 
     /**
-     * The DOM class attribute for emulating :hover psuedo class.
+     * The DOM class attribute for emulating ":hover" psuedo class.
      * @property HOVER
      * @type {String}
      * @static
@@ -93,7 +93,7 @@
     C.HTML.CLS.HOVER='hover';
 
     /**
-     * The DOM class attribute for emulating :last-child psuedo class.
+     * The DOM class attribute for emulating ":last-child" psuedo class.
      * @property LAST
      * @type {String}
      * @static
@@ -103,7 +103,17 @@
     C.HTML.CLS.LAST='last';
 
     /**
-     * The DOM class attribute for applying message styles.
+     * The DOM class attribute for applying "masked" styles.
+     * @property MASKED
+     * @type {String}
+     * @static
+     * @final
+     * @readonly Defined at build time.
+     */
+    C.HTML.CLS.MASKED='masked';
+
+    /**
+     * The DOM class attribute for applying "message" styles.
      * @property MESSAGE
      * @type {String}
      * @static
@@ -113,7 +123,7 @@
     C.HTML.CLS.MESSAGE='message';
 
     /**
-     * The DOM class attribute for identifying 'next' elements (usually used in pagination).
+     * The DOM class attribute for identifying "next" elements (usually used in pagination).
      * @property NEXT
      * @type {String}
      * @static
@@ -123,7 +133,7 @@
     C.HTML.CLS.NEXT='next';
 
     /**
-     * The DOM class attribute for applying open styles and/or identifying element state.
+     * The DOM class attribute for applying "open" styles and/or identifying element state.
      * @property OPEN
      * @type {String}
      * @static
@@ -133,7 +143,7 @@
     C.HTML.CLS.OPEN='open';
 
     /**
-     * The DOM class attribute for identifying 'previous' elements (usually used in pagination).
+     * The DOM class attribute for identifying "previous" elements (usually used in pagination).
      * @property PREV
      * @type {String}
      * @static
@@ -143,7 +153,7 @@
     C.HTML.CLS.PREV='prev';
 
     /**
-     * The DOM class attribute for applying selected styles and/or identifying element state.
+     * The DOM class attribute for applying "selected" styles and/or identifying element state.
      * @property SELECTED
      * @type {String}
      * @static

@@ -142,7 +142,7 @@
  * This method returns true if a match is found, and false if not.
  *  since FireFox 1.0, Netscape 4.0, and IE 4.0
  *
- * @method exec
+ * @method test
  * @param regexp {String} Required. The String to search.
  * @return {Boolean} true, when the regex matches
  * @public

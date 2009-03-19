@@ -839,7 +839,7 @@
 
                     _YL.arrayWalk(nodes, function(node, i) {
                         //noinspection NestedConditionalExpressionJS
-                        sb[i] = ($doc.CDATA_SECTION_NODE === node.nodeType) ? node.nodeValue : xmlSerializer.serializeToString(node);
+                        sb[i] = (_DOC.CDATA_SECTION_NODE === node.nodeType) ? node.nodeValue : xmlSerializer.serializeToString(node);
                     });
 
                     return sb.join('').replace(/(\<textarea[^\<]*?)\/\>/, '$1>&nbsp;</textarea>');
@@ -859,7 +859,7 @@
 
                     if (! parentNode || ! parentNode.childNodes.length) {return '';}
 
-                    if (_YD.isTextNode(parentNode.firstChild.nodeType) && 1 === parentNode.childNodes.length) {
+                    if (_YD.isTextNode(parentNode.firstChild) && 1 === parentNode.childNodes.length) {
                         return parentNode.firstChild.nodeValue;
                     }
                     else {

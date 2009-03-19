@@ -99,19 +99,21 @@ Version: 1.0.01
     <target name="reconsolidate.yahoo.js.check">
 		<condition property="yahoo.js.uptodate">
 			<uptodate targetfile="${builddir}/js/yahoo.js">
-				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="yahoo.js"/>
-				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="dom.js"/>
-				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="event.js"/>
-				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="json.js"/>
 				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="animation.js"/>
+				<!-- <srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="autocomplete.js"/> -->
 				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="connection.js"/>
-                <!--
-				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="datasource.js"/>
-				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="element.js"/>
-				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="autocomplete.js"/>
-				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="dragdrop.js"/>
-				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="slider.js"/>
-				-->
+                 <!--<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="cookie.js"/>-->
+				<!-- <srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="datasource.js"/> -->
+				<!-- <srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="deconcept.js"/> -->
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="dom.js"/>
+				<!-- <srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="dragdrop.js"/> -->
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="event.js"/>
+				<!--<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="flashadapter.js"/>-->
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="json.js"/>
+				 <!--<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="element.js"/>-->
+				<!-- <srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="slider.js"/> -->
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="yahoo.js"/>
+				 <!--<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="yuiloader.js"/>-->
 			</uptodate>
 		</condition>
 	</target>
@@ -125,15 +127,20 @@ Version: 1.0.01
 				<file name="dom.js"/>
 				<file name="event.js"/>
 				<file name="json.js"/>
+
+                 <!--<file name="yuiloader.js"/>-->
+                 <!--<file name="cookie.js"/>-->
+
 				<file name="animation.js"/>
 				<file name="connection.js"/>
-                <!--
-				<file name="datasource.js"/>
-				<file name="element.js"/>
-				<file name="dragdrop.js"/>
-				<file name="autocomplete.js"/>
-				<file name="slider.js"/>
-				-->
+
+                <!-- <file name="datasource.js"/> -->
+                 <!--<file name="element.js"/>-->
+                 <!--<file name="deconcept.js"/>-->
+                 <!--<file name="flashadapter.js"/>-->
+                <!-- <file name="dragdrop.js"/> -->
+                <!-- <file name="autocomplete.js"/> -->
+                <!-- <file name="slider.js"/> -->
 			</filelist>
 		</concat>
 
@@ -232,6 +239,7 @@ Version: 1.0.01
 		<condition property="mvc.js.uptodate">
 			<uptodate targetfile="${builddir}/js/mvc.js">
 				<srcfiles dir="${js_home}/mvc/lib" includes="core.js"/>
+				<srcfiles dir="${js_home}/mvc/lib" includes="controller.js"/>
 				<srcfiles dir="${js_home}/mvc/util" includes="console.js"/>
 				<srcfiles dir="${js_home}/mvc/util" includes="eventDispatcher.js"/>
 			</uptodate>
@@ -244,6 +252,7 @@ Version: 1.0.01
         <concat destfile="${builddir}/js/mvc.js">
 			<filelist dir="${js_home}/mvc">
 				<file name="lib/core.js"/>
+				<file name="lib/controller.js"/>
 				<file name="util/console.js"/>
 				<file name="util/eventDispatcher.js"/>
 			</filelist>

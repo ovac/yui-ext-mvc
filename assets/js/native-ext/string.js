@@ -580,9 +580,9 @@
     _YL.augmentObject(String.prototype, _that);
 
     // YAHOO.json extensions are included
-    if (''.parseJSON) {
+    if (''.parseJSON || _YL.JSON) {
         // JSON changed for the better in v2.7
-        var _parseJSON = YAHOO.lang.JSON ? YAHOO.lang.JSON : function(s) {return s.parseJSON();};
+        var _parseJSON = _YL.JSON ? _YL.JSON.parse : function(s) {return s.parseJSON();};
 
         var _thatIfJSON = {
 
