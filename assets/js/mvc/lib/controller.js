@@ -127,7 +127,7 @@ Core.Controller = (function() {
                 cfg = data.argument;
 
 			// retrieve response values, test response type, and initialize local variables
-			var doc = (data.responseXML), // parens are necessary for FF3
+			var doc = (data.responseXML), // parens are necessary for certain browsers
 				txt = (data.responseText),
 				hdr = (data.getResponseHeader),
 				contentType = (hdr && hdr['Content-Type']) ? hdr['Content-Type'] : '',
@@ -181,13 +181,13 @@ Core.Controller = (function() {
 		send: function(m, url, cb, args, data) {
             // configure request object; will be placed into the YUIObject.argument value
             var cfg = _YL.isObject(cb) ? cb : {};
-            if (_YL.isFunction(cb)) {cfg.success = cb;}
+            if (_YL.isFunction(cb)) {cfg.success = cb;} // the callback object is a success function
             if (! _YL.isString(cfg.requestId)) {cfg.requestId = 'ajaxRequest' + Number.getUnique();}
-            if (_YL.isFunction(cfg.success)) { // defining success at calltime
+            if (_YL.isFunction(cfg.success)) { // success function declares at call-time; register it
                 _that.registerAjaxCallback(cfg.requestId, cfg.type, cfg.success, cfg.failure);
             }
             if (! _YL.isObject(cfg.scope)) {cfg.scope = _that;}
-            if (! _YL.isNumber(cfg.timeout)) {cfg.scope = _DEFAULT_TIMEOUT;}
+            if (! _YL.isNumber(cfg.timeout)) {cfg.timeout = _DEFAULT_TIMEOUT;}
             if (_YL.isDefined(cfg.argument)) {
                 if (args) {cfg.argument = [cfg.argument, args];} // arguments defined twice; attempt to correct
             }
@@ -206,7 +206,7 @@ Core.Controller = (function() {
             else {
                 // todo: this should be logged as a warning - no success or failure callback defined for requestId
             }
-            
+
 			_YUC.asyncRequest(m, url, {argument: cfg, timeout: cfg.timeout}, data);
 		}
 	};

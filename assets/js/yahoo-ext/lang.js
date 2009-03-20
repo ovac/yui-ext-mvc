@@ -190,7 +190,7 @@
          * @static
          */
         isIE6: function() {
-            return 7 > _YUA.ie;
+            return 4 <= _YUA.ie && 7 > _YUA.ie;
         },
 
         /**

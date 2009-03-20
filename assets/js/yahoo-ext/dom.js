@@ -681,10 +681,13 @@
 		 * @param elem {String|Element} Required. Pointer or string reference to DOM element apply class to.
 		 * @param className {String} Required. The class name to apply.
 		 * @param b {Boolean} Optional. Force class instead of toggle.
+         * @return {Boolean} The class was added.
+		 * @static
 		 */
 		toggleClass: function(elem, className, b) {
 			var bool = _YL.isUndefined(b) ? ! _YD.hasClass(elem, className) : b;
 			_YD[bool ? 'addClass' : 'removeClass'](elem, className);
+            return bool;
 		},
 
 		/**
@@ -692,10 +695,11 @@
 		 * @method toggleDisplay
 		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to style.
 		 * @param b {Boolean} Optional. Force display instead of toggle.
+         * @return {Boolean} The class was added.
 		 * @static
 		 */
 		toggleDisplay: function(elem, b) {
-			_YD.toggleClass(elem, C.HTML.CLS.HIDE, ! b);
+			return _YD.toggleClass(elem, C.HTML.CLS.HIDE, _YL.isUndefined(b) ? b : ! b);
 		},
 
 		/**
@@ -703,10 +707,11 @@
 		 * @method visibility
 		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to toggle style of.
 		 * @param b {Boolean} Optional. Force visible instead of toggle.
+         * @return {Boolean} The class was added.
 		 * @static
 		 */
 		toggleVisibility: function(elem, b) {
-			_YD.toggleClass(elem, C.HTML.CLS.HIDDEN, ! b);
+			return _YD.toggleClass(elem, C.HTML.CLS.HIDDEN, _YL.isUndefined(b) ? b : ! b);
 		}
     };
 
