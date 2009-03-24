@@ -119,7 +119,21 @@ if (! YAHOO.util.Form.Element) {
 				if (node) {
 					try {
 						if (node.focus) {
-                            if (_YE.simulateClick) {_YE.simulateClick(node);}
+                            // 'simulateClick' fucntion exist, go ahead and simulate that the field was clicked into
+                            if (_YE.simulateClick) {
+                                var tagName = _YD.getTagName(node), isCheckable, isClickable;
+
+                                // some input types need special logic
+                                if ('input' === tagName) {
+                                    var type = _YFE.getType(node);
+                                    isCheckable = 'checkbox' === type || 'radio' === type,
+                                    isClickable = 'button' === type || 'submit' === type || 'image' === type || 'reset' === type;
+                                }
+        
+                                // don't simulate clicks on checkable and clickable elements
+                                if (! (isCheckable || isClickable)) {_YE.simulateClick(node);}
+                            }
+
                             node.setAttribute('autocomplete', 'off'); // this fixes possible "Permission denied to set property XULElement.selectedIndex ..." exception
 							node.focus();
 						}
