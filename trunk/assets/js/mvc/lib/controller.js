@@ -21,7 +21,7 @@ Core.Controller = (function() {
 	// local namespace
 	var _F = function () {},
 		_that = null,
-        _idCache = {};
+        _registeredConfigurationMap = {};
 
     /**
      * Asserts that the current type is the same as the static type and that isType evaluates to true.
@@ -36,6 +36,22 @@ Core.Controller = (function() {
             _YL.throwError('Assertion Failed - type="' + type + '" does not equal staticType="' + sType + '"');
         }
     };
+
+	/**
+	 * Updates the configuration object to the right value: call-time configuration, then cached, then default.
+	 * @method _configureRequest
+	 * @param vFx {String} Required. The YAHOO.lang validation function name.
+	 * @param cfg {Object} Required. The current configuration object.
+	 * @param cached {Object} Required. The cached configuration object.
+	 * @param key {String} Required. The key on the configuration object.
+	 * @param dflt {Object} Requried. The default value.
+	 * @private
+	 */
+	var _configureRequest = function(vFx, cfg, cached, key, dflt) {
+		if (! _YL[vFx](cfg[key])) {
+			cfg[key] = _YL[vFx](cached[key]) ? cached[key] : dflt;
+		}
+	};
 
     /**
      * Evaluates if the provided type is valid.
@@ -63,7 +79,7 @@ Core.Controller = (function() {
 
 
 	// request namespace
-	var R = {
+	var _R = {
 
 		/**
 		 * _YUC callback function for aborted transactions.
@@ -153,6 +169,8 @@ Core.Controller = (function() {
             }
 
             if (_YL.isFunction(cfg.success)) {
+				_registeredConfigurationMap[cfg.requestId].isSending = false;
+				_registeredConfigurationMap[cfg.requestId].response = response;
                 cfg.success.call(this, response, cfg.argument, cfg);
             }
 		},
@@ -179,35 +197,33 @@ Core.Controller = (function() {
 		 * @public
 		 */
 		send: function(m, url, cb, args, data) {
+            var cfg = _YL.isObject(cb) ? cb : {},
+				cachedCfg = _registeredConfigurationMap[cfg.requestId] || {};
+
             // configure request object; will be placed into the YUIObject.argument value
-            var cfg = _YL.isObject(cb) ? cb : {};
             if (_YL.isFunction(cb)) {cfg.success = cb;} // the callback object is a success function
             if (! _YL.isString(cfg.requestId)) {cfg.requestId = 'ajaxRequest' + Number.getUnique();}
-            if (_YL.isFunction(cfg.success)) { // success function declares at call-time; register it
+            if (! cachedCfg.success) { // success function declares at call-time; register it
                 _that.registerAjaxCallback(cfg.requestId, cfg.type, cfg.success, cfg.failure);
             }
-            if (! _YL.isObject(cfg.scope)) {cfg.scope = _that;}
-            if (! _YL.isNumber(cfg.timeout)) {cfg.timeout = _DEFAULT_TIMEOUT;}
-            if (_YL.isDefined(cfg.argument)) {
-                if (args) {cfg.argument = [cfg.argument, args];} // arguments defined twice; attempt to correct
-            }
-            else {
-                cfg.argument = args;
-            }
+			
+			_configureRequest('isFunction', cfg, cachedCfg, 'failure', Core.emptyFunction);
+			_configureRequest('isFunction', cfg, cachedCfg, 'success', Core.emptyFunction);
+			_configureRequest('isObject', cfg, cachedCfg, 'scope', _that);
+			_configureRequest('isNumber', cfg, cachedCfg, 'timeout', _DEFAULT_TIMEOUT);
+			_configureRequest('isString', cfg, cachedCfg, 'type', _that.TYPE_UNKNOWN);
+			_configureRequest('isDefined', cfg, cachedCfg, 'argument', args);
 
-            // this request has callbacks
-            if (_idCache[cfg.requestId]) {
-                cfg.failure = _idCache[cfg.requestId].failure;
-                cfg.success = _idCache[cfg.requestId].success;
-                cfg.type = _idCache[cfg.requestId].type;
-                cfg.url = url;
-                if (data) {cfg.url += '?' + data;}
-            }
-            else {
-                // todo: this should be logged as a warning - no success or failure callback defined for requestId
-            }
+			if (url) {
+				cfg.url = url;
+				if (data) {cfg.url += '?' + data;}
+			}
 
-			_YUC.asyncRequest(m, url, {argument: cfg, timeout: cfg.timeout}, data);
+			_registeredConfigurationMap[cfg.requestId].isSending = true;
+			_registeredConfigurationMap[cfg.requestId].response = null;
+			_registeredConfigurationMap[cfg.requestId].url = cfg.url;
+
+			_YUC.asyncRequest(m, url || cfg.url, {argument: cfg, timeout: cfg.timeout}, data);
 		}
 	};
 
@@ -231,7 +247,7 @@ Core.Controller = (function() {
         if (! _YL.isString(url)) {_YL.throwError(_YL.ERROR_INVALID_PARAMETERS, 'Core.Controller', functionName, 'String', url);}
         if (! qData) {_YL.throwError(_YL.ERROR_INVALID_PARAMETERS, 'Core.Controller', functionName, 'String', data);}
 
-        R.send('post' === functionName ? 'POST' : 'GET', url, cb, a, qData);
+        _R.send('post' === functionName ? 'POST' : 'GET', url, cb, a, qData);
     };
 
 
@@ -279,6 +295,43 @@ Core.Controller = (function() {
         TYPE_UNKNOWN: '',
 
 		/**
+		 * Command pattern method for fetching data from the backend.
+		 * @method call
+         * @param rId {String} Required. The id of the request.
+		 * @param fx {String} Required. The callback function.
+		 * @param url {String} Required. The request URL w/ query parameters; only use this for requests with dynamic variables.
+		 * @static
+		 */
+		call: function(rId, fx, url) {
+			var cfg = _registeredConfigurationMap[rId];
+
+			if (! cfg) {
+				_YL.throwError('Core.Controlller.call - the provided requestId=' + rId + ' is not yet registered');
+			}
+
+			var callback = _YL.isFunction(fx) ? fx : cfg.success; // execute provided function, default to success function
+
+			// data is cached, go ahead an immediately execute the callback function
+			if (cfg.response) {
+				callback.call(this, cfg.response, cfg.argument, cfg);
+			}
+			// data is invalid or is being requested
+			else {
+				// date is not yet being fetched, fetch it
+				if (! cfg.isSending) {
+					_R.send('get', url || cfg.url, cfg);
+				}
+
+				// a new callback was provided; Wait until until the request has finished to execute.
+				if (callback === fx) {
+					_YL.callLazy(function() {
+						_that.call(rId, fx, url);
+					}, function() {return ! _registeredConfigurationMap[rId].isSending;});
+				}
+			}
+		},
+
+		/**
 		 * Make an asynchronous GET requests.
 		 * @method get
 		 * @param url {String} Required. The request URL w/ query parameters.
@@ -288,7 +341,19 @@ Core.Controller = (function() {
 		 */
 		get: function(url, cb, a) {
             if (! _YL.isString(url)) {_YL.throwError(_YL.ERROR_INVALID_PARAMETERS, 'Core.Controller', 'get', 'String', url);}
-			R.send('GET', url, cb, a, null);
+			_R.send('GET', url, cb, a, null);
+		},
+
+		/**
+		 * Invalidates an object, so the next time it is requested, it is retrieved from the server.
+		 * @method invalidate
+         * @param rId {String} Required. The id of the request.
+		 * @static
+		 */
+		invalidate: function(rId) {
+			if (_registeredConfigurationMap[rId]) {
+				_registeredConfigurationMap[rId].response = null;
+			}
 		},
 
 		/**
@@ -322,14 +387,17 @@ Core.Controller = (function() {
          * @method registerAjaxCallback
          * @param rId {String} Required. The id of the request.
          * @param type {String} Required. The type of response expected.
-         * @param sfx {Function} Required. The success callback function.
-         * @param ffx {Function} Optional. The failure callback function.
+		 * @param cb {Object|Function} Optional. The YUI callback object or success callback function.
          * @static
          */
-        registerAjaxCallback: function(rId, type, sfx, ffx) {
-            if (! (_YL.isString(rId) && _YL.isFunction(sfx))) {return null;}
-            if (_YL.isDefined(ffx) && ! _YL.isFunction(ffx)) {ffx = null;}
-            _idCache[rId] = {failure: ffx, success: sfx, type: _getValidType(type)};
+        registerAjaxCallback: function(rId, type, cb) {
+            if (! _YL.isString(rId)) {return null;}
+			var callback = _YL.isObject(cb) ? cb : {};
+			if (_YL.isFunction(cb)) {callback.success = cb;}
+			if (! _YL.isFunction(callback.success)) {callback.success = Core.emptyFunction;} // this request has no static callback
+			callback.type = _getValidType(type);
+			callback.requestId = rId;
+            _registeredConfigurationMap[rId] = callback;
         }
 	};
 
@@ -338,20 +406,20 @@ Core.Controller = (function() {
 //
 //	// Subscribe to all custom events fired by Connection Manager.
 //	_YUC.startEvent.subscribe(evt.onStart, _that);
-	_YUC.completeEvent.subscribe(R.onComplete, _that);
+	_YUC.completeEvent.subscribe(_R.onComplete, _that);
 
 	// This event will not fire for file upload transactions.  Instead,
 	// subscribe to the uploadEvent.
-	_YUC.successEvent.subscribe(R.onSuccess, _that);
+	_YUC.successEvent.subscribe(_R.onSuccess, _that);
 
 	// This event will not fire for file upload transactions.  Instead,
 	// subscribe to the uploadEvent.
-	_YUC.failureEvent.subscribe(R.onFailure, _that);
+	_YUC.failureEvent.subscribe(_R.onFailure, _that);
 
 	// This event is fired only for file upload transactions in place of
 	// successEvent and failureEvent
-	_YUC.uploadEvent.subscribe(R.onUpload, _that);
-	_YUC.abortEvent.subscribe(R.onAbort, _that);
+	_YUC.uploadEvent.subscribe(_R.onUpload, _that);
+	_YUC.abortEvent.subscribe(_R.onAbort, _that);
 
     return _that;
 })();

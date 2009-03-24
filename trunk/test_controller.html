@@ -5,15 +5,20 @@
     <title>Core Test - Controller Class</title>
 	
 	<style type="text/css">
+		body#project {
+			width: 1500px;
+		}
+		
         div.content {
             background-color:#000000;
             border:1px solid #333333;
             color:#00EE00;
             display:block;
-            margin:1em;
+			float: left;
+            margin-right:1em;
             overflow:auto;
-            padding:1em;
-            width:628px;
+            padding: 0.5em;
+            width:200px;
         }
     </style>
 </head>
@@ -23,8 +28,11 @@
     <p>
         <input id="triggerSimple" type="button" value=" Simple GET "/>
         <input id="triggerText" type="button" value=" Text GET "/>
+        <input id="triggerTextCall" type="button" value=" Text Call "/>
         <input id="triggerJson" type="button" value=" JSON GET "/>
+        <input id="triggerJsonCall" type="button" value=" JSON Call "/>
         <input id="triggerXml" type="button" value=" XML GET "/>
+        <input id="triggerXmlCall" type="button" value=" XML Call "/>
         <input id="triggerPost" type="button" value=" Simple POST "/>
         <input id="triggerFailure" type="button" value=" Show Failure "/>
         <input id="triggerClear" type="button" value=" Clear "/>
@@ -36,9 +44,19 @@
     <div class="content" id="xmlRequest"></div>
     <div class="content" id="postRequest"></div>
     <div class="content" id="failureRequest"></div>
-    
-    <script type="text/javascript" src="assets/js/library.js"></script>
-    <script type="text/javascript" src="assets/js/mvc/lib/controller.js"></script>
+
+	<p style="clear:both; padding-top: 1em;"><strong>Simple GET.</strong> This just makes a simple, call-time defined GET request. This is very similar to using "YAHOO.util.Connection.asyncRequest".</p>
+	<p><strong>Text GET.</strong> Makes a request that returns a textual response. No caching occurs and it will keep making the request.</p>
+	<p><strong>Text Call.</strong> Makes the same request as the "Text GET", but caches the response; this way we can reduce the number of requests.</p>
+	<p><strong>JSON GET.</strong> Makes a request that returns a JSON response. No caching occurs and it will keep making the request.</p>
+	<p><strong>JSON Call.</strong> Makes the same request as the "JSON GET", but caches the response; this way we can reduce the number of requests.</p>
+	<p><strong>XML GET.</strong> Makes a request that returns a XML response. No caching occurs and it will keep making the request.</p>
+	<p><strong>XML Call.</strong> Makes the same request as the "XML GET", but caches the response; this way we can reduce the number of requests.</p>
+	<p><strong>Simple POST.</strong> This just makes a simple, call-time defined POST request. This is very similar to using "YAHOO.util.Connection.asyncRequest".</p>
+	<p><strong>Show Failure.</strong> This requests a non-existance URL and triggers the failure logic; then prints the configuration as a string.</p>
+	<p><strong>Clear.</strong> Clears all the messages in the DOM and invalidates all the 'Call' requests.</p>
+
+    <script type="text/javascript" src="../assets/js/library.js"></script>
 
 <script type="text/javascript">(function() {
     var _YD = YAHOO.util.Dom,
@@ -57,19 +75,22 @@
         _YD.getElementsByClassName('content', 'div', _YD.getBodyElement()).walk(function(node) {
             _YD.replace(node, '');
         });
+		_CC.invalidate('jsonTest');
+		_CC.invalidate('textTest');
+		_CC.invalidate('xmlTest');
     });
     
     _CC.registerAjaxCallback('textTest', Core.Controller.TYPE_TEXT, function(text) {
         _YD.replace('textRequest', text);
     });
 
-    _CC.registerAjaxCallback('jsonTest', Core.Controller.TYPE_JSON, function(json) {
+    _CC.registerAjaxCallback('jsonTest', Core.Controller.TYPE_JSON, {url: 'test_json.php', success: function(json) {
         _YD.replace('jsonRequest', json.toJsonString());
-    });
+    }});
 
-    _CC.registerAjaxCallback('xmlTest', Core.Controller.TYPE_XML, function(xml) {
+    _CC.registerAjaxCallback('xmlTest', Core.Controller.TYPE_XML, {url: 'test_xml.xml', success: function(xml) {
         _YD.replace('xmlRequest', _YD.getContentAsString(xml).replace(/</g, '&lt;').replace(/>/g, '&gt;'));
-    });
+    }});
 
     _CC.registerAjaxCallback('postTest', Core.Controller.TYPE_TEXT, function(text, args, cfg) {
         _YD.replace('postRequest', 'Post URL: ' + cfg.url);
@@ -85,6 +106,18 @@
 
     _YE.on('triggerJson', 'click', function() {
         _CC.get('test_json.php', {requestId: 'jsonTest'});
+    });
+
+    _YE.on('triggerTextCall', 'click', function() {
+        _CC.call('textTest', null, 'test_text.html');
+    });
+
+    _YE.on('triggerXmlCall', 'click', function() {
+        _CC.call('xmlTest');
+    });
+
+    _YE.on('triggerJsonCall', 'click', function() {
+        _CC.call('jsonTest');
     });
 
     _YE.on('triggerFailure', 'click', function() {
