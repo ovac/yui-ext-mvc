@@ -53,8 +53,15 @@ if (! YAHOO.util.Form.Element) {
 				if ('checkbox' === type || 'radio' === type) {
 					// if this check isn't in place Safari & Opera will check false
 					if (node.checked != fl) { // do not make strict
-						node.checked = fl;
-						if (node.setAttribute) {node.setAttribute('checked', fl);} // insurance against some browser issues
+						try {
+							node.checked = fl;
+							if (node.setAttribute) {node.setAttribute('checked', fl);} // insurance against some browser issues
+						}
+						catch (ex) {
+							if (ex) {
+								// squelch exception thrown by IE 8
+							}
+						}
 						if ('checkbox' === type && ! doNotChangeValue) {node.value = fl ? 'on' : 'off';} // required for Safari, don't change value of radios
 					}
 				}
