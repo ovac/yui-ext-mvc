@@ -669,7 +669,20 @@
             var node = $(elem);
             if (! node || ! _YL.isDefined(text)) {return;}
             var tn = _YD.findFirstText(node);
-            if (tn) {tn.nodeValue = text;}
+
+            if (tn) {
+				tn.nodeValue = text;
+			}
+			else {
+				//noinspection UnusedCatchParameterJS
+				try {
+					node.appendChild(_DOC.createTextNode(text));
+				}
+				// appendChild doesn't work with certain elements, like 'var'
+				catch (e) {
+					_YD.replace(node, text);
+				}
+			}
         },
 
         /* defined below */

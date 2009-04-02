@@ -122,15 +122,20 @@
 
                 // iterate up the DOM tree
                 while (searchNode && root !== searchNode) {
-                    var listeners = _YE.getListeners(searchNode, eventType);
+                    var listeners = _YE.getListeners(searchNode, eventType),
+						cancelBubble = false;
 
                     // node has listeners
                     if (listeners && listeners.length) {
                         // iterate on those listeners
                         _YL.arrayWalk(listeners, function(o) {
-                            o.fn.call(o.adjust ? o.scope : this, {target: node}, o.obj); // execute function
+							var emulatedEvent = {target: node};
+                            o.fn.call(o.adjust ? o.scope : this, emulatedEvent, o.obj); // execute function
+							cancelBubble = emulatedEvent.cancelBubble;
                         });
                     }
+
+					if (cancelBubble) {break;}
 
                     searchNode = searchNode.parentNode;
                 }
