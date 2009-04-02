@@ -46,7 +46,7 @@ Version: 1.0.01
 	<!-- <property name="parser_in" value="${js_home}/window ${js_home}/yahoo-2.6 ${js_home}/yahoo-ext"/> -->
 	<property name="parser_in" value="${build_docjs}/animation ${build_docjs}/autocomplete ${build_docjs}/connection
 	${build_docjs}/datasource ${build_docjs}/dom ${build_docjs}/event ${build_docjs}/json ${build_docjs}/yahoo
-	${build_docjs}/window ${build_docjs}/form ${build_docjs}/mvc"/>
+	${build_docjs}/window ${build_docjs}/form ${build_docjs}/mvc ${build_docjs}/ystorage"/>
 
     <!--
     The location to output the parser data.  This output is a file containing a json string, and copies of the parsed files.
@@ -380,6 +380,11 @@ Version: 1.0.01
         <!-- yahoo module -->
         <copy file="${js_home}/yahoo-${yuiversion}/yahoo.js" tofile="${build_docjs}/yahoo/yahoo.js"/>
         <copy file="${js_home}/yahoo-ext/lang.js" tofile="${build_docjs}/yahoo/lang-ext.js"/>
+
+        <!-- yahoo storage module -->
+        <copy file="${js_home}/YUIDataStorage/YDataSource.js" tofile="${build_docjs}/ystorage/YDataSource.js"/>
+        <copy file="${js_home}/YUIDataStorage/YDataStorage.js" tofile="${build_docjs}/ystorage/YDataStorage.js"/>
+        <copy file="${js_home}/YUIDataStorage/YDataStorageEvent.js" tofile="${build_docjs}/ystorage/YDataStorageEvent.js"/>
 
         <echo message="${basedir}/python.sh ${yuidoc_home}/bin/yuidoc.py ${parser_in} -p ${parser_out} -o ${generator_out} -t ${template} -v ${version} -Y ${yuiversion}"/>
         <!-- organize files -->
