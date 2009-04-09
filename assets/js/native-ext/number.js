@@ -13,16 +13,6 @@
     var _that = {
 
         /**
-         * Returns a unique number, non-repeatable number.
-         * @method getUnique
-         * @return {Number} A integer value.
-         * @static
-         */
-        getUnique: function() {
-            return parseInt(new Date().getTime() + Math.random() * 10000, 10);
-        },
-
-        /**
          * Tests if the passed parameter is a Number.
          * @param n {Object} Required. An Object that want to ensure is a Number.
          * @return {Boolean} True when parameter is a Number.

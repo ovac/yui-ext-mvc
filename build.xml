@@ -382,9 +382,9 @@ Version: 1.0.01
         <copy file="${js_home}/yahoo-ext/lang.js" tofile="${build_docjs}/yahoo/lang-ext.js"/>
 
         <!-- yahoo storage module -->
-        <copy file="${js_home}/YUIDataStorage/YDataSource.js" tofile="${build_docjs}/ystorage/YDataSource.js"/>
-        <copy file="${js_home}/YUIDataStorage/YDataStorage.js" tofile="${build_docjs}/ystorage/YDataStorage.js"/>
-        <copy file="${js_home}/YUIDataStorage/YDataStorageEvent.js" tofile="${build_docjs}/ystorage/YDataStorageEvent.js"/>
+        <copy file="assets/js/YUIDataStorage/StorageManager.js" tofile="${build_docjs}/ystorage/YDataSource.js"/>
+        <copy file="assets/js/YUIDataStorage/Storage.js" tofile="${build_docjs}/ystorage/YDataStorage.js"/>
+        <copy file="assets/js/YUIDataStorage/StorageEvent.js" tofile="${build_docjs}/ystorage/YDataStorageEvent.js"/>
 
         <echo message="${basedir}/python.sh ${yuidoc_home}/bin/yuidoc.py ${parser_in} -p ${parser_out} -o ${generator_out} -t ${template} -v ${version} -Y ${yuiversion}"/>
         <!-- organize files -->

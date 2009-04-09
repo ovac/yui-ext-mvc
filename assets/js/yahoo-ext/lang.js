@@ -10,7 +10,8 @@
  */
 (function() {    
     var _YL = YAHOO.lang,
-        _YUA = YAHOO.env.ua;
+		_YENV = YAHOO.env,
+        _YUA = _YENV.ua;
 
 	var _that = {
 
@@ -128,6 +129,25 @@
                 }
             }
         },
+
+		/**
+		 * Retrieves value for the given key out of the url query string.
+		 * @method getUniqueId
+		 * @param prefix {String} Optional. A string to prefix the ID with.
+		 * @param isNotInDOM {Boolean} Optional. True, when you want to ensure it is not already in the DOM.
+		 * @return {String} The generated unique Id string.
+		 * @static
+		 */
+		getUniqueId: function(prefix, isNotInDOM) {
+			var pfx = prefix || 'yui-gen', id;
+
+			do {
+				id = pfx + _YEVN.getIdCounter();
+			}
+			while (isNotInDOM && document.getElementById(id));
+
+			return id;
+		},
 
         /**
          * Evaluates if the provided object is an arguments object or not.
@@ -294,4 +314,20 @@
     }
 	
     _YL.augmentObject(_YL, _that);
+
+	var _thatEnv = {
+
+		/**
+		 * Fetches the internal ID counter from YUI, and auto increments it.
+		 * @method getIdCounter
+		 * @return {Number} A number.
+		 * @static
+		 */
+		getIdCounter: function() {
+			return _YENV._id_counter++;
+		}
+	};
+
+    _YL.augmentObject(_YENV, _thatEnv);
+
 })();
