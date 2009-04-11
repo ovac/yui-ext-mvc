@@ -142,7 +142,7 @@
 			var pfx = prefix || 'yui-gen', id;
 
 			do {
-				id = pfx + _YEVN.getIdCounter();
+				id = pfx + _YENV.getIdCounter();
 			}
 			while (isNotInDOM && document.getElementById(id));
 
