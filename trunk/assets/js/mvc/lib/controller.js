@@ -202,7 +202,7 @@ Core.Controller = (function() {
 
             // configure request object; will be placed into the YUIObject.argument value
             if (_YL.isFunction(cb)) {cfg.success = cb;} // the callback object is a success function
-            if (! _YL.isString(cfg.requestId)) {cfg.requestId = 'ajaxRequest' + _YL.getUnique();}
+            if (! _YL.isString(cfg.requestId)) {cfg.requestId = 'ajaxRequest' + _YL.getUniqueId();}
             if (! cachedCfg.success) { // success function declares at call-time; register it
                 _that.registerAjaxCallback(cfg.requestId, cfg.type, cfg.success, cfg.failure);
 				cachedCfg = _registeredConfigurationMap[cfg.requestId];
