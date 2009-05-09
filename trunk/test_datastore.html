@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+    <title>Dojo Storage Test - Using YUI</title>
+
+	<style type="text/css">
+    </style>
+</head>
+
+<body>
+
+<div id="dataStoreDiv" style=”width:0px;height:0px;overflow:hidden;”></div>
+
+<script type="text/javascript" src="assets/js/library.js"></script>
+<script type="text/javascript" src="assets/js/yahoo-2.7/element.js"></script>
+<script type="text/javascript" src="assets/js/yahoo-2.7/deconcept.js"></script>
+<script type="text/javascript" src="assets/js/yahoo-2.7/flashadapter.js"></script>
+<script type="text/javascript" src="assets/js/yahoo-2.7/DataStore.js"></script>
+
+<script type="text/javascript">(function() {
+	var dataStore = new YAHOO.util.DataStore("dataStoreDiv");
+
+	dataStore.addListener("success", onSuccess);
+
+	var temp = dataStore._swf.getSVGDocument();
+
+	function onSuccess (event) {
+	   alert('Your username has been stored');
+	}
+
+	dataStore.setItem('Jed90210','my_username');
+})();
+</script>
+
+</body>
+</html>

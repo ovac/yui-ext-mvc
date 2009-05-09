@@ -305,7 +305,7 @@ Version: 1.0.01
     <!-- @end consolidate library.js -->
 
     <!-- @start consolidate library.css -->
-    <target name="reconsolidate.library.css.check" depends="create.consolidate.build.directories, consolidate.yahoo.js, consolidate.yui-ext.js, consolidate.native-ext.js">
+    <target name="reconsolidate.library.css.check" depends="create.consolidate.build.directories">
 		<condition property="library.css.uptodate">
 			<uptodate targetfile="${builddir}/css/library.css">
 				<srcfiles dir="${basedir}/assets/css" includes="reset.css"/>
@@ -331,6 +331,37 @@ Version: 1.0.01
 		</java>
     </target>
     <!-- @end consolidate library.css -->
+
+    <!-- @start consolidate mattsnider.com.css -->
+    <target name="reconsolidate.mattsnider.com.css.check" depends="create.consolidate.build.directories">
+		<condition property="mattsnider.com.css.uptodate">
+			<uptodate targetfile="${builddir}/css/mattsnider.com.css">
+				<srcfiles dir="${builddir}/css" includes="library.css"/>
+				<srcfiles dir="${basedir}/assets/css" includes="layout.css"/>
+			</uptodate>
+		</condition>
+	</target>
+
+	<target name="consolidate.mattsnider.com.css" depends="reconsolidate.mattsnider.com.css.check" unless="mattsnider.com.css.uptodate">
+		<echo message="processing mattsnider.com.css"/>
+        <copy file="${builddir}/css/library.css" tofile="${basedir}/assets/css/library-tmp.css"/>
+
+        <concat destfile="${builddir}/css/mattsnider.com.css">
+			<filelist dir="${cssdir}/">
+				<file name="library-tmp.css"/>
+				<file name="layout.css"/>
+			</filelist>
+		</concat>
+
+		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/css/mattsnider.com-min.css">
+			<arg value="--charset" />
+			<arg value="UTF-8" />
+			<arg value="${builddir}/css/mattsnider.com.css" />
+		</java>
+
+        <delete file="${basedir}/assets/css/library-tmp.css"/>
+    </target>
+    <!-- @end consolidate mattsnider.com.css -->
 
     <!-- @start consolidate build documentation -->
 	<target name="build.javadoc">

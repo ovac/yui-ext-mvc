@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+    <title>Core Test - iFrame Importer</title>
+	
+	<style type="text/css">
+		.displayNone {
+			display: none;
+		}
+    </style>
+</head>
+
+<body id="project">
+
+	<p></p>
+
+    <script type="text/javascript" src="../assets/js/library.js"></script>
+
+<script type="text/javascript">(function() {
+	var _createFrameWindow = function(url) {
+		var oIFrame = document.createElement('iframe');
+		oIFrame.setAttribute('height', '0');
+		oIFrame.setAttribute('width', '0');
+		oIFrame.className = 'displayNone';
+		YAHOO.util.Dom.get('project').appendChild(oIFrame);
+		oIFrame.src = url;
+		return oIFrame.contentWindow;
+	};
+
+	var _importJavaScript = function(fileName, callback) {
+		var iWindow = _createFrameWindow(fileName),
+			intervalId = setInterval(function() {
+			if (iWindow.init) {
+				clearInterval(intervalId);
+				iWindow.init(window);
+				callback();
+			}
+		}, 500);
+	};
+
+	_importJavaScript('test_iframeImportee.html', function() {
+		YAHOO.util.testObject.test();
+	});
+})();</script>
+</body>
+</html>
