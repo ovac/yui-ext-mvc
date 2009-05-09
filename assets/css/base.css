@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2007, Matt Snider, LLC. All rights reserved.
+/*
+ * Copyright (c) 2009, Matt Snider, LLC. All rights reserved.
  * Version: 1.0.01
  */
 
@@ -105,6 +105,8 @@ sub {
 
 .clear {
 	clear: both;
+	height: 0;
+	visibility: hidden;
 }
 
 /* (en) clearfix method for clearing floats */

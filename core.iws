@@ -2,13 +2,27 @@
 <project relativePaths="false" version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/test_scriptImport.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/css/layout.css" afterPath="$PROJECT_DIR$/assets/css/layout.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core.iws" afterPath="$PROJECT_DIR$/core.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/mvc/lib/controller.js" afterPath="$PROJECT_DIR$/assets/js/mvc/lib/controller.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core.ipr" afterPath="$PROJECT_DIR$/core.ipr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/yahoo-ext/lang.js" afterPath="$PROJECT_DIR$/assets/js/yahoo-ext/lang.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/games" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_iframeImport.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/test/iframeImportObject.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/test_cardSystem.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/games/cardViewImg.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/css/reset.css" afterPath="$PROJECT_DIR$/assets/css/reset.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/games/cardModel.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_iframeImportee.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/test" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/games/cardView.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/games/deck.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/css/base.css" afterPath="$PROJECT_DIR$/assets/css/base.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/widget" />
     </list>
-    <ignored path="core.iws" />
     <ignored path=".idea/workspace.xml" />
+    <ignored path="core.iws" />
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="Commander">
@@ -70,10 +84,26 @@
       <file leaf-file-name="Storage.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/Storage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="191" column="8" selection-start="5678" selection-end="5678" vertical-scroll-proportion="0.0">
-              <folding>
-                <marker date="1239398891921" expanded="true" signature="987:1091" placeholder="/**...*/" />
-              </folding>
+            <state line="114" column="45" selection-start="3183" selection-end="3207" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="konamiCode.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/assets/js/widget/konamiCode.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="24" selection-start="332" selection-end="332" vertical-scroll-proportion="0.30538923">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_controller.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test_controller.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="134" column="7" selection-start="5626" selection-end="5626" vertical-scroll-proportion="-31.272728">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -81,7 +111,7 @@
       <file leaf-file-name="StorageManager.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="95" column="41" selection-start="2725" selection-end="2725" vertical-scroll-proportion="0.0">
+            <state line="0" column="0" selection-start="0" selection-end="87" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -90,7 +120,7 @@
       <file leaf-file-name="StorageEngineHTML5.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineHTML5.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="125" column="46" selection-start="3162" selection-end="3162" vertical-scroll-proportion="0.0">
+            <state line="93" column="19" selection-start="2340" selection-end="2351" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -99,7 +129,7 @@
       <file leaf-file-name="StorageEngineCookie.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineCookie.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="344" column="11" selection-start="9484" selection-end="9543" vertical-scroll-proportion="0.0">
+            <state line="335" column="25" selection-start="9418" selection-end="9418" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -108,34 +138,7 @@
       <file leaf-file-name="StorageEngineSWF.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineSWF.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="38" selection-start="629" selection-end="629" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="controller.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/mvc/lib/controller.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="204" column="87" selection-start="6542" selection-end="6542" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="lang.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/lang.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="144" column="32" selection-start="5110" selection-end="5110" vertical-scroll-proportion="0.49723756">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StorageEvent.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEvent.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="35" selection-start="858" selection-end="858" vertical-scroll-proportion="0.0">
+            <state line="203" column="10" selection-start="5682" selection-end="5682" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -144,26 +147,17 @@
       <file leaf-file-name="test_YStorage.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test_YStorage.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="72" column="0" selection-start="2759" selection-end="2759" vertical-scroll-proportion="0.0">
-              <folding>
-                <marker date="1239398776281" expanded="true" signature="2508:5153" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="2794:3088" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="2900:3082" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="3133:3365" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="3311:3359" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="3414:3644" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="3500:3638" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="3692:3768" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="3819:4236" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="3922:4230" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="4274:4440" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="4483:5043" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="4599:4686" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="4628:4676" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="4700:4853" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="4725:4843" placeholder="{...}" />
-                <marker date="1239398776281" expanded="true" signature="5092:5130" placeholder="{...}" />
-              </folding>
+            <state line="144" column="9" selection-start="4816" selection-end="4816" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StorageEvent.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEvent.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="87" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -262,33 +256,7 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="YUIDataStorage" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="assets" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="js" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="yahoo-ext" />
+          <option name="myItemId" value="widget" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -335,6 +303,18 @@
           <option name="myItemId" value="assets" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="js" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="mvc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="lib" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
       </PATH>
       <PATH>
         <PATH_ELEMENT>
@@ -351,10 +331,6 @@
         </PATH_ELEMENT>
         <PATH_ELEMENT>
           <option name="myItemId" value="assets" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="flash" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -499,14 +475,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1" y="1" width="1678" height="1018" extended-state="0" />
+    <frame x="-4" y="-4" width="1688" height="1028" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2495379" sideWeight="0.5" order="1" side_tool="false" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32698768" sideWeight="0.5" order="1" side_tool="false" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3264865" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" />
@@ -515,7 +491,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14910659" sideWeight="0.6651736" order="0" side_tool="false" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.329455" sideWeight="0.6633444" order="0" side_tool="false" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" />
       <window_info id="Web Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" />
@@ -601,134 +577,114 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/build/docs/js/mvc/core.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/mvc/lib/core.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="105" column="26" selection-start="2344" selection-end="2344" vertical-scroll-proportion="0.41887227">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-2.7/dom.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/native-ext/string.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="142" column="68" selection-start="4841" selection-end="4841" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/native-ext/number.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="17" selection-start="275" selection-end="275" vertical-scroll-proportion="0.0">
+        <state line="198" column="20" selection-start="7058" selection-end="7058" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/flash/datastore.as">
+    <entry file="file://$PROJECT_DIR$/assets/js/games/cardViewImg.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="205" column="24" selection-start="6524" selection-end="6524" vertical-scroll-proportion="0.33333334">
+        <state line="32" column="58" selection-start="808" selection-end="815" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/Storage.js">
+    <entry file="file://$PROJECT_DIR$/assets/js/games/cardModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="191" column="8" selection-start="5678" selection-end="5678" vertical-scroll-proportion="0.0">
-          <folding>
-            <marker date="1239398891921" expanded="true" signature="987:1091" placeholder="/**...*/" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="95" column="41" selection-start="2725" selection-end="2725" vertical-scroll-proportion="0.0">
+        <state line="22" column="22" selection-start="547" selection-end="547" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineHTML5.js">
+    <entry file="file://$PROJECT_DIR$/test/test_cardSystem.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="125" column="46" selection-start="3162" selection-end="3162" vertical-scroll-proportion="0.0">
+        <state line="176" column="14" selection-start="5964" selection-end="5964" vertical-scroll-proportion="0.6748538">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineCookie.js">
+    <entry file="file://$PROJECT_DIR$/assets/js/games/cardView.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="344" column="11" selection-start="9484" selection-end="9543" vertical-scroll-proportion="0.0">
+        <state line="46" column="21" selection-start="1181" selection-end="1181" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEvent.js">
+    <entry file="file://$PROJECT_DIR$/assets/js/games/deck.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="35" selection-start="858" selection-end="858" vertical-scroll-proportion="0.0">
+        <state line="201" column="21" selection-start="4266" selection-end="4266" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test_YStorage.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="72" column="0" selection-start="2759" selection-end="2759" vertical-scroll-proportion="0.0">
-          <folding>
-            <marker date="1239398776281" expanded="true" signature="2508:5153" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="2794:3088" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="2900:3082" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="3133:3365" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="3311:3359" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="3414:3644" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="3500:3638" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="3692:3768" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="3819:4236" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="3922:4230" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="4274:4440" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="4483:5043" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="4599:4686" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="4628:4676" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="4700:4853" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="4725:4843" placeholder="{...}" />
-            <marker date="1239398776281" expanded="true" signature="5092:5130" placeholder="{...}" />
-          </folding>
+        <state line="144" column="9" selection-start="4816" selection-end="4816" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEvent.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="87" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/Storage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="114" column="45" selection-start="3183" selection-end="3207" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineHTML5.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="93" column="19" selection-start="2340" selection-end="2351" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineCookie.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="335" column="25" selection-start="9418" selection-end="9418" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineSWF.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="38" selection-start="629" selection-end="629" vertical-scroll-proportion="0.0">
+        <state line="203" column="10" selection-start="5682" selection-end="5682" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/library.js">
+    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageManager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="87" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/mvc/lib/core.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/mvc/lib/controller.js">
+    <entry file="file://$PROJECT_DIR$/test_controller.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="204" column="87" selection-start="6542" selection-end="6542" vertical-scroll-proportion="0.0">
+        <state line="134" column="7" selection-start="5626" selection-end="5626" vertical-scroll-proportion="-31.272728">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/lang.js">
+    <entry file="file://$PROJECT_DIR$/assets/js/widget/konamiCode.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="144" column="32" selection-start="5110" selection-end="5110" vertical-scroll-proportion="0.49723756">
+        <state line="17" column="24" selection-start="332" selection-end="332" vertical-scroll-proportion="0.30538923">
           <folding />
         </state>
       </provider>

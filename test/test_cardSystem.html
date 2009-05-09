@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+    <title>Game Engine Test - Solitaire Test</title>
+	
+	<style type="text/css">
+		.card {
+			float: left;
+			height: 96px;
+			margin-left: 1em;
+			width: 72px;
+		}
+
+		
+    </style>
+</head>
+
+<body id="project">
+
+	<p>
+		<input id="shuffle" type="button" value=" Shuffle "/>
+	</p>
+
+	<div id="writeHere"></div>
+
+    <script type="text/javascript" src="../assets/js/library.js"></script>
+    <script type="text/javascript" src="../assets/js/games/cardView.js"></script>
+    <script type="text/javascript" src="../assets/js/games/cardViewImg.js"></script>
+    <script type="text/javascript" src="../assets/js/games/cardModel.js"></script>
+    <script type="text/javascript" src="../assets/js/games/deck.js"></script>
+
+<script type="text/javascript">(function() {
+	var _YE = YAHOO.util.Event,
+		_YL = YAHOO.lang;
+
+	var deck = Core.Model.Deck.generate([
+		{name: 'ace', suit: 'spade', value: 1},
+		{suit: 'spade', value: 2},
+		{suit: 'spade', value: 3},
+		{suit: 'spade', value: 4},
+		{suit: 'spade', value: 5},
+		{suit: 'spade', value: 6},
+		{suit: 'spade', value: 7},
+		{suit: 'spade', value: 8},
+		{suit: 'spade', value: 9},
+		{suit: 'spade', value: 10},
+		{name: 'jack', suit: 'spade', value: 11},
+		{name: 'queen', suit: 'spade', value: 12},
+		{name: 'king', suit: 'spade', value: 13},
+		{name: 'ace', suit: 'heart', value: 1},
+		{suit: 'heart', value: 2},
+		{suit: 'heart', value: 3},
+		{suit: 'heart', value: 4},
+		{suit: 'heart', value: 5},
+		{suit: 'heart', value: 6},
+		{suit: 'heart', value: 7},
+		{suit: 'heart', value: 8},
+		{suit: 'heart', value: 9},
+		{suit: 'heart', value: 10},
+		{name: 'jack', suit: 'heart', value: 11},
+		{name: 'queen', suit: 'heart', value: 12},
+		{name: 'king', suit: 'heart', value: 13},
+		{name: 'ace', suit: 'diamond', value: 1},
+		{suit: 'diamond', value: 2},
+		{suit: 'diamond', value: 3},
+		{suit: 'diamond', value: 4},
+		{suit: 'diamond', value: 5},
+		{suit: 'diamond', value: 6},
+		{suit: 'diamond', value: 7},
+		{suit: 'diamond', value: 8},
+		{suit: 'diamond', value: 9},
+		{suit: 'diamond', value: 10},
+		{name: 'jack', suit: 'diamond', value: 11},
+		{name: 'queen', suit: 'diamond', value: 12},
+		{name: 'king', suit: 'diamond', value: 13},
+		{name: 'ace', suit: 'club', value: 1},
+		{suit: 'club', value: 2},
+		{suit: 'club', value: 3},
+		{suit: 'club', value: 4},
+		{suit: 'club', value: 5},
+		{suit: 'club', value: 6},
+		{suit: 'club', value: 7},
+		{suit: 'club', value: 8},
+		{suit: 'club', value: 9},
+		{suit: 'club', value: 10},
+		{name: 'jack', suit: 'club', value: 11},
+		{name: 'queen', suit: 'club', value: 12},
+		{name: 'king', suit: 'club', value: 13}
+	]);
+
+	Core.View.CardImage.loadImages({
+		club: {
+			ace: '../assets/images/game/classicCard/1.png',
+			king: '../assets/images/game/classicCard/5.png',
+			queen: '../assets/images/game/classicCard/9.png',
+			jack: '../assets/images/game/classicCard/13.png',
+			10: '../assets/images/game/classicCard/17.png',
+			9: '../assets/images/game/classicCard/21.png',
+			8: '../assets/images/game/classicCard/25.png',
+			7: '../assets/images/game/classicCard/29.png',
+			6: '../assets/images/game/classicCard/33.png',
+			5: '../assets/images/game/classicCard/37.png',
+			4: '../assets/images/game/classicCard/41.png',
+			3: '../assets/images/game/classicCard/45.png',
+			2: '../assets/images/game/classicCard/49.png'
+		},
+
+		diamond: {
+			ace: '../assets/images/game/classicCard/4.png',
+			king: '../assets/images/game/classicCard/8.png',
+			queen: '../assets/images/game/classicCard/12.png',
+			jack: '../assets/images/game/classicCard/16.png',
+			10: '../assets/images/game/classicCard/20.png',
+			9: '../assets/images/game/classicCard/24.png',
+			8: '../assets/images/game/classicCard/28.png',
+			7: '../assets/images/game/classicCard/32.png',
+			6: '../assets/images/game/classicCard/36.png',
+			5: '../assets/images/game/classicCard/40.png',
+			4: '../assets/images/game/classicCard/44.png',
+			3: '../assets/images/game/classicCard/48.png',
+			2: '../assets/images/game/classicCard/52.png'
+		},
+
+		heart: {
+			ace: '../assets/images/game/classicCard/3.png',
+			king: '../assets/images/game/classicCard/7.png',
+			queen: '../assets/images/game/classicCard/11.png',
+			jack: '../assets/images/game/classicCard/15.png',
+			10: '../assets/images/game/classicCard/19.png',
+			9: '../assets/images/game/classicCard/23.png',
+			8: '../assets/images/game/classicCard/27.png',
+			7: '../assets/images/game/classicCard/31.png',
+			6: '../assets/images/game/classicCard/35.png',
+			5: '../assets/images/game/classicCard/39.png',
+			4: '../assets/images/game/classicCard/43.png',
+			3: '../assets/images/game/classicCard/47.png',
+			2: '../assets/images/game/classicCard/51.png'
+		},
+
+		spade: {
+			ace: '../assets/images/game/classicCard/2.png',
+			king: '../assets/images/game/classicCard/6.png',
+			queen: '../assets/images/game/classicCard/10.png',
+			jack: '../assets/images/game/classicCard/14.png',
+			10: '../assets/images/game/classicCard/18.png',
+			9: '../assets/images/game/classicCard/22.png',
+			8: '../assets/images/game/classicCard/26.png',
+			7: '../assets/images/game/classicCard/30.png',
+			6: '../assets/images/game/classicCard/34.png',
+			5: '../assets/images/game/classicCard/38.png',
+			4: '../assets/images/game/classicCard/42.png',
+			3: '../assets/images/game/classicCard/46.png',
+			2: '../assets/images/game/classicCard/50.png'
+		},
+
+		faceDown: {
+			horizontal: '../assets/images/game/classicCard/b1fh.png',
+			vertical: '../assets/images/game/classicCard/b1fv.png'
+		}
+	});
+
+	var cards = [];
+
+	var write = YAHOO.util.Dom.get('writeHere');
+	write.insertCard = function(card) {
+		var node = write.appendChild(document.createElement('p'));
+		var view = new Core.View.CardImage(node);
+		var r = 2;
+		view.setValue(card);
+		view.toggleFaceUp(r.random() % 2);
+		cards.push(view);
+	};
+
+	var _createCardViews = function() {
+		var card;
+		while (card = deck.removeCardFromTop()) {
+			write.insertCard(card);
+		};
+	};
+	_createCardViews();
+
+	_YE.on('shuffle', 'click', function() {
+		deck.reset();
+		deck.shuffle();
+		write.innerHTML = '';
+		_createCardViews();
+	});
+})();</script>
+</body>
+</html>

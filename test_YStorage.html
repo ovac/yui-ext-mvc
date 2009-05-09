@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+    <title>Dojo Storage Test - Using YUI</title>
+	
+	<style type="text/css">
+        label {
+            display: block;
+            padding: 1em 0 0.25em;
+        }
+
+        input.disabled {
+            color: #999;
+        }
+
+        div#currentKeys {
+            border: 1px solid #900;
+            float: right;
+            min-height: 20em;
+            min-width: 20em;
+        }
+
+        div#currentKeys a {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="currentKeys"></div>
+
+    <label for="fieldKey">Key To Store</label>
+    <input id="fieldKey" type="text" value=""/>
+
+    <label for="fieldData">Text To Store</label>
+    <textarea cols="50" id="fieldData" rows="20"></textarea>
+
+    <p>
+        <input id="btnSave" type="button" value=" Save "/>
+        <input id="btnClear" type="button" value=" Clear "/>
+        <input id="btnDelete" class="disabled" type="button" value=" Remove "/>
+		<input id="btnLength"  type="button" value=" Get Length "/>
+
+    </p>
+
+    <p id="dataState"></p>
+
+    <!--<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>-->
+    <!--<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/cookie/cookie-min.js"></script>-->
+    <!--<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0test/build/yuiloader/yuiloader-min.js"></script>-->
+    <!--<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0test/build/element/element-beta-min.js"></script>-->
+    <script type="text/javascript" src="assets/js/library.js"></script>
+    <script type="text/javascript" src="assets/js/yahoo-2.7/element.js"></script>
+    <script type="text/javascript" src="assets/js/yahoo-2.7/deconcept.js"></script>
+    <script type="text/javascript" src="assets/js/yahoo-2.7/flashadapter.js"></script>
+    <script type="text/javascript" src="assets/js/YUIDataStorage/StorageManager.js"></script>
+    <script type="text/javascript" src="assets/js/YUIDataStorage/Storage.js"></script>
+    <script type="text/javascript" src="assets/js/YUIDataStorage/StorageEngineHTML5.js"></script>
+    <script type="text/javascript" src="assets/js/YUIDataStorage/StorageEngineSWF.js"></script>
+    <script type="text/javascript" src="assets/js/YUIDataStorage/StorageEngineCookie.js"></script>
+    <script type="text/javascript" src="assets/js/YUIDataStorage/StorageEvent.js"></script>
+
+<script type="text/javascript">(function() {
+var _YDS = YAHOO.util.StorageManager.get();
+
+var _process = function() {
+    var _YD = YAHOO.util.Dom,
+        $ = _YD.get,
+        _YE = YAHOO.util.Event,
+        _YL = YAHOO.lang,
+        _dataState = $('dataState'),
+        _link = null;
+
+    var _updateState = function() {
+        _dataState.innerHTML = '';
+        var j = _YDS.length;
+
+        for (var i = 0; i < j; i += 1) {
+            var key = _YDS.key(i);
+            var p = _dataState.appendChild(document.createElement('p'));
+            p.innerHTML = '&' + key + '=' + _YDS.getItem(key);
+        }
+    };
+
+    _YE.on('btnSave', 'click', function() {
+        var key = $('fieldKey').value,
+            data = $('fieldData').value;
+
+        $('fieldData').value = '';
+        $('fieldKey').value = '';
+
+        if (key && data) {
+            _YDS.setItem(key, data);
+        }
+    });
+
+	_YE.on('btnLength', 'click', function() {
+		alert( _YDS.length);
+    });
+
+    _YE.on('btnDelete', 'click', function(e) {
+        var targ = _YE.getTarget(e);
+
+        if (! _YD.hasClass(targ, 'disabled')) {
+            _YDS.removeItem($('fieldKey').value);
+            $('fieldData').value = '';
+            $('fieldKey').value = '';
+        }
+    });
+
+    _YE.on('btnClear', 'click', function(e) {
+        $('fieldData').value = '';
+        $('fieldKey').value = '';
+    });
+
+    _YE.on('currentKeys', 'click', function(e) {
+        var targ = _YE.getTarget(e);
+
+        if (targ && 'a' === ('' + targ.tagName).toLowerCase()) {
+            e.preventDefault();
+            _link = targ;
+            var key = _link.innerHTML;
+            $('fieldKey').value = key;
+            $('fieldData').value = _YDS.getItem(key);
+            _YD[$('currentKeys').childNodes.length ? 'removeClass' : 'addClass']('btnDelete', 'disabled');
+        }
+    });
+
+    var _addItem = function(name) {
+        var node = $('currentKeys').appendChild(document.createElement('a'));
+        node.href = '';
+        node.appendChild(document.createTextNode(name));
+    };
+
+    _YDS.onChange.subscribe(function(e) {
+        var isSetItem = null !== e.newValue,
+            isNewItem = null === e.oldValue;
+
+        if (isSetItem) {
+            if (isNewItem) {
+                _addItem(e.key);
+            }
+        }
+        else {
+            if (_link) {
+				var key = _link.innerHTML;
+                _link.parentNode.removeChild(_link);
+				_link = null;
+                _YDS.removeItem(key);
+            }
+        }
+
+        var test = $('currentKeys').childNodes.length;
+        _YD[$('currentKeys').childNodes.length ? 'removeClass' : 'addClass']('btnDelete', 'disabled');
+
+        _updateState();
+    });
+
+    for (var i = 0; i < _YDS.length; i += 1) {
+        _addItem(_YDS.key(i));
+    }
+
+    _updateState();
+};
+
+var intervalId = setInterval(function() {
+	if (_YDS.isReady()) {
+		clearInterval(intervalId);
+		_process();
+	}
+}, 500);
+})();</script>
+</body>
+</html>

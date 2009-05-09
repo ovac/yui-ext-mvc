@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+    <title>Core Test - Script Importer</title>
+	
+	<style type="text/css">
+		.displayNone {
+			display: none;
+		}
+    </style>
+</head>
+
+<body id="project">
+
+	<p></p>
+
+    <script type="text/javascript" src="../assets/js/library.js"></script>
+
+<script type="text/javascript">(function() {
+	var _importJavaScript = function(url, callback) {
+		if (! _importJavaScript.headTag) {_importJavaScript.headTag = document.getElementsByTagName("head")[0];}
+		if (_importJavaScript._importedScripts[url]) {return false;} // uniqueness check
+		_importJavaScript._importedScripts[url] = true;
+
+		var newScript = document.createElement('script'),
+			doCallback = true;
+
+		newScript.type = 'text/javascript';
+		newScript.onload=function(e) {
+			if (doCallback) {
+				doCallback = false;
+				callback(e);
+			}
+		};
+
+		newScript.onreadystatechange= function (e) {
+			if (doCallback && ('loaded' === this.readyState || 'complete' === this.readyState)) {
+				doCallback = false;
+				callback(e);
+			}
+		};
+
+		newScript.src = url;
+		_importJavaScript.headTag.appendChild(newScript);
+		return true;
+	};
+
+	_importJavaScript._importedScripts = {};
+
+	_importJavaScript('../assets/js/test/iframeImportObject.js', function() {
+		init(window, document);
+		YAHOO.util.testObject.test();
+	});
+})();</script>
+</body>
+</html>
