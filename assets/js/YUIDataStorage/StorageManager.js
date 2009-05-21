@@ -59,7 +59,7 @@ YAHOO.util.StorageManager = (function() {
 	 * @method _getDataStorageType
 	 * @param location {String} Required. The location to store.
 	 * @param klass {Function} Required. A pointer to the dataSource Class.
-	 * @param conf {Object} Optional. Additional configuration for the dataSource.
+	 * @param conf {Object} Optional. Additional configuration for the data source engine.
 	 * @private
 	 */
 	var _getDataStorageType = function(location, klass, conf) {
@@ -108,26 +108,40 @@ YAHOO.util.StorageManager = (function() {
 		 * @method get
 		 * @param dataSource {String} Required. The dataSourceType, see dataSources.
 		 * @param location {String} Optional. The storage location - LOCATION_SESSION & LOCATION_LOCAL; default is LOCAL.
-		 * @param conf {Object} Optional. Additional configuration for the dataSource.
+		 * @param conf {Object} Optional. Additional configuration for the getting the storage engine.
+		 * {
+		 * 	engine: {Object} configuration parameters for the desired engine
+		 * 	order: {Array} an array of storage engine names; the desired order to try engines}
+		 * }
 		 * @static
 		 */
 		get: function(dataSource, location, conf) {
-			var _location = _getValidLocation(location),
+			var _cfg = _YL.isObject(conf) ? conf : {},
+				_location = _getValidLocation(location),
 				klass = _registeredMap[dataSource];
 
-			if (klass) {
-				return _getDataStorageType(_location, klass, conf);
-			}
-			else {
-				var j = _registeredSet.length;
+			if (! klass) {
+				var i, j;
 
-				for (var i = 0; i < j; i += 1) {
-					klass = _registeredSet[i];
+				if (_cfg.order) {
+					j = _cfg.order.length;
 
-					if (klass) {
-						return _getDataStorageType(_location, klass, conf);
+					for (i = 0; i < j && ! klass; i += 1) {
+						klass = _registeredMap[_cfg.order[i]];
 					}
 				}
+
+				if (! klass) {
+					j = _registeredSet.length;
+
+					for (i = 0; i < j && ! klass; i += 1) {
+						klass = _registeredSet[i];
+					}
+				}
+			}
+
+			if (klass) {
+				return _getDataStorageType(_location, klass, _cfg.engine);
 			}
 
 			throw('YAHOO.util.StorageManager.get - No DataSource available, please include a DataSource before calling this function.');

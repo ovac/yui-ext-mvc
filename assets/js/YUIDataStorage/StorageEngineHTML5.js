@@ -11,10 +11,9 @@
 		_YL = YAHOO.lang;
 
 	/**
-	 * The YUIDataStorage class abstracts the communication chaneel between JavaScript and the preferred data storage tool.
+	 * The StorageEngineHTML5 class implements the HTML5 storage engine.
 	 * @namespace YAHOO.util
 	 * @class StorageEngineHTML5
-	 * @uses YAHOO.util.Cookie
 	 * @constructor
 	 * @extend YAHOO.util.Storage
 	 * @param location {Object} Required. The storage location.
@@ -24,7 +23,7 @@
 		_YU.StorageEngineHTML5.superclass.constructor.apply(this, arguments);// not set, are cookies available
 		this._engine = window[location];
 	};
-	
+
 	_YL.extend(_YU.StorageEngineHTML5, _YU.Storage, {
 
 		/*
@@ -101,7 +100,7 @@
 		 * @see YAHOO.util.Storage._setItem
 		 */
 		_setItem: function(key, value) {
-			this._engine.setItem(key, this._createValue(value));
+			this._engine.setItem(key, this._createValue(value));N
 			this.length = this._engine.length;
 		}
 	}, true);
