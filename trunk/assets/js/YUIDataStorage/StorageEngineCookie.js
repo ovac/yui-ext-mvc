@@ -69,7 +69,7 @@
         }
     };
 
-    YAHOO.lang.augmentObject(_YC, _that);
+    _YL.augmentObject(_YC, _that);
 
 	// constants
 	var _ERROR_NO_AVAILABLE_COOKIES = 'EXCEPTION - CookieStorage - No available cookies; to use this storage technique, you must delete some cookies first',
@@ -80,7 +80,7 @@
 	var _data = {},
 		_keys = [],
 		_lastCookie = '',
-		_storageCookieSize = 0;		
+		_storageCookieSize = 0;
 
 	/**
 	 * Builds the local cookie object.
@@ -192,6 +192,13 @@
 			currentSize = _YL.getByteSize(_YC.get(l + i));
 
 		_clearLocationCookies(l);
+        var __setSubCookie = _YU.StorageManager.LOCATION_SESSION === l ?
+			function(key, skey, value) {_YC.setSub.call(_YC, key, skey, value);} :
+			function(key, skey, value) {
+				var expires = new Date();
+				expires.setYear(expires.getFullYear() + 100);
+				_YC.setSub.call(_YC, key, skey, value, {expires: expires});
+			};
 
 		// note: possible code paths
 		//  I am short enough to fit on the current cookie
@@ -218,7 +225,13 @@
 						var bytesAvailable = _MAX_BYTE_SIZE - (keySize + currentSize),
 							o = _str_trimToSize(value, bytesAvailable);
 
-						_YC.setSub(l + i, key, o[0]);
+						if ('' === l) {
+                            __setSubCookie(l + i, key, o[0]);
+                        }
+                        else {
+
+                        }
+
 						value = o[1];
 						valueSize = _YL.getByteSize(value);
 					}
@@ -229,7 +242,7 @@
 				}
 
 				// enough in current cookie space
-				_YC.setSub(l + i, key, value);
+				__setSubCookie(l + i, key, value);
 				currentSize = newCurrentSize;
 			}
 		}
@@ -239,7 +252,7 @@
 	};
 
 	/**
-	 * The YUIDataStorage class abstracts the communication chaneel between JavaScript and the preferred data storage tool.
+	 * The StorageEngineCookie class implements the Cookie storage engine.
 	 * @namespace YAHOO.util
 	 * @class StorageEngineCookie
 	 * @uses YAHOO.util.Cookie
@@ -265,7 +278,7 @@
 			this._sync();
 		}
 	};
-	
+
 	_YL.extend(_YU.StorageEngineCookie, _YU.Storage, {
 
 		/*

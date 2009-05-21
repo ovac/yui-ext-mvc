@@ -22,7 +22,7 @@
 		_isReady = false;
 
 	/**
-	 * Class for the YUI DataStore util.
+	 * The StorageEngineSWF class implements the SWF storage engine.
 	 * @namespace YAHOO.util
 	 * @class StorageEngineSWF
 	 * @uses YAHOO.widget.FlashAdapter
@@ -46,7 +46,7 @@
 
 			_engine = new YAHOO.widget.FlashAdapter(_cfg.swfURL, _cfg.containerID, _cfg.attributes);
 			var _that = this; // this will cause issue, when instantiating many engines
-			
+
 			// evaluates when the SWF is loaded
 			var intervalId = setInterval(function() {
 				if (_engine._swf && _YL.isValue(_engine._swf.displaySettings)) {
@@ -140,7 +140,7 @@
 		_getItem: function(key) {
 			return this._getValue(_engine._swf.getItem(key));
 		},
-		
+
 		/**
 		 * Returns the item in storage at a particular index, if any.
 		 * @method getItemAt
