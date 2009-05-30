@@ -3,103 +3,80 @@
  * Version: 1.0.00
  */
 
-Core.Controller.KonamiCode = (function() {
-	// constants
-	var _YU = YAHOO.util,
-		_CE = _YU.CustomEvent,
-		_YE = _YU.Event,
-		_YKL = _YU.KeyListener,
-		_YKLK = _YKL.KEY;
+/**
+ * Super Konami Code widget. This widget allows the developer to change and/or encrypt the secret code; defaults to
+ * 	the Konami Code.
+ */
+(function() {
+		// constants
+	var Y = YAHOO.util,
+		YE = Y.Event,
+		YL = YAHOO.lang,
 
-	_YKLK.A = 65;
-	_YKLK.B = 66;
-
-	// local namespace
-	var _F = function() {},
+		// local namespace
+		_F = function() {},
 		_keyPressed = [],
-		_that = null;
+		_code = '38,38,40,40,37,39,37,39,66,65,13',
+		_cryptoFx = function(typedCode, storedCode) {return typedCode === storedCode;},
+		_length = 11,
+		_that = null,
 
-	// event namespace
-	var _E = {
-		onKey: function(e) {
-			var keyCode = _YE.getCharCode(e),
-				n = _keyPressed.length;
+		// event namespace
+		_E = {
+			onKey: function(e) {
+				var keyCode = YE.getCharCode(e);
+				_keyPressed.push(keyCode);
 
-			switch (keyCode) {
-				case _YKLK.LEFT:
-					if (4 == n || 6 == n) {
-						_keyPressed.push(_YKLK.LEFT);
-					}
-					else {
-						_keyPressed = [];
-					}
-				break;
-
-				case _YKLK.UP:
-					if (2 < n) {_keyPressed = [];}
-					_keyPressed.push(_YKLK.UP);
-				break;
-
-				case _YKLK.RIGHT:
-					if (5 == n || 7 == n) {
-						_keyPressed.push(_YKLK.RIGHT);
-					}
-					else {
-						_keyPressed = [];
-					}
-				break;
-
-				case _YKLK.DOWN:
-					if (2 <= n && 4 > n) {
-						_keyPressed.push(_YKLK.DOWN);
-					}
-					else {
-						_keyPressed = [];
-					}
-				break;
-
-				case _YKLK.A:
-					if (9 == n) {
-						_keyPressed.push(_YKLK.A);
-					}
-					else {
-						_keyPressed = [];
-					}
-				break;
-
-				case _YKLK.B:
-					if (8 == n) {
-						_keyPressed.push(_YKLK.B);
-					}
-					else {
-						_keyPressed = [];
-					}
-				break;
-
-				case _YKLK.ENTER:
-					if (10 == n) {
-						_keyPressed = [];
-						_that.onCodeEntered.fire();
-					}
-				break;
-
-				default: _keyPressed = [];
+				if (_keyPressed.length >= _length && _cryptoFx(_keyPressed.slice(_keyPressed.length - _length).join(','), _code)) {
+					_keyPressed = [];
+					_that.fireEvent(_that.EVENT_CODE_ENTERED);
+				}
 			}
-		}
-	};
+		};
 
 	// public namespace
-	_F.prototype = {
+	YL.augmentObject(_F.prototype, {
 
 		/**
 		 * The event to fire after the Konami code is successfully entered.
 		 * @event onCodeEntered
 		 */
-		onCodeEntered: new _CE('KonamiCode.CodeEntered', null, false, _CE.FLAT)
-	};
+		EVENT_CODE_ENTERED: 'KonamiCode.CodeEntered',
 
-	_YE.on(document, 'keydown', _E.onKey);
+		/**
+		 * Change the code; use a string of comma separated key codes.
+		 * @method changeCode
+		 * @param code {String} Required. The key codes.
+		 * @public
+		 */
+		changeCode: function(code) {
+			if (YL.isString(code)) {
+				_code = code;
+				_length = code.split(',').length;
+			}
+		},
+
+		/**
+		 * Change the code and apply a cryptography method.
+		 * @method useCrypto
+		 * @param code {String} Required. The encrypted key codes.
+		 * @param cryptoFx {Function} Required. The cryptography function, see cryptoFx above for function signature.
+		 * @param length {Number} Required. The number of characters that originated the encrypted key codes.
+		 * @public
+		 */
+		useCrypto: function(code, cryptoFx, length) {
+			if (YL.isString(code) && YL.isFunction(cryptoFx) && YL.isNumber(length)) {
+				_code = code;
+				_cryptoFx = cryptoFx;
+				_length = length;
+			}
+		}
+	});
+
+	YL.augmentProto(_F, Y.EventProvider);
+	YE.on(document, 'keydown', _E.onKey);
 
 	_that = new _F();
-	return _that;
-})();
+	_that.createEvent(_that.EVENT_CODE_ENTERED);
+	Core.Controller.KonamiCode = _that;
+}());
