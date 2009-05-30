@@ -3,34 +3,7 @@
  * Version: 0.2.00
  */
 
-(function() {
-    var _YL = YAHOO.lang;
-
-    _YL.augmentObject(_YL, {
-
-        /*
-         * The escaped length of a special character.
-         * @property SPECIAL_CHAR_BYTE_SIZE
-         * @type {Number}
-         * @public
-         * @final Constant bytesize of an encoded special character.
-         * @static
-         * @depreciated I don't want to use this anymore
-         */
-        SPECIAL_CHAR_BYTE_SIZE: 3,
-
-        /*
-         * Estimates the size of the string using 1 byte for each alpha-numeric character and 3 for each non-alpha-numeric character.
-         * @method getByteSize
-         * @param s {String} Required. The string to evaulate.
-         * @return {Number} The estimated string size.
-         * @private
-         */
-        getByteSize: function(s) {
-			return encodeURIComponent('' + s).length;
-        }
-    });
-})();
+// todo: move the session ID method to this
 
 /**
  * The Storage module manages client-side data storage.
@@ -43,34 +16,33 @@
  * @namespace YAHOO.util
  * @static
  */
-YAHOO.util.StorageManager = (function() {
-	// constants
-	var _YL = YAHOO.lang;
+(function() {
+		// internal shorthand
+	var Y = YAHOO.util,
+		YL = YAHOO.lang,
 
-	// local namespace
-	var _F = function() {},
-		_locationSourceMap = {},
-		_registeredSet = [],
-		_registeredMap = {},
-		_that = null;
+		// private variables
+		_locationEngineMap = {}, // cached engines
+		_registeredEngineSet = [], // set of available engines
+		_registeredEngineMap = {}; // map of available engines
 
 	/**
-	 * Fetches the data source type from the cache, or creates and caches it.
-	 * @method _getDataStorageType
+	 * Fetches the storage engine from the cache, or creates and caches it.
+	 * @method _getStorageEngine
 	 * @param location {String} Required. The location to store.
-	 * @param klass {Function} Required. A pointer to the dataSource Class.
+	 * @param klass {Function} Required. A pointer to the engineType Class.
 	 * @param conf {Object} Optional. Additional configuration for the data source engine.
 	 * @private
 	 */
-	var _getDataStorageType = function(location, klass, conf) {
-		var o = _locationSourceMap[location + klass.TYPE_NAME];
+	var _getStorageEngine = function(location, klass, conf) {
+		var engine = _locationEngineMap[location + klass.ENGINE_NAME];
 
-		if (! o) {
-			o = new klass(location, conf);
-			_locationSourceMap[location + klass.TYPE_NAME] = o;
+		if (! engine) {
+			engine = new klass(location, conf);
+			_locationEngineMap[location + klass.ENGINE_NAME] = engine;
 		}
 
-		return o;
+		return engine;
 	};
 
 	/**
@@ -80,12 +52,20 @@ YAHOO.util.StorageManager = (function() {
 	 * @private
 	 */
 	var _getValidLocation = function(location) {
-		var _location = _YL.isString(location) ? location : null;
-		return _location && (_location === _that.LOCATION_SESSION || _location === _that.LOCATION_LOCAL) ? _location : _that.LOCATION_SESSION;
+		switch (location) {
+			case Y.StorageManager.LOCATION_LOCAL:
+			case Y.StorageManager.LOCATION_SESSION:
+				return location;
+			break;
+
+			default:
+				return Y.StorageManager.LOCATION_SESSION;
+			break;
+		}
 	};
 
 	// public namespace
-	_F.prototype = {
+	Y.StorageManager = {
 
         /**
          * The storage location - session; data cleared at the end of a user's session.
@@ -104,9 +84,9 @@ YAHOO.util.StorageManager = (function() {
 		LOCATION_LOCAL: 'localStorage',
 
 		/**
-		 * Fetches the desired dataSource or first available dataSource.
+		 * Fetches the desired engine type or first available engine type.
 		 * @method get
-		 * @param dataSource {String} Required. The dataSourceType, see dataSources.
+		 * @param engineType {String} Optional. The engine type, see engines.
 		 * @param location {String} Optional. The storage location - LOCATION_SESSION & LOCATION_LOCAL; default is LOCAL.
 		 * @param conf {Object} Optional. Additional configuration for the getting the storage engine.
 		 * {
@@ -115,10 +95,9 @@ YAHOO.util.StorageManager = (function() {
 		 * }
 		 * @static
 		 */
-		get: function(dataSource, location, conf) {
-			var _cfg = _YL.isObject(conf) ? conf : {},
-				_location = _getValidLocation(location),
-				klass = _registeredMap[dataSource];
+		get: function(engineType, location, conf) {
+			var _cfg = YL.isObject(conf) ? conf : {},
+				klass = _registeredEngineMap[engineType];
 
 			if (! klass) {
 				var i, j;
@@ -127,45 +106,54 @@ YAHOO.util.StorageManager = (function() {
 					j = _cfg.order.length;
 
 					for (i = 0; i < j && ! klass; i += 1) {
-						klass = _registeredMap[_cfg.order[i]];
+						klass = _registeredEngineMap[_cfg.order[i]];
 					}
 				}
 
 				if (! klass) {
-					j = _registeredSet.length;
+					j = _registeredEngineSet.length;
 
 					for (i = 0; i < j && ! klass; i += 1) {
-						klass = _registeredSet[i];
+						klass = _registeredEngineSet[i];
 					}
 				}
 			}
 
 			if (klass) {
-				return _getDataStorageType(_location, klass, _cfg.engine);
+				return _getStorageEngine(_getValidLocation(location), klass, _cfg.engine);
 			}
 
-			throw('YAHOO.util.StorageManager.get - No DataSource available, please include a DataSource before calling this function.');
+			throw('YAHOO.util.StorageManager.get - No engine available, please include an engine before calling this function.');
 		},
 
+        /*
+         * Estimates the size of the string using 1 byte for each alpha-numeric character and 3 for each non-alpha-numeric character.
+         * @method getByteSize
+         * @param s {String} Required. The string to evaulate.
+         * @return {Number} The estimated string size.
+         * @private
+         */
+        getByteSize: function(s) {
+			return encodeURIComponent('' + s).length;
+        },
+
 		/**
-		 * Registers a dataSource Class with the StorageManager singleton; first in is the first out.
+		 * Registers a engineType Class with the StorageManager singleton; first in is the first out.
 		 * @method register
-		 * @param dataSource {String} Required. The dataSourceType, see dataSources.
-		 * @param validationFx {Function} Required. The evaluation function to test if dataSource is available.
-		 * @param klass {Function} Required. A pointer to the dataSource Class.
+		 * @param engineType {String} Required. The engine type, see engines.
+		 * @param validationFx {Function} Required. The evaluation function to test if engineType is available.
+		 * @param klass {Function} Required. A pointer to the engineType Class.
 		 * @return {Boolean} When successfully registered.
 		 * @static
 		 */
-		register: function(dataSource, validationFx, klass) {
-			if (_YL.isString(dataSource) && _YL.isFunction(validationFx) && _YL.isFunction(klass) && validationFx()) {
-				_registeredMap[dataSource] = klass;
-				_registeredSet.push(klass);
+		register: function(engineType, validationFx, klass) {
+			if (YL.isString(engineType) && YL.isFunction(validationFx) && YL.isFunction(klass) && validationFx()) {
+				_registeredEngineMap[engineType] = klass;
+				_registeredEngineSet.push(klass);
+				return true;
 			}
 
 			return false;
 		}
 	};
-
-	_that = new _F();
-	return _that;
 })();

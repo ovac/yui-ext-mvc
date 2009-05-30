@@ -3,23 +3,42 @@
  * Version: 0.2.00
  */
 
-/**
- * Creates a store, which can be used to set and get information on a user's local machine. This is similar to a
- * browser cookie, except the allowed store is larger and can be shared across browsers.
+/*
+ * SWF limitation:
+ * 	- only 100,000 bytes of data may be stored this way
+ *  - data is publicly available on user machine
  *
- * @module datastore
- * @title DataStore Util
- * @beta
+ * Thoughts:
+ *  - data can be shared across browsers
+ *  - how can we not use cookies to handle session location
  */
 (function() {
-	// yahoo namespace
-    var _YU = YAHOO.util,
-		_YL = YAHOO.lang,
-		_YD = _YU.Dom;
+		// internal shorthand
+    var Y = YAHOO.util,
+		YL = YAHOO.lang,
 
-	// local variables
-	var _engine = null,
+		// local variables
+		_engine = null,
 		_isReady = false;
+
+	/**
+	 * Initializes the engine, if it isn't already initialized.
+	 * @method _initEngine
+	 * @param cfg {Object} Required. The configuration.
+	 * @private
+	 */
+	var _initEngine = function(cfg) {
+		if (! _engine) {
+			if (! YL.isString(cfg.swfURL)) {cfg.swfURL = Y.StorageEngineSWF.SWFURL;}
+			if (! cfg.containerID) {
+				var bd = document.getElementsByTagName('body')[0],
+					container = bd.appendChild(document.createElement('div'));
+				cfg.containerID = Y.Dom.generateId(container);
+			}
+
+			_engine = new YAHOO.widget.FlashAdapter(cfg.swfURL, cfg.containerID, cfg.attributes);
+		}
+	};
 
 	/**
 	 * The StorageEngineSWF class implements the SWF storage engine.
@@ -28,109 +47,81 @@
 	 * @uses YAHOO.widget.FlashAdapter
 	 * @constructor
 	 * @extend YAHOO.util.Storage
-	 * @param location {Object} Required. The storage location.
+	 * @param location {String} Required. The storage location.
 	 * @param conf {Object} Required. A configuration object.
 	 */
-	_YU.StorageEngineSWF = function(location, conf) {
-		_YU.StorageEngineSWF.superclass.constructor.apply(this, arguments);// not set, are cookies available
+	Y.StorageEngineSWF = function(location, conf) {
+		Y.StorageEngineSWF.superclass.constructor.call(this, location, Y.StorageEngineSWF.ENGINE_NAME, conf);
+		
+		_initEngine(this._cfg);
+		this._keys = [];
 
-		if (! _engine) {
-			// setup configuration
-			var _cfg = _YL.isObject(conf) ? conf : {};
-			if (! _YL.isString(_cfg.swfURL)) {_cfg.swfURL = _YU.StorageEngineSWF.SWFURL;}
-			if (! _cfg.containerID) {
-				var bd = document.getElementsByTagName('body')[0],
-					container = bd.appendChild(document.createElement('div'));
-				_cfg.containerID = _YD.generateId(container);
-			}
+		var isSessionStorage = Y.StorageManager.LOCATION_SESSION === this._location;
 
-			_engine = new YAHOO.widget.FlashAdapter(_cfg.swfURL, _cfg.containerID, _cfg.attributes);
-			var _that = this; // this will cause issue, when instantiating many engines
+		// evaluates when the SWF is loaded
+		var timer = YL.later(100, this, function() {
+			if (_engine._swf && YL.isValue(_engine._swf.displaySettings)) {
+				this._swf = _engine._swf;
+				timer.cancel();
+				_isReady = true;
 
-			// evaluates when the SWF is loaded
-			var intervalId = setInterval(function() {
-				if (_engine._swf && _YL.isValue(_engine._swf.displaySettings)) {
-					clearInterval(intervalId);
-					_isReady = true;
-					_that.length = _engine._swf.getLength();
+				var sessionKey = Y.Cookie.get('sessionKey' + Y.StorageEngineSWF.ENGINE_NAME);
+
+				for (var i = _engine._swf.getLength() - 1; 0 <= i; i -= 1) {
+					var key = _engine._swf.getKeyNameAt(i),
+						isKeySessionStorage = -1 < key.indexOf(Y.StorageManager.LOCATION_SESSION + "||");
+
+					// this is session storage, but the session key is not set, so remove item
+					if (isSessionStorage && ! sessionKey) {
+						_engine._swf.removeItem(key);
+					}
+					// the key matches the storage type, add to key collection
+					else if (isSessionStorage === isKeySessionStorage) {
+						this._keys.push(key);
+					}
 				}
-			}, 100);
 
-			/**
-			 * Fires when an error occurs
-			 * @event error
-			 * @param event.type {String} The event type
-			 * @param event.message {String} The data
-			 */
-			_engine.createEvent("error");
+				// this is session storage, ensure that the session key is set
+				if (isSessionStorage) {
+					Y.Cookie.set('sessionKey' + Y.StorageEngineSWF.ENGINE_NAME, true);
+				}
 
-			/**
-			 * Fires when a store is saved successfully
-			 * @event success
-			 * @param event.type {String} The event type
-			 */
-			_engine.createEvent("success");
-
-			/**
-			 * Fires when the save is pending, due to a request for additional storage
-			 * @event error
-			 * @param event.type {String} The event type
-			 */
-			_engine.createEvent("pending");
-
-			/**
-			 * Fires as the settings dialog displays
-			 * @event error
-			 * @param event.type {String} The event type
-			 */
-			_engine.createEvent("openDialog");
-
-			/**
-			 * Fires when a settings dialog is not able to be displayed due to
-			 * the SWF not being large enough to show it. In this case, the developer
-			 * needs to resize the SWF to width of 215px and height of 138px or above,
-			 * or display an external settings page.
-			 * @event openExternalDialog
-			 * @param event.type {String} The event type
-			 */
-			_engine.createEvent("openExternalDialog");
-		}
+				this.length = this._keys.length;
+			}
+		}, null, true);
 	};
 
 
-	_YL.extend(_YU.StorageEngineSWF, _YU.Storage, {
+	YL.extend(Y.StorageEngineSWF, Y.Storage, {
 
-		/*
-		 * Implentation to calculate the current size of the storage engine.
-		 * @see YAHOO.util.Storage.calculateSize
+		/**
+		 * The a collectinon of key applicable to the current location. This should never be edited by the developer.
+		 * @property _keys
+		 * @type {Array}
+		 * @public
 		 */
-		calculateSize: function() {
-			return _engine._swf.calculateSize();
-		},
+		_keys: null,
 
-		/*
-		 * Implentation to calculate the remaining size in the storage engine.
-		 * @see YAHOO.util.Storage.calculateSizeRemaining
+		/**
+		 * The underlying SWF of the engine, exposed so developers can modify the adapter behavior.
+		 * @property _swf
+		 * @type {Object}
+		 * @public
 		 */
-		calculateSizeRemaining: function() {},
+		_swf: null,
 
 		/*
 		 * Implentation to clear the values from the storage engine.
 		 * @see YAHOO.util.Storage._clear
 		 */
-		_clear: function() {
-			return _engine._swf.clear();
-		},
+		_clear: function() {			
+			for (var i = this._keys.length - 1; 0 <= i; i -= 1) {
+				var key = this._keys[i];
+				_engine._swf.removeItem(key);
+			}
 
-		/**
-		 * Displays the settings dialog to allow the user to configure storage settings manually. If the SWF height
-		 * and width are smaller than what is allowable to display the local settings panel,
-		 * an openExternalDialog message will be sent to JavaScript.
-		 * @method displaySettings
-		 * @public
-		 */
-		displaySettings: function() {
-			return _engine._swf.displaySettings();
+			this._keys = [];
+			this.length = 0;
 		},
 
 		/*
@@ -138,41 +129,7 @@
 		 * @see YAHOO.util.Storage._getItem
 		 */
 		_getItem: function(key) {
-			return this._getValue(_engine._swf.getItem(key));
-		},
-
-		/**
-		 * Returns the item in storage at a particular index, if any.
-		 * @method getItemAt
-		 * @param index {Number} Required. The index where data is stored.
-		 * @return {Object} The data.
-		 * @public
-		 */
-		getItemAt: function(index) {
-			return this._getValue(_engine._swf.getItemAt(index));
-		},
-		/**
-		 * Gets the timestamp of the last store. This value is automatically set when data is stored.
-		 * @method getLastModified
-		 * @return A Date object
-		 * @public
-		 */
-		getLastModified: function() {
-			return _engine._swf.getLastModified();
-		},
-
-		/*
-		 * Implentation to fetch the name of the storage engine.
-		 * @see YAHOO.util.Storage.getName
-		 */
-		getName: function() {return _YU.StorageEngineSWF.TYPE_NAME;},
-
-		/*
-		 * Implentation to evaluate key existence in storage engine.
-		 * @see YAHOO.util.Storage.hasKey
-		 */
-		hasKey: function(key) {
-			return null !== this._getItem(key);
+			return this._getValue(_engine._swf.getItem(this._location + this.DELIMITER + key));
 		},
 
 		/**
@@ -189,8 +146,8 @@
 		 * Implentation to fetch a key from the storage engine.
 		 * @see YAHOO.util.Storage.key
 		 */
-		key: function(index) {
-			return _engine._swf.getKeyNameAt(index);
+		_key: function(index) {
+			return (this._keys[index] || '').replace(/^.*?__/, '');
 		},
 
 		/*
@@ -198,9 +155,9 @@
 		 * @see YAHOO.util.Storage._removeItem
 		 */
 		_removeItem: function(key) {
-			YAHOO.log("removing " + key);
-			_engine._swf.removeItem(key);
-			this.length = _engine._swf.getLength();
+			var _key = this._location + this.DELIMITER + key;
+			_engine._swf.removeItem(_key);
+			this.removeKey(_key);
 		},
 
 		/*
@@ -208,36 +165,20 @@
 		 * @see YAHOO.util.Storage._setItem
 		 */
 		_setItem: function(key, data) {
-			YAHOO.log("SETTING " + data + " to " + key);
-			var fl = _engine._swf.setItem(this._createValue(data), key);
-			this.length = _engine._swf.getLength();
-			return fl;
-		},
+			var _key = this._location + this.DELIMITER + key;
 
-		/**
-		 * This method requests more storage if the amount is above 100KB. (e.g., if the <code>store()</code> method
-		 * returns "pending". The request dialog has to be displayed within the Flash player itself
-		 * so the SWF it is called from must be visible and at least 215px x 138px in size.
-		 * @method setSize
-		 * @param value The size, in KB
-		 * @public
-		 */
-		setSize: function(value) {
-			return _engine._swf.setSize(value);
-		},
-
-		/**
-		 * Public accessor to the unique name of the DataStore instance.
-		 * @method toString
-		 * @return {String} Unique name of the DataStore instance.
-		 * @public
-		 */
-		toString: function() {
-			return "DataStore " + _engine._id;
+			if (! _engine._swf.getItem(_key)) {
+				this._keys.push(_key);
+				this.length = this._keys.length;
+			}
+			
+			return _engine._swf.setItem(this._createValue(data), _key);
 		}
 	});
 
-	_YU.StorageEngineSWF.SWFURL = "datastore.swf";
-	_YU.StorageEngineSWF.TYPE_NAME = 'SWF';
-    _YU.StorageManager.register(_YU.StorageEngineSWF.TYPE_NAME, function() {return true;}, _YU.StorageEngineSWF);
-})();
+	Y.StorageEngineSWF.SWFURL = "datastore.swf";
+	Y.StorageEngineSWF.ENGINE_NAME = 'swf';
+    Y.StorageManager.register(Y.StorageEngineSWF.ENGINE_NAME, function() {
+		return 6 < YAHOO.deconcept.SWFObjectUtil.getPlayerVersion().major;
+	}, Y.StorageEngineSWF);
+}());

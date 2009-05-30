@@ -3,31 +3,61 @@
  * Version: 0.2.00
  */
 
+// todo: use the event provider model
+// todo: change isReady to broadcast an event, use event provider model
+// todo: create an intermediary class StorageWithKeys, which will implement indexOfKey and removeKey; gears and SWF engine will implement this
 (function() {
 
-	var _YU = YAHOO.util;
+	// internal shorthand
+var Y = YAHOO.util,
+	YL = YAHOO.lang;
 
-if (! _YU.Storage) {
+if (! Y.Storage) {
 
-	var _YL = YAHOO.lang,
-		_ERROR_OVERWRITTEN = 'Exception in YAHOO.util.Storage.?? - must be extended by a storage engine';
+	var _logOverwriteError = function(fxName) {
+		YAHOO.log(_ERROR_OVERWRITTEN.replace('??', fxName).replace('??', this.getName ? this.getName() : 'Unknown'), 'error');
+	};
 
 	/**
 	 * The Storage class is an HTML 5 storage API clone, used to wrap individual storage implementations with a common API.
 	 * @class Storage
 	 * @namespace YAHOO.util
 	 * @constructor
-	 * @param location {Object} Required. The storage location.
+	 * @param location {String} Required. The storage location.
+	 * @parm name {String} Required. The engine name.
 	 * @param conf {Object} Required. A configuration object.
 	 */
-	_YU.Storage = function(location, conf) {
+	Y.Storage = function(location, name, conf) {
 		YAHOO.env._id_counter += 1;
-		this.onChange = new _YU.CustomEvent('StorageEvent' + YAHOO.env._id_counter, this, false, _YU.CustomEvent.FLAT);
-		this.length = this.length;
+
+		// protected variables
+		this._cfg = YL.isObject(conf) ? conf : {};
 		this._location = location;
+		this._name = name;
+
+		// public variables
+		this.onChange = new Y.CustomEvent('StorageEvent' + YAHOO.env._id_counter, this, false, Y.CustomEvent.FLAT);
+		this.length = this.length;
+		this.createEvent(this.CE_READY, {scope: this});
 	};
 
-	_YU.Storage.prototype = {
+	Y.Storage.prototype = {
+
+		/**
+		 * The event name for when the storage item is ready.
+		 * @property CE_READY
+		 * @type {String}
+		 * @public
+		 */
+		CE_READY: 'YUIStorageReady',
+
+		/**
+		 * The delimiter uesed between the data type and the data.
+		 * @property DELIMITER
+		 * @type {String}
+		 * @public
+		 */
+		DELIMITER: '__',
 
 		/**
 		 * The event to fire when adding or removing an item.
@@ -37,10 +67,26 @@ if (! _YU.Storage) {
 		onChange: null,
 
 		/**
+		 * The configuration of the engine.
+		 * @property _cfg
+		 * @type {Object}
+		 * @protected
+		 */
+		_cfg: '',
+
+		/**
+		 * The name of this engine.
+		 * @property _name
+		 * @type {String}
+		 * @protected
+		 */
+		_name: '',
+
+		/**
 		 * The location for this instance.
 		 * @property _location
 		 * @type {String}
-		 * @public
+		 * @protected
 		 */
 		_location: '',
 
@@ -53,22 +99,6 @@ if (! _YU.Storage) {
 		length: 0,
 
 		/**
-		 * Fetches the remaining size this object can store in bytes; should be overwritten by storage engine.
-		 * @method calculateSize
-		 * @return {Number} The remaining size.
-		 * @public
-		 */
-		calculateSize: function() {throw(_ERROR_OVERWRITTEN.replace('??', 'calculateSize'));},
-
-		/**
-		 * Fetches the maximum size remaining to store a value in bytes; should be overwritten by storage engine.
-		 * @method calculateSizeRemaining
-		 * @return {Number} The maximum size.
-		 * @public
-		 */
-		calculateSizeRemaining: function() {throw(_ERROR_OVERWRITTEN.replace('??', 'calculateSizeRemaining'));},
-
-		/**
 		 * Clears any existing key/value pairs.
 		 * @method clear
 		 * @public
@@ -79,17 +109,6 @@ if (! _YU.Storage) {
 		},
 
 		/**
-		 * Converts the object into a string, with meta data (type), so it can be restored later.
-		 * @method _createValue
-		 * @param s {Object} Required. An object to store.
-		 * @public
-		 */
-		_createValue: function(s) {
-			var type = typeof s;
-			return 'string' === type ? s : type + '||' + s;
-		},
-
-		/**
 		 * Fetches the data stored and the provided key.
 		 * @method getItem
 		 * @param key {String} Required. The key used to reference this value (DOMString in HTML 5 spec).
@@ -97,7 +116,9 @@ if (! _YU.Storage) {
 		 * @public
 		 */
 		getItem: function(key) {
-			return this.hasKey(key) ? this._getItem(key) : null; // required by HTML 5 spec
+			YAHOO.log("Fetching item at  " + key);
+			var item = this._getItem(key);
+			return item ? item : null; // required by HTML 5 spec
 		},
 
 		/**
@@ -106,7 +127,7 @@ if (! _YU.Storage) {
 		 * @return {String} The name of the data storage object.
 		 * @public
 		 */
-		getName: function() {throw(_ERROR_OVERWRITTEN.replace('??', 'getName'));},
+		getName: function() {return this._name;},
 
 		/**
 		 * Tests if the key has been set (not in HTML 5 spec); should be overwritten by storage engine.
@@ -115,7 +136,48 @@ if (! _YU.Storage) {
 		 * @return {Boolean} True when key has been set.
 		 * @public
 		 */
-		hasKey: function(key) {throw(_ERROR_OVERWRITTEN.replace('??', 'hasKey'));},
+		hasKey: function(key) {
+			return YL.isString(key) && null !== this.getItem(key);
+		},
+
+		/**
+		 * Evaluates if a key exists in the keys array; indexOf does not work in all flavors of IE.
+		 * @method _indexOfKey
+		 * @param key {String} Required. The key to evaluate.
+		 * @public
+		 */
+		indexOfKey: function(key) {
+			if (this._keys) {
+				Y.Storage.prototype.indexOfKey = [].indexOf ? function(key) {
+					return this._keys.indexOf(key);
+				}: function(key) {
+					for (var i = this._keys.length - 1; 0 <= i; i -= 1) {
+						if (key === this._keys[i]) {return i;}
+					}
+
+					return -1;
+				};
+
+				return this.indexOfKey(key);
+			}
+		},
+
+		/**
+		 * Removes a key from the keys array.
+		 * @method removeKey
+		 * @param key {String} Required. The key to remove.
+		 * @public
+		 */
+		removeKey: function(key) {
+			if (this._keys) {
+				var j = this.indexOfKey(key),
+					rest = this._keys.slice(j + 1);
+
+				this._keys.length = j;
+				this._keys.concat(rest);
+				this.length = this._keys.length;
+			}
+		},
 
 		/**
 		 * Evaluate if the engine is loaded and functions are available; true by default, should be overridden by subclass if needed.
@@ -134,7 +196,17 @@ if (! _YU.Storage) {
 		 * @return {String} Required. The key at the provided index (DOMString in HTML 5 spec).
 		 * @public
 		 */
-		key: function(index) {throw(_ERROR_OVERWRITTEN.replace('??', 'key'));},
+		key: function(index) {
+			YAHOO.log("Fetching key at " + index);
+
+			if (YL.isNumber(index)) {
+				var value = this._key(index);
+				if (value) {return value;}
+			}
+
+			// this is thrown according to the HTML5 spec
+			throw('INDEX_SIZE_ERR - Storage.setItem - The provided index (' + index + ') is not available');
+		},
 
 		/**
 		 * Remove an item from the data storage.
@@ -143,17 +215,17 @@ if (! _YU.Storage) {
 		 * @public
 		 */
 		removeItem: function(key) {
+			YAHOO.log("removing " + key);
+			
 			if (this.hasKey(key)) {
                 var oldValue = this._getItem(key);
                 if (! oldValue) {oldValue = null;}
                 this._removeItem(key);
-				this.onChange.fire(new _YU.StorageEvent(this, key, oldValue, null));
-				return oldValue;
+				this.onChange.fire(new Y.StorageEvent(this, key, oldValue, null));
+				this.fireEvent(this.CE_READY, key, oldValue, null);
 			}
 			else {
 				// HTML 5 spec says to do nothing
-				// throw('Error - YUIDataStorge.removeItem - The provided \'key\' does not exist');
-				return null;
 			}
 		},
 
@@ -163,51 +235,83 @@ if (! _YU.Storage) {
 		 * @param key {String} Required. The key used to reference this value (DOMString in HTML 5 spec).
 		 * @param data {Object} Required. The data to store at key (DOMString in HTML 5 spec).
 		 * @public
+		 * @throws QUOTA_EXCEEDED_ERROR
 		 */
 		setItem: function(key, data) {
-			if (_YL.isString(key)) {
+			YAHOO.log("SETTING " + data + " to " + key);
+			
+			if (YL.isString(key)) {
 				var oldValue = this._getItem(key);
 				if (! oldValue) {oldValue = null;}
 
 				if (this._setItem(key, data)) {
-					this.onChange.fire(new _YU.StorageEvent(this, key, oldValue, data));
+					this.onChange.fire(new Y.StorageEvent(this, key, oldValue, data));
+					this.fireEvent(this.CE_READY, key, oldValue, data);
 				}
 				else {
-					throw('QUOTA_EXCEEDED_ERROR - YUIDataStorge.setItem - The choosen storage method (' +
-						  this.getName() + ') has exceeded capacity of ' +
-						  this.getMaxSize() + 'kb');
+					// this is thrown according to the HTML5 spec
+					throw('QUOTA_EXCEEDED_ERROR - Storage.setItem - The choosen storage method (' +
+						  this.getName() + ') has exceeded capacity');
 				}
 			}
 			else {
 				// HTML 5 spec says to do nothing
-				// throw('Error - YUIDataStorge.setItem - The provided \'key\' was not a \'string\'');
 			}
 		},
 
 		/**
-		 * Clears any existing key/value pairs.
+		 * Implementation of the clear login; should be overwritten by storage engine.
 		 * @method _clear
-		 * @public
+		 * @protected
 		 */
-		_clear: function() {},
+		_clear: function() {
+			_logOverwriteError('_clear');
+			return '';
+		},
 
 		/**
-		 * Fetches the data stored and the provided key.
+		 * Converts the object into a string, with meta data (type), so it can be restored later.
+		 * @method _createValue
+		 * @param s {Object} Required. An object to store.
+		 * @protected
+		 */
+		_createValue: function(s) {
+			var type = typeof s;
+			return 'string' === type ? s : type + this.DELIMITER + s;
+		},
+
+		/**
+		 * Implementation of the getItem login; should be overwritten by storage engine.
 		 * @method _getItem
 		 * @param key {String} Required. The key used to reference this value.
-		 * @return {String|Undefined} The value stored at the provided key.
+		 * @return {String|NULL} The value stored at the provided key.
+		 * @protected
+		 */
+		_getItem: function(key) {
+			_logOverwriteError('_getItem');
+			return '';
+		},
+
+		/**
+		 * Implementation of the key logic; should be overwritten by storage engine.
+		 * @method _key
+		 * @param index {Number} Required. The index to retrieve (unsigned long in HTML 5 spec).
+		 * @return {String|NULL} Required. The key at the provided index (DOMString in HTML 5 spec).
 		 * @public
 		 */
-		_getItem: function(key) {},
+		_key: function(index) {
+			_logOverwriteError('_key');
+			return '';
+		},
 
 		/**
 		 * Converts the stored value into its appropriate type.
 		 * @method _getValue
 		 * @param s {String} Required. The stored value.
-		 * @public
+		 * @protected
 		 */
 		_getValue: function(s) {
-			var a = s ? s.split('||') : [];
+			var a = s ? s.split(this.DELIMITER) : [];
 			if (1 == a.length) {return s;}
 
 			switch (a[0]) {
@@ -218,23 +322,31 @@ if (! _YU.Storage) {
 		},
 
 		/**
-		 * Adds an item to the data storage.
+		 * Implementation of the removeItem login; should be overwritten by storage engine.
 		 * @method _removeItem
 		 * @param key {String} Required. The key to remove.
-		 * @public
+		 * @protected
 		 */
-		_removeItem: function(key) {},
+		_removeItem: function(key) {
+			_logOverwriteError('_removeItem');
+			return '';
+		},
 
 		/**
-		 * Adds an item to the data storage.
+		 * Implementation of the setItem login; should be overwritten by storage engine.
 		 * @method _setItem
 		 * @param key {String} Required. The key used to reference this value.
 		 * @param data {Object} Required. The data to storage at key.
 		 * @return {Boolean} True when successful, false when size QUOTA exceeded.
-		 * @public
+		 * @protected
 		 */
-		_setItem: function(key, data) {}
+		_setItem: function(key, data) {
+			_logOverwriteError('_setItem');
+			return '';
+		}
 	};
+
+	YL.augmentProto(Y.Storage, Y.EventProvider);
 };
 
 })();
