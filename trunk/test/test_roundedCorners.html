@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+    <title>Rounded Corners CSS Test</title>
+	
+	<style type="text/css">
+
+		.box-outer {
+			background-color: #012;
+			padding: 0.5em;
+			-khtml-border-top-left-radius: 10px 20px;
+			-khtml-border-bottom-right-radius: 10px;
+			-webkit-border-top-left-radius: 10px 20px;
+			-webkit-border-bottom-right-radius: 10px;
+			-moz-border-radius-topleft: 10px 20px;
+			-moz-border-radius-bottomright: 10px;
+			-opera-border-top-left-radius: 10px 20px;
+			-opera-border-bottom-right-radius: 10px;
+			border-top-left-radius: 10px 20px;
+			border-bottom-right-radius: 10px;
+		}
+
+		.box-inner {
+			background-color: #EFEFEF;
+			border: 1px dashed #F00;
+			padding: 0.5em;
+			-webkit-border-radius: 5px; /* web-kit browsers */
+			-khtml-border-radius: 5px; /* konquerer, works in safari too */
+			-moz-border-radius: 5px; /* gecko browsers */
+			-opera-border-radius: 5px; /* possibly for opera */
+			border-radius: 5px;
+		}
+
+    </style>
+</head>
+
+<body id="project">
+
+	<div class="box-outer"><div class="box-inner">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam est odio, sagittis a, condimentum ac, consectetur sed, augue. Quisque eget urna. Nullam adipiscing justo at elit. Mauris suscipit odio a lacus. Donec faucibus venenatis mauris. Vestibulum sit amet nibh. Vivamus fermentum gravida nibh. Quisque sagittis sagittis dui. Donec ut nulla. Nullam elementum cursus felis. Sed id diam et velit placerat tempus. Nulla nisl nulla, pharetra pharetra, hendrerit eu, faucibus quis, velit. Etiam sem. Praesent fermentum. Duis bibendum viverra sem.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam est odio, sagittis a, condimentum ac, consectetur sed, augue. Quisque eget urna. Nullam adipiscing justo at elit. Mauris suscipit odio a lacus. Donec faucibus venenatis mauris. Vestibulum sit amet nibh. Vivamus fermentum gravida nibh. Quisque sagittis sagittis dui. Donec ut nulla. Nullam elementum cursus felis. Sed id diam et velit placerat tempus. Nulla nisl nulla, pharetra pharetra, hendrerit eu, faucibus quis, velit. Etiam sem. Praesent fermentum. Duis bibendum viverra sem.</div></div>
+
+</body>
+</html>
