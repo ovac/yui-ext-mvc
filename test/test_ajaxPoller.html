@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+    <title>Ajax Poller Test</title>
+	
+	<style type="text/css">
+		
+    </style>
+</head>
+
+<body id="project">
+
+	<p>
+		<input id="start" type="button" value=" Start Polling "/>
+		<input id="stop" type="button" value=" Stop Polling "/>
+	</p>
+
+	<div id="writeHere"></div>
+
+    <script type="text/javascript" src="../assets/js/library.js"></script>
+    <script type="text/javascript" src="../assets/js/widget/ajaxPoller.js"></script>
+
+<script type="text/javascript">(function() {
+	var _YD = YAHOO.util.Dom,
+		_YE = YAHOO.util.Event,
+		$ = _YD.get;
+
+	var container = $('writeHere'),
+		poller = new Core.Controller.AjaxPoller({url: 'test_text.txt'});
+
+	var _write = function(text) {
+		var p = container.appendChild(document.createElement('p'));
+		p.appendChild(document.createTextNode(text));
+	};
+
+	poller.onPoll.subscribe(function(o) {
+		_write(o.responseText);
+	});
+
+	poller.onStart.subscribe(function(o) {
+		_write('poller started');
+	});
+
+	poller.onStop.subscribe(function(o) {
+		_write('poller stopped');
+	});
+
+	_YE.on('start', 'click', function() {poller.start();});
+	_YE.on('stop', 'click', function() {poller.stop();});
+})();</script>
+</body>
+</html>
