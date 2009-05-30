@@ -1,27 +1,29 @@
-/**
+/*
  * Copyright (c) 2009, Matt Snider, LLC. All rights reserved.
  * Version: 0.2.00
  */
 
-/**
+/*
  * Cookie limitations:
  *  - 4000 bytes (browser detection could be used to increase this)
  *  - each character can take up to 3 bytes (because of encoding, most characters will take 1 byte)
  *  - so, cookie character limit is 1,333; without separators or other special characters
  *  - each site can have up to 20 cookies
- *  - are cookies
  *  - the server header size needs to be large enough to support this as well
  *
  * Thoughts:
  *  - character compression will be helpful for increasing cookie size
- *  - some cookies will be used for localStorage and some fore sessionStorage, unless configured otherwise
+ *  - some cookies will be used for localStorage and some for sessionStorage, unless configured otherwise
  *  - need to detect how many cookies are already in use
  */
 (function() {
-    var _YU = YAHOO.util,
-		_YC = _YU.Cookie,
-		_YL = YAHOO.lang,
-        _that = {
+		// internal shorthand
+    var Y = YAHOO.util,
+		YC = Y.Cookie,
+		YL = YAHOO.lang,
+		YS = Y.StorageManager;
+
+    YL.augmentObject(YC, {
 
         /**
          * Returns the number of cookies currently used.
@@ -41,7 +43,7 @@
          * @private
          */
         getCookieSize: function(key) {
-            return _YL.getByteSize('' + _YC.get(key));
+            return YS.getByteSize('' + YC.get(key));
         },
 
         /**
@@ -57,22 +59,21 @@
             if (navigator && ! navigator.cookieEnabled) {return false;} // navigator tells us no
             if (('' + document.cookie).length) {return true;} // cookies exists, assume enabled
 
-            _YC.set(testName, testValue);
+            YC.set(testName, testValue);
 
-            if (testValue === _YC.get(testName)) {
-                _YC.remove(testName);
+            if (testValue === YC.get(testName)) {
+                YC.remove(testName);
                 return true;
             }
             else {
                 return false;
             }
         }
-    };
-
-    _YL.augmentObject(_YC, _that);
+    });
 
 	// constants
 	var _ERROR_NO_AVAILABLE_COOKIES = 'EXCEPTION - CookieStorage - No available cookies; to use this storage technique, you must delete some cookies first',
+		_SPECIAL_CHAR_BYTE_SIZE = 3,
 		_MAX_BYTE_SIZE = 4000,
 		_MAX_COOKIES = 20; // maximum number of cookies available
 
@@ -91,12 +92,15 @@
 	var _buildCookieObject = function(l) {
 		// iterate through possible cookies
 		for (var i = 0; i < _MAX_COOKIES; i += 1) {
-			var o = _YC.get(l + i);
+			var o = YC.get(l + i);
 
 			// session storage exists, create map
 			if (o) {
-				_YL.arrayWalk(o.split('&'), function(o) {
-					var p = o.split('='),
+				var cookies = o.split('&');
+
+				for (var j = cookies.length - 1; 0 <= j; j -= 1) {
+					var cookie = cookies[j],
+						p = cookie.split('='),
 						name = ('' + p[0]);
 
 					// this concatenates a previous value
@@ -108,7 +112,7 @@
 						_keys.push(name);
 						_data[name] = ('' + p[1]);
 					}
-				});
+				}
 			}
 			// session storage does not exists yet
 			else {
@@ -126,7 +130,7 @@
 	var _clearLocationCookies = function(l) {
 		// iterate through possible cookies and delete
 		for (var i = 0; i < _MAX_COOKIES; i += 1) {
-			_YC.remove(l + i);
+			YC.remove(l + i);
 		}
 	};
 
@@ -153,21 +157,20 @@
 	var _str_trimToSize = function(s, availableSpace) {
 		var rs = [],
 			str = '' + s,
-			size = _YL.getByteSize(str),
+			size = YS.getByteSize(str),
 			m = Math.ceil(s.length * (availableSpace / size)),
 			i = 0;
 
 		while (size !== availableSpace) {
 			if (10 < i ) {throw('EXCEPTION - Too much recursion inside _str_trimToSize');}
 			var nstr = str.substr(0, m),
-				newsize = _YL.getByteSize(nstr),
+				newsize = YS.getByteSize(nstr),
 				n = availableSpace - newsize,
 				z = Math.abs(n);
 
-			// todo: rewrite this logic, there has to be a better way
 			// newsize is larger than available; reduce size OR newsize is smaller than available
-			if (0 > n || _YL.SPECIAL_CHAR_BYTE_SIZE <= z) {
-				if (_YL.SPECIAL_CHAR_BYTE_SIZE * 2 <= z) {m += Math.ceil(n * 2 / 3);}
+			if (0 > n || _SPECIAL_CHAR_BYTE_SIZE <= z) {
+				if (_SPECIAL_CHAR_BYTE_SIZE * 2 <= z) {m += Math.ceil(n * 2 / 3);}
 				else {m += 0 > n ? -1 : 1;}
 			}
 			else  {
@@ -189,15 +192,15 @@
 	 */
 	var _writeCookieObject = function(l) {
 		var i = 0,
-			currentSize = _YL.getByteSize(_YC.get(l + i));
+			currentSize = YS.getByteSize(YC.get(l + i));
 
 		_clearLocationCookies(l);
-        var __setSubCookie = _YU.StorageManager.LOCATION_SESSION === l ?
-			function(key, skey, value) {_YC.setSub.call(_YC, key, skey, value);} :
+        var __setSubCookie = Y.StorageManager.LOCATION_SESSION === l ?
+			function(key, skey, value) {YC.setSub.call(YC, key, skey, value);} :
 			function(key, skey, value) {
 				var expires = new Date();
 				expires.setYear(expires.getFullYear() + 100);
-				_YC.setSub.call(_YC, key, skey, value, {expires: expires});
+				YC.setSub.call(YC, key, skey, value, {expires: expires});
 			};
 
 		// note: possible code paths
@@ -209,10 +212,10 @@
 		// iterate on the data to insert into cookies
 		for (var key in _data) {
 			// this is a valid key to store
-			if (_YL.isString(key)) {
+			if (YL.isString(key)) {
 				var value = _data[key],
-					keySize = _YL.getByteSize('&' + key + '='),
-					valueSize = _YL.getByteSize(value),
+					keySize = YS.getByteSize('&' + key + '='),
+					valueSize = YS.getByteSize(value),
 					newCurrentSize = currentSize + keySize + valueSize;
 
 				// value is large than current cookie, find space for it
@@ -233,12 +236,12 @@
                         }
 
 						value = o[1];
-						valueSize = _YL.getByteSize(value);
+						valueSize = YS.getByteSize(value);
 					}
 
 					i += 1;
 					currentSize = 0;
-					newCurrentSize = _YL.getByteSize(l + i + '=') + keySize + valueSize;
+					newCurrentSize = YS.getByteSize(l + i + '=') + keySize + valueSize;
 				}
 
 				// enough in current cookie space
@@ -253,6 +256,7 @@
 
 	/**
 	 * The StorageEngineCookie class implements the Cookie storage engine.
+	 *  !IMPORTANT! This code is meant as an example only. It is bad practice to use cookies to store data.
 	 * @namespace YAHOO.util
 	 * @class StorageEngineCookie
 	 * @uses YAHOO.util.Cookie
@@ -261,10 +265,10 @@
 	 * @param location {Object} Required. The storage location.
 	 * @param conf {Object} Required. A configuration object.
 	 */
-	_YU.StorageEngineCookie = function(location, conf) {
-		_YU.StorageEngineCookie.superclass.constructor.apply(this, arguments);// not set, are cookies available
+	Y.StorageEngineCookie = function(location, conf) {
+		Y.StorageEngineCookie.superclass.constructor.call(this, location, Y.StorageEngineCookie.ENGINE_NAME, conf); // not set, are cookies available
 
-		if (_YL.isNull(_YC.get(this._location + '0'))) {
+		if (YL.isNull(YC.get(this._location + '0'))) {
 			if (0 < _MAX_COOKIES) {
 				// don't need to do anything
 			}
@@ -279,22 +283,7 @@
 		}
 	};
 
-	_YL.extend(_YU.StorageEngineCookie, _YU.Storage, {
-
-		/*
-		 * Implentation to calculate the current size of the storage engine.
-		 * @see YAHOO.util.Storage.calculateSize
-		 */
-		calculateSize: function() {},
-
-		/*
-		 * Implentation to calculate the remaining size in the storage engine.
-		 * @see YAHOO.util.Storage.calculateSizeRemaining
-		 */
-		calculateSizeRemaining: function() {
-			var availableCookies = _MAX_COOKIES - _YC.getNumberOfCookies();
-			return (availableCookies + _storageCookieSize) * _MAX_BYTE_SIZE;
-		},
+	YL.extend(Y.StorageEngineCookie, Y.Storage, {
 
 		/*
 		 * Implentation to clear the values from the storage engine.
@@ -318,25 +307,10 @@
 		},
 
 		/*
-		 * Implentation to fetch the name of the storage engine.
-		 * @see YAHOO.util.Storage.getName
-		 */
-		getName: function() {return _YU.StorageEngineCookie.TYPE_NAME;},
-
-		/*
-		 * Implentation to evaluate key existence in storage engine.
-		 * @see YAHOO.util.Storage.hasKey
-		 */
-		hasKey: function(key) {
-			this._sync();
-			return ! _YL.isUndefined(_data[key]);
-		},
-
-		/*
 		 * Implentation to fetch a key from the storage engine.
-		 * @see YAHOO.util.Storage.key
+		 * @see YAHOO.util.Storage._key
 		 */
-		key: function(index) {
+		_key: function(index) {
 			this._sync();
 			return _keys[index];
 		},
@@ -350,7 +324,7 @@
 			delete _data[key];
 			var newKeys = [];
 
-			_YL.arrayWalk(_keys, function(_key) {
+			YL.arrayWalk(_keys, function(_key) {
 				if (key !== _key) {
 					newKeys.push(_key);
 				}
@@ -373,13 +347,13 @@
 			}
 
 			// cookies are available to store data into
-			if (_YC.getNumberOfCookies() < _MAX_COOKIES) {
-				var availableCookies = _MAX_COOKIES - _YC.getNumberOfCookies(),
-					sizeNeeded = _YL.getByteSize(value),
+			if (YC.getNumberOfCookies() < _MAX_COOKIES) {
+				var availableCookies = _MAX_COOKIES - YC.getNumberOfCookies(),
+					sizeNeeded = YS.getByteSize(value),
 					sizePerCookie = sizeNeeded / availableCookies;
 
 				if (_MAX_BYTE_SIZE < sizePerCookie) {
-					var availableSizeLastCookieA = _MAX_BYTE_SIZE - _YC.getCookieSize(this._location + (_storageCookieSize - 1));
+					var availableSizeLastCookieA = _MAX_BYTE_SIZE - YC.getCookieSize(this._location + (_storageCookieSize - 1));
 					// the data is too large for remaining space
 					if (availableSizeLastCookieA + _MAX_BYTE_SIZE * availableCookies < sizeNeeded) {
 						return false;
@@ -388,8 +362,8 @@
 			}
 			// out of cookies
 			else {
-				var availableSizeLastCookieB = _MAX_BYTE_SIZE - _YC.getCookieSize(this._location + (_storageCookieSize - 1));
-				if (availableSizeLastCookieB < sizeNeeded) {return false;} // todo: check last cookie
+				var availableSizeLastCookieB = _MAX_BYTE_SIZE - YC.getCookieSize(this._location + (_storageCookieSize - 1));
+				if (availableSizeLastCookieB < sizeNeeded) {return false;}
 			}
 
 			_data[key] = this._createValue(value);
@@ -408,6 +382,6 @@
 		}
 	}, true);
 
-	_YU.StorageEngineCookie.TYPE_NAME = 'cookie';
-    _YU.StorageManager.register(_YU.StorageEngineCookie.TYPE_NAME, _YC.isCookiesEnabled, _YU.StorageEngineCookie);
-})();
+	Y.StorageEngineCookie.ENGINE_NAME = 'cookie';
+    Y.StorageManager.register(Y.StorageEngineCookie.ENGINE_NAME, YC.isCookiesEnabled, Y.StorageEngineCookie);
+}());

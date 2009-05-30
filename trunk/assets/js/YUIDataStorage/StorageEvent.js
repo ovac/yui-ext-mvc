@@ -3,6 +3,8 @@
  * Version: 0.2.00
  */
 
+(function() {
+
 /**
  * The StorageEvent class manages the storage events by emulating the HTML 5 implementation.
  * @namespace YAHOO.util
@@ -18,7 +20,7 @@ YAHOO.util.StorageEvent = function(storageArea, key, oldValue, newValue) {
 	this.oldValue = oldValue;
 	this.newValue = newValue;
 	this.url = window.location.href;
-	this.window = window;
+	this.window = window; // todo: think about the CAJA and innocent code
 	this.storageArea = storageArea;
 };
 
@@ -78,3 +80,5 @@ YAHOO.util.StorageEvent.prototype = {
      */
     url: null
 };
+	
+}());
