@@ -313,38 +313,21 @@
             },
 
             /**
-             * Remove the member at index (i) in the array.
+             * Remove the member at index (i) in the array; does not modify the original array.
              * @method removeIndex
              * @param n {Number} Required. The index to remove.
              * @return {Object} The new Array or Original.
              * @public
              */
             removeIndex: function(n) {
-                var arr = [],
-                    i = 0;
-
-                // invalid index
-                if (0 > n || n >= this.length) {return this;}
-	            var index = n;
-
-                // iterate on self
-                this.walk(function(o) {
-                    // index to remove
-                    if (i === index) {
-                        index -= 1;
-                    }
-                    // other values
-                    else {
-                        arr[i] = o;
-                        i += 1;
-                    }
-                });
-
-                return arr;
+                if (0 > n || n >= this.length) {return this;} // invalid index
+                var resp = this.slice(0, n),
+                    rest = this.slice(n + 1);
+                return resp.concat(rest);
             },
 
             /**
-             * Finds the object in the array and removes it.
+             * Finds the object in the array and removes it; does not modify the original array.
              * @method removeValue
              * @param val {Object} Required. The object to remove.
              * @return {Object} The new Array or Original.
@@ -427,4 +410,4 @@
     if (_YD && _YD.augmentWithArrayMethods) {
         _YD.augmentWithArrayMethods();
     }
-})();
+}());
