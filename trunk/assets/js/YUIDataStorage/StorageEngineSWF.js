@@ -18,8 +18,7 @@
 		YL = YAHOO.lang,
 
 		// local variables
-		_engine = null,
-		_isReady = false;
+		_engine = null;
 
 	/**
 	 * Initializes the engine, if it isn't already initialized.
@@ -63,7 +62,7 @@
 			if (_engine._swf && YL.isValue(_engine._swf.displaySettings)) {
 				this._swf = _engine._swf;
 				timer.cancel();
-				_isReady = true;
+				this.fireEvent(this.CE_READY);
 
 				var sessionKey = Y.Cookie.get('sessionKey' + Y.StorageEngineSWF.ENGINE_NAME);
 
@@ -111,7 +110,7 @@
 		_swf: null,
 
 		/*
-		 * Implentation to clear the values from the storage engine.
+		 * Implementation to clear the values from the storage engine.
 		 * @see YAHOO.util.Storage._clear
 		 */
 		_clear: function() {			
@@ -125,25 +124,15 @@
 		},
 
 		/*
-		 * Implentation to fetch an item from the storage engine.
+		 * Implementation to fetch an item from the storage engine.
 		 * @see YAHOO.util.Storage._getItem
 		 */
 		_getItem: function(key) {
 			return this._getValue(_engine._swf.getItem(this._location + this.DELIMITER + key));
 		},
 
-		/**
-		 * Evaluate if the swf is loaded and functions are available.
-		 * @method isReady
-		 * @return {Boolean} The SWF is loaded.
-		 * @public
-		 */
-		isReady: function() {
-			return _isReady;
-		},
-
 		/*
-		 * Implentation to fetch a key from the storage engine.
+		 * Implementation to fetch a key from the storage engine.
 		 * @see YAHOO.util.Storage.key
 		 */
 		_key: function(index) {
@@ -151,7 +140,7 @@
 		},
 
 		/*
-		 * Implentation to remove an item from the storage engine.
+		 * Implementation to remove an item from the storage engine.
 		 * @see YAHOO.util.Storage._removeItem
 		 */
 		_removeItem: function(key) {
@@ -161,7 +150,7 @@
 		},
 
 		/*
-		 * Implentation to remove an item from the storage engine.
+		 * Implementation to remove an item from the storage engine.
 		 * @see YAHOO.util.Storage._setItem
 		 */
 		_setItem: function(key, data) {

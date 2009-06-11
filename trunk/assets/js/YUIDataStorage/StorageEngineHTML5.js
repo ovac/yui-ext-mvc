@@ -26,30 +26,31 @@
 	Y.StorageEngineHTML5 = function(location, conf) {
 		Y.StorageEngineHTML5.superclass.constructor.call(this, location, Y.StorageEngineHTML5.ENGINE_NAME, conf);// not set, are cookies available
 		this._engine = window[location];
+		this.fireEvent(this.CE_READY);
 	};
 
 	YAHOO.lang.extend(Y.StorageEngineHTML5, Y.Storage, {
 
 		/*
-		 * Implentation to clear the values from the storage engine.
+		 * Implementation to clear the values from the storage engine.
 		 * @see YAHOO.util.Storage._clear
 		 */
 		_clear: function() {this._engine.clear();},
 
 		/*
-		 * Implentation to fetch an item from the storage engine.
+		 * Implementation to fetch an item from the storage engine.
 		 * @see YAHOO.util.Storage._getItem
 		 */
 		_getItem: function(key) {return this._engine.getItem(key);},
 
 		/*
-		 * Implentation to fetch a key from the storage engine.
+		 * Implementation to fetch a key from the storage engine.
 		 * @see YAHOO.util.Storage._key
 		 */
 		_key: function(index) {return this._engine.key(index);},
 
 		/*
-		 * Implentation to remove an item from the storage engine.
+		 * Implementation to remove an item from the storage engine.
 		 * @see YAHOO.util.Storage._removeItem
 		 */
 		_removeItem: function(key) {
@@ -58,7 +59,7 @@
 		},
 
 		/*
-		 * Implentation to remove an item from the storage engine.
+		 * Implementation to remove an item from the storage engine.
 		 * @see YAHOO.util.Storage._setItem
 		 */
 		_setItem: function(key, value) {
