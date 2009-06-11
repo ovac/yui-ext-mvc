@@ -21,21 +21,21 @@ var _addItem = function(key) {
 
 // change the engine
 _YE.on('enginePicker', 'change', function() {
-	var dataSource = this.options[this.selectedIndex].value;
-	_YS.onChange.unsubscribeAll();
+	var engineType = this.options[this.selectedIndex].value;
+	_YS.unsubscribeAll(_YS.CE_CHANGE);
 	
-	switch (dataSource) {
+	switch (engineType) {
 		case _YU.StorageEngineCookie.ENGINE_NAME:
-			_YS = _YU.StorageManager.get(dataSource, _YU.StorageManager.LOCATION_LOCAL);
+			_YS = _YU.StorageManager.get(engineType, _YU.StorageManager.LOCATION_LOCAL);
 		break;
 		case _YU.StorageEngineGears.ENGINE_NAME:
-			_YS = _YU.StorageManager.get(dataSource, _YU.StorageManager.LOCATION_LOCAL);
+			_YS = _YU.StorageManager.get(engineType, _YU.StorageManager.LOCATION_LOCAL);
 		break;
 		case _YU.StorageEngineSWF.ENGINE_NAME:
-			_YS = _YU.StorageManager.get(dataSource, _YU.StorageManager.LOCATION_LOCAL);
+			_YS = _YU.StorageManager.get(engineType, _YU.StorageManager.LOCATION_LOCAL);
 		break;
 		case _YU.StorageEngineHTML5.ENGINE_NAME:
-			_YS = _YU.StorageManager.get(dataSource, _YU.StorageManager.LOCATION_LOCAL);
+			_YS = _YU.StorageManager.get(engineType, _YU.StorageManager.LOCATION_LOCAL);
 		break;
 		default:
 	}
@@ -95,12 +95,10 @@ _YE.on(_currentKeys, 'click', function(e) {
 
 var _waitForStorage = function() {
 	var intervalId = setInterval(function() {
-		if (_YS.isReady()) {
+		_YS.subscribe(_YS.CE_READY, function() {
 			clearInterval(intervalId);
 
-			_YS.subscribe(_YS.CE_READY, function() {alert('test!');});
-			
-			_YS.onChange.subscribe(function(e) {
+			_YS.subscribe(_YS.CE_CHANGE, function(e) {
 				var isSetItem = null !== e.newValue,
 					isNewItem = null === e.oldValue;
 
@@ -126,7 +124,7 @@ var _waitForStorage = function() {
 			for (var i = 0; i < _YS.length; i += 1) {
 				_addItem(_YS.key(i));
 			}
-		}
+		});
 	}, 500);
 };
 

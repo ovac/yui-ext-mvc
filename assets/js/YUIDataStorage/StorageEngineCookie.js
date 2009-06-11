@@ -281,12 +281,14 @@
 		else {
 			this._sync();
 		}
+		
+		this.fireEvent(this.CE_READY);
 	};
 
 	YL.extend(Y.StorageEngineCookie, Y.Storage, {
 
 		/*
-		 * Implentation to clear the values from the storage engine.
+		 * Implementation to clear the values from the storage engine.
 		 * @see YAHOO.util.Storage._clear
 		 */
 		_clear: function() {
@@ -298,7 +300,7 @@
 		},
 
 		/*
-		 * Implentation to fetch an item from the storage engine.
+		 * Implementation to fetch an item from the storage engine.
 		 * @see YAHOO.util.Storage._getItem
 		 */
 		_getItem: function(key) {
@@ -307,7 +309,7 @@
 		},
 
 		/*
-		 * Implentation to fetch a key from the storage engine.
+		 * Implementation to fetch a key from the storage engine.
 		 * @see YAHOO.util.Storage._key
 		 */
 		_key: function(index) {
@@ -316,7 +318,7 @@
 		},
 
 		/*
-		 * Implentation to remove an item from the storage engine.
+		 * Implementation to remove an item from the storage engine.
 		 * @see YAHOO.util.Storage._removeItem
 		 */
 		_removeItem: function(key) {
@@ -336,7 +338,7 @@
 		},
 
 		/*
-		 * Implentation to remove an item from the storage engine.
+		 * Implementation to remove an item from the storage engine.
 		 * @see YAHOO.util.Storage._setItem
 		 */
 		_setItem: function(key, value) {

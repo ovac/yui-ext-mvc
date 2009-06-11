@@ -3,8 +3,6 @@
  * Version: 0.2.00
  */
 
-// todo: use the event provider model
-// todo: change isReady to broadcast an event, use event provider model
 // todo: create an intermediary class StorageWithKeys, which will implement indexOfKey and removeKey; gears and SWF engine will implement this
 (function() {
 
@@ -36,9 +34,9 @@ if (! Y.Storage) {
 		this._name = name;
 
 		// public variables
-		this.onChange = new Y.CustomEvent('StorageEvent' + YAHOO.env._id_counter, this, false, Y.CustomEvent.FLAT);
 		this.length = this.length;
 		this.createEvent(this.CE_READY, {scope: this});
+		this.createEvent(this.CE_CHANGE, {scope: this});
 	};
 
 	Y.Storage.prototype = {
@@ -52,19 +50,20 @@ if (! Y.Storage) {
 		CE_READY: 'YUIStorageReady',
 
 		/**
+		 * The event name for when the storage item has changed.
+		 * @property CE_CHANGE
+		 * @type {String}
+		 * @public
+		 */
+		CE_CHANGE: 'YUIStorageChange',
+
+		/**
 		 * The delimiter uesed between the data type and the data.
 		 * @property DELIMITER
 		 * @type {String}
 		 * @public
 		 */
 		DELIMITER: '__',
-
-		/**
-		 * The event to fire when adding or removing an item.
-		 * @event onChange
-		 * @public
-		 */
-		onChange: null,
 
 		/**
 		 * The configuration of the engine.
@@ -180,16 +179,6 @@ if (! Y.Storage) {
 		},
 
 		/**
-		 * Evaluate if the engine is loaded and functions are available; true by default, should be overridden by subclass if needed.
-		 * @method isReady
-		 * @return {Boolean} The engine is loaded.
-		 * @public
-		 */
-		isReady: function() {
-			return true;
-		},
-
-		/**
 		 * Retrieve the key stored at the provided index; should be overwritten by storage engine.
 		 * @method key
 		 * @param index {Number} Required. The index to retrieve (unsigned long in HTML 5 spec).
@@ -221,8 +210,7 @@ if (! Y.Storage) {
                 var oldValue = this._getItem(key);
                 if (! oldValue) {oldValue = null;}
                 this._removeItem(key);
-				this.onChange.fire(new Y.StorageEvent(this, key, oldValue, null));
-				this.fireEvent(this.CE_READY, key, oldValue, null);
+				this.fireEvent(this.CE_CHANGE, new Y.StorageEvent(this, key, oldValue, data));
 			}
 			else {
 				// HTML 5 spec says to do nothing
@@ -245,8 +233,7 @@ if (! Y.Storage) {
 				if (! oldValue) {oldValue = null;}
 
 				if (this._setItem(key, data)) {
-					this.onChange.fire(new Y.StorageEvent(this, key, oldValue, data));
-					this.fireEvent(this.CE_READY, key, oldValue, data);
+					this.fireEvent(this.CE_CHANGE, new Y.StorageEvent(this, key, oldValue, data));
 				}
 				else {
 					// this is thrown according to the HTML5 spec
@@ -297,7 +284,7 @@ if (! Y.Storage) {
 		 * @method _key
 		 * @param index {Number} Required. The index to retrieve (unsigned long in HTML 5 spec).
 		 * @return {String|NULL} Required. The key at the provided index (DOMString in HTML 5 spec).
-		 * @public
+		 * @protected
 		 */
 		_key: function(index) {
 			_logOverwriteError('_key');
@@ -349,4 +336,4 @@ if (! Y.Storage) {
 	YL.augmentProto(Y.Storage, Y.EventProvider);
 };
 
-})();
+}());
