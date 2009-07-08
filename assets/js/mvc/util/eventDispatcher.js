@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009, Matt Snider, LLC. All rights reserved.
- * Version: 1.0.00
+ * Version: 1.01.00
  */
 
 /**
@@ -9,13 +9,11 @@
  * @class EventDispatcher
  * @static
  */
-Core.Util.EventDispatcher = (function() {
+(function() {
     // local variables
     var _callbackMap = {},
         _DOC = document,
-        _F = function() {},
         _rx = /\bcom_\w+\b/g,
-        _that = null,
         _YE = YAHOO.util.Event;
 
     // event namespace
@@ -66,8 +64,8 @@ Core.Util.EventDispatcher = (function() {
         }
     };
 
-   // public interface
-    _F.prototype = {
+   	// public namespace
+	Core.Util.EventDispatcher = {
 
         /**
          * Method to register an event on the document.
@@ -108,7 +106,4 @@ Core.Util.EventDispatcher = (function() {
             }
         }
     };
-
-    _that = new _F();
-    return _that;
-})();
+}());
