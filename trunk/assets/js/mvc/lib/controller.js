@@ -9,19 +9,23 @@
  * @class Controller
  * @static
  */
-Core.Controller = (function() {
-    // constants
-    var _DEFAULT_TIMEOUT = 30000,
-        _ED = Core.Util.EventDispatcher,
-        _YD = YAHOO.util.Dom,
-        _YL = YAHOO.lang,
-		_YUC = YAHOO.util.Connect;
-
+(function() {
+	// constants
+var DEFAULT_TIMEOUT = 30000,
+	YD = YAHOO.util.Dom,
+	YL = YAHOO.lang,
+	YC = YAHOO.util.Connect,
+	TEXT_OBJ_NAME = Core.Controller,
 
 	// local namespace
-	var _F = function () {},
-		_that = null,
-        _registeredConfigurationMap = {};
+	_F = function () {},
+	_this = null,
+	_registeredConfigurationMap = {},
+
+	// dom namespace
+	_domBody = YD.getBodyElement(),
+	_domLayer = YD.get('layer'),
+	_domSearch = 'query';
 
     /**
      * Asserts that the current type is the same as the static type and that isType evaluates to true.
@@ -33,7 +37,7 @@ Core.Controller = (function() {
      */
     var _assertType = function(type, sType, isType) {
         if (isType && type !== sType) {
-            _YL.throwError('Assertion Failed - type="' + type + '" does not equal staticType="' + sType + '"');
+            YL.throwError('Assertion Failed - type="' + type + '" does not equal staticType="' + sType + '"');
         }
     };
 
@@ -48,8 +52,8 @@ Core.Controller = (function() {
 	 * @private
 	 */
 	var _configureRequest = function(vFx, cfg, cached, key, dflt) {
-		if (! _YL[vFx](cfg[key])) {
-			cfg[key] = _YL[vFx](cached[key]) ? cached[key] : dflt;
+		if (! YL[vFx](cfg[key])) {
+			cfg[key] = YL[vFx](cached[key]) ? cached[key] : dflt;
 		}
 	};
 
@@ -60,15 +64,7 @@ Core.Controller = (function() {
      * @private
      */
     var _getValidType = function(type) {
-        return (_YL.isString(type) && (_that.TYPE_TEXT === type || _that.TYPE_JSON === type || _that.TYPE_XML === type)) ? type : _that.TYPE_UNKNOWN;
-    };
-
-
-	// dom namespace
-	var _D = {
-		body: _YD.getBodyElement(),
-		layer: _YD.get('layer'),
-        search: 'query'
+        return (YL.isString(type) && (_this.TYPE_TEXT === type || _this.TYPE_JSON === type || _this.TYPE_XML === type)) ? type : _this.TYPE_UNKNOWN;
     };
 
 
@@ -82,7 +78,7 @@ Core.Controller = (function() {
 	var _R = {
 
 		/**
-		 * _YUC callback function for aborted transactions.
+		 * YC callback function for aborted transactions.
 		 * @method onAbort
 		 * @param eventType {String} Required. The YUI event name.
 		 * @param YUIObj {Object} Required. The YUI wrapped response.
@@ -93,7 +89,7 @@ Core.Controller = (function() {
 		},
 
 		/**
-		 * _YUC callback function for complete transactions.
+		 * YC callback function for complete transactions.
 		 * @method onComplete
 		 * @param eventType {String} Required. The YUI event name.
 		 * @param YUIObj {Object} Required. The YUI wrapped response.
@@ -105,7 +101,7 @@ Core.Controller = (function() {
 
 
 		/**
-		 * _YUC callback function for failed transactions.
+		 * YC callback function for failed transactions.
 		 * @method onFailure
 		 * @param eventType {String} Required. The YUI event name.
 		 * @param YUIObj {Object} Required. The YUI wrapped response.
@@ -115,13 +111,13 @@ Core.Controller = (function() {
 			var data = YUIObj[0],
                 cfg = data.argument;
 
-            if (_YL.isFunction(cfg.failure)) {
+            if (YL.isFunction(cfg.failure)) {
                 cfg.failure.call(this, data, cfg);
             }
 		},
 
 		/**
-		 * _YUC callback function before starting transactions.
+		 * YC callback function before starting transactions.
 		 * @method onStart
 		 * @param eventType {String} Required. The YUI event name.
 		 * @param YUIObj {Object} Required. The YUI wrapped response.
@@ -132,7 +128,7 @@ Core.Controller = (function() {
 		},
 
 		/**
-		 * _YUC callback function for successful transactions.
+		 * YC callback function for successful transactions.
 		 * @method onSuccess
 		 * @param eventType {String} Required. The YUI event name.
 		 * @param YUIObj {Object} Required. The YUI wrapped response.
@@ -142,18 +138,20 @@ Core.Controller = (function() {
 			var data = YUIObj[0],
                 cfg = data.argument;
 
+			if (! cfg) {return;}
+
 			// retrieve response values, test response type, and initialize local variables
 			var doc = (data.responseXML), // parens are necessary for certain browsers
 				txt = (data.responseText),
 				hdr = (data.getResponseHeader),
 				contentType = (hdr && hdr['Content-Type']) ? hdr['Content-Type'] : '',
-				isJSON = _YL.isDefined(txt) && (contentType.has(_that.TYPE_JSON, 'application/json') || '{' === txt.charAt(0)),
-				isXML = _YL.isDefined(doc) && contentType.has(_that.TYPE_XML, 'application/xml'),
+				isJSON = YL.isDefined(txt) && (contentType.has(_this.TYPE_JSON, 'application/json') || '{' === txt.charAt(0)),
+				isXML = YL.isDefined(doc) && contentType.has(_this.TYPE_XML, 'application/xml'),
                 type = cfg.type,
                 response = null;
 
-            _assertType(type, _that.TYPE_JSON, isJSON);
-            _assertType(type, _that.TYPE_XML, isXML);
+            _assertType(type, _this.TYPE_JSON, isJSON);
+            _assertType(type, _this.TYPE_XML, isXML);
 
             // is this a JSON response?
             if (isJSON) {
@@ -168,7 +166,7 @@ Core.Controller = (function() {
                 response = txt;
             }
 
-            if (_YL.isFunction(cfg.success)) {
+            if (YL.isFunction(cfg.success)) {
 				_registeredConfigurationMap[cfg.requestId].isSending = false;
 				_registeredConfigurationMap[cfg.requestId].response = response;
                 cfg.success.call(this, response, cfg.argument, cfg);
@@ -176,7 +174,7 @@ Core.Controller = (function() {
 		},
 
 		/**
-		 * _YUC callback function for uploaded transactions.
+		 * YC callback function for uploaded transactions.
 		 * @method onUpload
 		 * @param eventType {String} Required. The YUI event name.
 		 * @param YUIObj {Object} Required. The YUI wrapped response.
@@ -197,22 +195,22 @@ Core.Controller = (function() {
 		 * @public
 		 */
 		send: function(m, url, cb, args, data) {
-            var cfg = _YL.isObject(cb) ? cb : {},
+            var cfg = YL.isObject(cb) ? cb : {},
 				cachedCfg = _registeredConfigurationMap[cfg.requestId] || {};
 
             // configure request object; will be placed into the YUIObject.argument value
-            if (_YL.isFunction(cb)) {cfg.success = cb;} // the callback object is a success function
-            if (! _YL.isString(cfg.requestId)) {cfg.requestId = 'ajaxRequest' + _YL.getUniqueId();}
+            if (YL.isFunction(cb)) {cfg.success = cb;} // the callback object is a success function
+            if (! YL.isString(cfg.requestId)) {cfg.requestId = 'ajaxRequest' + YL.getUniqueId();}
             if (! cachedCfg.success) { // success function declares at call-time; register it
-                _that.registerAjaxCallback(cfg.requestId, cfg.type, cfg.success, cfg.failure);
+                _this.registerAjaxCallback(cfg.requestId, cfg.type, cfg.success, cfg.failure);
 				cachedCfg = _registeredConfigurationMap[cfg.requestId];
             }
 			
 			_configureRequest('isFunction', cfg, cachedCfg, 'failure', Core.emptyFunction);
 			_configureRequest('isFunction', cfg, cachedCfg, 'success', Core.emptyFunction);
-			_configureRequest('isObject', cfg, cachedCfg, 'scope', _that);
-			_configureRequest('isNumber', cfg, cachedCfg, 'timeout', _DEFAULT_TIMEOUT);
-			_configureRequest('isString', cfg, cachedCfg, 'type', _that.TYPE_UNKNOWN);
+			_configureRequest('isObject', cfg, cachedCfg, 'scope', _this);
+			_configureRequest('isNumber', cfg, cachedCfg, 'timeout', DEFAULT_TIMEOUT);
+			_configureRequest('isString', cfg, cachedCfg, 'type', _this.TYPE_UNKNOWN);
 			_configureRequest('isDefined', cfg, cachedCfg, 'argument', args);
 
 			if (url) {
@@ -224,7 +222,7 @@ Core.Controller = (function() {
 			_registeredConfigurationMap[cfg.requestId].response = null;
 			_registeredConfigurationMap[cfg.requestId].url = cfg.url;
 
-			_YUC.asyncRequest(m, url || cfg.url, {argument: cfg, timeout: cfg.timeout}, data);
+			YC.asyncRequest(m, url || cfg.url, {argument: cfg, timeout: cfg.timeout}, data);
 		}
 	};
 
@@ -239,14 +237,14 @@ Core.Controller = (function() {
      * @private
      */
     var _postGet = function(functionName, url, data, cb, a) {
-        var qData = _YL.isString(data) ? data : '';
+        var qData = YL.isString(data) ? data : '';
 
-        if (_YL.isArray(data)) {
+        if (YL.isArray(data)) {
             qData = data.join('&');
         }
 
-        if (! _YL.isString(url)) {_YL.throwError(_YL.ERROR_INVALID_PARAMETERS, 'Core.Controller', functionName, 'String', url);}
-        if (! qData) {_YL.throwError(_YL.ERROR_INVALID_PARAMETERS, 'Core.Controller', functionName, 'String', data);}
+        if (! YL.isString(url)) {YL.throwError(YL.ERROR_INVALID_PARAMETERS, TEXT_OBJ_NAME, functionName, 'String', url);}
+        if (! qData) {YL.throwError(YL.ERROR_INVALID_PARAMETERS, TEXT_OBJ_NAME, functionName, 'String', data);}
 
         _R.send('post' === functionName ? 'POST' : 'GET', url, cb, a, qData);
     };
@@ -307,10 +305,10 @@ Core.Controller = (function() {
 			var cfg = _registeredConfigurationMap[rId];
 
 			if (! cfg) {
-				_YL.throwError('Core.Controlller.call - the provided requestId=' + rId + ' is not yet registered');
+				YL.throwError('Core.Controlller.call - the provided requestId=' + rId + ' is not yet registered');
 			}
 
-			var callback = _YL.isFunction(fx) ? fx : cfg.success; // execute provided function, default to success function
+			var callback = YL.isFunction(fx) ? fx : cfg.success; // execute provided function, default to success function
 
 			// data is cached, go ahead an immediately execute the callback function
 			if (cfg.response) {
@@ -325,8 +323,8 @@ Core.Controller = (function() {
 
 				// a new callback was provided; Wait until until the request has finished to execute.
 				if (callback === fx) {
-					_YL.callLazy(function() {
-						_that.call(rId, fx, url);
+					YL.callLazy(function() {
+						_this.call(rId, fx, url);
 					}, function() {return ! _registeredConfigurationMap[rId].isSending;});
 				}
 			}
@@ -341,7 +339,7 @@ Core.Controller = (function() {
 		 * @static
 		 */
 		get: function(url, cb, a) {
-            if (! _YL.isString(url)) {_YL.throwError(_YL.ERROR_INVALID_PARAMETERS, 'Core.Controller', 'get', 'String', url);}
+            if (! YL.isString(url)) {YL.throwError(YL.ERROR_INVALID_PARAMETERS, TEXT_OBJ_NAME, 'get', 'String', url);}
 			_R.send('GET', url, cb, a, null);
 		},
 
@@ -392,10 +390,10 @@ Core.Controller = (function() {
          * @static
          */
         registerAjaxCallback: function(rId, type, cb) {
-            if (! _YL.isString(rId)) {return null;}
-			var callback = _YL.isObject(cb) ? cb : {};
-			if (_YL.isFunction(cb)) {callback.success = cb;}
-			if (! _YL.isFunction(callback.success)) {callback.success = Core.emptyFunction;} // this request has no static callback
+            if (! YL.isString(rId)) {return null;}
+			var callback = YL.isObject(cb) ? cb : {};
+			if (YL.isFunction(cb)) {callback.success = cb;}
+			if (! YL.isFunction(callback.success)) {callback.success = Core.emptyFunction;} // this request has no static callback
 			callback.type = _getValidType(type);
 			callback.requestId = rId;
             _registeredConfigurationMap[rId] = callback;
@@ -403,24 +401,24 @@ Core.Controller = (function() {
 	};
 
 
-	_that = new _F();
+	_this = new _F();
 //
 //	// Subscribe to all custom events fired by Connection Manager.
-//	_YUC.startEvent.subscribe(evt.onStart, _that);
-	_YUC.completeEvent.subscribe(_R.onComplete, _that);
+//	YC.startEvent.subscribe(evt.onStart, _this);
+	YC.completeEvent.subscribe(_R.onComplete, _this);
 
 	// This event will not fire for file upload transactions.  Instead,
 	// subscribe to the uploadEvent.
-	_YUC.successEvent.subscribe(_R.onSuccess, _that);
+	YC.successEvent.subscribe(_R.onSuccess, _this);
 
 	// This event will not fire for file upload transactions.  Instead,
 	// subscribe to the uploadEvent.
-	_YUC.failureEvent.subscribe(_R.onFailure, _that);
+	YC.failureEvent.subscribe(_R.onFailure, _this);
 
 	// This event is fired only for file upload transactions in place of
 	// successEvent and failureEvent
-	_YUC.uploadEvent.subscribe(_R.onUpload, _that);
-	_YUC.abortEvent.subscribe(_R.onAbort, _that);
+	YC.uploadEvent.subscribe(_R.onUpload, _this);
+	YC.abortEvent.subscribe(_R.onAbort, _this);
 
-    return _that;
-})();
+    Core.Controller = _this;
+}());
