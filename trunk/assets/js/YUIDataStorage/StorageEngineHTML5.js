@@ -12,7 +12,8 @@
  */
 (function() {
 		// internal shorthand
-    var Y = YAHOO.util;
+    var Y = YAHOO.util,
+		YL = YAHOO.lang;
 
 	/**
 	 * The StorageEngineHTML5 class implements the HTML5 storage engine.
@@ -24,12 +25,18 @@
 	 * @param conf {Object} Required. A configuration object.
 	 */
 	Y.StorageEngineHTML5 = function(location, conf) {
-		Y.StorageEngineHTML5.superclass.constructor.call(this, location, Y.StorageEngineHTML5.ENGINE_NAME, conf);// not set, are cookies available
-		this._engine = window[location];
-		this.fireEvent(this.CE_READY);
+		var _this = this;
+		Y.StorageEngineHTML5.superclass.constructor.call(_this, location, Y.StorageEngineHTML5.ENGINE_NAME, conf);// not set, are cookies available
+		_this._engine = window[location];
+		_this.length = _this._engine.length;
+		YL.later(250, _this, function() { // temporary solution so that CE_READY can be subscribed to after this object is created
+			_this.fireEvent(_this.CE_READY);
+		});
 	};
 
 	YAHOO.lang.extend(Y.StorageEngineHTML5, Y.Storage, {
+
+		_engine: null,
 
 		/*
 		 * Implementation to clear the values from the storage engine.
@@ -63,8 +70,14 @@
 		 * @see YAHOO.util.Storage._setItem
 		 */
 		_setItem: function(key, value) {
-			this._engine.setItem(key, this._createValue(value));
-			this.length = this._engine.length;
+			try {
+				this._engine.setItem(key, value);
+				this.length = this._engine.length;
+				return true;
+			}
+			catch (e) {
+				return false;
+			}
 		}
 	}, true);
 
