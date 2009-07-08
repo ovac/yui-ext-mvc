@@ -20,6 +20,10 @@
 		// local variables
 		_engine = null;
 
+	var _getKey = function(that, key) {
+		return that._location + that.DELIMITER + key;
+	};
+
 	/**
 	 * Initializes the engine, if it isn't already initialized.
 	 * @method _initEngine
@@ -53,7 +57,6 @@
 		Y.StorageEngineSWF.superclass.constructor.call(this, location, Y.StorageEngineSWF.ENGINE_NAME, conf);
 		
 		_initEngine(this._cfg);
-		this._keys = [];
 
 		var isSessionStorage = Y.StorageManager.LOCATION_SESSION === this._location;
 
@@ -62,13 +65,12 @@
 			if (_engine._swf && YL.isValue(_engine._swf.displaySettings)) {
 				this._swf = _engine._swf;
 				timer.cancel();
-				this.fireEvent(this.CE_READY);
 
 				var sessionKey = Y.Cookie.get('sessionKey' + Y.StorageEngineSWF.ENGINE_NAME);
 
 				for (var i = _engine._swf.getLength() - 1; 0 <= i; i -= 1) {
 					var key = _engine._swf.getKeyNameAt(i),
-						isKeySessionStorage = -1 < key.indexOf(Y.StorageManager.LOCATION_SESSION + "||");
+						isKeySessionStorage = -1 < key.indexOf(Y.StorageManager.LOCATION_SESSION + this.DELIMITER);
 
 					// this is session storage, but the session key is not set, so remove item
 					if (isSessionStorage && ! sessionKey) {
@@ -86,20 +88,13 @@
 				}
 
 				this.length = this._keys.length;
+				this.fireEvent(this.CE_READY);
 			}
 		}, null, true);
 	};
 
 
-	YL.extend(Y.StorageEngineSWF, Y.Storage, {
-
-		/**
-		 * The a collectinon of key applicable to the current location. This should never be edited by the developer.
-		 * @property _keys
-		 * @type {Array}
-		 * @public
-		 */
-		_keys: null,
+	YL.extend(Y.StorageEngineSWF, Y.StorageEngineKeyed, {
 
 		/**
 		 * The underlying SWF of the engine, exposed so developers can modify the adapter behavior.
@@ -128,7 +123,8 @@
 		 * @see YAHOO.util.Storage._getItem
 		 */
 		_getItem: function(key) {
-			return this._getValue(_engine._swf.getItem(this._location + this.DELIMITER + key));
+			var _key = _getKey(this, key);
+			return _engine._swf.getItem(_key);
 		},
 
 		/*
@@ -144,9 +140,9 @@
 		 * @see YAHOO.util.Storage._removeItem
 		 */
 		_removeItem: function(key) {
-			var _key = this._location + this.DELIMITER + key;
+			var _key = _getKey(this, key);
 			_engine._swf.removeItem(_key);
-			this.removeKey(_key);
+			this._removeKey(_key);
 		},
 
 		/*
@@ -154,14 +150,14 @@
 		 * @see YAHOO.util.Storage._setItem
 		 */
 		_setItem: function(key, data) {
-			var _key = this._location + this.DELIMITER + key;
+			var _key = _getKey(this, key);
 
 			if (! _engine._swf.getItem(_key)) {
 				this._keys.push(_key);
 				this.length = this._keys.length;
 			}
 			
-			return _engine._swf.setItem(this._createValue(data), _key);
+			return _engine._swf.setItem(data, _key);
 		}
 	});
 

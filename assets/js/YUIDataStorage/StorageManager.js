@@ -17,14 +17,14 @@
  * @static
  */
 (function() {
-		// internal shorthand
-	var Y = YAHOO.util,
-		YL = YAHOO.lang,
+	// internal shorthand
+var Y = YAHOO.util,
+	YL = YAHOO.lang,
 
-		// private variables
-		_locationEngineMap = {}, // cached engines
-		_registeredEngineSet = [], // set of available engines
-		_registeredEngineMap = {}; // map of available engines
+	// private variables
+	_locationEngineMap = {}, // cached engines
+	_registeredEngineSet = [], // set of available engines
+	_registeredEngineMap = {}, // map of available engines
 
 	/**
 	 * Fetches the storage engine from the cache, or creates and caches it.
@@ -34,7 +34,7 @@
 	 * @param conf {Object} Optional. Additional configuration for the data source engine.
 	 * @private
 	 */
-	var _getStorageEngine = function(location, klass, conf) {
+	_getStorageEngine = function(location, klass, conf) {
 		var engine = _locationEngineMap[location + klass.ENGINE_NAME];
 
 		if (! engine) {
@@ -43,7 +43,7 @@
 		}
 
 		return engine;
-	};
+	},
 
 	/**
 	 * Ensures that the location is valid before returning it or a default value.
@@ -51,7 +51,7 @@
 	 * @param location {String} Required. The location to evaluate.
 	 * @private
 	 */
-	var _getValidLocation = function(location) {
+	_getValidLocation = function(location) {
 		switch (location) {
 			case Y.StorageManager.LOCATION_LOCAL:
 			case Y.StorageManager.LOCATION_SESSION:
@@ -99,7 +99,7 @@
 			var _cfg = YL.isObject(conf) ? conf : {},
 				klass = _registeredEngineMap[engineType];
 
-			if (! klass) {
+			if (! klass && ! _cfg.force) {
 				var i, j;
 
 				if (_cfg.order) {

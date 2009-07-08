@@ -1,11 +1,13 @@
 (function() {
-var _YU = YAHOO.util,
-	_YD = _YU.Dom,
-	_YE = _YU.Event,
-	_YS = _YU.StorageManager.get(null, _YU.StorageManager.LOCATION_LOCAL);
+var Y = YAHOO.util,
+	YD = Y.Dom,
+	YE = Y.Event,
 
-var _currentKeys = _YD.get('currentKeys'),
-	_link = null;
+	_currentKeys = YD.get('currentKeys'),
+	_enginePicker = YD.get('enginePicker'),
+	_link = null,
+	_location = Y.StorageManager.LOCATION_LOCAL,
+	_YS = null;
 
 /**
  * Inserts a key into the key list.
@@ -19,37 +21,71 @@ var _addItem = function(key) {
 	node.appendChild(document.createTextNode(key));
 };
 
-// change the engine
-_YE.on('enginePicker', 'change', function() {
-	var engineType = this.options[this.selectedIndex].value;
-	_YS.unsubscribeAll(_YS.CE_CHANGE);
-	
+var _updateEngine = function() {
+	var engineType = _enginePicker.options[_enginePicker.selectedIndex].value;
+	if (_YS) {_YS.unsubscribeAll(_YS.CE_CHANGE);}
+
 	switch (engineType) {
-		case _YU.StorageEngineCookie.ENGINE_NAME:
-			_YS = _YU.StorageManager.get(engineType, _YU.StorageManager.LOCATION_LOCAL);
+		case Y.StorageEngineCookie.ENGINE_NAME:
+			_YS = Y.StorageManager.get(engineType, _location);
 		break;
-		case _YU.StorageEngineGears.ENGINE_NAME:
-			_YS = _YU.StorageManager.get(engineType, _YU.StorageManager.LOCATION_LOCAL);
+		case Y.StorageEngineGears.ENGINE_NAME:
+			_YS = Y.StorageManager.get(engineType, _location);
 		break;
-		case _YU.StorageEngineSWF.ENGINE_NAME:
-			_YS = _YU.StorageManager.get(engineType, _YU.StorageManager.LOCATION_LOCAL);
+		case Y.StorageEngineSWF.ENGINE_NAME:
+			_YS = Y.StorageManager.get(engineType, _location);
 		break;
-		case _YU.StorageEngineHTML5.ENGINE_NAME:
-			_YS = _YU.StorageManager.get(engineType, _YU.StorageManager.LOCATION_LOCAL);
+		case Y.StorageEngineHTML5.ENGINE_NAME:
+			_YS = Y.StorageManager.get(engineType, _location);
 		break;
 		default:
 	}
 
-	_waitForStorage();
-});
+	var fx = function() {
+		_YS.subscribe(_YS.CE_CHANGE, function(e) {
+			var isSetItem = null !== e.newValue,
+				isNewItem = null === e.oldValue;
+
+			if (isSetItem) {
+				if (isNewItem) {
+					_addItem(e.key);
+				}
+			}
+			else {
+				if (_link) {
+					var key = _link.innerHTML;
+					_link.parentNode.removeChild(_link);
+					_link = null;
+					_YS.removeItem(key);
+				}
+			}
+
+			YD[_currentKeys.childNodes.length ? 'removeClass' : 'addClass']('btnDelete', 'disabled');
+		});
+
+		_currentKeys.innerHTML = '';
+
+		for (var i = 0; i < _YS.length; i += 1) {
+			_addItem(_YS.key(i));
+		}
+	};
+
+	// note: this will cause double subscription with SWF; need to figure out a better pattern
+	_YS.__yui_events[_YS.CE_READY].subscribeEvent.unsubscribeAll();
+	_YS.__yui_events[_YS.CE_READY].subscribeEvent.subscribe(fx);
+	_YS.subscribe(_YS.CE_READY, fx);
+};
+
+// change the engine
+YE.on(_enginePicker, 'change', _updateEngine);
 
 // save or update a storage key
-_YE.on('btnSave', 'click', function() {
-	var key = _YD.get('fieldKey').value,
-		data = _YD.get('fieldData').value;
+YE.on('btnSave', 'click', function() {
+	var key = YD.get('fieldKey').value,
+		data = YD.get('fieldData').value;
 
-	_YD.get('fieldData').value = '';
-	_YD.get('fieldKey').value = '';
+	YD.get('fieldData').value = '';
+	YD.get('fieldKey').value = '';
 
 	if (key && data) {
 		_YS.setItem(key, data);
@@ -57,76 +93,46 @@ _YE.on('btnSave', 'click', function() {
 });
 
 // alert the length of storage
-_YE.on('btnLength', 'click', function() {
+YE.on('btnLength', 'click', function() {
 	alert( _YS.length);
 });
 
 // delete currently selected storage key
-_YE.on('btnDelete', 'click', function(e) {
-	var targ = _YE.getTarget(e);
+YE.on('btnDelete', 'click', function(e) {
+	var targ = YE.getTarget(e);
 
-	if (! _YD.hasClass(targ, 'disabled')) {
-		_YS.removeItem(_YD.get('fieldKey').value);
-		_YD.get('fieldData').value = '';
-		_YD.get('fieldKey').value = '';
+	if (! YD.hasClass(targ, 'disabled')) {
+		_YS.removeItem(YD.get('fieldKey').value);
+		YD.get('fieldData').value = '';
+		YD.get('fieldKey').value = '';
 	}
 });
 
 // clear storage data
-_YE.on('btnClear', 'click', function(e) {
-	_YD.get('fieldData').value = '';
-	_YD.get('fieldKey').value = '';
+YE.on('btnClear', 'click', function(e) {
+	YD.get('fieldData').value = '';
+	YD.get('fieldKey').value = '';
 	_currentKeys.innerHTML = '';
 	_YS.clear();
 });
 
-_YE.on(_currentKeys, 'click', function(e) {
-	var targ = _YE.getTarget(e);
+YE.on('localCheckbox', 'change', function(e) {
+	_location = Y.StorageManager[YE.getTarget(e).checked ? 'LOCATION_SESSION' : 'LOCATION_LOCAL'];
+	_updateEngine();
+});
+
+YE.on(_currentKeys, 'click', function(e) {
+	var targ = YE.getTarget(e);
 
 	if (targ && 'a' === ('' + targ.tagName).toLowerCase()) {
-		_YE.preventDefault(e);
+		YE.preventDefault(e);
 		_link = targ;
 		var key = _link.innerHTML;
-		_YD.get('fieldKey').value = key;
-		_YD.get('fieldData').value = _YS.getItem(key);
-		_YD[_currentKeys.childNodes.length ? 'removeClass' : 'addClass']('btnDelete', 'disabled');
+		YD.get('fieldKey').value = key;
+		YD.get('fieldData').value = _YS.getItem(key);
+		YD[_currentKeys.childNodes.length ? 'removeClass' : 'addClass']('btnDelete', 'disabled');
 	}
 });
 
-var _waitForStorage = function() {
-	var intervalId = setInterval(function() {
-		_YS.subscribe(_YS.CE_READY, function() {
-			clearInterval(intervalId);
-
-			_YS.subscribe(_YS.CE_CHANGE, function(e) {
-				var isSetItem = null !== e.newValue,
-					isNewItem = null === e.oldValue;
-
-				if (isSetItem) {
-					if (isNewItem) {
-						_addItem(e.key);
-					}
-				}
-				else {
-					if (_link) {
-						var key = _link.innerHTML;
-						_link.parentNode.removeChild(_link);
-						_link = null;
-						_YS.removeItem(key);
-					}
-				}
-
-				_YD[_currentKeys.childNodes.length ? 'removeClass' : 'addClass']('btnDelete', 'disabled');
-			});
-
-			_currentKeys.innerHTML = '';
-
-			for (var i = 0; i < _YS.length; i += 1) {
-				_addItem(_YS.key(i));
-			}
-		});
-	}, 500);
-};
-
-_waitForStorage();
+_updateEngine();
 }());

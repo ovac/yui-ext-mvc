@@ -24,6 +24,10 @@
         div#currentKeys a {
             display: block;
         }
+
+		p label {
+			display: inline;
+		}
     </style>
 </head>
 
@@ -48,19 +52,20 @@
 			<option value="html5">HTML5</option>
 			<option value="cookie">Cookie</option>
 		</select>
+		<label><input id="localCheckbox" type="checkbox" value="on"/>&nbsp;Use Session</label>
     </p>
 
-    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/cookie/cookie-min.js"></script>
-    <!--<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/yuiloader/yuiloader-min.js"></script>-->
-    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/element/element-min.js"></script>
-    <!--<script type="text/javascript" src="assets/js/library.js"></script>-->
-    <!--<script type="text/javascript" src="assets/js/yahoo-2.7/element.js"></script>-->
+    <!--<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>-->
+    <!--<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/cookie/cookie-min.js"></script>-->
+    <!--<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/element/element-min.js"></script>-->
+    <script type="text/javascript" src="assets/js/library.js"></script>
+    <script type="text/javascript" src="assets/js/yahoo-2.7/element.js"></script>
     <script type="text/javascript" src="assets/js/yahoo-2.7/deconcept.js"></script>
     <script type="text/javascript" src="assets/js/yahoo-2.7/flashadapter.js"></script>
     <script type="text/javascript" src="assets/js/thirdparty/gears_init.js"></script>
     <script type="text/javascript" src="assets/js/YUIDataStorage/StorageManager.js"></script>
     <script type="text/javascript" src="assets/js/YUIDataStorage/Storage.js"></script>
+    <script type="text/javascript" src="assets/js/YUIDataStorage/StorageEngineKeyed.js"></script>
     <script type="text/javascript" src="assets/js/YUIDataStorage/StorageEngineHTML5.js"></script>
     <script type="text/javascript" src="assets/js/YUIDataStorage/StorageEngineGears.js"></script>
     <script type="text/javascript" src="assets/js/YUIDataStorage/StorageEngineSWF.js"></script>

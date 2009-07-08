@@ -3,7 +3,6 @@
  * Version: 0.2.00
  */
 
-// todo: create an intermediary class StorageWithKeys, which will implement indexOfKey and removeKey; gears and SWF engine will implement this
 (function() {
 
 	// internal shorthand
@@ -34,7 +33,6 @@ if (! Y.Storage) {
 		this._name = name;
 
 		// public variables
-		this.length = this.length;
 		this.createEvent(this.CE_READY, {scope: this});
 		this.createEvent(this.CE_CHANGE, {scope: this});
 	};
@@ -117,7 +115,7 @@ if (! Y.Storage) {
 		getItem: function(key) {
 			YAHOO.log("Fetching item at  " + key);
 			var item = this._getItem(key);
-			return item ? item : null; // required by HTML 5 spec
+			return YL.isValue(item) ? this._getValue(item) : null; // required by HTML 5 spec
 		},
 
 		/**
@@ -140,45 +138,6 @@ if (! Y.Storage) {
 		},
 
 		/**
-		 * Evaluates if a key exists in the keys array; indexOf does not work in all flavors of IE.
-		 * @method _indexOfKey
-		 * @param key {String} Required. The key to evaluate.
-		 * @public
-		 */
-		indexOfKey: function(key) {
-			if (this._keys) {
-				Y.Storage.prototype.indexOfKey = [].indexOf ? function(key) {
-					return this._keys.indexOf(key);
-				}: function(key) {
-					for (var i = this._keys.length - 1; 0 <= i; i -= 1) {
-						if (key === this._keys[i]) {return i;}
-					}
-
-					return -1;
-				};
-
-				return this.indexOfKey(key);
-			}
-		},
-
-		/**
-		 * Removes a key from the keys array.
-		 * @method removeKey
-		 * @param key {String} Required. The key to remove.
-		 * @public
-		 */
-		removeKey: function(key) {
-			if (this._keys) {
-				var j = this.indexOfKey(key),
-					rest = this._keys.slice(j + 1);
-
-				this._keys.length = j;
-				this._keys.concat(rest);
-				this.length = this._keys.length;
-			}
-		},
-
-		/**
 		 * Retrieve the key stored at the provided index; should be overwritten by storage engine.
 		 * @method key
 		 * @param index {Number} Required. The index to retrieve (unsigned long in HTML 5 spec).
@@ -188,7 +147,7 @@ if (! Y.Storage) {
 		key: function(index) {
 			YAHOO.log("Fetching key at " + index);
 
-			if (YL.isNumber(index)) {
+			if (YL.isNumber(index) && -1 < index && this.length > index) {
 				var value = this._key(index);
 				if (value) {return value;}
 			}
@@ -210,7 +169,7 @@ if (! Y.Storage) {
                 var oldValue = this._getItem(key);
                 if (! oldValue) {oldValue = null;}
                 this._removeItem(key);
-				this.fireEvent(this.CE_CHANGE, new Y.StorageEvent(this, key, oldValue, data));
+				this.fireEvent(this.CE_CHANGE, new Y.StorageEvent(this, key, oldValue, null));
 			}
 			else {
 				// HTML 5 spec says to do nothing
@@ -232,7 +191,7 @@ if (! Y.Storage) {
 				var oldValue = this._getItem(key);
 				if (! oldValue) {oldValue = null;}
 
-				if (this._setItem(key, data)) {
+				if (this._setItem(key, this._createValue(data))) {
 					this.fireEvent(this.CE_CHANGE, new Y.StorageEvent(this, key, oldValue, data));
 				}
 				else {
