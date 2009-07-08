@@ -349,7 +349,7 @@ if (! YAHOO.util.Form.Element) {
 
 			// validate
 	        if (fld) {
-		        if ('text' !== _YFE.getType(fld)) {
+		        if (! ('text' === _YFE.getType(fld) || 'textarea' === _YD.getTagName(fld))) {
 					throw('YAHOO.util.Form.Element.attachFocusAndBlur() Exception - invalid field type for type: ' + _YFE.getType(fld));
 				}
 	        }

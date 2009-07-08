@@ -464,6 +464,33 @@
         },
 
         /**
+         * Finds a node matching the provided criteria, starting at the event target node, then going up the DOM tree; required YAHOO.event.
+         * @method getTargetAncestor
+         * @param e {Event} Required. The triggered JavaScript event.
+		 * @param tagName {String} Optional. The tagName to find.
+		 * @param className {String} Optional. The className to find.
+         * @return {Element} The desired node or null.
+         * @static
+         */
+		getTargetAncestor: function(e, tagName, className) {
+			var node = _YE.getTarget(e),
+				nodeTagName;
+			
+			do {
+				nodeTagName = _YD.getTagName(node);
+				
+				if ((! tagName || nodeTagName === tagName) && (! className || _YD.hasClass(node, className))) {
+					return node;
+				}
+				
+				node = node.parentNode;
+			}
+			while (node);
+			
+			return null;
+		},
+
+        /**
          * Returns the current height and width of the viewport.
          * @method getViewport
          * @return {Object} An object where height/width (Number) are the current viewable area of the page (excludes scrollbars).

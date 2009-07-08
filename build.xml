@@ -268,6 +268,46 @@ Version: 1.0.01
 	</target>
     <!-- @end consolidate mvc -->
 
+    <!-- @start consolidate storage -->
+    <target name="reconsolidate.storage.js.check">
+		<condition property="storage.js.uptodate">
+			<uptodate targetfile="${builddir}/js/storage.js">
+				<srcfiles dir="${js_home}/YUIDataStorage" includes="StorageEvent.js"/>
+				<srcfiles dir="${js_home}/YUIDataStorage" includes="StorageManager.js"/>
+				<srcfiles dir="${js_home}/YUIDataStorage" includes="Storage.js"/>
+				<srcfiles dir="${js_home}/YUIDataStorage" includes="StorageEngineKeyed.js"/>
+				<srcfiles dir="${js_home}/YUIDataStorage" includes="StorageEngineHTML5.js"/>
+				<srcfiles dir="${js_home}/YUIDataStorage" includes="StorageEngineGears.js"/>
+				<srcfiles dir="${js_home}/YUIDataStorage" includes="StorageEngineSWF.js"/>
+			</uptodate>
+		</condition>
+	</target>
+
+	<target name="consolidate.storage.js" depends="reconsolidate.storage.js.check" unless="storage.js.uptodate">
+        <echo message="processing storage.js"/>
+
+        <concat destfile="${builddir}/js/storage.js">
+			<filelist dir="${js_home}/YUIDataStorage">
+				<file name="StorageEvent.js"/>
+				<file name="StorageManager.js"/>
+				<file name="Storage.js"/>
+				<file name="StorageEngineKeyed.js"/>
+				<file name="StorageEngineHTML5.js"/>
+				<file name="StorageEngineGears.js"/>
+				<file name="StorageEngineSWF.js"/>
+			</filelist>
+		</concat>
+
+		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/js/storage-min.js">
+			<arg value="--charset" />
+			<arg value="UTF-8" />
+			<arg value="--line-break" />
+			<arg value="0" />
+			<arg value="${builddir}/js/storage.js" />
+		</java>
+	</target>
+    <!-- @end consolidate storage -->
+
     <!-- @start consolidate library.js; this is a compilation of the other 4 packages -->
     <target name="reconsolidate.library.js.check" depends="create.consolidate.build.directories, consolidate.yahoo.js, consolidate.yui-ext.js, consolidate.native-ext.js, consolidate.mvc.js">
 		<condition property="library.js.uptodate">
