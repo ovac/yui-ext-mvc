@@ -39,7 +39,7 @@
 				cfg.containerID = Y.Dom.generateId(container);
 			}
 
-			_engine = new YAHOO.widget.FlashAdapter(cfg.swfURL, cfg.containerID, cfg.attributes);
+			_engine = new YAHOO.widget.SWF(cfg.containerID, cfg.swfURL, cfg.attributes || {});
 		}
 	};
 
@@ -47,7 +47,7 @@
 	 * The StorageEngineSWF class implements the SWF storage engine.
 	 * @namespace YAHOO.util
 	 * @class StorageEngineSWF
-	 * @uses YAHOO.widget.FlashAdapter
+	 * @uses YAHOO.widget.SWF
 	 * @constructor
 	 * @extend YAHOO.util.Storage
 	 * @param location {String} Required. The storage location.
@@ -164,6 +164,6 @@
 	Y.StorageEngineSWF.SWFURL = "datastore.swf";
 	Y.StorageEngineSWF.ENGINE_NAME = 'swf';
     Y.StorageManager.register(Y.StorageEngineSWF.ENGINE_NAME, function() {
-		return 6 < YAHOO.deconcept.SWFObjectUtil.getPlayerVersion().major;
+		return 6 <= YAHOO.env.ua.flash;
 	}, Y.StorageEngineSWF);
 }());
