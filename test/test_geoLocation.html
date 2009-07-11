@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+    <title>Core Test - Controller Class</title>
+
+	<style type="text/css">
+		body#project {
+			width: 1500px;
+		}
+
+        div.content {
+            background-color:#000000;
+            border:1px solid #333333;
+            color:#00EE00;
+            display:block;
+			float: left;
+            margin-right:1em;
+            overflow:auto;
+            padding: 0.5em;
+            width:200px;
+        }
+    </style>
+</head>
+
+<body id="project">
+
+	<div id="content"></div>
+
+	<script type="text/javascript">
+		var Core = {Util: {}};
+	</script>
+
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/connection/connection.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/json/json.js"></script>
+    <script type="text/javascript" src="../assets/js/widget/geolocation.js"></script>
+
+	<script type="text/javascript">(function() {
+		var content = YAHOO.util.Dom.get('content');
+
+		var _write = function(str) {
+			var p = content.appendChild(document.createElement('p'));
+			p.appendChild(document.createTextNode(str));
+			content[content.firstChild ? 'insertBefore' : 'appendChild'](p, content.firstChild);
+		};
+
+		var GL = Core.Util.Geolocation;
+
+		GL.getCurrentPosition(function(geocode) {
+			var coords = geocode.coords;
+			_write('getCurrentPosition - lat: ' + coords.latitude + ', long: ' + coords.longitude);
+		});
+
+		GL.watchPosition(function(geocode) {
+			var coords = geocode.coords;
+			_write('watchPosition - lat: ' + coords.latitude + ', long: ' + coords.longitude);
+		});
+
+		GL.getNearbyPostalCodes(function(zipcode) {
+			_write('getNearbyPostalCodes - ' + YAHOO.lang.JSON.stringify(zipcode));
+		});
+
+	})();</script>
+</body>
+</html>

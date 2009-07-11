@@ -6,13 +6,14 @@
 (function() {
 
 	// internal shorthand
-var Y = YAHOO.util,
-	YL = YAHOO.lang;
+var Y = YAHOO,
+	YU = Y.util,
+	YL = Y.lang;
 
-if (! Y.Storage) {
+if (! YU.Storage) {
 
 	var _logOverwriteError = function(fxName) {
-		YAHOO.log(_ERROR_OVERWRITTEN.replace('??', fxName).replace('??', this.getName ? this.getName() : 'Unknown'), 'error');
+		Y.log(_ERROR_OVERWRITTEN.replace('??', fxName).replace('??', this.getName ? this.getName() : 'Unknown'), 'error');
 	};
 
 	/**
@@ -24,8 +25,8 @@ if (! Y.Storage) {
 	 * @parm name {String} Required. The engine name.
 	 * @param conf {Object} Required. A configuration object.
 	 */
-	Y.Storage = function(location, name, conf) {
-		YAHOO.env._id_counter += 1;
+	YU.Storage = function(location, name, conf) {
+		Y.env._id_counter += 1;
 
 		// protected variables
 		this._cfg = YL.isObject(conf) ? conf : {};
@@ -37,7 +38,7 @@ if (! Y.Storage) {
 		this.createEvent(this.CE_CHANGE, {scope: this});
 	};
 
-	Y.Storage.prototype = {
+	YU.Storage.prototype = {
 
 		/**
 		 * The event name for when the storage item is ready.
@@ -113,7 +114,7 @@ if (! Y.Storage) {
 		 * @public
 		 */
 		getItem: function(key) {
-			YAHOO.log("Fetching item at  " + key);
+			Y.log("Fetching item at  " + key);
 			var item = this._getItem(key);
 			return YL.isValue(item) ? this._getValue(item) : null; // required by HTML 5 spec
 		},
@@ -145,7 +146,7 @@ if (! Y.Storage) {
 		 * @public
 		 */
 		key: function(index) {
-			YAHOO.log("Fetching key at " + index);
+			Y.log("Fetching key at " + index);
 
 			if (YL.isNumber(index) && -1 < index && this.length > index) {
 				var value = this._key(index);
@@ -163,13 +164,13 @@ if (! Y.Storage) {
 		 * @public
 		 */
 		removeItem: function(key) {
-			YAHOO.log("removing " + key);
+			Y.log("removing " + key);
 			
 			if (this.hasKey(key)) {
                 var oldValue = this._getItem(key);
                 if (! oldValue) {oldValue = null;}
                 this._removeItem(key);
-				this.fireEvent(this.CE_CHANGE, new Y.StorageEvent(this, key, oldValue, null));
+				this.fireEvent(this.CE_CHANGE, new YU.StorageEvent(this, key, oldValue, null));
 			}
 			else {
 				// HTML 5 spec says to do nothing
@@ -185,14 +186,14 @@ if (! Y.Storage) {
 		 * @throws QUOTA_EXCEEDED_ERROR
 		 */
 		setItem: function(key, data) {
-			YAHOO.log("SETTING " + data + " to " + key);
+			Y.log("SETTING " + data + " to " + key);
 			
 			if (YL.isString(key)) {
 				var oldValue = this._getItem(key);
 				if (! oldValue) {oldValue = null;}
 
 				if (this._setItem(key, this._createValue(data))) {
-					this.fireEvent(this.CE_CHANGE, new Y.StorageEvent(this, key, oldValue, data));
+					this.fireEvent(this.CE_CHANGE, new YU.StorageEvent(this, key, oldValue, data));
 				}
 				else {
 					// this is thrown according to the HTML5 spec
@@ -222,7 +223,7 @@ if (! Y.Storage) {
 		 * @protected
 		 */
 		_createValue: function(s) {
-			var type = typeof s;
+			var type = (YL.isNull(s) || YL.isUndefined(s)) ? ('' + s) : typeof s;
 			return 'string' === type ? s : type + this.DELIMITER + s;
 		},
 
@@ -263,6 +264,8 @@ if (! Y.Storage) {
 			switch (a[0]) {
 				case 'boolean': return 'true' === a[1];
 				case 'number': return parseFloat(a[1]);
+				case 'null': return null;
+				case 'undefined': return undefined;
 				default: return a[1];
 			}
 		},
@@ -292,7 +295,7 @@ if (! Y.Storage) {
 		}
 	};
 
-	YL.augmentProto(Y.Storage, Y.EventProvider);
+	YL.augmentProto(YU.Storage, YU.EventProvider);
 };
 
 }());
