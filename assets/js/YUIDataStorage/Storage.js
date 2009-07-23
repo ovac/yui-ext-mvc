@@ -8,12 +8,12 @@
 	// internal shorthand
 var Y = YAHOO,
 	YU = Y.util,
-	YL = Y.lang;
+	YL = Y.lang,
+	_logOverwriteError;
 
 if (! YU.Storage) {
-
-	var _logOverwriteError = function(fxName) {
-		Y.log(_ERROR_OVERWRITTEN.replace('??', fxName).replace('??', this.getName ? this.getName() : 'Unknown'), 'error');
+	_logOverwriteError = function(fxName) {
+		Y.log('Exception in YAHOO.util.Storage.?? - must be extended by a storage engine'.replace('??', fxName).replace('??', this.getName ? this.getName() : 'Unknown'), 'error');
 	};
 
 	/**
@@ -135,7 +135,7 @@ if (! YU.Storage) {
 		 * @public
 		 */
 		hasKey: function(key) {
-			return YL.isString(key) && null !== this.getItem(key);
+			return YL.isString(key) && this._hasKey(key);
 		},
 
 		/**
@@ -170,7 +170,7 @@ if (! YU.Storage) {
                 var oldValue = this._getItem(key);
                 if (! oldValue) {oldValue = null;}
                 this._removeItem(key);
-				this.fireEvent(this.CE_CHANGE, new YU.StorageEvent(this, key, oldValue, null));
+				this.fireEvent(this.CE_CHANGE, new YU.StorageEvent(this, key, oldValue, null, YU.StorageEvent.TYPE_REMOVE_ITEM));
 			}
 			else {
 				// HTML 5 spec says to do nothing
@@ -189,11 +189,12 @@ if (! YU.Storage) {
 			Y.log("SETTING " + data + " to " + key);
 			
 			if (YL.isString(key)) {
-				var oldValue = this._getItem(key);
+				var eventType = this.hasKey(key) ? YU.StorageEvent.TYPE_UPDATE_ITEM : YU.StorageEvent.TYPE_ADD_ITEM,
+					oldValue = this._getItem(key);
 				if (! oldValue) {oldValue = null;}
 
 				if (this._setItem(key, this._createValue(data))) {
-					this.fireEvent(this.CE_CHANGE, new YU.StorageEvent(this, key, oldValue, data));
+					this.fireEvent(this.CE_CHANGE, new YU.StorageEvent(this, key, oldValue, data, eventType));
 				}
 				else {
 					// this is thrown according to the HTML5 spec
@@ -240,18 +241,6 @@ if (! YU.Storage) {
 		},
 
 		/**
-		 * Implementation of the key logic; should be overwritten by storage engine.
-		 * @method _key
-		 * @param index {Number} Required. The index to retrieve (unsigned long in HTML 5 spec).
-		 * @return {String|NULL} Required. The key at the provided index (DOMString in HTML 5 spec).
-		 * @protected
-		 */
-		_key: function(index) {
-			_logOverwriteError('_key');
-			return '';
-		},
-
-		/**
 		 * Converts the stored value into its appropriate type.
 		 * @method _getValue
 		 * @param s {String} Required. The stored value.
@@ -265,9 +254,28 @@ if (! YU.Storage) {
 				case 'boolean': return 'true' === a[1];
 				case 'number': return parseFloat(a[1]);
 				case 'null': return null;
-				case 'undefined': return undefined;
 				default: return a[1];
 			}
+		},
+
+		/**
+		 * Implementation of the key logic; should be overwritten by storage engine.
+		 * @method _key
+		 * @param index {Number} Required. The index to retrieve (unsigned long in HTML 5 spec).
+		 * @return {String|NULL} Required. The key at the provided index (DOMString in HTML 5 spec).
+		 * @protected
+		 */
+		_key: function(index) {
+			_logOverwriteError('_key');
+			return '';
+		},
+
+		/*
+		 * Implementation to fetch evaluate the existence of a key.
+		 * @see YAHOO.util.Storage._hasKey
+		 */
+		_hasKey: function(key) {
+			return null !== this._getItem(key);
 		},
 
 		/**
@@ -296,6 +304,6 @@ if (! YU.Storage) {
 	};
 
 	YL.augmentProto(YU.Storage, YU.EventProvider);
-};
+}
 
 }());

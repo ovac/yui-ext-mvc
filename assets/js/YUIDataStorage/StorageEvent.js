@@ -14,15 +14,23 @@
  * @param key {String} Required. The key being changed; DOMString in HTML 5 spec.
  * @param oldValue {String} Required. The old value of the key being changed; DOMString in HTML 5 spec.
  * @param newValue {String} Required. The new value of the key being changed; DOMString in HTML 5 spec.
+ * @param type {String} Required. The storage event type.
  */
-YAHOO.util.StorageEvent = function(storageArea, key, oldValue, newValue) {
+YAHOO.util.StorageEvent = function(storageArea, key, oldValue, newValue, type) {
 	this.key = key;
 	this.oldValue = oldValue;
 	this.newValue = newValue;
 	this.url = window.location.href;
 	this.window = window; // todo: think about the CAJA and innocent code
 	this.storageArea = storageArea;
+	this.type = type;
 };
+
+YAHOO.lang.augmentObject(YAHOO.util.StorageEvent, {
+	TYPE_ADD_ITEM: 'addItem',
+	TYPE_REMOVE_ITEM: 'removeItem',
+	TYPE_UPDATE_ITEM: 'updateItem'
+});
 
 YAHOO.util.StorageEvent.prototype = {
 
@@ -70,6 +78,15 @@ YAHOO.util.StorageEvent.prototype = {
      * @readonly
      */
     storageArea: null,
+
+    /**
+     * The 'type' attribute represents the Storage event type.
+     * @property type
+     * @type {Object}
+     * @static
+     * @readonly
+     */
+    type: null,
 
     /**
      * The 'url' attribute represents the address of the document whose key changed.
