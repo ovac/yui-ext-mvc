@@ -39,7 +39,10 @@
 				cfg.containerID = Y.Dom.generateId(container);
 			}
 
-			_engine = new YAHOO.widget.SWF(cfg.containerID, cfg.swfURL, cfg.attributes || {});
+			if (! cfg.attributes) {cfg.attributes  = {};}
+			if (! cfg.attributes.flashVars) {cfg.attributes.flashVars = {};}
+			cfg.attributes.flashVars.useCompression = 'true';
+			_engine = new YAHOO.widget.SWF(cfg.containerID, cfg.swfURL, cfg.attributes);
 		}
 	};
 
@@ -54,48 +57,44 @@
 	 * @param conf {Object} Required. A configuration object.
 	 */
 	Y.StorageEngineSWF = function(location, conf) {
-		Y.StorageEngineSWF.superclass.constructor.call(this, location, Y.StorageEngineSWF.ENGINE_NAME, conf);
+		var _this = this;
+		Y.StorageEngineSWF.superclass.constructor.call(_this, location, Y.StorageEngineSWF.ENGINE_NAME, conf);
 		
-		_initEngine(this._cfg);
+		_initEngine(_this._cfg);
 
-		var isSessionStorage = Y.StorageManager.LOCATION_SESSION === this._location;
+		var isSessionStorage = Y.StorageManager.LOCATION_SESSION === _this._location;
 
 		// evaluates when the SWF is loaded
-		var timer = YL.later(100, this, function() {
-			if (_engine._swf && YL.isValue(_engine._swf.displaySettings)) {
-				this._swf = _engine._swf;
-				timer.cancel();
+		_engine.addListener("contentReady", function() {
+			_this._swf = _engine._swf;
 
-				var sessionKey = Y.Cookie.get('sessionKey' + Y.StorageEngineSWF.ENGINE_NAME);
+			var sessionKey = Y.Cookie.get('sessionKey' + Y.StorageEngineSWF.ENGINE_NAME);
 
-				for (var i = _engine._swf.getLength() - 1; 0 <= i; i -= 1) {
-					var key = _engine._swf.getKeyNameAt(i),
-						isKeySessionStorage = -1 < key.indexOf(Y.StorageManager.LOCATION_SESSION + this.DELIMITER);
+			for (var i = _engine.callSWF("getLength", []) - 1; 0 <= i; i -= 1) {
+				var key = _engine.callSWF("getNameAt", [i]),
+					isKeySessionStorage = -1 < key.indexOf(Y.StorageManager.LOCATION_SESSION + _this.DELIMITER);
 
-					// this is session storage, but the session key is not set, so remove item
-					if (isSessionStorage && ! sessionKey) {
-						_engine._swf.removeItem(key);
-					}
-					// the key matches the storage type, add to key collection
-					else if (isSessionStorage === isKeySessionStorage) {
-						this._keys.push(key);
-					}
+				// this is session storage, but the session key is not set, so remove item
+				if (isSessionStorage && ! sessionKey) {
+					_engine.callSWF("removeItem", [key]);
 				}
-
-				// this is session storage, ensure that the session key is set
-				if (isSessionStorage) {
-					Y.Cookie.set('sessionKey' + Y.StorageEngineSWF.ENGINE_NAME, true);
+				// the key matches the storage type, add to key collection
+				else if (isSessionStorage === isKeySessionStorage) {
+					_this._keys.push(key);
 				}
-
-				this.length = this._keys.length;
-				this.fireEvent(this.CE_READY);
 			}
-		}, null, true);
+
+			// this is session storage, ensure that the session key is set
+			if (isSessionStorage) {
+				Y.Cookie.set('sessionKey' + Y.StorageEngineSWF.ENGINE_NAME, true);
+			}
+
+			_this.length = _this._keys.length;
+			_this.fireEvent(_this.CE_READY);
+		});
 	};
 
-
 	YL.extend(Y.StorageEngineSWF, Y.StorageEngineKeyed, {
-
 		/**
 		 * The underlying SWF of the engine, exposed so developers can modify the adapter behavior.
 		 * @property _swf
@@ -108,10 +107,10 @@
 		 * Implementation to clear the values from the storage engine.
 		 * @see YAHOO.util.Storage._clear
 		 */
-		_clear: function() {			
+		_clear: function() {
 			for (var i = this._keys.length - 1; 0 <= i; i -= 1) {
 				var key = this._keys[i];
-				_engine._swf.removeItem(key);
+				_engine.callSWF("removeItem", [key]);
 			}
 
 			this._keys = [];
@@ -124,7 +123,7 @@
 		 */
 		_getItem: function(key) {
 			var _key = _getKey(this, key);
-			return _engine._swf.getItem(_key);
+			return _engine.callSWF("getValueOf", [_key]);
 		},
 
 		/*
@@ -141,7 +140,7 @@
 		 */
 		_removeItem: function(key) {
 			var _key = _getKey(this, key);
-			_engine._swf.removeItem(_key);
+			_engine.callSWF("removeItem", [_key]);
 			this._removeKey(_key);
 		},
 
@@ -152,18 +151,17 @@
 		_setItem: function(key, data) {
 			var _key = _getKey(this, key);
 
-			if (! _engine._swf.getItem(_key)) {
-				this._keys.push(_key);
-				this.length = this._keys.length;
+			if (! _engine.callSWF("getValueOf", [_key])) {
+				this._addKey(_key);
 			}
 			
-			return _engine._swf.setItem(data, _key);
+			return _engine.callSWF("setItem", [data, _key]);
 		}
 	});
 
-	Y.StorageEngineSWF.SWFURL = "datastore.swf";
+	Y.StorageEngineSWF.SWFURL = "swfstore.swf";
 	Y.StorageEngineSWF.ENGINE_NAME = 'swf';
     Y.StorageManager.register(Y.StorageEngineSWF.ENGINE_NAME, function() {
-		return 6 <= YAHOO.env.ua.flash;
+		return (6 <= YAHOO.env.ua.flash && YAHOO.widget.SWF);
 	}, Y.StorageEngineSWF);
 }());

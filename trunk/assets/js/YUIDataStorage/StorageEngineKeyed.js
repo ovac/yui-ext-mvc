@@ -16,17 +16,38 @@ var Y = YAHOO.util,
 	Y.StorageEngineKeyed = function() {
 		Y.StorageEngineKeyed.superclass.constructor.apply(this, arguments);
 		this._keys = [];
+		this._keyMap = {};
 	};
 
 	YL.extend(Y.StorageEngineKeyed, Y.Storage, {
 
 		/**
-		 * The a collectinon of key applicable to the current location. This should never be edited by the developer.
+		 * A collection of keys applicable to the current location. This should never be edited by the developer.
 		 * @property _keys
 		 * @type {Array}
 		 * @protected
 		 */
 		_keys: null,
+
+		/**
+		 * A map of keys to their applicable position in keys array. This should never be edited by the developer.
+		 * @property _keyMap
+		 * @type {Object}
+		 * @protected
+		 */
+		_keyMap: null,
+
+		/**
+		 * Adds the key to the set.
+		 * @method _addKey
+		 * @param key {String} Required. The key to evaluate.
+		 * @protected
+		 */
+		_addKey: function(key) {
+			this._keyMap[key] = this.length;
+			this._keys.push(key);
+			this.length = this._keys.length;
+		},
 
 		/**
 		 * Evaluates if a key exists in the keys array; indexOf does not work in all flavors of IE.
@@ -35,19 +56,8 @@ var Y = YAHOO.util,
 		 * @protected
 		 */
 		_indexOfKey: function(key) {
-			if (this._keys) {
-				Y.StorageEngineKeyed.prototype._indexOfKey = [].indexOf ? function(key) {
-					return this._keys.indexOf(key);
-				}: function(key) {
-					for (var i = this._keys.length - 1; 0 <= i; i -= 1) {
-						if (key === this._keys[i]) {return i;}
-					}
-
-					return -1;
-				};
-
-				return this._indexOfKey(key);
-			}
+			var i = this._keyMap[key];
+			return undefined === i ? -1 : i;
 		},
 
 		/**
@@ -57,14 +67,20 @@ var Y = YAHOO.util,
 		 * @protected
 		 */
 		_removeKey: function(key) {
-			if (this._keys) {
-				var j = this._indexOfKey(key),
-					rest = this._keys.slice(j + 1);
+			var j = this._indexOfKey(key),
+				rest = this._keys.slice(j + 1);
 
-				this._keys.length = j;
-				this._keys = this._keys.concat(rest);
-				this.length = this._keys.length;
+			delete this._keyMap[key];
+
+			for (var k in this._keyMap) {
+				if (j < this._keyMap[k]) {
+					this._keyMap[k] -= 1;
+				}
 			}
+			
+			this._keys.length = j;
+			this._keys = this._keys.concat(rest);
+			this.length = this._keys.length;
 		}
 	});
 }());
