@@ -100,10 +100,10 @@ Version: 1.0.01
 		<condition property="yahoo.js.uptodate">
 			<uptodate targetfile="${builddir}/js/yahoo.js">
 				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="animation.js"/>
-				<!-- <srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="autocomplete.js"/> -->
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="autocomplete.js"/>
 				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="connection.js"/>
                  <!--<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="cookie.js"/>-->
-				<!-- <srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="datasource.js"/> -->
+				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="datasource.js"/>
 				<!-- <srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="deconcept.js"/> -->
 				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="dom.js"/>
 				<!-- <srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="dragdrop.js"/> -->
@@ -134,12 +134,12 @@ Version: 1.0.01
 				<file name="animation.js"/>
 				<file name="connection.js"/>
 
-                <!-- <file name="datasource.js"/> -->
+                <file name="datasource.js"/>
                  <!--<file name="element.js"/>-->
                  <!--<file name="deconcept.js"/>-->
                  <!--<file name="flashadapter.js"/>-->
                 <!-- <file name="dragdrop.js"/> -->
-                <!-- <file name="autocomplete.js"/> -->
+                <file name="autocomplete.js"/>
                 <!-- <file name="slider.js"/> -->
 			</filelist>
 		</concat>
@@ -453,9 +453,13 @@ Version: 1.0.01
         <copy file="${js_home}/yahoo-ext/lang.js" tofile="${build_docjs}/yahoo/lang-ext.js"/>
 
         <!-- yahoo storage module -->
-        <copy file="assets/js/YUIDataStorage/StorageManager.js" tofile="${build_docjs}/ystorage/YDataSource.js"/>
-        <copy file="assets/js/YUIDataStorage/Storage.js" tofile="${build_docjs}/ystorage/YDataStorage.js"/>
-        <copy file="assets/js/YUIDataStorage/StorageEvent.js" tofile="${build_docjs}/ystorage/YDataStorageEvent.js"/>
+        <copy file="assets/js/YUIDataStorage/Storage.js" tofile="${build_docjs}/ystorage/Storage.js"/>
+        <copy file="assets/js/YUIDataStorage/StorageManager.js" tofile="${build_docjs}/ystorage/StorageManager.js"/>
+        <copy file="assets/js/YUIDataStorage/StorageEvent.js" tofile="${build_docjs}/ystorage/StorageEvent.js"/>
+        <copy file="assets/js/YUIDataStorage/StorageEngineGears.js" tofile="${build_docjs}/ystorage/StorageEngineGears.js"/>
+        <copy file="assets/js/YUIDataStorage/StorageEngineHTML5.js" tofile="${build_docjs}/ystorage/StorageEngineHTML5.js"/>
+        <copy file="assets/js/YUIDataStorage/StorageEngineKeyed.js" tofile="${build_docjs}/ystorage/StorageEngineKeyed.js"/>
+        <copy file="assets/js/YUIDataStorage/StorageEngineSWF.js" tofile="${build_docjs}/ystorage/StorageEngineSWF.js"/>
 
         <echo message="${basedir}/python.sh ${yuidoc_home}/bin/yuidoc.py ${parser_in} -p ${parser_out} -o ${generator_out} -t ${template} -v ${version} -Y ${yuiversion}"/>
         <!-- organize files -->
