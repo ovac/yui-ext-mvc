@@ -1,12 +1,4 @@
 /*
- * Copyright (c) 2009, Matt Snider, LLC. All rights reserved.
- * Version: 0.2.00
- */
-
-// todo: what are the limitation of gears, is it per DB, per table, per user
-// todo: Abstract out SQL pieces so that an HTML5 SQL engine could use them (for Safari 3 and iPhone, specifically, which don't have local/sessionStorage)
-
-/*
  * Gears limitation:
  *  - SQLite limitations - http://www.sqlite.org/limits.html
  *  - DB Best Practices - http://code.google.com/apis/gears/gears_faq.html#bestPracticeDB
@@ -20,18 +12,18 @@
  *  - how can we not use cookies to handle session location
  */
 (function() {
-		// internal shorthand
-    var G = window.google,
-		Y = YAHOO.util,
-		YL = YAHOO.lang,
-		_SQL_STMT_LIMIT = 9948,
-		_TABLE_NAME = 'YUIStorageEngine',
+	// internal shorthand
+var G = window.google,
+	Y = YAHOO.util,
+	YL = YAHOO.lang,
+	_SQL_STMT_LIMIT = 9948,
+	_TABLE_NAME = 'YUIStorageEngine',
 
-		// local variables
-		_engine = null,
+	// local variables
+	_engine = null,
 
-		eURI = encodeURIComponent,
-		dURI = decodeURIComponent;
+	eURI = encodeURIComponent,
+	dURI = decodeURIComponent;
 
 	/**
 	 * The StorageEngineGears class implements the Google Gears storage engine.
@@ -68,11 +60,11 @@
 		try {
 			// iterate on the rows and map the keys
 			while (rs.isValidRow()) {
-				var fld = rs.field(0);
+				var fld = dURI(rs.field(0));
 
 				if (! keyMap[fld]) {
 					keyMap[fld] = true;
-					_this._keys.push(fld);
+					_this._addKey(fld);
 				}
 
 				rs.next();
@@ -193,18 +185,19 @@
 	Y.StorageEngineGears.ENGINE_NAME = 'gears';
 	Y.StorageEngineGears.GEARS = 'beta.database';
 	Y.StorageEngineGears.DATABASE = 'yui.database';
-    Y.StorageManager.register(Y.StorageEngineGears.ENGINE_NAME, function() {
+	Y.StorageEngineGears.isAvailable = function() {
 		if (G && G.gears) {
 			try {
 				// this will throw an exception if the user denies gears
 				G.gears.factory.create(Y.StorageEngineGears.GEARS);
-				return true; 
+				return true;
 			}
 			catch (e) {
-				// no need to do anything 
+				// no need to do anything
 			}
 		}
 
 		return false;
-	}, Y.StorageEngineGears);
+	};
+    Y.StorageManager.register(Y.StorageEngineGears);
 }());
