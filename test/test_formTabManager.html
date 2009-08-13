@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+    <title>Test Page - TabKeyManagedWidget</title>
+	
+	<style type="text/css">
+        div.content {
+            background-color:#000000;
+            border:1px solid #333333;
+            color:#00EE00;
+            display:block;
+			float: left;
+            margin-right:1em;
+            overflow:auto;
+            padding: 0.5em;
+            width:200px;
+        }
+
+		a.focus,
+		select.focus,
+		textarea.focus,
+		input.focus {
+			border: 1px red solid;
+		}
+    </style>
+</head>
+
+<body id="project">
+
+	<h1>Test Page - TabKeyManagedWidget</h1>
+
+	<p>Below are 3 forms, each containing a collection of DOM elements that we want the user to be able to tab between.
+		However, we don't want to rely on browser tabbing logic, we want to control the behavior. This way once the user
+		enters a form, they can tab through all fields (forward and backwards), and restart at the first field after completing the last.
+		In addition, some operating systems/browsers have undesired tabbing variations.</p>
+
+	<p>The first form, contains all 10 types of input fields, 1 select, 1 textarea, and 1 anchor. It shows how using this widget
+	you can tab through all these fields. The second form, just has 3 text input fields. And the third form has a mix of text
+	input fields, where some are hidden or displayed as 'none', illustrating how this widget ignores invisible fields.
+	The third form also listens on the CE_AFTER_TAB event and changes the the background color of the form as you tab through it.</p>
+
+	<div id="content">
+
+		<h3>1) Form with inputs, anchors, textareas, and selects</h3>
+		<form action="#" id="form-input-multiple" method="post" title="the form 1 is submitted"><fieldset>
+			<input name="testInput1" type="button" title="test button" /><br/>
+			<input name="testInput2" type="checkbox" title="test checkbox" /><br/>
+			<input name="testInput3" type="file" title="test file" /><br/>
+			<input name="testInput4" type="image" title="test image" /><br/>
+			<input name="testInput5" type="password" title="test password" /><br/>
+			<input name="testInput6" type="radio" title="test radio" /><br/>
+			<input name="testInput7" type="reset" title="test reset" /><br/>
+			<input name="testInput8" type="submit" title="test submit" /><br/>
+			<input name="testInput9" type="text" title="test text" /><br/>
+			<input name="testInput10" type="hidden" title="test hidden" /><br/>
+			<textarea name="testInput11" rows="5" cols="5"></textarea><br/>
+			<select name="testInput12"><option>Placeholder</option></select><br/>
+			<a href="javascript://" name="testInput13">Placeholder Anchor</a>
+		</fieldset></form>
+
+		<h3>2) Form with only input.type=[text]</h3>
+		<form action="#" id="form-input-single" method="post" title="the form 1 is submitted"><fieldset>
+			<input name="testInput1" type="text" title="testInput1" /><br/>
+			<input name="testInput2" type="text" title="testInput2" /><br/>
+			<input name="testInput3" type="text" title="testInput3" />
+		</fieldset></form>
+
+		<h3>3) Form with input.type=[hidden], Input.type=[text] styled 'hidden' and 'display:none'</h3>
+		<form action="#" id="form-variable" method="post" title="the form 1 is submitted"><fieldset>
+			<input name="testInput" type="text" title="visible input.type=[text]" /><br/>
+			<input name="testInput" type="hidden" title="input.type=[hidden]" />
+			<input name="testInput" type="text" title="visible input.type=[text] 2" /><br/>
+			<input name="testInput" type="text" title="hidden input.type=[text]" style="visibility:hidden" />
+			<input name="testInput" type="text" title="visible input.type=[text] 3" />
+			<input name="testInput" type="text" title="display:none input.type=[text]" style="display:none" />
+		</fieldset></form>
+
+	</div>
+
+    <script type="text/javascript" src="http://yui.yahooapis.com/3.0.0b1/build/yui/yui.js"></script>
+    <script type="text/javascript" src="../assets/js/widget/TabKeyManagedWidget.js"></script>
+	<script type="text/javascript">YUI({filter:'raw'}).use('node', 'tabKeyManagedWidget', function(Y) {
+		var hex = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+		var tabKeyManagedWidget1 = new Y.TabKeyManagedWidget({
+			node: "#form-input-multiple"
+		});
+		var tabKeyManagedWidget2 = new Y.TabKeyManagedWidget({
+			node: "#form-input-single"
+		});
+		var tabKeyManagedWidget3 = new Y.TabKeyManagedWidget({
+			node: "#form-variable"
+		});
+		tabKeyManagedWidget3.subscribe(Y.TabKeyManagedWidget.CE_AFTER_TAB, function() {
+			var a = hex[Math.floor(Math.random() * 15 + 1)];
+			var b = hex[Math.floor(Math.random() * 15 + 1)];
+			var c = hex[Math.floor(Math.random() * 15 + 1)];
+			this.get('node').setStyle('backgroundColor', '#' + a + b + c);
+		});
+	});</script>
+</body>
+</html>
