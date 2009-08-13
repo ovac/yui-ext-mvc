@@ -12,7 +12,8 @@ $domainWhitelist = array('core.localhost', 'localhost', 'mattsnider.com');
 $isDomainValid = true;
 if (sizeof($domainWhitelist)) {
 	$domain = preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']);
-	$isDomainValid = in_array($domain, $domainWhitelist);
+	$isXMLHttpRequest = array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) && 'XMLHttpRequest' === $_SERVER['HTTP_X_REQUESTED_WITH'];
+	$isDomainValid = $isXMLHttpRequest && in_array($domain, $domainWhitelist);
 }
 
 if ($isDomainValid) {
@@ -36,6 +37,7 @@ if ($isDomainValid) {
 
 	//Start the Curl session
 	$session = curl_init($url);
+	//print_r($_SERVER);
 
 	// If it's a POST, put the POST data in the body
 	if ($isPost) {
@@ -69,6 +71,5 @@ if ($isDomainValid) {
 	echo $response;
 
 	curl_close($session);
-
 }
 ?>
