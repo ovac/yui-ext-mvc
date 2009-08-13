@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+    <title>Core Test - Jackpot Numbers</title>
+
+	<style type="text/css">
+		body#project {
+			width: 1500px;
+		}
+
+        div.content {
+            background-color:#000000;
+            border:1px solid #333333;
+            color:#00EE00;
+            display:block;
+			float: left;
+            margin-right:1em;
+            overflow:auto;
+            padding: 0.5em;
+            width:200px;
+        }
+    </style>
+</head>
+
+<body id="project">
+
+	<p>This page shows the JackpotNumbers Widget, which can convert any numeric DOM node into a jackpot styled animation.</p>
+
+	<div id="content">
+		<h3 id="contentNode">1</h3>
+		<ul>
+			<li><label for="jackpotValue">Value to Add/Subtract</label> <input id="jackpotValue" type="text" value="9999"></li>
+			<li><label for="jackpotAnimLength">Length of Animation in MS</label> <input id="jackpotAnimLength" type="text" value="1000"></li>
+			<li><label for="jackpotAnimSteps">Number of Steps in Animation</label> <input id="jackpotAnimSteps" type="text" value="20"></li>
+			<li>
+				<button id="jackpotUp">Jackpot Up</button>
+				<small>This widget will add value.</small>
+			</li>
+			<li>
+				<button id="jackpotDown">Jackpot Down</button>
+				<small>This widget will subtract value.</small>
+			</li>
+			<li>
+				<button id="jackpotFormat">Jackpot Formated</button>
+				<small>This widget will add value, while formatting the string.</small>
+			</li>
+		</ul>
+	</div>
+
+	<script type="text/javascript">
+		var Core = {Widget: {}};
+	</script>
+
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="../assets/js/widget/jackpotNumbers.js"></script>
+	<script type="text/javascript">(function() {
+		var Y = YAHOO,
+			YU = Y.util,
+			YD = YU.Dom,
+			YE = YU.Event,
+			$ = YD.get,
+			contentNode = $('contentNode'),
+			jackpotValue = $('jackpotValue'),
+			jackpotAnimLength = $('jackpotAnimLength'),
+			jackpotAnimSteps = $('jackpotAnimSteps'),
+			getConfiguration = function() {
+				return {
+					animLength: parseInt(jackpotAnimLength.value.replace(/[^0-9\.-]/, ''), 10),
+					animSteps: parseInt(jackpotAnimSteps.value.replace(/[^0-9\.-]/, ''), 10)
+				};
+			},
+			getValue = function() {
+				return parseInt(jackpotValue.value.replace(/[^0-9\.-]/, ''), 10);
+			},
+			getContentAsInteger = function() {
+				return parseInt(contentNode.innerHTML.replace(/[^0-9\.-]/, ''), 10);
+			};
+
+		YE.on('jackpotUp', 'click', function() {
+			var value = getContentAsInteger() + getValue();
+			Core.Widget.JackpotNumbers.incrementTo(contentNode, value, getConfiguration());
+		});
+
+		YE.on('jackpotDown', 'click', function() {
+			var value = getContentAsInteger() - getValue();
+			Core.Widget.JackpotNumbers.incrementTo(contentNode, value, getConfiguration());
+		});
+
+		YE.on('jackpotFormat', 'click', function() {
+			var value = getContentAsInteger() + getValue(),
+				conf = getConfiguration();
+			conf.formatFx = function(n) {
+				var s = ('' + n),
+					i = s.length - 3,
+					str = '';
+
+				for (; 0 < i; i -= 3) {
+					str = ',' + s.substr(i, 3) + str;
+				}
+
+				if (0 >= i) {
+					str = s.substr(0, i + 3) + str;
+				}
+
+				return str;
+			};
+			Core.Widget.JackpotNumbers.incrementTo(contentNode, value, conf);
+		});
+	})();</script>
+</body>
+</html>

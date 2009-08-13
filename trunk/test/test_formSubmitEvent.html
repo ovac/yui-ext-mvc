@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+    <title>Test Page - Form Submitting</title>
+
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.7.0/build/logger/assets/logger.css"/>
+
+	<style type="text/css">
+        div.content {
+            background-color:#000000;
+            border:1px solid #333333;
+            color:#00EE00;
+            display:block;
+			float: left;
+            margin-right:1em;
+            overflow:auto;
+            padding: 0.5em;
+            width:200px;
+        }
+
+		.h3 {
+			font-size: 14pt;
+			font-weight: bold;
+		}
+
+		p,
+		fieldset {
+			width: 40em;
+		}
+
+		th {
+			border-bottom: 1px solid #333;
+			padding: 0.2em;
+		}
+
+		tr.divide td {
+			border-top: 1px solid #333;
+			padding-top: 0.2em;
+		}
+
+		td.newSet {
+			border-left: 1px solid #333;
+			padding-left: 0.2em;
+		}
+
+		h3 {
+			width: 20em;
+		}
+
+		a.toggle {
+			float: left;
+			margin-bottom: -2.5em;
+			margin-left: 26em;
+		}
+    </style>
+</head>
+
+<body id="project">
+
+	<h1>Test Page - Form Submitting Using Enter</h1>
+
+	<p>Here is the problem. You have a form with with 'submit' event listener, and you have a button
+		inside that form with a 'click' event listener. Now, as users are completing fields in the form,
+		you want them to be able to hit 'enter' to trigger the 'submit' event callback. But you do not
+		want to trigger the 'click' event on the element you are using as buttons. Nor do you want to
+		allow the forms default submittal behavior, because you want to capture it and send an AJAX request.</p>
+
+	<p>This page looks at 6 different types of form/button models and how different browsers react.
+		The first half of the page is dedicated to my testing code that I used to evaluate different browser.
+		The second half of the page shows my conclusions. I suggest clearing the log between each test, to prevent confusion.</p>
+
+	<div id="content">
+
+		<a class="toggle" href="#" id="form-input-submit-toggle">Add a Second Input</a>
+		<h3>1) Form With Input.Type=[Submit]</h3>
+		<form action="#" id="form-input-submit" method="post" title="the form 1 is submitted"><fieldset>
+			<input name="testInput" type="text" title="testInput" />
+			<input name="testSubmit" id="form-input-submit-submit" type="submit" value=" Submit " title="submit button is input.type=[submit]"/>
+		</fieldset></form>
+
+		<a class="toggle" href="#" id="form-input-image-toggle">Add a Second Input</a>
+		<h3>2) Form With Input.Type=[Image]</h3>
+		<form action="#" id="form-input-image" title="the form 2 is submitted"><fieldset>
+			<input name="testInput" type="text" title="testInput" />
+			<input name="testSubmit" id="form-input-image-submit" type="image" value=" Submit " title="submit button is input.type=[image]"/>
+		</fieldset></form>
+
+		<a class="toggle" href="#" id="form-button-toggle">Add a Second Input</a>
+		<h3>3) Form With Button</h3>
+		<form action="#" id="form-button" title="the form 3 is submitted"><fieldset>
+			<input name="testInput" type="text" title="testInput" />
+			<button name="testSubmit" id="form-button-submit" title="submit button is button"> Submit </button>
+		</fieldset></form>
+
+		<a class="toggle" href="#" id="form-buttonsubmit-toggle">Add a Second Input</a>
+		<h3>4) Form With Button.Type=[Submit]</h3>
+		<form action="#" id="form-buttonsubmit" title="the form 4 is submitted"><fieldset>
+			<input name="testInput" type="text" title="testInput" />
+			<button name="testSubmit" id="form-buttonsubmit-submit" title="submit button is button.type=[submit]" type="submit"> Submit </button>
+		</fieldset></form>
+
+		<a class="toggle" href="#" id="form-input-button-toggle">Add a Second Input</a>
+		<h3>5) Form With Input.Type=[Button]</h3>
+		<form action="#" id="form-input-button" title="the form 5 is submitted"><fieldset>
+			<input name="testInput" type="text" title="testInput" />
+			<input name="testSubmit" id="form-input-button-submit" type="button" value=" Submit " title="submit button is input.type=[button]"/>
+		</fieldset></form>
+
+		<a class="toggle" href="#" id="form-no-button-toggle">Add a Second Input</a>
+		<h3>6) Form With Anchor As Button</h3>
+		<form action="#" id="form-no-button" title="the form 6 is submitted"><fieldset>
+			<input name="testInput" type="text" title="testInput" />
+			<a name="testSubmit" href="#" id="form-no-button-submit" title="submit button is anchor"> Submit </a>
+		</fieldset></form>
+
+		<ul id="results"></ul>
+
+	</div>
+
+	<table>
+		<caption class="h3">Conclusions</caption>
+		<thead><tr>
+			<th>Browser</th>
+			<th>1 Single<sup>a</sup></th>
+			<th>2 Single</th>
+			<th>3 Single</th>
+			<th>4 Single</th>
+			<th>5 Single</th>
+			<th>6 Single</th>
+			<th>1 Double<sup>a</sup></th>
+			<th>2 Double</th>
+			<th>3 Double</th>
+			<th>4 Double</th>
+			<th>5 Double</th>
+			<th>6 Double</th>
+		</tr></thead>
+		<tbody>
+			<tr>
+				<td>FireFox 3.5 & Opera 9.6 (Enter<sup>b</sup>)</td>
+				<td>both<sup>c</sup></td>
+				<td>both</td>
+				<td>both</td>
+				<td>both</td>
+				<td>submit</td>
+				<td>submit</td>
+				<td class="newSet">both</td>
+				<td>both</td>
+				<td>both</td>
+				<td>both</td>
+				<td>none</td>
+				<td>none</td>
+			</tr>
+			<tr>
+				<td>FireFox 3.5 & Opera 9.6 (Click)</td>
+				<td>both</td>
+				<td>both</td>
+				<td>both</td>
+				<td>both</td>
+				<td>click</td>
+				<td>click</td>
+				<td class="newSet">both</td>
+				<td>both</td>
+				<td>both</td>
+				<td>both</td>
+				<td>click</td>
+				<td>click</td>
+			</tr>
+			<tr class="divide">
+				<td>Chrome 2 & Safari 4 (Enter)</td>
+				<td>both</td>
+				<td>both</td>
+				<td>submit</td>
+				<td>submit</td>
+				<td>submit</td>
+				<td>submit</td>
+				<td class="newSet">both</td>
+				<td>both</td>
+				<td>submit</td>
+				<td>submit</td>
+				<td>submit</td>
+				<td>submit</td>
+			</tr>
+			<tr>
+				<td>Chrome 2 & Safari 4(Click)</td>
+				<td>both</td>
+				<td>both</td>
+				<td>both</td>
+				<td>both</td>
+				<td>click</td>
+				<td>click</td>
+				<td class="newSet">both</td>
+				<td>both</td>
+				<td>both</td>
+				<td>both</td>
+				<td>click</td>
+				<td>click</td>
+			</tr>
+			<tr class="divide">
+				<td>IE 6 & 7 (Enter)</td>
+				<td>submit<sup>d</sup></td>
+				<td>submit<sup>d</sup></td>
+				<td>submit</td>
+				<td>submit</td>
+				<td>submit</td>
+				<td>submit</td>
+				<td class="newSet">both<sup>d</sup></td>
+				<td>both<sup>d</sup></td>
+				<td>none</td>
+				<td>both<sup>d</sup></td>
+				<td>none</td>
+				<td>none</td> 
+			</tr>
+			<tr>
+				<td>IE 6 & 7 (Click)</td>
+				<td>both</td>
+				<td>both</td>
+				<td>click</td>
+				<td>both</td>
+				<td>click</td>
+				<td>click</td>
+				<td class="newSet">both</td>
+				<td>both</td>
+				<td>click</td>
+				<td>both</td>
+				<td>click</td>
+				<td>click</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p><sup>a</sup> Single and Double refer to the number of fields in the form (1 or 2 fields were used for testing purposes)</p>
+	<p><sup>b</sup> Two rows are used for each browser, "(Enter)" for hitting the enter key in the field and "(Click)" for clicking the button</p>
+	<p><sup>c</sup> 'both' means that the form submitted and the `button` click fired</p>
+	<p><sup>d</sup> IE can required 2 enters if the field is empty before firing the submit</p>
+
+	<script type="text/javascript">
+		var Core = {Widget: {}};
+	</script>
+
+    <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.7.0/build/yahoo-dom-event/yahoo-dom-event.js&amp;2.7.0/build/logger/logger-min.js"></script>
+	<script type="text/javascript">(function() {
+	var Y = YAHOO,
+		YU = Y.util,
+		YD = YU.Dom,
+		YE = YU.Event,
+		$ = YD.get,
+		_types = [
+			'input-submit',
+			'input-button',
+			'input-image',
+			'button',
+			'buttonsubmit',
+			'no-button',
+		],
+		i, id, // used in for loop
+		myLogReader = new Y.widget.LogReader(null, {height: '400px', width: '400px'}),
+
+		_handleClick = function(e) {
+//			YE.preventDefault(e);
+			var targ = YE.getTarget(e);
+			Y.log('target=' + targ.title + ', type=' + e.type + ', eventPhase=' + e.eventPhase);
+		},
+
+		_handleToggleSecondInput = function(e, idPrefix) {
+			YE.preventDefault(e);
+			var targ = YE.getTarget(e),
+				btn = $(idPrefix + '-submit'),
+				npt = YD.getPreviousSibling(btn),
+				text = targ.innerHTML,
+				rx, replacement;
+
+			if (-1 < text.indexOf('Add')) {
+				rx = /Add a/i;
+				replacement = 'Remove the';
+				npt = npt.parentNode.insertBefore(npt.cloneNode(true), btn);
+				npt.name += 2;
+				npt.title += 2;
+			}
+			else {
+				rx = /Remove the/i;
+				replacement = 'Add a';
+				npt.parentNode.removeChild(npt);
+			}
+
+			targ.innerHTML = text.replace(rx, replacement);
+		},
+
+		_handleSubmit = function(e) {
+			YE.preventDefault(e);
+			var targ = YE.getTarget(e);
+			Y.log('target=' + targ.title + ', type=' + e.type + ', eventPhase=' + e.eventPhase);
+		};
+
+		for (i = _types.length - 1; 0 <= i; i -= 1) {
+			id = 'form-' + _types[i];
+			YE.on(id + '-submit', 'click', _handleClick);
+			YE.on(id, 'submit', _handleSubmit);
+			YE.on(id + '-toggle', 'click', _handleToggleSecondInput, id);
+		}
+	})();</script>
+</body>
+</html>
