@@ -10,23 +10,26 @@
  * @static
  */
 (function() {
-    var _DOC = document,
-        _YD = YAHOO.util.Dom,
-        _YE = YAHOO.util.Event,
-        _YL = YAHOO.lang;
+    var CLS = C.HTML.CLS,
+		DOC = document,
+		Y = YAHOO,
+		YU = Y.util,
+        YD = YU.Dom,
+        YE = YU.Event,
+        YL = Y.lang;
 
-    if (! _YD) {_YL.throwError.call(this, _YL.ERROR_NOT_DEFINED, 'YAHOO.util.Dom', 'extend', 'yahoo-ext/dom.js');}
+    if (! YD) {YL.throwError.call(this, YL.ERROR_NOT_DEFINED, 'YAHOO.util.Dom', 'extend', 'yahoo-ext/dom.js');}
 		
-	var $ = _YD.get,
+	var $ = YD.get,
         _scrollIntervalId = 0;
 
-    C.HTML.CLS.IS_DELETING = 'isDeleting';
+    CLS.IS_DELETING = 'isDeleting';
 
     /*
 	 * W3C DOM Level 2 standard node types; for older browsers and IE.
 	 */
-	if (! _DOC.ELEMENT_NODE) {
-		YL.augmentObject(_DOC, {
+	if (! DOC.ELEMENT_NODE) {
+		YL.augmentObject(DOC, {
 			ELEMENT_NODE: 1,
 			ATTRIBUTE_NODE: 2,
 			TEXT_NODE: 3,
@@ -42,8 +45,8 @@
 		});
 	}
 
-    var _throwNotImplemented = _YL.throwError ? function() {
-		_YL.throwError.call(this, _YL.ERROR_NOT_IMPLEMENTED, 'YAHOO.util.Dom', arguments);
+    var _throwNotImplemented = YL.throwError ? function() {
+		YL.throwError.call(this, YL.ERROR_NOT_IMPLEMENTED, 'YAHOO.util.Dom', arguments);
 	}: function(text) {throw(text);};
 
     var _that = {
@@ -60,13 +63,13 @@
          */
         cleanWhitespace: function(elem) {
             var node = $(elem);
-            if (! node) {return null;}
+            if (! node) {return N;}
             var cld = node.firstChild;
 
             while (cld) {
                 var nextNode = cld.nextSibling;
                 
-                if (_DOC.COMMENT_NODE === cld.nodeType || (_DOC.TEXT_NODE === cld.nodeType && ! /\S/.test(cld.nodeValue))) {
+                if (DOC.COMMENT_NODE === cld.nodeType || (DOC.TEXT_NODE === cld.nodeType && ! /\S/.test(cld.nodeValue))) {
                     node.removeChild(cld);
                 }
 
@@ -84,21 +87,21 @@
          * @static
          */
         cloneDimensions: function(srcElem, applyElem) {
-            var o = _YD.getRegion(srcElem),
+            var o = YD.getRegion(srcElem),
                 node = $(applyElem);
 
-            if (_YL.isUndefined(o.height)) { // for YUI < 2.7
+            if (YL.isUndefined(o.height)) { // for YUI < 2.7
                 o.height = o.bottom - o.top;
                 o.width = o.right - o.left;
             }
 
-            _YD.setStyle(node, 'left', o.left + 'px');
-            _YD.setStyle(node, 'top', o.top + 'px');
-            _YD.setStyle(node, 'height', o.height + 'px');
-            _YD.setStyle(node, 'width', o.width + 'px');
+            YD.setStyle(node, 'left', o.left + 'px');
+            YD.setStyle(node, 'top', o.top + 'px');
+            YD.setStyle(node, 'height', o.height + 'px');
+            YD.setStyle(node, 'width', o.width + 'px');
 
             // debugging tools
-            // _YD.setStyle(node, 'border', 'red solid 1px');
+            // YD.setStyle(node, 'border', 'red solid 1px');
     		// alert(node.id + 'left: ' + o.left + ', top: ' + o.top + ', height: ' + o.height + ', width: ' + o.width);
         },
 
@@ -111,21 +114,21 @@
          * @static
          */
         createNode: function(tagName) {
-            if (_DOC.createElementNS) {
-                _YD.createNode = function(tagName) {
-                    return tagName ? _DOC.createElementNS('http://www.w3.org/1999/xhtml', tagName) : null;
+            if (DOC.createElementNS) {
+                YD.createNode = function(tagName) {
+                    return tagName ? DOC.createElementNS('http://www.w3.org/1999/xhtml', tagName) : N;
                 };
             }
-            else if (_DOC.createElement) {
-                _YD.createNode = function(tagName) {
-                    return tagName ? _DOC.createElement(tagName) : null;
+            else if (DOC.createElement) {
+                YD.createNode = function(tagName) {
+                    return tagName ? DOC.createElement(tagName) : N;
                 };
             }
             else {
-                _YD.createNode = function() {throw 'createElement is not available.';};
+                YD.createNode = function() {throw 'createElement is not available.';};
             }
 
-            return _YD.createNode(tagName);
+            return YD.createNode(tagName);
         },
 
         /* defined below */
@@ -143,19 +146,19 @@
          */
         deleteNode: function(elem, func, isRemoveListener, isAnimate) {
             var node = $(elem),
-                fn = _YL.isFunction(func) ? func : function() {};
-            if (! node || _YD.hasClass(node, C.HTML.CLS.IS_DELETING)) {return false;}
+                fn = YL.isFunction(func) ? func : function() {};
+            if (! node || YD.hasClass(node, CLS.IS_DELETING)) {return F;}
             var parent = node.parentNode;
 
             // remove listeners when YAHOO.util.Event is available, but not required
-            if (isRemoveListener && _YE && _YE.purgeElement) {_YE.purgeElement(node);}
+            if (isRemoveListener && YE && YE.purgeElement) {YE.purgeElement(node);}
 
             // animate when YAHOO.util.Anim  is available, but not required
-            if (YAHOO.util.Anim && isAnimate) {
-                _YD.addClass(node, C.HTML.CLS.IS_DELETING);
-                _YD.animate(node, {opacity: {from: 1, to: 0.25}}, 0.5, YAHOO.util.Easing.easeOut, [{id: 'onComplete', fx: function() {
+            if (YU.Anim && isAnimate) {
+                YD.addClass(node, CLS.IS_DELETING);
+                YD.animate(node, {opacity: {from: 1, to: 0.25}}, 0.5, YU.Easing.easeOut, [{id: 'onComplete', fx: function() {
                     parent.removeChild(node);
-                    _YD.addClass(node, C.HTML.CLS.IS_DELETING);
+                    YD.addClass(node, CLS.IS_DELETING);
                     if (fn) {fn(parent);}
                 }}]);
             }
@@ -164,7 +167,7 @@
                 fn(parent);
             }
 
-            return true;
+            return T;
         },
 
         /**
@@ -178,7 +181,7 @@
         exec: function(elem, instructions) {
             var node = $(elem);
 
-            if (! (node && instructions)) {return null;}
+            if (! (node && instructions)) {return N;}
 
             var _s = instructions.split('.');
 
@@ -186,8 +189,8 @@
                 if (node) {
                     var task = _s[i];
 
-                    if (_YD[task]) {
-                        node = _YD[task](node);
+                    if (YD[task]) {
+                        node = YD[task](node);
                     } // todo: support childNodes[]
                     else if (node[task]) {
                         node = node[task];
@@ -197,7 +200,7 @@
                     }
                 }
                 else {
-                    return true;
+                    return T;
                 }
             }
 
@@ -208,25 +211,25 @@
          * Find and replace the first text (ignores whitespaces), or append a textnode when there is no textnode.
          * @method findFirstText
          * @param elem {String|Element} Required. Pointer or string reference to DOM element to search.
-         * @return {Element} The first available text node or null.
+         * @return {Element} The first available text node or N.
          * @static
          */
         findFirstText: function(elem) {
 			var node = $(elem);
-			if (! node) {return null;}
+			if (! node) {return N;}
 
             // this is a text node and not a whitespace, so update it
-            if (_YD.isTextNode(node) && ('' === node.nodeValue || /\S/.test(node.nodeValue))) {
+            if (YD.isTextNode(node) && ('' === node.nodeValue || /\S/.test(node.nodeValue))) {
 				return node;
 			}
 			// find text node
 			else {
-                var firstText = null,
+                var firstText = N,
                     nextSibling = node.firstChild;
 
-                // iterate until nextSibling is null or set to false, indicating we have found a matching node
+                // iterate until nextSibling is N or set to F, indicating we have found a matching node
                 while (! firstText && nextSibling) {
-                    firstText = _YD.findFirstText(nextSibling);
+                    firstText = YD.findFirstText(nextSibling);
                     nextSibling = nextSibling.nextSibling;
                 }
 
@@ -245,13 +248,13 @@
             if (! (node || color)) {return;}
 
             var attr = {backgroundColor: {to: color}},
-                anim = new YAHOO.util.ColorAnim(node, attr),
-                oColor = _YD.getBackgroundColor(node);
+                anim = new YU.ColorAnim(node, attr),
+                oColor = YD.getBackgroundColor(node);
 
             anim.onComplete.subscribe(function() {
                 setTimeout(function() {
                     var attr = {backgroundColor: {to: oColor}},
-                        anim = new YAHOO.util.ColorAnim(node, attr);
+                        anim = new YU.ColorAnim(node, attr);
 
                     anim.animate();
                 }, 500);
@@ -268,9 +271,9 @@
          * @static
          */
         getBackgroundColor: function(node) {
-            if (! node) {return null;}
-            var backgroundColor = _YD.getStyle(node, 'backgroundColor');
-            if ('transparent' === backgroundColor) {return _YD.getBackgroundColor(node.parentNode);}
+            if (! node) {return N;}
+            var backgroundColor = YD.getStyle(node, 'backgroundColor');
+            if ('transparent' === backgroundColor) {return YD.getBackgroundColor(node.parentNode);}
             var rgb = backgroundColor.replace(/rgba?\((.*?)\)/, '$1').split(', ');
             return String.RGBtoHex(rgb[0], rgb[1], rgb[2]);
         },
@@ -285,10 +288,10 @@
         getBodyElement: function(newDoc) {
             var body;
 
-            if (! newDoc || newDoc === _DOC) {body = $(C.HTML.ID.BODY);} // get body by the ID
+            if (! newDoc || newDoc === DOC) {body = $(C.HTML.ID.BODY);} // get body by the ID
 
             if (! body) { // find the body the tag
-                var doc = newDoc || _DOC;
+                var doc = newDoc || DOC;
                 body = doc.getElementsByTagName('body')[0];
 
                 if (! body) { // try find the body on the document
@@ -316,10 +319,10 @@
             var j = 0,
                 node = $(elem);
 
-            if (! node) {return null;}
+            if (! node) {return N;}
 
-            return _YD.getFirstChildBy(node, function() {
-                if (i === j) {return true;}
+            return YD.getFirstChildBy(node, function() {
+                if (i === j) {return T;}
                 j += 1;
             });
         },
@@ -329,23 +332,23 @@
          * @method getCommonAncestor
          * @param elem1 {Element} Required. Pointer or string reference to DOM element to search.
          * @param elem1 {Element} Required. Pointer or string reference to DOM element to search.
-         * @return {Element} The desired node or null.
+         * @return {Element} The desired node or N.
          * @static
          */
         getCommonAncestor: function(elem1, elem2) {
             var node1 = $(elem1),
                 node2 = $(elem2);
 
-            if (! (node1 && node2)) {return null;} // missing parameter, fail
+            if (! (node1 && node2)) {return N;} // missing parameter, fail
             node1 = node1.parentNode;
 
             // iterate up the DOM tree
             while (node1) {
-                if (_YD.isAncestor(node1, node2)) {return node1;}
+                if (YD.isAncestor(node1, node2)) {return node1;}
                 node1 = node1.parentNode;
             }
 
-            return null;
+            return N;
         },
 
         /* defined below */
@@ -365,7 +368,7 @@
          * @static
          */
         getDocumentScroll: function(doc) {
-            return {left: _YD.getDocumentScrollLeft(doc), top: _YD.getDocumentScrollTop(doc)};
+            return {left: YD.getDocumentScrollLeft(doc), top: YD.getDocumentScrollTop(doc)};
         },
 
         /**
@@ -376,7 +379,7 @@
          * @static
          */
         getDocumentSize: function(doc) {
-            return {height: _YD.getDocumentHeight(doc), width: _YD.getDocumentWidth(doc)};
+            return {height: YD.getDocumentHeight(doc), width: YD.getDocumentWidth(doc)};
         },
 
         /* defined below */
@@ -388,17 +391,17 @@
 		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to search.
 		 * @param tagName {String} Optional. The DOM node tag name to limit by.
 		 * @param className {String} Optional. The DOM node attribute class name to limit by.
-		 * @return {Element} The first matching element or null.
+		 * @return {Element} The first matching element or N.
 		 * @static
 		 */
 		getFirstChildByTagAndClass: function(elem, tagName, className) {
 			var node = $(elem);
 
-			if (! (node && _YL.isString(tagName) && _YL.isString(className))) {return null;}
+			if (! (node && YL.isString(tagName) && YL.isString(className))) {return N;}
 
-			return _YD.getFirstChildBy(node, function(node) {
-				var tn = _YD.getTagName(node);
-				return (tn === tagName && _YD.hasClass(node, className));
+			return YD.getFirstChildBy(node, function(node) {
+				var tn = YD.getTagName(node);
+				return (tn === tagName && YD.hasClass(node, className));
 			});
 		},
 
@@ -410,9 +413,9 @@
          * @static
          */
         getFirstText: function(elem) {
-            var node = _YD.findFirstText(elem);
+            var node = YD.findFirstText(elem);
             if (! node) {return '';}
-            return _YD.isTextNode(node) ? node.nodeValue : '';
+            return YD.isTextNode(node) ? node.nodeValue : '';
         },
 
 		/**
@@ -471,17 +474,17 @@
          * @param e {Event} Required. The triggered JavaScript event.
 		 * @param tagName {String} Optional. The tagName to find.
 		 * @param className {String} Optional. The className to find.
-         * @return {Element} The desired node or null.
+         * @return {Element} The desired node or N.
          * @static
          */
 		getTargetAncestor: function(e, tagName, className) {
-			var node = _YE.getTarget(e),
+			var node = YE.getTarget(e),
 				nodeTagName;
 			
 			do {
-				nodeTagName = _YD.getTagName(node);
+				nodeTagName = YD.getTagName(node);
 				
-				if ((! tagName || nodeTagName === tagName) && (! className || _YD.hasClass(node, className))) {
+				if ((! tagName || nodeTagName === tagName) && (! className || YD.hasClass(node, className))) {
 					return node;
 				}
 				
@@ -489,7 +492,7 @@
 			}
 			while (node);
 			
-			return null;
+			return N;
 		},
 
         /**
@@ -499,7 +502,7 @@
          * @static
          */
         getViewport: function(doc) {
-            return {height: _YD.getViewportHeight(doc), width: _YD.getViewportWidth(doc)};
+            return {height: YD.getViewportHeight(doc), width: YD.getViewportWidth(doc)};
         },
 
         /* defined below */
@@ -509,17 +512,17 @@
 		 * X-browser importNode function to insert.
 		 * @method _importNode
 		 * @param elem {String|Element} Required. Pointer or string reference to DOM element to activate.
-		 * @param allChildren {Boolean} Required. Set to true, when you want to copy the children nodes as well.
+		 * @param allChildren {Boolean} Required. Set to T, when you want to copy the children nodes as well.
 		 * @static
 		 * @deprecated Note: keeping around, as I might one day want to use it again
 		 *
 		 * Example:
-		 *  var newNode = null, importedNode = null;
+		 *  var newNode = N, importedNode = N;
 		 *
 		 *  newNode = xhrResponse.responseXML.getElementsByTagName ('title')[0].childNodes[0];
 		 *  if (newNode.nodeType != document.ELEMENT_NODE) {newNode = newNode.nextSibling;}
 		 *  if (newNode) {
-		 *  importedNode = document._importNode(newNode, true);
+		 *  importedNode = document._importNode(newNode, T);
 		 *  document.getElementById('divTitleContainer').appendChild(importedNode);
 		 *  if (!document.importNode) {
 		 *     document.getElementById('divTitleContainer').innerHTML = document.getElementById('divTitleContainer').innerHTML;
@@ -529,7 +532,7 @@
 		_importNode: function(elem, allChildren) {
 			var node = YAHOO.util.$(elem);
 
-			switch (node ? null : node.nodeType) {
+			switch (node ? N : node.nodeType) {
 				case document.ELEMENT_NODE:
 					var newNode = document.createElement(node.nodeName);
 
@@ -557,7 +560,7 @@
 					return document.createTextNode(node.nodeValue);
 
 				default:
-					return null;
+					return N;
 			}
 		},*/
 
@@ -571,17 +574,17 @@
          * @static
          */
         isAncestorOf: function(ancestor, decendant) {
-            var haystack = _YD.get(ancestor),
-                needle = _YD.get(decendant);
+            var haystack = YD.get(ancestor),
+                needle = YD.get(decendant);
 
-            if (! (haystack && needle)) {return null;}
+            if (! (haystack && needle)) {return N;}
 
-            while (needle && needle !== _DOC) {
-                if (needle === ancestor) {return true;}
+            while (needle && needle !== DOC) {
+                if (needle === ancestor) {return T;}
                 needle = needle.parentNode;
             }
 
-            return false;
+            return F;
         },
 
         /* defined below */
@@ -601,7 +604,7 @@
             var node = $(elem),
                 isValidNode = node && node.nodeType; // not calling isNodeOfType because this is faster
 
-            return isValidNode && (node.nodeType === _DOC.CDATA_SECTION_NODE || node.nodeType === _DOC.COMMENT_NODE || node.nodeType === _DOC.TEXT_NODE);
+            return isValidNode && (node.nodeType === DOC.CDATA_SECTION_NODE || node.nodeType === DOC.COMMENT_NODE || node.nodeType === DOC.TEXT_NODE);
         },
 
         /**
@@ -612,7 +615,7 @@
          * @static
          */
         removeChildNodes: function(elem) {
-            var val = false,
+            var val = F,
                 node = $(elem);
 
             if (node) {
@@ -651,7 +654,7 @@
          */
         scrollTo: function(x, y, n, ms, ease) {
             //noinspection UnnecessaryLocalVariableJS
-            var offset = _YD.getDocumentScroll(),
+            var offset = YD.getDocumentScroll(),
                 steps = n || 5,
                 i = steps,
                 time = ms || 250,
@@ -696,8 +699,8 @@
          */
         setFirstText: function(elem, text) {
             var node = $(elem);
-            if (! node || ! _YL.isDefined(text)) {return;}
-            var tn = _YD.findFirstText(node);
+            if (! node || ! YL.isDefined(text)) {return;}
+            var tn = YD.findFirstText(node);
 
             if (tn) {
 				tn.nodeValue = text;
@@ -705,11 +708,11 @@
 			else {
 				//noinspection UnusedCatchParameterJS
 				try {
-					node.appendChild(_DOC.createTextNode(text));
+					node.appendChild(DOC.createTextNode(text));
 				}
 				// appendChild doesn't work with certain elements, like 'var'
 				catch (e) {
-					_YD.replace(node, text);
+					YD.replace(node, text);
 				}
 			}
         },
@@ -727,8 +730,8 @@
 		 * @static
 		 */
 		toggleClass: function(elem, className, b) {
-			var bool = _YL.isUndefined(b) ? ! _YD.hasClass(elem, className) : b;
-			_YD[bool ? 'addClass' : 'removeClass'](elem, className);
+			var bool = YL.isUndefined(b) ? ! YD.hasClass(elem, className) : b;
+			YD[bool ? 'addClass' : 'removeClass'](elem, className);
             return bool;
 		},
 
@@ -741,7 +744,7 @@
 		 * @static
 		 */
 		toggleDisplay: function(elem, b) {
-			return _YD.toggleClass(elem, C.HTML.CLS.HIDE, _YL.isUndefined(b) ? b : ! b);
+			return YD.toggleClass(elem, CLS.HIDE, YL.isUndefined(b) ? b : ! b);
 		},
 
 		/**
@@ -753,18 +756,18 @@
 		 * @static
 		 */
 		toggleVisibility: function(elem, b) {
-			return _YD.toggleClass(elem, C.HTML.CLS.HIDDEN, _YL.isUndefined(b) ? b : ! b);
+			return YD.toggleClass(elem, CLS.HIDDEN, YL.isUndefined(b) ? b : ! b);
 		}
     };
 
-    _YL.augmentObject(_YD, _that);
+    YL.augmentObject(YD, _that);
 
     // backwards compatibility for 'getRegion', height/width added in YUI 2.7
-    var bodyRegion = _YD.getRegion(_YD.getBodyElement());
+    var bodyRegion = YD.getRegion(YD.getBodyElement());
     if (! bodyRegion.height) {
-        _YD.$old_getRegion = _YD.getRegion;
-        _YD.getRegion = function() {
-            var dim = _YD.$old_getRegion.apply(this, arguments);
+        YD.$old_getRegion = YD.getRegion;
+        YD.getRegion = function() {
+            var dim = YD.$old_getRegion.apply(this, arguments);
             dim.height = dim.bottom - dim.top;
             dim.width = dim.right - dim.left;
             return dim;
@@ -772,7 +775,7 @@
     }
 
     // YAHOO.lang extensions are included
-    if (_YL.arrayWalk) {
+    if (YL.arrayWalk) {
         var _thatIfLangExtended = {
 
             /**
@@ -780,19 +783,19 @@
              * @method createTag
              * @param tagName {String} Required. Tag name to create.
              * @param hash {Object} Optional. The hashtable of attributes, styles, and classes; defaults is empty object.
-             * @return {Element} The newly created element; returns null otherwise.
+             * @return {Element} The newly created element; returns N otherwise.
              * @static
              */
             createTag: function(tagName, hash) {
-                var node = _YD.createNode(tagName);
+                var node = YD.createNode(tagName);
 
                 // iterate through the possible attributes
-                _YL.forEach(hash || {}, function(v, k) {
+                YL.forEach(hash || {}, function(v, k) {
                     switch (k.toLowerCase()) {
                         case 'classname':
                         case 'class':
                         case 'cls':
-                            _YD.addClass(node, v);
+                            YD.addClass(node, v);
                             break;
 
                         case 'cellpadding':
@@ -820,8 +823,8 @@
 
                         case 'style':
                             // iterate on the styles and set them
-                            _YL.forEach(v, function(v, k) {
-                                _YD.setStyle(node, k, v);
+                            YL.forEach(v, function(v, k) {
+                                YD.setStyle(node, k, v);
                             });
                             break;
 
@@ -830,10 +833,10 @@
                             var text = ('' + v);
 
                             if (text.match(/<.*?>/) || text.match(/&.*?;/)) {
-	                            _YD.replace(node, text);
+	                            YD.replace(node, text);
                             }
                             else {
-	                            node.appendChild(_DOC.createTextNode(text));
+	                            node.appendChild(DOC.createTextNode(text));
                             }
                                 
                             break;
@@ -844,7 +847,7 @@
                     }
                 });
 
-                return node || null;
+                return node || N;
             },
 
             /**
@@ -855,7 +858,7 @@
              * @static
              */
             getContentAsFloat: function(elem) {
-                return parseFloat(_YD.getContentAsString(elem));
+                return parseFloat(YD.getContentAsString(elem));
             },
 
             /**
@@ -866,7 +869,7 @@
              * @static
              */
             getContentAsInteger: function(elem) {
-                return parseInt(_YD.getContentAsString(elem), 10);
+                return parseInt(YD.getContentAsString(elem), 10);
             },
 
             /**
@@ -884,29 +887,29 @@
                     var xmlSerializer = new XMLSerializer(),
                         sb = [];
 
-                    _YL.arrayWalk(nodes, function(node, i) {
+                    YL.arrayWalk(nodes, function(node, i) {
                         //noinspection NestedConditionalExpressionJS
-                        sb[i] = (_DOC.CDATA_SECTION_NODE === node.nodeType) ? node.nodeValue : xmlSerializer.serializeToString(node);
+                        sb[i] = (DOC.CDATA_SECTION_NODE === node.nodeType) ? node.nodeValue : xmlSerializer.serializeToString(node);
                     });
 
                     return sb.join('').replace(/(\<textarea[^\<]*?)\/\>/, '$1>&nbsp;</textarea>');
                 } : function(nodes) { // IE
                     var sb = [];
 
-                    _YL.arrayWalk(nodes, function(node, i) {
+                    YL.arrayWalk(nodes, function(node, i) {
                     //noinspection NestedConditionalExpressionJS,InnerHTMLJS
-                        sb[i] = (_YD.isTextNode(node)) ? node.nodeValue : node.xml || node.innerHTML;
+                        sb[i] = (YD.isTextNode(node)) ? node.nodeValue : node.xml || node.innerHTML;
                     });
 
                     return sb.join('').replace(/\/?\>\<\/input\>/gi, '\/>'); // IE tends to insert a bogus "</input>" element instead of understanding empty closure "<input ... />"
                 };
 
-                _YD.getContentAsString = function(elem) {
-                    var parentNode = _YD.get(elem);
+                YD.getContentAsString = function(elem) {
+                    var parentNode = YD.get(elem);
 
                     if (! parentNode || ! parentNode.childNodes.length) {return '';}
 
-                    if (_YD.isTextNode(parentNode.firstChild) && 1 === parentNode.childNodes.length) {
+                    if (YD.isTextNode(parentNode.firstChild) && 1 === parentNode.childNodes.length) {
                         return parentNode.firstChild.nodeValue;
                     }
                     else {
@@ -914,7 +917,7 @@
                     }
                 };
 
-                return _YD.getContentAsString(elem);
+                return YD.getContentAsString(elem);
             },
 
 			/**
@@ -925,31 +928,10 @@
 			 * @static
 			 */
 			hide: function(arg1, argX) {
-				_YL.arrayWalk(arguments, function(elem) {
-					_YD.addClass(elem, C.HTML.CLS.HIDE);
+				YL.arrayWalk(arguments, function(elem) {
+					YD.addClass(elem, CLS.HIDE);
 				});
 			},
-
-            /**
-             * Tests if the node has the same tag name as those included in arguments 2+.
-             * @method isTagName
-             * @param elem {String|Element} Required. Pointer or string reference to DOM element to evaluate.
-             * @param arg1 {String} Required. A node name to compare with.
-             * @param argX {String} Optional. Additional node names to compare with.
-             * @return {Boolean} True when the DOM node attribute nodeName is included in the arguments.
-             * @static
-             *
-             * Example:
-             * isTagName(domNode, 'div', 'input', 'div');
-             */
-            isTagName: function(elem, arg1, argX) {
-                var tagName = _YD.getTagName(elem);                
-                if (! tagName) {return false;}
-
-                return _YL.arrayWalk(arguments, function(tagname) {
-                    if (tagName === tagname) {return true;}
-                });
-            },
 
             /**
              * Tests if the node has the same type as those included in arguments 2+.
@@ -965,12 +947,53 @@
              */
             isElementType: function(elem, arg1, argX) {
                 var node = $(elem);
-                if (! (node && node.nodeType)) {return false;}
+                if (! (node && node.nodeType)) {return F;}
 
-                return _YL.arrayWalk(arguments, function(nodetype) {
-                    if (node.nodeType === nodetype) {return true;}
+                return YL.arrayWalk(arguments, function(nodetype) {
+                    if (node.nodeType === nodetype) {return T;}
                 });
             },
+
+            /**
+             * Tests if the node has the same tag name as those included in arguments 2+.
+             * @method isTagName
+             * @param elem {String|Element} Required. Pointer or string reference to DOM element to evaluate.
+             * @param arg1 {String} Required. A node name to compare with.
+             * @param argX {String} Optional. Additional node names to compare with.
+             * @return {Boolean} True when the DOM node attribute nodeName is included in the arguments.
+             * @static
+             *
+             * Example:
+             * isTagName(domNode, 'div', 'input', 'div');
+             */
+            isTagName: function(elem, arg1, argX) {
+                var tagName = YD.getTagName(elem);                
+                if (! tagName) {return F;}
+
+                return YL.arrayWalk(arguments, function(tagname) {
+                    if (tagName === tagname) {return T;}
+                });
+            },
+
+			/**
+			 * Tests if the node is displayed and visible.
+			 * @method isVisible
+			 * @param elem {String|Element} Required. Pointer or string reference to DOM element to evaluate.
+			 * @param ignoreVis {Boolean} Required. True, when you don't care about visibility.
+			 * @return {Boolean} True when displayed.
+			 * @static
+			 */
+			isVisible: function(elem, ignoreVis) {
+				var node = $(elem);
+
+				if (node && node.style) {
+					if (YD.hasClass(node, CLS.HIDE) || 'none' === YD.getStyle(node, 'display')) {return F;}
+					if (node.type && 'hidden' === node.type) {return F;}
+					return Boolean.get(ignoreVis || ! (YD.hasClass(node, CLS.HIDDEN) || 'hidden' === node.style.visibility));
+				}
+
+				return F;
+			},
 
 			/**
 			 * Show any number of elements removing class 'hide'.
@@ -980,17 +1003,17 @@
 			 * @static
 			 */
 			show: function(arg1, argX) {
-				_YL.arrayWalk(arguments, function(node) {
-					_YD.removeClass(node, C.HTML.CLS.HIDE);
+				YL.arrayWalk(arguments, function(node) {
+					YD.removeClass(node, CLS.HIDE);
 				});
 			}
 		};
 		
-		_YL.augmentObject(_YD, _thatIfLangExtended, true);
+		YL.augmentObject(YD, _thatIfLangExtended, T);
 	}
 
     // extend helper methods requiring yahoo/animation.js
-    if (YAHOO.util.Anim) {
+    if (YU.Anim) {
         var _thatIfAnim = {
 
             /**
@@ -1008,11 +1031,11 @@
                 var node = $(elem),
                     cfg = {
                     duration: dur || 0.5,
-                    ease: ease || YAHOO.util.Easing.easeOut,
+                    ease: ease || YU.Easing.easeOut,
                     obj: obj || {opacity: {from: 1, to: 0.25}}
                 },
                     fxs = functions || [],
-                    anim = new YAHOO.util.Anim(node, cfg.obj, cfg.duration, cfg.ease);
+                    anim = new YU.Anim(node, cfg.obj, cfg.duration, cfg.ease);
 
                 // functions are provided
                 if (fxs.length) {
@@ -1027,7 +1050,7 @@
             }
         };
 
-        _YL.augmentObject(_YD, _thatIfAnim, true);
+        YL.augmentObject(YD, _thatIfAnim, T);
     }
 
     // extend helper methods requiring native-ext/array.js
@@ -1045,21 +1068,21 @@
 			 */
 			getElementsByTagName: function(tagName, elem) {
 				var node = $(elem);
-				if (! node) {return null;}
+				if (! node) {return N;}
 				return Array.get(node.getElementsByTagName(tagName));
 			}
         };
 
-        _YL.augmentObject(_YD, _thatIfArray, true);
+        YL.augmentObject(YD, _thatIfArray, T);
     };
 
     if (Array.get) {
         _augmentDomWithArrayMethods();
     }
     else {
-        _YD.augmentWithArrayMethods = function() {
+        YD.augmentWithArrayMethods = function() {
             _augmentDomWithArrayMethods();
-            delete _YD.augmentWithArrayMethods;
+            delete YD.augmentWithArrayMethods;
         };
     }
 })();

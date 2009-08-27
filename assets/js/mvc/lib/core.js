@@ -14,18 +14,18 @@
  * @static
  */
 (function() {
-    // the log severity level constants, used to determine if a debug statmenet should be logged or not
-    var _LOG_LEVEL = {
+	// constants
+var _LOG_LEVEL = { // the log severity level constants, used to determine if a debug statmenet should be logged or not
 		ALL: 1, // developer environments
 		DEBUG: 2,
 		INFO: 3, // production environments should be set to 3 or higher
 		WARN: 4,
 		SEVERE: 5
-    };
+	},
+	WL = window.location,
 
-    // private namespace
-	var _logLevel = _LOG_LEVEL.INFO,
-        _WL = window.location;
+    // local namespace
+	_logLevel = _LOG_LEVEL.INFO;
 
     // static namespace
     window.Core = {
@@ -71,6 +71,14 @@
         Util: {},
 
         /**
+         * The widget namespaces.
+         * @property Widget
+         * @type Object
+		 * @static
+         */
+        Widget: {},
+
+        /**
          * The view object namespace.
          * @property View
          * @type Object
@@ -84,9 +92,8 @@
          * @static
          */
         emptyFunction: function() {
-            //noinspection JSUnusedLocalSymbols
             var args = arguments,
-               pause = '';
+				pause = '';
         },
 
 		/**
@@ -104,7 +111,7 @@
 		 * @static
 		 */
         getHash: function() {
-            return ('' + _WL.hash);
+            return ('' + WL.hash);
         },
 
         /**
@@ -114,7 +121,7 @@
 		 * @static
 		 */
         getHost: function() {
-            return ('' + _WL.host);
+            return ('' + WL.host);
         },
 
         /**
@@ -134,7 +141,7 @@
 		 * @static
 		 */
         getPort: function() {
-            return ('' + _WL.port);
+            return ('' + WL.port);
         },
 
         /**
@@ -144,7 +151,7 @@
 		 * @static
 		 */
         getProtocol: function() {
-            return ('' + _WL.protocol);
+            return ('' + WL.protocol);
         },
 
         /**
@@ -154,7 +161,7 @@
 		 * @static
 		 */
         getSearch: function() {
-            return ('' + _WL.search);
+            return ('' + WL.search);
         },
 
 		/**
@@ -164,7 +171,7 @@
 		 * @static
 		 */
 		getToken: function() {
-			var token = YAHOO.util.Form.Element.getValue('javascript-token');
+			var token = YAHOO.util.Dom.get('javascript-token').value;
 
 			if (! token) {
 				throw ('Token Node requested before DOM INPUT node "javascript-token" was made available.');
@@ -184,7 +191,7 @@
 		 * @static
 		 */
         getUrl: function() {
-            return ('' + _WL.href);
+            return ('' + WL.href);
         },
 
 		/**
@@ -201,7 +208,7 @@
          * @static
          */
         reload: function() {
-            _WL.reload();
+            WL.reload();
         },
 
         /**
@@ -211,8 +218,8 @@
          * @static
          */
         replace: function(url) {
-            if (! url) {url = window.location.href;}
-            _WL.replace('' + url);
+            if (! url) {url = WL.href;}
+            WL.replace('' + url);
         }
     };
-})();
+}());
