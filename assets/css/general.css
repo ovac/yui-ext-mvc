@@ -1,0 +1,87 @@
+/**
+ * @group Link List
+ */
+
+.link-list
+{
+	float: left;
+	height: 1.5em;
+	margin: 0;
+}
+
+.link-list li
+{
+	display: block;
+	float: left;
+	list-style: none;
+	margin-right: 1.5em;
+}
+
+.link-list li a
+{
+	display: block;
+}
+
+/**
+ * @end
+ */
+
+/**
+ * @group Layer
+ */
+
+#layer
+{
+	height:0;
+	left:0;
+	overflow:visible;
+	position:absolute;
+	top:0;
+	width:100%;
+	z-index:100;
+}
+
+#mask, .mask
+{
+	background-color:#000;
+	height:100.01%;
+	left:0;
+	position:absolute;
+	top:0;
+	width:100.01%;
+	z-index:100;
+}
+
+/**
+ * @end
+ */
+
+
+/**
+ * @group rounded-corners
+ */
+
+.rounded-corners
+{
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+/**
+ * @end
+ */
+
+/**
+ * @group Column
+ */
+
+.column
+{
+	float: left;
+}
+
+/**
+ * @end
+ */

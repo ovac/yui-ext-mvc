@@ -14,7 +14,7 @@ html body {
 	 *		2) IE verdana
  	 *		3) Other browsers
 	 */
-	font: 62.5% arial, verdana, sans-serif;
+	font: 62.5% verdana, arial, sans-serif;
 	line-height: 1.6em;
 	text-align: left;
 }
@@ -77,7 +77,6 @@ dl dd {
 }
 
 th, td {
-	/*border: 1px solid #000;*/
 	padding: .5em;
 }
 
@@ -109,6 +108,20 @@ sub {
 	visibility: hidden;
 }
 
+a:link, a
+{
+	color: #3D49FF;
+}
+
+a:visited
+{
+}
+
+a:hover, a:active
+{
+	color: #C60E02;
+}
+
 /* (en) clearfix method for clearing floats */
 .clearfix:after {
 	content: ".";
@@ -126,13 +139,51 @@ sub {
 /**
  * @group Forms 
  */
-
-input {
+ 
+input, select, textarea
+{
+	background-color:#FFF;
+	border:1px solid #CCC;
+	color:#333;
 	font-size: 11pt;
-	padding: 0.1em;
+	letter-spacing:normal;
+	line-height:normal !important;
+	padding: 0.1em 0;
+	text-align:start;
+	text-indent:0;
+	text-rendering:optimizelegibility;
+	text-shadow:none;
+	text-transform:none;
+	word-spacing:normal;
+}
+
+input:focus, select:focus, textarea:focus
+{
+	border:1px solid #999;
+	color: #111;
 }
 
 input.text {
+	cursor:text;
+}
+
+input.btn {
+	background:#333 none repeat scroll 0 0;
+	border:2px outset buttonface;
+	color:#E5E5E5;
+	cursor:default;
+	font-weight:normal;
+	letter-spacing:2px;
+	padding: 0.3em;
+	text-align:center;
+	text-shadow:none;
+	text-transform:uppercase;
+	white-space:pre;
+}
+
+input.btn:hover {
+	background-color:#000;
+	color: #FFF;
 }
 
 /**
