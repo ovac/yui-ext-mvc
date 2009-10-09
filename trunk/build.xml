@@ -279,6 +279,7 @@ Version: 1.0.01
 				<srcfiles dir="${js_home}/YUIDataStorage" includes="StorageEngineHTML5.js"/>
 				<srcfiles dir="${js_home}/YUIDataStorage" includes="StorageEngineGears.js"/>
 				<srcfiles dir="${js_home}/YUIDataStorage" includes="StorageEngineSWF.js"/>
+				<srcfiles dir="${js_home}/YUIDataStorage" includes="StorageEngineCookie.js"/>
 			</uptodate>
 		</condition>
 	</target>
@@ -295,6 +296,7 @@ Version: 1.0.01
 				<file name="StorageEngineHTML5.js"/>
 				<file name="StorageEngineGears.js"/>
 				<file name="StorageEngineSWF.js"/>
+				<file name="StorageEngineCookie.js"/>
 			</filelist>
 		</concat>
 
@@ -350,6 +352,7 @@ Version: 1.0.01
 			<uptodate targetfile="${builddir}/css/library.css">
 				<srcfiles dir="${basedir}/assets/css" includes="reset.css"/>
 				<srcfiles dir="${basedir}/assets/css" includes="base.css"/>
+				<srcfiles dir="${basedir}/assets/css" includes="general.css"/>
 			</uptodate>
 		</condition>
 	</target>
@@ -361,6 +364,7 @@ Version: 1.0.01
 			<filelist dir="${cssdir}/">
 				<file name="reset.css"/>
 				<file name="base.css"/>
+				<file name="general.css"/>
 			</filelist>
 		</concat>
 
