@@ -19,18 +19,28 @@ body {
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css">
 <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/json/json.js"></script>
 <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/cookie/cookie.js"></script>
 <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script>
 <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/button/button-min.js"></script>
+<script type="text/javascript" src="../assets/js/widget/AjaxObject.js"></script>
 
 <!--begin custom header content for this example-->
 <style type="text/css">
 #controls label  
-{
-	clear: left;
-	float: left;
-	width: 7em; 
-} 
+	{
+		clear: left;
+		float: left;
+		width: 15em;
+	}
+
+	ul li {
+		list-style:none;
+	}
+
+	ul li select {
+		width: 15em;
+	}
 
 </style>
 
@@ -43,7 +53,8 @@ body {
 
 <div class="exampleIntro">
 	<p>
-		This example shows how to use the <a href="">AjaxObject</a> class. 
+		This example shows how to use the <a href="http://code.google.com/p/yui-ext-mvc/source/browse/trunk/assets/js/widget/AjaxObject.js">AjaxObject</a> class.
+		AjaxObject has a variety of configuration parameters, each of which can be modified here.
 	</p>
 </div>
 
@@ -51,268 +62,236 @@ body {
 
 <!--Input Controls-->
 
-<div id="controls"> 
-<label for="nameField">Storage name:</label> 
+<ul id="controls">
+	<li>
+		<label for="abortOnDuplicate">Abort on duplicate:</label>
+		<select id="abortOnDuplicate">
+			<option value="false">false</option>
+			<option value="true" selected="selected">true</option>
+		</select>
+	</li>
 
-<input id="nameField" type="text">
-<input id="save-button" name="save-button" type="Button" value="Save" />
-<input id="remove-button" name="remove-button" type="Button" value="Remove" />
-     
-<br>
- 
-<label for="valueField">Text to store:</label>
-<textarea cols="30" id="valueField" rows="5"></textarea>
-<br>   <br>
-    
-    <fieldset id="checkboxOptions">
-        <legend>Additional Options:</legend>
-        <div id="engineGroup" class="inline">
-            <input id="html5-button" name="html5-button" type="radio" value="Use HTML5" checked="checked" /> 
-            <input id="gears-button" name="gears-button" type="radio" value="Use Gears"/> 
-			<input id="swf-button" name="swf-button" type="radio" value="Use SWF"/>
-			<input id="cookie-button" name="cookie-button" type="radio" value="Use Cookie"/>
-			<input id="session-button" name="session-button" type="Button" value="Use Session"/>  
-			<input id="purge-button" name="purge-button" type="Button" value="Purge All Local Data" />
-        </div>
-  </fieldset>
+	<li>
+		<label for="argument">Argument to passthrough:</label>
+		<select id="argument">
+			<option value="null">null</option>
+			<option value="testArgument" selected="selected">testArgument</option>
+		</select>
+	</li>
 
-<br><br>
+	<li>
+		<label for="cache">Cache the request:</label>
+		<select id="cache">
+			<option value="false" selected="selected">false</option>
+			<option value="true">true</option>
+		</select>
+	</li>
 
-<div id="datatableContainer"></div> 
-</div>
+	<li>
+		<label for="data">Data:</label>
+		<select id="data">
+			<option value="null" selected="selected">null</option>
+			<option value="testName1=testValue1&testName2=testValue2">testName1=testValue1&testName2=testValue2</option>
+			<option value="['testName1=testValue1','testName2=testValue2']">['testName1=testValue1','testName2=testValue2']</option>
+			<option value="{testName1:'testValue1',testName2:testValue2'}">{testName1:'testValue1',testName2:testValue2'}</option>
+		</select>
+	</li>
 
-<!--Always include gears_init.js when you want to support Google Gears: -->
-<script type="text/javascript" src="test_storageCookie_files/gears_init.js"></script>
+	<li>
+		<label for="method">Method for the request:</label>
+		<select id="method">
+			<option value="get" selected="selected">get</option>
+			<option value="post">post</option>
+		</select>
+	</li>
+
+	<li>
+		<label for="pollTimeout">Poll timeout of request:</label>
+		<select id="pollTimeout">
+			<option value="0" selected="selected">0</option>
+			<option value="250">250ms</option>
+			<option value="500">500ms</option>
+			<option value="750">750ms</option>
+			<option value="1000">1000ms</option>
+		</select>
+	</li>
+
+	<li>
+		<label for="requestDelay">Request delay:</label>
+		<select id="requestDelay">
+			<option value="0" selected="selected">0</option>
+			<option value="250">250ms</option>
+			<option value="500">500ms</option>
+			<option value="750">750ms</option>
+			<option value="1000">1000ms</option>
+		</select>
+	</li>
+
+	<li>
+		<label for="timeout">Timeout of request:</label>
+		<select id="timeout">
+			<option value="5000">5s</option>
+			<option value="10000" selected="selected">10000s</option>
+			<option value="15000">15000s</option>
+			<option value="17500">17500s</option>
+			<option value="20000">20000s</option>
+		</select>
+	</li>
+
+	<li>
+		<label for="seltype">Response type:</label>
+		<select id="seltype">
+			<option value="text/json">text/json</option>
+			<option value="text/xml" selected="selected">text/xml</option>
+			<option value="application/xml">application/xml</option>
+		</select>
+	</li>
+
+	<li>
+		<label for="url">Url:</label>
+		<select id="url">
+			<option value="/test_json.php">test_json.php</option>
+			<option value="/test_xml.xml" selected="selected">test_xml.xml</option>
+			<option value="/test_timeout.xml">test_timeout.xml</option>
+			<option value="/test404.php">test404.php</option>
+		</select>
+	</li>
+	
+	<li><input id="exe-button" name="exe-button" type="Button" value="Execute Request" /></li>
+
+</ul>
+
+<h3>Last Response</h3>
+<div id="content"></div>
 
 <!--Local Scripts-->
-<script type="text/javascript">
-    /**
-     * Pointer to the Storage instance
-     */
-    var storage;
-        
-    YAHOO.util.StorageEngineSWF.SWFURL = 'swfstore.swf';
+<script type="text/javascript"><!--
+(function() {
+	var LANG = YAHOO.lang,
+		DOM = YAHOO.util.Dom;
+	
+	Object.toQueryString = function(data, encode) {
+		var sb = [],
+			i = 0;
 
-    /**
-     * Pointer to the DataTable instance
-     */
-    var datatable; 
+		for (var k in data) {
+			var v = data[k];
+			
+			// only care about strings and numbers
+			if (LANG.isString(v) || LANG.isNumber(v)) {
+				sb[i] = (k + '=' + v);
+				i += 1;
+			}
+		};
 
-    var saveButton;
-    var purgeButton;
-    var removeButton;
-    
-    var gearsCheckbox, engineRadio;
+		return encode ? encodeURIComponent(sb.join('&')) : sb.join('&');
+	};
 
-    /**
-     * Initialization scripts
-     */ 
-     function initialize() {
-        // evaluate and create the Storage instance
-        var engineBtn = engineRadio.get("checkedButton");
-        var engineType = engineBtn.get("value");
-        var useSession = sessionCheckbox.get("checked");
-        var location;
+	DOM.isTextNode = function(elem) {
+		var node = DOM.get(elem),
+			isValidNode = node && node.nodeType; // not calling isNodeOfType because this is faster
 
-        location = YAHOO.util.StorageManager[useSession ? 'LOCATION_SESSION' : 'LOCATION_LOCAL'];
-        storage = YAHOO.util.StorageManager.get(engineType, location, {force: false});
+		return isValidNode && (4 === node.nodeType || 8 === node.nodeType || 3 === node.nodeType);
+	};
 
-        //storage.unsubscribe(storage.CE_CHANGE, onChange);
-        storage.subscribe(storage.CE_CHANGE, onChange);
-        
-        if (storage.isReady || (storage._swf && YAHOO.util.StorageManager.LOCATION_SESSION === location)) {
-            load();
-        } else {
-            saveButton.set("disabled", true); 
-            purgeButton.set("disabled", true);  
-            removeButton.set("disabled", true); 
-            
-            engineRadio.set("disabled", true);
-        
-            storage.subscribe(storage.CE_READY, onContentReady);
-        }
-    }
-    
-    /**
-     * This gets called once Storage is initialized and ready to be used. 
-     * We disabled the buttons previously, so once they're usable we'll enable them here.
-     */ 
-    function onContentReady(event) {
-        saveButton.set("disabled", false); 
-        purgeButton.set("disabled", false);  
-        removeButton.set("disabled", false);
-        
-        engineRadio.set('disabled', false);
-        engineRadio._buttons[0].set("disabled", ! YAHOO.util.StorageEngineHTML5.isAvailable()); 
-        engineRadio._buttons[1].set("disabled", ! YAHOO.util.StorageEngineGears.isAvailable()); 
-        //engineRadio._buttons[2].set("disabled", ! YAHOO.util.StorageEngineSWF.isAvailable());
-        engineRadio._buttons[2].set("disabled", true);
-        engineRadio._buttons[3].set("disabled", ! YAHOO.util.StorageEngineCookie.isAvailable());
-        
-        sessionCheckbox.set("disabled", false);
+	DOM.getContentAsString = function(elem) {
+		/*
+		 * Returns the elements content of nodes as a string.
+		 */
+		var _getContentAsString = window.XMLSerializer ? function(nodes) { // mozilla
+			var xmlSerializer = new XMLSerializer(),
+				sb = [];
 
-        storage.unsubscribe(storage.CE_READY, onContentReady);
+			for (var i in nodes) {
+				var node = nodes[i];
+				if (node.nodeType) {
+					sb[i] = (4 === node.nodeType) ? node.nodeValue : xmlSerializer.serializeToString(node);
+				}
+			};
 
-        load();
-    }
+			return sb.join('').replace(/(\<textarea[^\<]*?)\/\>/, '$1>&nbsp;</textarea>');
+		} : function(nodes) { // IE
+			var sb = [];
 
-    /**
-     * Clear out all data
-     */     
-    function purge() {
-        storage.clear();
-        datatable.deleteRows(0, datatable.getRecordSet().getLength());
-    }
-    
-    /**
-     * Called when a save is successful
-     */     
-    function onChange(event) {
-        if (event.type === YAHOO.util.StorageEvent.TYPE_ADD_ITEM || event.type === YAHOO.util.StorageEvent.TYPE_UPDATE_ITEM)
-        {
-            var newobj = {name: event.key, value: event.newValue};
+			for (var i in nodes) {
+				var node = nodes[i];
+				if (node.nodeType) {
+					sb[i] = (DOM.isTextNode(node)) ? node.nodeValue : node.xml || node.innerHTML;
+				}
+			};
 
-            var len = datatable.getRecordSet().getLength();
-        
-            //loop through current records and see if this has been added before
-            for (var i = 0; i < len; i++ )
-            {
-                var rec = datatable.getRecord(i);
-                var data = rec.getData();
-                
-                //if it's been added already, update it
-                if (data.name == event.key)
-                {
-                    datatable.updateRow(i, newobj);
-                    return;
-                }
-            }
-    
-            //if it's not been added, add it
-            datatable.addRow(newobj);
-        }
+			return sb.join('').replace(/\/?\>\<\/input\>/gi, '\/>'); // IE tends to insert a bogus "</input>" element instead of understanding empty closure "<input ... />"
+		};
 
-        //removed
-        else if (event.type === YAHOO.util.StorageEvent.TYPE_REMOVE_ITEM)
-        {
+		DOM.getContentAsString = function(elem) {
+			var parentNode = DOM.get(elem);
 
-            var len = datatable.getRecordSet().getLength();
-        
-            //loop through current records and see if this has been added before
-            for (var i = 0; i < len; i++ )
-            {
-                var rec = datatable.getRecord(i);
-                var data = rec.getData();
-                
-                //if it's been added already, update it
-                if (data.name == event.key)
-                {
-                    datatable.deleteRow(i);
-                    return;
-                }
-            }
-        }       
-    }
+			if (! parentNode || ! parentNode.childNodes.length) {return '';}
 
-    
-    /**
-     * Called when something bad happens
-     */         
-    function onError(event) {
-        alert("Event " + event.message);
-    }
+			if (DOM.isTextNode(parentNode.firstChild) && 1 === parentNode.childNodes.length) {
+				return parentNode.firstChild.nodeValue;
+			}
+			else {
+				return _getContentAsString(parentNode.childNodes);
+			}
+		};
 
-    
-    /**
-     * Gets the data from Storage when the page loads
-     */         
-    function load() {
- 
-      var len = storage.length;
-      
-        var arr = [];
+		return DOM.getContentAsString(elem);
+	};
 
-        // clear the existing datatable
-        if (datatable)
-        {
-            datatable.deleteRows(0, datatable.getRecordSet().getLength());
-        }
-          
-        for (var i = 0, key, newobj; i < len; i++)
-        {
-            key = storage.key(i);
-            newobj = { name:key, value: storage.getItem(key) };
-            arr.push(newobj);
-            if (datatable) {datatable.addRow(newobj);}
-        }
-        
-        // only initialize the datatable once
-        if (! datatable)
-        {
-            var datasource = new YAHOO.util.LocalDataSource(arr); 
+	DOM.selectOne = function(element) {
+		var value = '', opt, index = element.selectedIndex;
+		if (0 <= index) {
+			opt = element.options[index];
+			value = opt.value || opt.text;
+		}
+		return value;
+	};
 
-            datasource.responseSchema = {fields : ["name", "value"]};
-        
-            var configs = 
-            {   
-                scrollable: true
-            }
-            
-            var columns = 
-            [
-                {key:"name", label:"Storage Name (Key)"},
-                {key:"value", label:"Text Stored"}
-            ];
-                
-            datatable = new YAHOO.widget.DataTable("datatableContainer", columns, datasource, configs);
-        }
-    }
-    
-    /**
-     * Save the data locally
-     */ 
-    function save() {
-        storage.setItem(YAHOO.util.Dom.get('nameField').value, YAHOO.util.Dom.get('valueField').value);
-    }
+	Boolean.get = function(value) {
+		return value && 'true' === ('' + value).toLowerCase();
+	};
 
-    /**
-     * Remove an item from storage
-     */ 
-    function remove() {
-        var key = YAHOO.util.Dom.get('nameField').value;
-        storage.removeItem(key);
-    }
+	Number.get = function(value) {
+		return parseInt(value, 10);
+	};
 
-/**
- * Called when the buttons are ready to be initialized
- */ 
-    function onButtonsReady() {
-    saveButton = new YAHOO.widget.Button("save-button");
-        purgeButton = new YAHOO.widget.Button("purge-button");
-        removeButton = new YAHOO.widget.Button("remove-button");
-        
-        engineRadio = new YAHOO.widget.ButtonGroup("engineGroup");
-        sessionCheckbox = new YAHOO.widget.Button("session-button", {type:"checkbox",value:"0",checked:false});
-        
-        engineRadio._buttons[0].set("value", YAHOO.util.StorageEngineHTML5.ENGINE_NAME); 
-        engineRadio._buttons[1].set("value", YAHOO.util.StorageEngineGears.ENGINE_NAME); 
-        engineRadio._buttons[2].set("value", YAHOO.util.StorageEngineSWF.ENGINE_NAME); 
-        engineRadio._buttons[3].set("value", YAHOO.util.StorageEngineCookie.ENGINE_NAME); 
+	var _handleSuccess = function(o) {
+		content.innerHTML = LANG.isArray(o.response) ? o.responseText : DOM.getContentAsString(o.response).replace(/</g, '&lt;').replace(/>/, '&rt;');
+	};
 
-        saveButton.on("click", save); 
-        purgeButton.on("click", purge); 
-        removeButton.on("click", remove);
-        sessionCheckbox.on("checkedChange", initialize);
-        engineRadio.on("checkedButtonChange", initialize);
-        
-        //initialize
-        initialize();
-        
-        YAHOO.util.Dom.get('nameField').focus()
-    }
+	YAHOO.util.AjaxObject.LOGOUT_URL = 'test_ajaxObject.html?nextPage=';
+	var exeButton = new YAHOO.widget.Button("exe-button"),
+		selectAbortOnDuplicate = DOM.get('abortOnDuplicate'),
+		selectArgument = DOM.get('argument'),
+		selectCache = DOM.get('cache'),
+		selectData = DOM.get('data'),
+		selectMethod = DOM.get('method'),
+		selectPollTimeout = DOM.get('pollTimeout'),
+		selectTimeout = DOM.get('timeout'),
+		selectRequestDelay = DOM.get('requestDelay'),
+		selectType = DOM.get('seltype'),
+		selectUrl = DOM.get('url'),
+		content = DOM.get('content'),
+		ajaxObject = new YAHOO.util.AjaxObject({callback: _handleSuccess, url: '/test_xml.xml'});
 
-    YAHOO.util.Event.onContentReady("controls", onButtonsReady);
-
+	exeButton.on('click', function() {
+		var cfg = {
+			abortOnDuplicate: Boolean.get(DOM.selectOne(selectAbortOnDuplicate)),
+			argument: DOM.selectOne(selectArgument),
+			cache: Boolean.get(DOM.selectOne(selectCache)),
+			data: eval(DOM.selectOne(selectData)),
+			method: DOM.selectOne(selectMethod),
+			pollTimeout: Number.get(DOM.selectOne(selectPollTimeout)),
+			timeout: Number.get(DOM.selectOne(selectTimeout)),
+			requestDelay: Number.get(DOM.selectOne(selectRequestDelay)),
+			type: DOM.selectOne(selectType),
+			url: DOM.selectOne(selectUrl)
+		};
+		ajaxObject.startRequest(cfg);
+	});
+}());
+//-->
 </script>
 
 <!--END SOURCE CODE FOR EXAMPLE =============================== -->

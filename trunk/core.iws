@@ -3,12 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" readonly="true" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core.iws" afterPath="$PROJECT_DIR$/core.iws" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/widget/AjaxObject.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core.ipr" afterPath="$PROJECT_DIR$/core.ipr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/test_ajaxObject.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test_xml.xml" afterPath="$PROJECT_DIR$/test_xml.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/widget/AjaxObject.js" afterPath="$PROJECT_DIR$/assets/js/widget/AjaxObject.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_timeout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test_ajaxObject.html" afterPath="$PROJECT_DIR$/test/test_ajaxObject.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/native-ext/object.js" afterPath="$PROJECT_DIR$/assets/js/native-ext/object.js" />
     </list>
-    <ignored path=".idea/workspace.xml" />
     <ignored path="core.iws" />
+    <ignored path=".idea/workspace.xml" />
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="Commander">
@@ -71,52 +73,52 @@
       <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="286" column="99" selection-start="11177" selection-end="11177" vertical-scroll-proportion="0.0">
+            <state line="286" column="99" selection-start="11177" selection-end="11177" vertical-scroll-proportion="-0.6818182">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StorageEngineGears.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineGears.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="20" selection-start="2512" selection-end="2531" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StorageEngineCookie.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineCookie.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="113" column="38" selection-start="3239" selection-end="3239" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_storageCookie.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/test_storageCookie.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="58" column="45" selection-start="2944" selection-end="2944" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AjaxObject.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="AjaxObject.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/assets/js/widget/AjaxObject.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="350" column="28" selection-start="8955" selection-end="8963" vertical-scroll-proportion="0.0">
+            <state line="197" column="2" selection-start="5015" selection-end="5112" vertical-scroll-proportion="0.872093">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_ajaxObject.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="test_ajaxObject.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test_ajaxObject.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="45" column="75" selection-start="1617" selection-end="1617" vertical-scroll-proportion="0.17857143">
+            <state line="242" column="45" selection-start="7287" selection-end="7287" vertical-scroll-proportion="-1.1702127">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_xml.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test_xml.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="4" column="0" selection-start="313" selection-end="313" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dom.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/dom.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="3" selection-start="174" selection-end="174" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="object.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/native-ext/object.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="119" column="38" selection-start="3687" selection-end="3687" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -209,50 +211,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectPane">
-    <subPane>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="test" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-    </subPane>
+    <subPane />
   </component>
   <component name="ProjectReloadState">
     <option name="STATE" value="0" />
@@ -275,15 +234,15 @@
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="MemberChooser.sorted" value="false" />
     <property name="options.lastSelected" value="preferences.sourceCode.General" />
+    <property name="MemberChooser.sorted" value="false" />
     <property name="last_opened_file_path" value="C:\dev\svn\trunk\modules\web\src\mint\web\view" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="GoToClass.includeJavaFiles" value="false" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="GoToClass.includeJavaFiles" value="false" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="Remote" factoryName="Remote">
@@ -561,48 +520,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="120" column="0" selection-start="3513" selection-end="3513" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/testvalues.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7317" column="24" selection-start="268098" selection-end="268098" vertical-scroll-proportion="0.95098037">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/storage2.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/Storage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="17" selection-start="2077" selection-end="2086" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/native-ext/object.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="113" column="25" selection-start="3472" selection-end="3485" vertical-scroll-proportion="0.43442622">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="286" column="99" selection-start="11177" selection-end="11177" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineGears.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="65" column="20" selection-start="2512" selection-end="2531" vertical-scroll-proportion="0.0">
@@ -610,16 +527,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineCookie.js">
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/formElement.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="113" column="38" selection-start="3239" selection-end="3239" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_storageCookie.html">
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/formElementSerializer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="45" selection-start="2944" selection-end="2944" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="286" column="99" selection-start="11177" selection-end="11177" vertical-scroll-proportion="-0.6818182">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/native-ext/object.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="119" column="38" selection-start="3687" selection-end="3687" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -659,16 +590,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/widget/AjaxObject.js">
+    <entry file="file://$PROJECT_DIR$/test_timeout.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="350" column="28" selection-start="8955" selection-end="8963" vertical-scroll-proportion="0.0">
+        <state line="3" column="47" selection-start="112" selection-end="112" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_xml.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="0" selection-start="313" selection-end="313" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/dom.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="3" selection-start="174" selection-end="174" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_json.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/test_ajaxObject.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="75" selection-start="1617" selection-end="1617" vertical-scroll-proportion="0.17857143">
+        <state line="242" column="45" selection-start="7287" selection-end="7287" vertical-scroll-proportion="-1.1702127">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/widget/AjaxObject.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="197" column="2" selection-start="5015" selection-end="5112" vertical-scroll-proportion="0.872093">
           <folding />
         </state>
       </provider>
