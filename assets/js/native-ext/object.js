@@ -117,7 +117,7 @@
 
                 _YL.forEach(data, function(v, k) {
 					// only care about strings and numbers
-					if (_YL.isString(v, 'string') || _YL.isNumber(v, 'number')) {
+					if (_YL.isString(v) || _YL.isNumber(v)) {
 						sb[i] = (k + '=' + v);
 						i += 1;
 					}

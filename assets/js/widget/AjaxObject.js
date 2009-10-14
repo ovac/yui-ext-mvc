@@ -100,12 +100,12 @@ var Y = YAHOO,
 	LANG = Y.lang,
 	YD = YU.Dom,
 	YE = YU.Event,
-	LOGOUT_URL = 'logout.event?' + C.PARAM_NAME_NEXT_PAGE + '=',
 
 	// define known error codes
 	ERROR_ABORTED = -1,
 	ERROR_CODE_SESSION_TIMED_OUT = 1,
-	ERROR_CODE_INVALID_PARAMETER = 2,
+	ERROR_CODE_INVALID_CONTENT_TYPE = 2,
+	ERROR_CODE_INVALID_PARAMETER = 3,
 	ERROR_PAGE_NOT_FOUND = 404,
 
 	// local variables
@@ -197,6 +197,9 @@ _F.ATTR = {
 	url: null
 };
 
+// used to indicate the server has logged the end-user out
+_F.LOGOUT_URL = '/logout?nextPage=';
+
 _F.prototype = {
 
 	/**
@@ -248,14 +251,21 @@ _F.prototype = {
 
 		switch (o.status) {
 			case ERROR_CODE_SESSION_TIMED_OUT: // session timed out code
-				window.location.href = LOGOUT_URL + encodeURIComponent(window.location.href);
+				window.location.href = _F.LOGOUT_URL + encodeURIComponent(window.location.href);
 				return;
 
+			case ERROR_CODE_INVALID_CONTENT_TYPE: msg = o.ajaxDescription; break;
 			case ERROR_CODE_INVALID_PARAMETER: msg = o.ajaxDescription; break;
-			case ERROR_PAGE_NOT_FOUND: _logError(ERROR_PAGE_NOT_FOUND, Object.toJsonString(args)); break;
-			case ERROR_ABORTED: _logError('Request Aborted: ', Object.toJsonString(args)); break;
+			case ERROR_PAGE_NOT_FOUND:
+				_logError(ERROR_PAGE_NOT_FOUND, Object.toQueryString(args));
+				msg = 'Page not found for url=' + args.url;
+				break;
+			case ERROR_ABORTED:
+				_logError('Request Aborted: ', Object.toQueryString(args));
+				msg = 'Request aborted (or timed out) for url=' + args.url;
+				break;
 			default:
-				_logError(o.status || 'unknown', Object.toJsonString(args));
+				_logError(o.status || 'unknown', Object.toQueryString(args));
 				msg = 'An unknown error occurred on our servers. We recommend refreshing the page and before trying again.';
 				break;
 		}
@@ -263,8 +273,8 @@ _F.prototype = {
 		if (msg) {
 			alert('Your last request failed, because:\n' + msg);
 		}
-		if (isType(args.failure, 'function')) {args.failure(o);}
-		if (isType(args.rollback, 'function')) {args.rollback(o);}
+		if (LANG.isFunction(args.failure)) {args.failure(o);}
+		if (LANG.isFunction(args.rollback)) {args.rollback(o);}
 	},
 
 	/**
@@ -283,19 +293,44 @@ _F.prototype = {
 			isJSON = LANG.isValue(txt) && (-1 !== contentType.indexOf(_F.TYPE_JSON)),
 			isXML = LANG.isValue(doc) && (-1 !== contentType.indexOf(_F.TYPE_XML) || -1 !== contentType.indexOf(_F.TYPE_XML_APP)),
 			response = null,
-			error = null;
+			error = null,
+			code = 0;
+		
+		// configured content type matches response
+		if ((-1 < args.type.indexOf(_F.TYPE_JSON) && isJSON) || ((-1 < args.type.indexOf(_F.TYPE_XML) || -1 < args.type.indexOf(_F.TYPE_XML_APP)) && isXML)) {
+			// this is an XML response, retrieve nodes
+			if (isXML) {
+				response = doc.getElementsByTagName('response')[0];
+				error = doc.getElementsByTagName('error')[0];
 
-		// this is an XML response, retrieve nodes
-		if (isXML) {
-			response = doc.getElementsByTagName('response')[0];
-			error = doc.getElementsByTagName('error')[0];
+				// parse special-error XML
+				if (error) {
+					code = YD.getContentAsString(error.getElementsByTagName('code')[0]);
+
+					if (code) {
+						code = parseInt(code, 10);
+						desc = YD.getContentAsString(error.getElementsByTagName('description')[0]);
+					}
+					else {
+						desc = YD.getContentAsString(error);
+					}
+				}
+			}
+			// this is a JSON response, convert to JSON
+			else if (isJSON) {
+				response = LANG.JSON.parse(o.responseText);
+			}
 		}
-		// this is a JSON response, convert to JSON
-		else if (isJSON) {
-			response = LANG.JSON.parse(o.responseText);
-		}
-		// this is an unknown response, assume error
+		// configured content type does not match response
 		else {
+			isXML = isJSON = false;
+			code = ERROR_CODE_INVALID_CONTENT_TYPE;
+			error = 'Response content type (' + contentType + ') does not match configuration (' + args.type + ')';
+		}
+		
+		// this is an unknown response, assume error
+		if (! (response || error)) {
+			isXML = isJSON = false;
 			error = txt || 'unknown error';
 
 			// better error message on AJAX failure
@@ -308,25 +343,7 @@ _F.prototype = {
 
 		// response has error
 		if (error) {
-			var code = '',
-				desc = '';
-
-			// process XML error
-			if (isXML) {
-				code = YD.getContentAsString(error.getElementsByTagName('code')[0]);
-
-				if (code) {
-					desc = YD.getContentAsString(error.getElementsByTagName('description')[0]);
-				}
-				else {
-					desc = YD.getContentAsString(error);
-				}
-			}
-			// process general error
-			else {
-				desc = error;
-			}
-
+			var desc = error;
 			o.status = code;
 			o.ajaxDescription = desc;
 			this._handleFailure(o);
@@ -382,10 +399,10 @@ _F.prototype = {
 	 * @public
 	 */
 	startRequest: function(conf) {
-		var cfg = {}, str, url, _this = this, fx;
+		var cfg = {}, str, url, _this = this, fx, _conf = conf || {};
 
 		LANG.augmentObject(cfg, _this._cfg, true);
-		LANG.augmentObject(cfg, conf || {}, true);
+		LANG.augmentObject(cfg, _conf, true);
 		if (! cfg.url) {throw('Your AjaxObject.startRequest is missing a URL.');}
 		if (LANG.isFunction(cfg.callback)) {_this.processResults = cfg.callback;}
 		url = cfg.url;
