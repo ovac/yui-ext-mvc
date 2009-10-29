@@ -14,16 +14,16 @@ var Y = YAHOO.util,
 	/*
 	 * Required for IE 8 to make synchronous.
 	 */
-	_beginTransaction = function(engine) {
-		if (engine.begin) {engine.begin();}
+	_beginTransaction = function(driver) {
+		driver.begin();
 	},
 
 	/*
 	 * Required for IE 8 to make synchronous.
 	 */
-	_commitTransaction = function(engine) {
-		if (engine.commit) {engine.commit();}
-	};
+	_commitTransaction = function(driver) {
+		driver.commit();
+	},
 
 	/**
 	 * The StorageEngineHTML5 class implements the HTML5 storage engine.
@@ -34,19 +34,24 @@ var Y = YAHOO.util,
 	 * @param location {String} Required. The storage location.
 	 * @param conf {Object} Required. A configuration object.
 	 */
-	Y.StorageEngineHTML5 = function(location, conf) {
+	_F = function(location, conf) {
 		var _this = this;
-		Y.StorageEngineHTML5.superclass.constructor.call(_this, location, Y.StorageEngineHTML5.ENGINE_NAME, conf);// not set, are cookies available
-		_this._engine = window[location];
-		_this.length = _this._engine.length;
+		_F.superclass.constructor.call(_this, location, _F.ENGINE_NAME, conf);// not set, are cookies available
+		_this._driver = window[location];
+
+		// simplifieds the begin/commit functions, if not using IE; this provides a massive performance boost
+		if (! _this._driver.begin) {_beginTransaction = function() {}; }
+		if (! _this._driver.commit) {_commitTransaction = function() {}; }
+
+		_this.length = _this._driver.length;
 		YL.later(250, _this, function() { // temporary solution so that CE_READY can be subscribed to after this object is created
 			_this.fireEvent(_this.CE_READY);
 		});
 	};
 
-	YAHOO.lang.extend(Y.StorageEngineHTML5, Y.Storage, {
+	YAHOO.lang.extend(_F, Y.Storage, {
 
-		_engine: null,
+		_driver: null,
 
 		/*
 		 * Implementation to clear the values from the storage engine.
@@ -54,8 +59,8 @@ var Y = YAHOO.util,
 		 */
 		_clear: function() {
 			var _this = this;
-			if (_this._engine.clear) {
-				_this._engine.clear();
+			if (_this._driver.clear) {
+				_this._driver.clear();
 			}
 			// for FF 3, fixed in FF 3.5
 			else {
@@ -71,7 +76,7 @@ var Y = YAHOO.util,
 		 * @see YAHOO.util.Storage._getItem
 		 */
 		_getItem: function(key) {
-			var o = this._engine.getItem(key);
+			var o = this._driver.getItem(key);
 			return YL.isObject(o) ? o.value : o; // for FF 3, fixed in FF 3.5
 		},
 
@@ -79,7 +84,7 @@ var Y = YAHOO.util,
 		 * Implementation to fetch a key from the storage engine.
 		 * @see YAHOO.util.Storage._key
 		 */
-		_key: function(index) {return this._engine.key(index);},
+		_key: function(index) {return this._driver.key(index);},
 
 		/*
 		 * Implementation to remove an item from the storage engine.
@@ -87,10 +92,10 @@ var Y = YAHOO.util,
 		 */
 		_removeItem: function(key) {
 			var _this = this;
-			_beginTransaction(_this._engine);
-			_this._engine.removeItem(key);
-			_commitTransaction(_this._engine);
-			_this.length = _this._engine.length;
+			_beginTransaction(_this._driver);
+			_this._driver.removeItem(key);
+			_commitTransaction(_this._driver);
+			_this.length = _this._driver.length;
 		},
 
 		/*
@@ -99,12 +104,12 @@ var Y = YAHOO.util,
 		 */
 		_setItem: function(key, value) {
 			var _this = this;
-			
+
 			try {
-				_beginTransaction(_this._engine);
-				_this._engine.setItem(key, value);
-				_commitTransaction(_this._engine);
-				_this.length = _this._engine.length;
+				_beginTransaction(_this._driver);
+				_this._driver.setItem(key, value);
+				_commitTransaction(_this._driver);
+				_this.length = _this._driver.length;
 				return true;
 			}
 			catch (e) {
@@ -113,9 +118,10 @@ var Y = YAHOO.util,
 		}
 	}, true);
 
-	Y.StorageEngineHTML5.ENGINE_NAME = 'html5';
-	Y.StorageEngineHTML5.isAvailable = function() {
+	_F.ENGINE_NAME = 'html5';
+	_F.isAvailable = function() {
 		return window.localStorage;
 	};
-    Y.StorageManager.register(Y.StorageEngineHTML5);
+    Y.StorageManager.register(_F);
+	Y.StorageEngineHTML5 = _F;
 }());

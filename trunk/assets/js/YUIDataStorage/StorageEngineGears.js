@@ -19,10 +19,10 @@ var Y = YAHOO.util,
 	_TABLE_NAME = 'YUIStorageEngine',
 
 	// local variables
-	_engine = null,
+	_driver = null,
 
 	eURI = encodeURIComponent,
-	dURI = decodeURIComponent;
+	dURI = decodeURIComponent,
 
 	/**
 	 * The StorageEngineGears class implements the Google Gears storage engine.
@@ -33,27 +33,27 @@ var Y = YAHOO.util,
 	 * @param location {String} Required. The storage location.
 	 * @param conf {Object} Required. A configuration object.
 	 */
-	Y.StorageEngineGears = function(location, conf) {
+	_F = function(location, conf) {
 		var _this = this;
-		Y.StorageEngineGears.superclass.constructor.call(_this, location, Y.StorageEngineGears.ENGINE_NAME, conf);
+		_F.superclass.constructor.call(_this, location, _F.ENGINE_NAME, conf);
 
-		if (! _engine) {
+		if (! _driver) {
 			// create the database
-			_engine = google.gears.factory.create(Y.StorageEngineGears.GEARS);
-			_engine.open(window.location.host + '-' + Y.StorageEngineGears.DATABASE);
-			_engine.execute('CREATE TABLE IF NOT EXISTS ' + _TABLE_NAME + ' (key TEXT, location TEXT, value TEXT)');
+			_driver = google.gears.factory.create(_F.GEARS);
+			_driver.open(window.location.host + '-' + _F.DATABASE);
+			_driver.execute('CREATE TABLE IF NOT EXISTS ' + _TABLE_NAME + ' (key TEXT, location TEXT, value TEXT)');
 		}
 
 		var isSessionStorage = Y.StorageManager.LOCATION_SESSION === _this._location,
-			sessionKey = Y.Cookie.get('sessionKey' + Y.StorageEngineGears.ENGINE_NAME);
+			sessionKey = Y.Cookie.get('sessionKey' + _F.ENGINE_NAME);
 
 		if (! sessionKey) {
-			_engine.execute('BEGIN');
-			_engine.execute('DELETE FROM ' + _TABLE_NAME + ' WHERE location="' + eURI(Y.StorageManager.LOCATION_SESSION) + '"');
-			_engine.execute('COMMIT');
+			_driver.execute('BEGIN');
+			_driver.execute('DELETE FROM ' + _TABLE_NAME + ' WHERE location="' + eURI(Y.StorageManager.LOCATION_SESSION) + '"');
+			_driver.execute('COMMIT');
 		}
 
-		var rs = _engine.execute('SELECT key FROM ' + _TABLE_NAME + ' WHERE location="' + eURI(_this._location) + '"'),
+		var rs = _driver.execute('SELECT key FROM ' + _TABLE_NAME + ' WHERE location="' + eURI(_this._location) + '"'),
 			keyMap = {};
 	
 		try {
@@ -75,27 +75,25 @@ var Y = YAHOO.util,
 
 		// this is session storage, ensure that the session key is set
 		if (isSessionStorage) {
-			Y.Cookie.set('sessionKey' + Y.StorageEngineGears.ENGINE_NAME, true);
+			Y.Cookie.set('sessionKey' + _F.ENGINE_NAME, true);
 		}
 
-		_this.length = _this._keys.length;
 		YL.later(250, _this, function() { // temporary solution so that CE_READY can be subscribed to after this object is created
 			_this.fireEvent(_this.CE_READY);
 		});
 	};
 
-	YL.extend(Y.StorageEngineGears, Y.StorageEngineKeyed, {
+	YL.extend(_F, Y.StorageEngineKeyed, {
 
 		/*
 		 * Implementation to clear the values from the storage engine.
 		 * @see YAHOO.util.Storage._clear
 		 */
 		_clear: function() {
-			_engine.execute('BEGIN');
-			_engine.execute('DELETE FROM ' + _TABLE_NAME + ' WHERE location="' + eURI(this._location) + '"');
-			_engine.execute('COMMIT');
-			this._keys = [];
-			this.length = 0;
+			_F.superclass._clear.call(this);
+			_driver.execute('BEGIN');
+			_driver.execute('DELETE FROM ' + _TABLE_NAME + ' WHERE location="' + eURI(this._location) + '"');
+			_driver.execute('COMMIT');
 		},
 
 		/*
@@ -103,12 +101,11 @@ var Y = YAHOO.util,
 		 * @see YAHOO.util.Storage._getItem
 		 */
 		_getItem: function(key) {
-			var rs = _engine.execute('SELECT value FROM ' + _TABLE_NAME + ' WHERE key="' + eURI(key) + '" AND location="' + eURI(this._location) + '"'),
+			var rs = _driver.execute('SELECT value FROM ' + _TABLE_NAME + ' WHERE key="' + eURI(key) + '" AND location="' + eURI(this._location) + '"'),
 				value = '';
 
 			try {
 				while (rs.isValidRow()) {
-					var temp = rs.field(0);
 					value += rs.field(0);
 					rs.next();
 				}
@@ -121,21 +118,15 @@ var Y = YAHOO.util,
 		},
 
 		/*
-		 * Implementation to fetch a key from the storage engine.
-		 * @see YAHOO.util.Storage.key
-		 */
-		_key: function(index) {return this._keys[index];},
-
-		/*
 		 * Implementation to remove an item from the storage engine.
 		 * @see YAHOO.util.Storage._removeItem
 		 */
 		_removeItem: function(key) {
-			YAHOO.log("removing " + key);
-			_engine.execute('BEGIN');
-			_engine.execute('DELETE FROM ' + _TABLE_NAME + ' WHERE key="' + eURI(key) + '" AND location="' + eURI(this._location) + '"');
-			_engine.execute('COMMIT');
-			this._removeKey(key);
+			YAHOO.log("removing gears key: " + key);
+			_F.superclass._removeItem.call(this, key);
+			_driver.execute('BEGIN');
+			_driver.execute('DELETE FROM ' + _TABLE_NAME + ' WHERE key="' + eURI(key) + '" AND location="' + eURI(this._location) + '"');
+			_driver.execute('COMMIT');
 		},
 
 		/*
@@ -166,12 +157,12 @@ var Y = YAHOO.util,
 			}
 
 			// Google recommends using INSERT instead of update, because it is faster
-			_engine.execute('BEGIN');
-			_engine.execute('DELETE FROM ' + _TABLE_NAME + ' WHERE key="' + eURI(key) + '" AND location="' + eURI(this._location) + '"');
+			_driver.execute('BEGIN');
+			_driver.execute('DELETE FROM ' + _TABLE_NAME + ' WHERE key="' + eURI(key) + '" AND location="' + eURI(this._location) + '"');
 			for (var m = 0, n = _values.length; m < n; m += 1) {
-				_engine.execute('INSERT INTO ' + _TABLE_NAME + ' VALUES ("' + _key + '", "' + _location + '", "' + _values[m] + '")');
+				_driver.execute('INSERT INTO ' + _TABLE_NAME + ' VALUES ("' + _key + '", "' + _location + '", "' + _values[m] + '")');
 			}
-			_engine.execute('COMMIT');
+			_driver.execute('COMMIT');
 			
 			return true;
 		}
@@ -179,16 +170,16 @@ var Y = YAHOO.util,
 
 	// releases the engine when the page unloads
 	Y.Event.on('unload', function() {
-		if (_engine) {_engine.close();}
+		if (_driver) {_driver.close();}
 	});
-	Y.StorageEngineGears.ENGINE_NAME = 'gears';
-	Y.StorageEngineGears.GEARS = 'beta.database';
-	Y.StorageEngineGears.DATABASE = 'yui.database';
-	Y.StorageEngineGears.isAvailable = function() {
+	_F.ENGINE_NAME = 'gears';
+	_F.GEARS = 'beta.database';
+	_F.DATABASE = 'yui.database';
+	_F.isAvailable = function() {
 		if (window.google && window.google.gears) {
 			try {
 				// this will throw an exception if the user denies gears
-				google.gears.factory.create(Y.StorageEngineGears.GEARS);
+				google.gears.factory.create(_F.GEARS);
 				return true;
 			}
 			catch (e) {
@@ -198,5 +189,6 @@ var Y = YAHOO.util,
 
 		return false;
 	};
-    Y.StorageManager.register(Y.StorageEngineGears);
+    Y.StorageManager.register(_F);
+	Y.StorageEngineGears = _F;
 }());

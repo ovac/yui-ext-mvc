@@ -87,6 +87,7 @@ var Y = YAHOO.util,
 		 * @param conf {Object} Optional. Additional configuration for the getting the storage engine.
 		 * {
 		 * 	engine: {Object} configuration parameters for the desired engine
+		 * 	force: {Boolean} force the <code>engineType</code> or fail
 		 * 	order: {Array} an array of storage engine names; the desired order to try engines}
 		 * }
 		 * @static

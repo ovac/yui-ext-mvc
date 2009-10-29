@@ -24,7 +24,7 @@ var Y = YAHOO.util,
 	MINIMUM_HEIGHT = 138,
 
 	// local variables
-	_engine = null,
+	_driver = null,
 
 	/*
 	 * Creates a location bound key.
@@ -36,9 +36,9 @@ var Y = YAHOO.util,
 	/*
 	 * Initializes the engine, if it isn't already initialized.
 	 */
-	_initEngine = function(cfg) {
-		if (! _engine) {
-			if (! YL.isString(cfg.swfURL)) {cfg.swfURL = Y.StorageEngineSWF.SWFURL;}
+	_initDriver = function(cfg) {
+		if (! _driver) {
+			if (! YL.isString(cfg.swfURL)) {cfg.swfURL = _F.SWFURL;}
 			if (! cfg.containerID) {
 				var bd = document.getElementsByTagName('body')[0],
 					container = bd.appendChild(document.createElement('div'));
@@ -49,9 +49,9 @@ var Y = YAHOO.util,
 			if (! cfg.attributes.flashVars) {cfg.attributes.flashVars = {};}
 			cfg.attributes.flashVars.useCompression = 'true';
 			cfg.attributes.version = 9.115;
-			_engine = new YAHOO.widget.SWF(cfg.containerID, cfg.swfURL, cfg.attributes);
+			_driver = new YAHOO.widget.SWF(cfg.containerID, cfg.swfURL, cfg.attributes);
 		}
-	};
+	},
 
 	/**
 	 * The StorageEngineSWF class implements the SWF storage engine.
@@ -63,28 +63,26 @@ var Y = YAHOO.util,
 	 * @param location {String} Required. The storage location.
 	 * @param conf {Object} Required. A configuration object.
 	 */
-	Y.StorageEngineSWF = function(location, conf) {
+	_F = function(location, conf) {
 		var _this = this;
-		Y.StorageEngineSWF.superclass.constructor.call(_this, location, Y.StorageEngineSWF.ENGINE_NAME, conf);
+		_F.superclass.constructor.call(_this, location, _F.ENGINE_NAME, conf);
 		
-		_initEngine(_this._cfg);
-
-		// evaluates when the SWF is loaded
-		_engine.unsubscribe('contentReady'); // prevents local and session content ready callbacks from firing, when switching between context
-		_engine.addListener("contentReady", function() {
-			_this._swf = _engine._swf;
-			_engine.initialized = true;
+		_initDriver(_this._cfg);
+		
+		var _onContentReady = function() {
+			_this._swf = _driver._swf;
+			_driver.initialized = true;
 			
 			var isSessionStorage = Y.StorageManager.LOCATION_SESSION === _this._location,
-				sessionKey = Y.Cookie.get('sessionKey' + Y.StorageEngineSWF.ENGINE_NAME);
+				sessionKey = Y.Cookie.get('sessionKey' + _F.ENGINE_NAME);
 
-			for (var i = _engine.callSWF("getLength", []) - 1; 0 <= i; i -= 1) {
-				var key = _engine.callSWF("getNameAt", [i]),
+			for (var i = _driver.callSWF("getLength", []) - 1; 0 <= i; i -= 1) {
+				var key = _driver.callSWF("getNameAt", [i]),
 					isKeySessionStorage = -1 < key.indexOf(Y.StorageManager.LOCATION_SESSION + _this.DELIMITER);
 
 				// this is session storage, but the session key is not set, so remove item
 				if (isSessionStorage && ! sessionKey) {
-					_engine.callSWF("removeItem", [key]);
+					_driver.callSWF("removeItem", [key]);
 				}
 				// the key matches the storage type, add to key collection
 				else if (isSessionStorage === isKeySessionStorage) {
@@ -94,18 +92,23 @@ var Y = YAHOO.util,
 
 			// this is session storage, ensure that the session key is set
 			if (isSessionStorage) {
-				Y.Cookie.set('sessionKey' + Y.StorageEngineSWF.ENGINE_NAME, true);
+				Y.Cookie.set('sessionKey' + _F.ENGINE_NAME, true);
 			}
 
-			_this.length = _this._keys.length;
 			_this.fireEvent(_this.CE_READY);
-		});
+		};
 		
-		// required for pages with both a session and local storage
-		if (_engine.initialized) {_engine.fireEvent('contentReady');}
+		// evaluate immediately, SWF is already loaded
+		if (_driver.initialized) {
+			YL.later(250, _this, _onContentReady);
+		}
+		// evaluates when the SWF is loaded
+		else {
+			_driver.addListener("contentReady", _onContentReady);
+		}
 	};
 
-	YL.extend(Y.StorageEngineSWF, Y.StorageEngineKeyed, {
+	YL.extend(_F, Y.StorageEngineKeyed, {
 		/**
 		 * The underlying SWF of the engine, exposed so developers can modify the adapter behavior.
 		 * @property _swf
@@ -121,11 +124,10 @@ var Y = YAHOO.util,
 		_clear: function() {
 			for (var i = this._keys.length - 1; 0 <= i; i -= 1) {
 				var key = this._keys[i];
-				_engine.callSWF("removeItem", [key]);
+				_driver.callSWF("removeItem", [key]);
 			}
-
-			this._keys = [];
-			this.length = 0;
+			// since keys are used to clear, we call the super function second
+			_F.superclass._clear.call(this);
 		},
 
 		/*
@@ -134,7 +136,7 @@ var Y = YAHOO.util,
 		 */
 		_getItem: function(key) {
 			var _key = _getKey(this, key);
-			return _engine.callSWF("getValueOf", [_key]);
+			return _driver.callSWF("getValueOf", [_key]);
 		},
 
 		/*
@@ -142,7 +144,7 @@ var Y = YAHOO.util,
 		 * @see YAHOO.util.Storage.key
 		 */
 		_key: function(index) {
-			return (this._keys[index] || '').replace(/^.*?__/, '');
+			return _F.superclass._key.call(this, index).replace(/^.*?__/, '');
 		},
 
 		/*
@@ -150,9 +152,10 @@ var Y = YAHOO.util,
 		 * @see YAHOO.util.Storage._removeItem
 		 */
 		_removeItem: function(key) {
+			YAHOO.log("removing SWF key: " + key);
 			var _key = _getKey(this, key);
-			_engine.callSWF("removeItem", [_key]);
-			this._removeKey(_key);
+			_F.superclass._removeItem.call(this, _key);
+			_driver.callSWF("removeItem", [_key]);
 		},
 
 		/*
@@ -162,26 +165,28 @@ var Y = YAHOO.util,
 		_setItem: function(key, data) {
 			var _key = _getKey(this, key), swfNode;
 
-			if (! _engine.callSWF("getValueOf", [_key])) {
+			if (! _driver.callSWF("getValueOf", [_key])) {
 				this._addKey(_key);
 			}
 
-			if (_engine.callSWF("setItem", [_key, data])) {
+			if (_driver.callSWF("setItem", [_key, data])) {
 				return true;
 			}
 			else {
-				swfNode = YD.get(_engine._id);
-				if (MINIMUM_WIDTH > YD.getStyle(swfNode, 'width').replace(/\D+/g, '')) {YD.setStyle(swfNode, 'width', MINIMUM_WIDTH + 'px')}
-				if (MINIMUM_HEIGHT > YD.getStyle(swfNode, 'height').replace(/\D+/g, '')) {YD.setStyle(swfNode, 'height', MINIMUM_HEIGHT + 'px')}
-				return _engine.callSWF("displaySettings", []);
+				swfNode = YD.get(_driver._id);
+				if (MINIMUM_WIDTH > YD.getStyle(swfNode, 'width').replace(/\D+/g, '')) {YD.setStyle(swfNode, 'width', MINIMUM_WIDTH + 'px');}
+				if (MINIMUM_HEIGHT > YD.getStyle(swfNode, 'height').replace(/\D+/g, '')) {YD.setStyle(swfNode, 'height', MINIMUM_HEIGHT + 'px');}
+				YAHOO.log("attempting to show settings. are dimensions adequate? " + _driver.callSWF("hasAdequateDimensions"));
+				return _driver.callSWF("displaySettings", []);
 			}
 		}
 	});
 
-	Y.StorageEngineSWF.SWFURL = "swfstore.swf";
-	Y.StorageEngineSWF.ENGINE_NAME = 'swf';
-	Y.StorageEngineSWF.isAvailable = function() {
+	_F.SWFURL = "swfstore.swf";
+	_F.ENGINE_NAME = 'swf';
+	_F.isAvailable = function() {
 		return (6 <= YAHOO.env.ua.flash && YAHOO.widget.SWF);
 	};
-    Y.StorageManager.register(Y.StorageEngineSWF);
+    Y.StorageManager.register(_F);
+	Y.StorageEngineSWF = _F;
 }());
