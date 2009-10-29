@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project relativePaths="false" version="4">
+<project version="4">
   <component name="AntConfiguration">
     <defaultAnt bundledAnt="true" />
   </component>
@@ -70,7 +70,6 @@
         </ADDITIONAL_INDENT_OPTIONS>
       </value>
     </option>
-    <option name="USE_PER_PROJECT_SETTINGS" value="false" />
   </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
@@ -90,6 +89,7 @@
       <entry name="?*.dtd" />
       <entry name="?*.tld" />
     </wildcardResourcePatterns>
+    <annotationProcessing enabled="false" useClasspath="true" />
   </component>
   <component name="CopyrightManager" default="">
     <module2copyright />
@@ -177,48 +177,46 @@
   </component>
   <component name="IdProvider" IDEtalkID="2F47403BF4176ABE3C73786A377F6C38" />
   <component name="InspectionProjectProfileManager">
-    <option name="PROJECT_PROFILE" value="Project Default" />
-    <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
-    <scopes />
     <profiles>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Project Default" />
         <option name="myLocal" value="false" />
-        <inspection_tool class="AbstractMethodCallInConstructor" level="WARNING" enabled="true" />
-        <inspection_tool class="AnnotationNamingConvention" level="WARNING" enabled="true">
+        <inspection_tool class="AbstractMethodCallInConstructor" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="AnnotationNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_regex" value="[A-Z][A-Za-z\d]*" />
           <option name="m_minLength" value="8" />
           <option name="m_maxLength" value="64" />
         </inspection_tool>
-        <inspection_tool class="AssignmentResultUsedJS" level="WARNING" enabled="true" />
-        <inspection_tool class="AssignmentToForLoopParameterJS" level="WARNING" enabled="true" />
-        <inspection_tool class="BooleanMethodNameMustStartWithQuestion" level="WARNING" enabled="true">
+        <inspection_tool class="AssignmentResultUsedJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="AssignmentToForLoopParameterJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="BooleanMethodNameMustStartWithQuestion" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="questionString" value="is,can,has,should,could,will,shall,check,contains,equals,add,put,remove,startsWith,endsWith" />
         </inspection_tool>
-        <inspection_tool class="BreakStatementWithLabelJS" level="WARNING" enabled="true" />
-        <inspection_tool class="ChainedEqualityJS" level="WARNING" enabled="true" />
-        <inspection_tool class="ClassNameSameAsAncestorName" level="WARNING" enabled="true" />
-        <inspection_tool class="ClassNamingConvention" level="WARNING" enabled="true">
+        <inspection_tool class="BreakStatementWithLabelJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ChainedEqualityJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ClassNameSameAsAncestorName" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ClassNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_regex" value="[A-Z][A-Za-z\d]*" />
           <option name="m_minLength" value="8" />
           <option name="m_maxLength" value="64" />
         </inspection_tool>
         <inspection_tool class="ClassWithoutToString" level="WARNING" enabled="true" />
-        <inspection_tool class="ConditionalExpressionWithIdenticalBranchesJS" level="WARNING" enabled="true" />
-        <inspection_tool class="ConfusingMainMethod" level="WARNING" enabled="true" />
-        <inspection_tool class="ConstantConditions" level="WARNING" enabled="false">
+        <inspection_tool class="ConditionalExpressionWithIdenticalBranchesJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ConfusingMainMethod" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ConstantConditions" enabled="false" level="WARNING" enabled_by_default="false">
           <option name="SUGGEST_NULLABLE_ANNOTATIONS" value="false" />
           <option name="DONT_REPORT_TRUE_ASSERT_STATEMENTS" value="false" />
         </inspection_tool>
-        <inspection_tool class="ConstantNamingConvention" level="WARNING" enabled="true">
+        <inspection_tool class="ConstantNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="onlyCheckImmutables" value="false" />
           <option name="m_regex" value="[A-Z_\d]*" />
           <option name="m_minLength" value="5" />
           <option name="m_maxLength" value="32" />
         </inspection_tool>
-        <inspection_tool class="ConstantOnRHSOfComparisonJS" level="WARNING" enabled="true" />
-        <inspection_tool class="ContinueStatementWithLabelJS" level="WARNING" enabled="true" />
-        <inspection_tool class="CssUnitlessNumber" level="WARNING" enabled="false" />
-        <inspection_tool class="CssUnknownProperty" level="WARNING" enabled="true">
+        <inspection_tool class="ConstantOnRHSOfComparisonJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ContinueStatementWithLabelJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="CssUnitlessNumber" enabled="false" level="WARNING" enabled_by_default="false" />
+        <inspection_tool class="CssUnknownProperty" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="myCustomPropertiesEnabled" value="true" />
           <option name="myCustomPropertiesList">
             <value>
@@ -238,61 +236,61 @@
             </value>
           </option>
         </inspection_tool>
-        <inspection_tool class="CyclomaticComplexityJS" level="WARNING" enabled="true">
+        <inspection_tool class="CyclomaticComplexityJS" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_limit" value="10" />
         </inspection_tool>
-        <inspection_tool class="DefaultNotLastCaseInSwitchJS" level="WARNING" enabled="true" />
-        <inspection_tool class="DivideByZeroJS" level="WARNING" enabled="true" />
-        <inspection_tool class="DocumentWriteJS" level="WARNING" enabled="true" />
-        <inspection_tool class="DollarSignInName" level="WARNING" enabled="true" />
-        <inspection_tool class="DuplicateConditionJS" level="WARNING" enabled="true" />
-        <inspection_tool class="EmptyCatchBlockJS" level="WARNING" enabled="true" />
-        <inspection_tool class="EmptyFinallyBlockJS" level="WARNING" enabled="true" />
-        <inspection_tool class="EmptyTryBlockJS" level="WARNING" enabled="true" />
-        <inspection_tool class="EnumeratedClassNamingConvention" level="WARNING" enabled="true">
+        <inspection_tool class="DefaultNotLastCaseInSwitchJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="DivideByZeroJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="DocumentWriteJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="DollarSignInName" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="DuplicateConditionJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="EmptyCatchBlockJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="EmptyFinallyBlockJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="EmptyTryBlockJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="EnumeratedClassNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_regex" value="[A-Z][A-Za-z\d]*" />
           <option name="m_minLength" value="8" />
           <option name="m_maxLength" value="64" />
         </inspection_tool>
-        <inspection_tool class="EnumeratedConstantNamingConvention" level="WARNING" enabled="true">
+        <inspection_tool class="EnumeratedConstantNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_regex" value="[A-Z][A-Za-z_\d]*" />
           <option name="m_minLength" value="5" />
           <option name="m_maxLength" value="32" />
         </inspection_tool>
-        <inspection_tool class="EqualityComparisonWithCoercionJS" level="WARNING" enabled="true" />
-        <inspection_tool class="ExceptionNameDoesntEndWithException" level="WARNING" enabled="true" />
-        <inspection_tool class="ForLoopReplaceableByWhileJS" level="WARNING" enabled="true">
+        <inspection_tool class="EqualityComparisonWithCoercionJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ExceptionNameDoesntEndWithException" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ForLoopReplaceableByWhileJS" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_ignoreLoopsWithoutConditions" value="false" />
         </inspection_tool>
-        <inspection_tool class="ForLoopThatDoesntUseLoopVariableJS" level="WARNING" enabled="true" />
-        <inspection_tool class="FunctionWithMultipleLoopsJS" level="WARNING" enabled="true" />
-        <inspection_tool class="HibernateMappingDatasourceDomInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="HibernateMappingDomInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="IfStatementWithIdenticalBranchesJS" level="WARNING" enabled="true" />
-        <inspection_tool class="IfStatementWithTooManyBranchesJS" level="WARNING" enabled="true">
+        <inspection_tool class="ForLoopThatDoesntUseLoopVariableJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="FunctionWithMultipleLoopsJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="HibernateMappingDatasourceDomInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+        <inspection_tool class="HibernateMappingDomInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+        <inspection_tool class="IfStatementWithIdenticalBranchesJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="IfStatementWithTooManyBranchesJS" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_limit" value="4" />
         </inspection_tool>
-        <inspection_tool class="InnerHTMLJS" level="WARNING" enabled="true" />
-        <inspection_tool class="InstanceMethodNamingConvention" level="WARNING" enabled="true">
+        <inspection_tool class="InnerHTMLJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="InstanceMethodNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_regex" value="[a-z][A-Za-z\d]*" />
           <option name="m_minLength" value="4" />
           <option name="m_maxLength" value="40" />
         </inspection_tool>
-        <inspection_tool class="InstanceVariableInitialization" level="WARNING" enabled="true">
+        <inspection_tool class="InstanceVariableInitialization" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_ignorePrimitives" value="false" />
         </inspection_tool>
-        <inspection_tool class="InstanceVariableUninitializedUse" level="WARNING" enabled="true">
+        <inspection_tool class="InstanceVariableUninitializedUse" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_ignorePrimitives" value="false" />
         </inspection_tool>
-        <inspection_tool class="InterfaceNamingConvention" level="WARNING" enabled="true">
+        <inspection_tool class="InterfaceNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_regex" value="[A-Z][A-Za-z\d]*" />
           <option name="m_minLength" value="8" />
           <option name="m_maxLength" value="64" />
         </inspection_tool>
-        <inspection_tool class="JSDeprecatedSymbols" level="INFO" enabled="false" />
-        <inspection_tool class="JSUnresolvedFunction" level="INFO" enabled="false" />
-        <inspection_tool class="JSUnresolvedVariable" level="INFO" enabled="false" />
-        <inspection_tool class="JavaDoc" level="WARNING" enabled="true">
+        <inspection_tool class="JSDeprecatedSymbols" enabled="false" level="INFO" enabled_by_default="false" />
+        <inspection_tool class="JSUnresolvedFunction" enabled="false" level="INFO" enabled_by_default="false" />
+        <inspection_tool class="JSUnresolvedVariable" enabled="false" level="INFO" enabled_by_default="false" />
+        <inspection_tool class="JavaDoc" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="TOP_LEVEL_CLASS_OPTIONS">
             <value>
               <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
@@ -322,89 +320,93 @@
           <option name="myAdditionalJavadocTags" value="depreciated" />
         </inspection_tool>
         <inspection_tool class="JpaModelErrorInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="LabeledStatementJS" level="WARNING" enabled="true" />
-        <inspection_tool class="LocalVariableNamingConventionJS" level="WARNING" enabled="false">
+        <inspection_tool class="LabeledStatementJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="LocalVariableNamingConventionJS" enabled="false" level="WARNING" enabled_by_default="false">
           <option name="m_regex" value="[a-z][A-Za-z0-9]*" />
           <option name="m_minLength" value="1" />
           <option name="m_maxLength" value="32" />
         </inspection_tool>
-        <inspection_tool class="MethodNameSameAsParentName" level="WARNING" enabled="true" />
-        <inspection_tool class="MethodNamesDifferOnlyByCase" level="WARNING" enabled="true" />
-        <inspection_tool class="NestedAssignmentJS" level="WARNING" enabled="true" />
-        <inspection_tool class="NestedSwitchStatementJS" level="WARNING" enabled="true" />
-        <inspection_tool class="NestingDepthJS" level="WARNING" enabled="true">
+        <inspection_tool class="MethodNameSameAsParentName" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="MethodNamesDifferOnlyByCase" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="NestedAssignmentJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="NestedSwitchStatementJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="NestingDepthJS" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_limit" value="5" />
         </inspection_tool>
-        <inspection_tool class="NonBlockStatementBodyJS" level="WARNING" enabled="true" />
-        <inspection_tool class="NonBooleanMethodNameMayNotStartWithQuestion" level="WARNING" enabled="true">
+        <inspection_tool class="NonBlockStatementBodyJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="NonBooleanMethodNameMayNotStartWithQuestion" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="questionString" value="is,can,has,should,could,will,shall,check,contains,equals,startsWith,endsWith" />
         </inspection_tool>
-        <inspection_tool class="NonExceptionNameEndsWithException" level="WARNING" enabled="true" />
-        <inspection_tool class="NonFinalStaticVariableUsedInClassInitialization" level="WARNING" enabled="true" />
-        <inspection_tool class="NonThreadSafeLazyInitialization" level="WARNING" enabled="true" />
-        <inspection_tool class="ObjectAllocationIgnoredJS" level="WARNING" enabled="true" />
-        <inspection_tool class="ObsoleteCollection" level="WARNING" enabled="true">
+        <inspection_tool class="NonExceptionNameEndsWithException" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="NonFinalStaticVariableUsedInClassInitialization" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="NonThreadSafeLazyInitialization" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ObjectAllocationIgnoredJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ObsoleteCollection" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreLibraryArguments" value="false" />
         </inspection_tool>
-        <inspection_tool class="OverloadedVarargsMethod" level="WARNING" enabled="true" />
-        <inspection_tool class="OverridableMethodCallDuringObjectConstruction" level="WARNING" enabled="true" />
-        <inspection_tool class="ParameterNameDiffersFromOverriddenParameter" level="WARNING" enabled="true">
+        <inspection_tool class="OverloadedVarargsMethod" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="OverridableMethodCallDuringObjectConstruction" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ParameterNameDiffersFromOverriddenParameter" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_ignoreSingleCharacterNames" value="false" />
           <option name="m_ignoreOverridesOfLibraryMethods" value="false" />
         </inspection_tool>
-        <inspection_tool class="ParameterNamingConventionJS" level="WARNING" enabled="true">
+        <inspection_tool class="ParameterNamingConventionJS" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_regex" value="[$]?[a-z][A-Za-z0-9_]*" />
           <option name="m_minLength" value="1" />
           <option name="m_maxLength" value="32" />
         </inspection_tool>
-        <inspection_tool class="ParametersPerFunctionJS" level="WARNING" enabled="true">
+        <inspection_tool class="ParametersPerFunctionJS" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_limit" value="5" />
         </inspection_tool>
-        <inspection_tool class="PlatformDetectionJS" level="WARNING" enabled="true" />
-        <inspection_tool class="QuestionableName" level="WARNING" enabled="true">
+        <inspection_tool class="PlatformDetectionJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="QuestionableName" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="nameString" value="aa,abc,bad,bar,bar2,baz,baz1,baz2,baz3,bb,blah,bogus,bool,cc,dd,defau1t,dummy,dummy2,ee,fa1se,ff,foo,foo1,foo2,foo3,foobar,four,fred,fred1,fred2,gg,hh,hello,hello1,hello2,hello3,ii,nu11,one,silly,silly2,string,two,that,then,three,whi1e,var" />
         </inspection_tool>
-        <inspection_tool class="ReplaceAssignmentWithOperatorAssignmentJS" level="WARNING" enabled="true" />
-        <inspection_tool class="StandardVariableNames" level="WARNING" enabled="true" />
-        <inspection_tool class="StatementsPerFunctionJS" level="WARNING" enabled="true">
+        <inspection_tool class="ReplaceAssignmentWithOperatorAssignmentJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="StandardVariableNames" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="StatementsPerFunctionJS" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_limit" value="30" />
         </inspection_tool>
-        <inspection_tool class="StaticMethodNamingConvention" level="WARNING" enabled="true">
+        <inspection_tool class="StaticMethodNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_regex" value="[a-z][A-Za-z\d]*" />
           <option name="m_minLength" value="4" />
           <option name="m_maxLength" value="32" />
         </inspection_tool>
-        <inspection_tool class="StaticVariableInitialization" level="WARNING" enabled="true">
+        <inspection_tool class="StaticVariableInitialization" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_ignorePrimitives" value="false" />
         </inspection_tool>
-        <inspection_tool class="StaticVariableNamingConvention" level="WARNING" enabled="true">
+        <inspection_tool class="StaticVariableNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="checkMutableFinals" value="false" />
           <option name="m_regex" value="s_[A-Za-z\d]*" />
           <option name="m_minLength" value="5" />
           <option name="m_maxLength" value="32" />
         </inspection_tool>
-        <inspection_tool class="StaticVariableUninitializedUse" level="WARNING" enabled="true">
+        <inspection_tool class="StaticVariableUninitializedUse" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_ignorePrimitives" value="false" />
         </inspection_tool>
-        <inspection_tool class="SuppressionAnnotation" level="WARNING" enabled="true" />
-        <inspection_tool class="SwitchStatementWithNoDefaultBranchJS" level="WARNING" enabled="true" />
-        <inspection_tool class="SystemOutErr" level="WARNING" enabled="true" />
-        <inspection_tool class="TailRecursionJS" level="WARNING" enabled="true" />
-        <inspection_tool class="TextLabelInSwitchStatementJS" level="WARNING" enabled="true" />
-        <inspection_tool class="ThisEscapedInConstructor" level="WARNING" enabled="true" />
-        <inspection_tool class="ThreadDumpStack" level="WARNING" enabled="true" />
-        <inspection_tool class="ThreeNegationsPerFunctionJS" level="WARNING" enabled="true" />
-        <inspection_tool class="TypeParameterNamingConvention" level="WARNING" enabled="true">
+        <inspection_tool class="SuppressionAnnotation" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="SwitchStatementWithNoDefaultBranchJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="SystemOutErr" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="TailRecursionJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="TextLabelInSwitchStatementJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ThisEscapedInConstructor" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ThreadDumpStack" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ThreeNegationsPerFunctionJS" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="TypeParameterNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_regex" value="[A-Z\d]" />
           <option name="m_minLength" value="1" />
           <option name="m_maxLength" value="1" />
         </inspection_tool>
-        <inspection_tool class="UnusedCatchParameterJS" level="WARNING" enabled="true">
+        <inspection_tool class="UnusedCatchParameterJS" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_ignoreCatchBlocksWithComments" value="false" />
         </inspection_tool>
-        <inspection_tool class="UpperCaseFieldNameNotConstant" level="WARNING" enabled="true" />
-        <inspection_tool class="XHTMLIncompatabilitiesJS" level="WARNING" enabled="true" />
+        <inspection_tool class="UpperCaseFieldNameNotConstant" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="XHTMLIncompatabilitiesJS" enabled="true" level="WARNING" enabled_by_default="true" />
       </profile>
     </profiles>
+    <option name="PROJECT_PROFILE" value="Project Default" />
+    <option name="USE_PROJECT_PROFILE" value="true" />
+    <version value="1.0" />
     <list size="4">
       <item index="0" class="java.lang.String" itemvalue="INFO" />
       <item index="1" class="java.lang.String" itemvalue="WARNING" />
@@ -600,7 +602,6 @@
   <component name="ProjectDetails">
     <option name="projectName" value="core" />
   </component>
-  <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/core.iml" filepath="$PROJECT_DIR$/core.iml" />
