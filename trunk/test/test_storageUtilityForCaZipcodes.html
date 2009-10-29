@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Storage Utility Zipcode Test Page</title>
+
+<style type="text/css">
+/*margin and padding on body element
+  can introduce errors in determining
+  element position and are not recommended;
+  we turn them off as a foundation for YUI
+  CSS treatments. */
+body {
+	margin:0;
+	padding:0;
+}
+
+dl {
+	width: 25em;
+}
+
+dl dt,
+dl dd {
+	float: left;
+	width: 10em;
+}
+
+dl label {
+	font-weight: bold;
+}
+
+#zipcode-val {
+	background-color:#FFFFCC;
+	clear: left;
+	margin:2em;
+	padding:1em;
+}
+</style>
+
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/fonts/fonts-min.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css">
+<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/json/json.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/cookie/cookie-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/swf/swf-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/button/button-min.js"></script>
+<!--<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/storage/storage-min.js"></script>-->
+<script type="text/javascript" src="/assets/js/thirdparty/gears_init.js"></script>
+<script type="text/javascript" src="/build/js/storage.js"></script>
+
+<!--begin custom header content for this example-->
+<style type="text/css">
+#controls label  
+	{
+		clear: left;
+		float: left;
+		width: 15em;
+	}
+
+	ul li {
+		list-style:none;
+	}
+
+	ul li select {
+		width: 15em;
+	}
+
+</style>
+
+<!--end custom header content for this example-->
+
+</head><body class="yui-skin-sam">
+
+
+<h1>Storage Utility Zipcode Test Page</h1>
+
+<div class="exampleIntro">
+	<p>
+		This example shows how to use the <a href="http://developer.yahoo.com/yui/storage/">Storage Utility</a> for storing zipcodes, and there city and states.
+		It will fetch the data via AJAX and store it into the Storage Utility, then use the data cached in Storage Utility on subsequent pages loads.
+	</p>
+	<p>It will only recognize california zipcodes 90001 to 96162, because parsing a larger JSON object fetched via
+		AJAX is taking too long. All unrecognized values will show "Invalid Zipcode!" message.</p>
+	<p>
+		There is a large data dump the first time you run this script, and it may take a few seconds while the zipcodes are loaded into the storage engine.
+	</p>
+</div>
+
+<!--BEGIN SOURCE CODE FOR EXAMPLE =============================== -->
+
+
+<h3>Find City and State by Zipcode</h3>
+<dl id="content">
+	<dt><label for="zipcode-npt">Zipcode</label></dt>
+	<dd><input id="zipcode-npt" maxlength="5" name="" type="text" value=""/></dd>
+	<dt>&nbsp;</dt>
+	<dd><input id="zipcode-btn" type="button" value=" Get City, State "/></dd>
+</dl>
+
+<blockquote id="zipcode-val"></blockquote>
+
+<!--Local Scripts-->
+<script type="text/javascript"><!--
+(function()
+{
+	var _isFetching = false,
+		_storageEngine = YAHOO.util.StorageManager.get(null, YAHOO.util.StorageManager.LOCATION_LOCAL),
+
+		_domBtnZipcode = new YAHOO.widget.Button("zipcode-btn"),
+		_domNptZipcode = YAHOO.util.Dom.get("zipcode-npt"),
+		_domValZipcode = YAHOO.util.Dom.get("zipcode-val"),
+
+		_handleFetchZipcode = function()
+		{
+			if (_domNptZipcode.value)
+			{
+				if (_storageEngine.length)
+				{
+					_updateZipcodeValue();
+				}
+				else if (_isFetching)
+				{
+					// do nothing
+				}
+				else
+				{
+					_isFetching = true;
+					_domValZipcode.innerHTML = 'loading from server...';
+					YAHOO.util.Connect.asyncRequest('get', '/test_zipcode_ca.php', {success: _handleFetchData});
+				}
+			}
+			else {
+				_domValZipcode.innerHTML = "Invalid Zipcode!";
+			}
+		},
+
+		_handleFetchData = function(yuiAjaxObject)
+		{
+			var jsonData = eval(yuiAjaxObject.responseText.replace(/[\r\n]+/g, ''));
+			jsonData.length = 500;
+
+			try
+			{
+				var fx = function(i)
+				{
+					for (var j = i + 50 < jsonData.length ? i + 50 : jsonData.length, o; i < j; i += 1)
+					{
+						o = jsonData[i];
+
+						if (! _storageEngine.hasKey(o[0]))
+						{
+							_storageEngine.setItem(o[0], o[1] + "," + o[2]);
+						}
+					}
+
+					if (i === jsonData.length)
+					{
+						_updateZipcodeValue();
+						_isFetching = false;
+					}
+					else
+					{
+						_domValZipcode.innerHTML = 'storing keys into storage engine... at ' + i;
+						setTimeout(function() {fx(i)}, 250);
+					}
+				};
+
+				fx(0);
+			}
+			catch (e)
+			{
+				alert('Please approve additional Storage and then refresh the page.');
+			}
+		},
+
+		_updateZipcodeValue = function()
+		{
+			_domValZipcode.innerHTML = _storageEngine.hasKey(_domNptZipcode.value) ?
+				_storageEngine.getItem(_domNptZipcode.value) : "Invalid Zipcode!";
+		};
+
+	_storageEngine.subscribe(_storageEngine.CE_READY, function() {
+		if (5000 > _storageEngine.length) {_storageEngine.clear();}
+		_domBtnZipcode.on("click", _handleFetchZipcode);
+		var kl = new YAHOO.util.KeyListener(_domNptZipcode, {keys: YAHOO.util.KeyListener.KEY.ENTER}, {fn:_handleFetchZipcode});
+		kl.enable();
+	});
+}());
+//-->
+</script>
+
+<!--END SOURCE CODE FOR EXAMPLE =============================== -->
+
+</body></html>

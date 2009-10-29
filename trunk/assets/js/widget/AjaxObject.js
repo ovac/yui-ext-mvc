@@ -83,6 +83,8 @@ var YU = YAHOO.util,
 			ajaxObject._lastRequest.status = -1;
 			ajaxObject._handleFailure(ajaxObject._lastRequest);
 		}
+		
+		ajaxObject._lastRequest.doNotLog = false;
 	});
 }());
 

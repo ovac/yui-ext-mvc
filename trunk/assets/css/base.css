@@ -14,7 +14,7 @@ html body {
 	 *		2) IE verdana
  	 *		3) Other browsers
 	 */
-	font: 62.5% verdana, arial, sans-serif;
+	font: 62.5% "Helvetica Neue",Arial,Helvetica,sans-serif;
 	line-height: 1.6em;
 	text-align: left;
 }
@@ -90,6 +90,11 @@ caption {
 	text-align: center;
 }
 
+code
+{
+	font-weight: bold;
+}
+
 p, fieldset, table {
 	margin-bottom: 1em;
 }
@@ -121,6 +126,64 @@ a:hover, a:active
 {
 	color: #C60E02;
 }
+
+/* STANDARD QUOTES */
+
+code,q { quotes: "\201C" "\201D" "\2018" "\2019"; }
+code:lang(sv),q:lang(sv) { quotes: '\201D' '\201D' '\2019' '\2019'; }
+code:lang(da),q:lang(da) { quotes: '\00BB' '\00AB' '\203A' '\2039'; }
+
+q:before, q:before { content: open-quote; }
+q:after, q:after { content: close-quote; }
+
+/* SAFARI SUPPORT */
+
+code:before,q:before   { content: '\201C'; }
+code:after,q:after    { content: '\201D'; }
+q q:before { content: '\2018'; }
+q q:after  { content: '\2019'; }
+
+/* BLOCKQUOTES */
+
+blockquote * { quotes: none; }
+blockquote > *:before { content: '\201C'; }
+blockquote > *:after  { content: '\201D'; }
+blockquote q:before   { content: '\2018'; }
+blockquote q:after    { content: '\2019'; }
+
+/* LANGUAGE-SPECIFIC QUOTES SAFARI STYLE */
+
+*[lang~='da'] code:before, code[lang~='da']:before,
+*[lang~='da'] q:before, q[lang~='da']:before,
+*[lang~='da'] blockquote > *:before, blockquote[lang~='da'] > *:before { content: '\201E'; }
+
+*[lang~='da'] code:after, code[lang~='da']:after,
+*[lang~='da'] q:after, q[lang~='da']:after,
+*[lang~='da'] blockquote > *:after, blockquote[lang~='da'] > *:after { content: '\201C'; }
+
+*[lang~='da'] code[lang~='da'] code:before,
+*[lang~='da'] q q:before, q[lang~='da'] q:before,
+*[lang~='da'] blockquote q:before, blockquote[lang~='da'] q:before { content: '\2019'; }
+
+*[lang~='da'] code[lang~='da'] code:after,
+*[lang~='da'] q q:after, q[lang~='da'] q:after,
+*[lang~='da'] blockquote q:after, blockquote[lang~='da'] q:after { content: '\2019'; }
+
+*[lang~='sv'] code:before, code[lang~='sv']:before,
+*[lang~='sv'] q:before, q[lang~='sv']:before,
+*[lang~='sv'] blockquote > *:before, blockquote[lang~='sv'] > *:before { content: '\201D'; }
+
+*[lang~='sv'] code:after, code[lang~='sv']:after,
+*[lang~='sv'] q:after, q[lang~='sv']:after,
+*[lang~='sv'] blockquote > *:after, blockquote[lang~='sv'] > *:after { content: '\201D'; }
+
+*[lang~='sv'] code[lang~='sv'] code:before,
+*[lang~='sv'] q q:before, q[lang~='sv'] q:before,
+*[lang~='sv'] blockquote q:before, blockquote[lang~='sv'] q:before { content: '\2019'; }
+
+*[lang~='sv'] code[lang~='sv'] code:after,
+*[lang~='sv'] q q:after,  q[lang~='sv'] q:after,
+*[lang~='sv'] blockquote q:after, blockquote[lang~='sv'] q:after { content: '\2019'; }
 
 /* (en) clearfix method for clearing floats */
 .clearfix:after {
