@@ -45,6 +45,15 @@ var Y = YAHOO.util,
 			this.length = this._keys.length;
 		},
 
+		/*
+		 * Implementation to clear the values from the storage engine.
+		 * @see YAHOO.util.Storage._clear
+		 */
+		_clear: function() {
+			this._keys = [];
+			this.length = 0;
+		},
+
 		/**
 		 * Evaluates if a key exists in the keys array; indexOf does not work in all flavors of IE.
 		 * @method _indexOfKey
@@ -56,18 +65,25 @@ var Y = YAHOO.util,
 			return undefined === i ? -1 : i;
 		},
 
+		/*
+		 * Implementation to fetch a key from the storage engine.
+		 * @see YAHOO.util.Storage.key
+		 */
+		_key: function(index) {return this._keys[index];},
+
 		/**
 		 * Removes a key from the keys array.
-		 * @method _removeKey
+		 * @method _removeItem
 		 * @param key {String} Required. The key to remove.
 		 * @protected
 		 */
-		_removeKey: function(key) {
+		_removeItem: function(key) {
 			var j = this._indexOfKey(key),
 				rest = this._keys.slice(j + 1);
 
 			delete this._keyMap[key];
 
+			// update values in keymap that are greater than current position
 			for (var k in this._keyMap) {
 				if (j < this._keyMap[k]) {
 					this._keyMap[k] -= 1;

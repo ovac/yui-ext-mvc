@@ -19,7 +19,6 @@
 (function() {
 	// internal shorthand
 var Y = YAHOO.util,
-	YC = Y.Cookie,
 	YL = YAHOO.lang,
 
 	// constants
@@ -28,7 +27,7 @@ var Y = YAHOO.util,
 	MAX_COOKIE_SIZE = 20,
 
 	// local variables
-	_driver = document.cookie;
+	_driver = Y.Cookie,
 
 	/**
 	 * The StorageEngineCookie class implements a Cookie based storage engine.
@@ -39,11 +38,11 @@ var Y = YAHOO.util,
 	 * @param location {String} Required. The storage location.
 	 * @param conf {Object} Required. A configuration object.
 	 */
-	Y.StorageEngineCookie = function(location, conf) {
+	_F = function(location, conf) {
 		var _this = this, cookies;
-		Y.StorageEngineCookie.superclass.constructor.call(_this, location, Y.StorageEngineCookie.ENGINE_NAME, conf);
+		_F.superclass.constructor.call(_this, location, _F.ENGINE_NAME, conf);
 
-		cookies = YC.getSubs(COOKIE_PREFIX + location);
+		cookies = _driver.getSubs(COOKIE_PREFIX + location);
 
 		if (cookies) {
 			for (var k in cookies) {
@@ -53,22 +52,20 @@ var Y = YAHOO.util,
 			}
 		}
 
-		_this.length = _this._keys.length;
 		YL.later(250, _this, function() { // temporary solution so that CE_READY can be subscribed to after this object is created
 			_this.fireEvent(_this.CE_READY);
 		});
 	};
 
-	YL.extend(Y.StorageEngineCookie, Y.StorageEngineKeyed, {
+	YL.extend(_F, Y.StorageEngineKeyed, {
 
 		/*
 		 * Implementation to clear the values from the storage engine.
 		 * @see YAHOO.util.Storage._clear
 		 */
 		_clear: function() {
-			YC.setSubs(COOKIE_PREFIX + this._location, {});
-			this._keys = [];
-			this.length = 0;
+			_F.superclass._clear.call(this);
+			_driver.setSubs(COOKIE_PREFIX + this._location, {});
 		},
 
 		/*
@@ -76,23 +73,17 @@ var Y = YAHOO.util,
 		 * @see YAHOO.util.Storage._getItem
 		 */
 		_getItem: function(key) {
-			var value = YC.getSub(COOKIE_PREFIX + this._location, key);
+			var value = _driver.getSub(COOKIE_PREFIX + this._location, key);
 			return value ? decodeURIComponent(value) : null;
 		},
-
-		/*
-		 * Implementation to fetch a key from the storage engine.
-		 * @see YAHOO.util.Storage.key
-		 */
-		_key: function(index) {return this._keys[index];},
 
 		/*
 		 * Implementation to remove an item from the storage engine.
 		 * @see YAHOO.util.Storage._removeItem
 		 */
 		_removeItem: function(key) {
-			YC.removeSub(COOKIE_PREFIX + this._location, key);
-			this._removeKey(key);
+			_F.superclass._removeItem.call(this, key);
+			_driver.removeSub(COOKIE_PREFIX + this._location, key);
 		},
 
 		/*
@@ -104,7 +95,7 @@ var Y = YAHOO.util,
 				this._addKey(key);
 			}
 
-			if (MAX_BYTE_SIZE < (encodeURIComponent('&' + key + '=' + data) + YC.get(COOKIE_PREFIX + this._location)).length) {
+			if (MAX_BYTE_SIZE < (encodeURIComponent('&' + key + '=' + data) + _driver.get(COOKIE_PREFIX + this._location)).length) {
 				return false;
 			}
 
@@ -116,31 +107,30 @@ var Y = YAHOO.util,
 				options.expires=date;
 			}
 			
-			YC.setSub(COOKIE_PREFIX + this._location, key, data, options);
+			_driver.setSub(COOKIE_PREFIX + this._location, key, data, options);
 			return true;
 		}
 	});
 
-	Y.StorageEngineCookie.ENGINE_NAME = 'cookie';
-	Y.StorageEngineCookie.isAvailable = function() {
-		var testName = 'YAHOO.util.Cookie',
-			testValue = 'test',
-			numberOfCookies;
+	_F.ENGINE_NAME = 'cookie';
+	_F.isAvailable = function() {
+		var testName = 'YAHOO.util.Cookie', testValue = 'test', numberOfCookies;
 
-		if (navigator && ! navigator.cookieEnabled) {return false;} // navigator tells us no
-		numberOfCookies = ('' + _driver).split(';').length;
+		if (window.navigator && ! navigator.cookieEnabled) {return false;} // navigator tells us no
+		numberOfCookies = ('' + document.cookie).split(';').length;
 		if (numberOfCookies) {return numberOfCookies < MAX_COOKIE_SIZE;} // cookies exists, assume enabled
 
-		YC.set(testName, testValue);
+		_driver.set(testName, testValue);
 
 		// evaluate that we can write a cookie, will fail if their are no more cookies as well
-		if (testValue === YC.get(testName)) {
-			YC.remove(testName);
+		if (testValue === _driver.get(testName)) {
+			_driver.remove(testName);
 			return true;
 		}
 
 		return false;
 	};
 
-    Y.StorageManager.register(Y.StorageEngineCookie);
+    Y.StorageManager.register(_F);
+	Y.StorageEngineCookie = _F;
 }());
