@@ -142,7 +142,7 @@
 			var pfx = prefix || 'yui-gen', id;
 
 			do {
-				id = pfx + _YENV.getIdCounter();
+				id = pfx + _YENV.getNextIdCounter();
 			}
 			while (isNotInDOM && document.getElementById(id));
 
@@ -319,11 +319,11 @@
 
 		/**
 		 * Fetches the internal ID counter from YUI, and auto increments it.
-		 * @method getIdCounter
+		 * @method getNextIdCounter
 		 * @return {Number} A number.
 		 * @static
 		 */
-		getIdCounter: function() {
+		getNextIdCounter: function() {
 			return _YENV._id_counter++;
 		}
 	};
