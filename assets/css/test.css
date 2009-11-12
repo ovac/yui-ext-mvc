@@ -1,0 +1,9 @@
+#doc {
+	margin: 0.5em auto;
+	overflow: hidden;
+	width: 94.5em;
+}
+
+#doc textarea {
+	width: 98%;
+}
