@@ -20,6 +20,7 @@ var RX_URL = /^(https?:\/\/)?(([\w!~*'().&=+$%-]+: )?[\w!~*'().&=+$%-]+@)?(([0-9
  */
 function Aws() {
 	Aws.superclass.constructor.apply(this,arguments);
+	Y.io.transport({src:this.get('ioSWFURL') + '?ts=' + new Date().valueOf().toString()});
 }
 
 Y.mix(Aws, {
@@ -45,6 +46,19 @@ Y.mix(Aws, {
 		 */
 		awsSignedUrl: {
 			value : '/getAWSSignedUrl.php',
+			validator : function (val) {
+				return this._validateUrl(val);
+			}
+		},
+
+		/**
+		 * @attribute ioSWFURL
+		 * @type String
+		 * @default '/assets/files/io.swf'
+		 * @description The URL to fetch the XDR IO SWF.
+		 */
+		ioSWFURL: {
+			value : '/assets/files/io.swf',
 			validator : function (val) {
 				return this._validateUrl(val);
 			}
@@ -126,7 +140,7 @@ Y.extend(Aws, Y.Base, {
 				responseGroup = this.get('responseGroup'),
 				context = ctx || this;
 
-			if (_timer) {_timer.halt();}
+			if (_timer) {_timer.cancel();}
 
 			// build URL to fetch AWS URL
 			if (-1 === url.indexOf('?')) {url += '?';}
@@ -182,7 +196,6 @@ Y.extend(Aws, Y.Base, {
 Y.on('io:xdrReady', function() {
 	_isReady = true;
 }, this);
-Y.io.transport({src:'/assets/file/io.swf?ts=' + new Date().valueOf().toString()});
 
 Y.Aws = Aws;
 }, {requires: ['io-base', 'io-xdr', 'json-parse', 'collection', 'dataschema', 'datatype-xml']});

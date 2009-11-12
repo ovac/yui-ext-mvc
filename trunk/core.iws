@@ -3,13 +3,16 @@
   <component name="ChangeListManager" verified="true">
     <list default="true" readonly="true" id="c1df7342-9b06-4bd7-bb4f-9a922d9401bc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core.iws" afterPath="$PROJECT_DIR$/core.iws" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_zipcode_ca.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/test_storageUtilityForCaZipcodes.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/widget/AjaxObject.js" afterPath="$PROJECT_DIR$/assets/js/widget/AjaxObject.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/swfstore.swf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js" afterPath="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/files/io.swf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/files" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-3-ext/form.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-3-ext/formErrorManager.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/test_aws.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/css/base.css" afterPath="$PROJECT_DIR$/assets/css/base.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core.ipr" afterPath="$PROJECT_DIR$/core.ipr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/datastore.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/test_formErrorManager.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/css/test.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/test_number.html" />
     </list>
     <ignored path="core.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -77,145 +80,73 @@
   <component name="FileColors" enabled="false" enabledForTabs="false" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="StorageEngineKeyed.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineKeyed.js">
+      <file leaf-file-name="test_number.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/test_number.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="86" column="34" selection-start="2126" selection-end="2126" vertical-scroll-proportion="0.0">
+            <state line="23" column="9" selection-start="1044" selection-end="1044" vertical-scroll-proportion="-0.6818182">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_storageUtilityForCaZipcodes.html" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/test/test_storageUtilityForCaZipcodes.html">
+      <file leaf-file-name="test_formErrorManager.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/test_formErrorManager.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="110" column="59" selection-start="3695" selection-end="3695" vertical-scroll-proportion="2.8896673">
+            <state line="24" column="49" selection-start="667" selection-end="667" vertical-scroll-proportion="-0.13636364">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_zipcode_ca.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test_zipcode_ca.php">
+      <file leaf-file-name="form.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/form.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="994" column="7" selection-start="28513" selection-end="28518" vertical-scroll-proportion="-19.09091">
+            <state line="51" column="10" selection-start="991" selection-end="1128" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StorageManager.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageManager.js">
+      <file leaf-file-name="aws.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="31" selection-start="35" selection-end="36" vertical-scroll-proportion="0.0">
+            <state line="134" column="4" selection-start="3513" selection-end="5318" vertical-scroll-proportion="-6.6">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Storage.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/Storage.js">
+      <file leaf-file-name="aws-json.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-json.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="214" column="20" selection-start="5629" selection-end="5629" vertical-scroll-proportion="0.0">
+            <state line="253" column="4" selection-start="10056" selection-end="10415" vertical-scroll-proportion="-46.08">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_storageCookie.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/test_storageCookie.html">
+      <file leaf-file-name="test_aws.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/test_aws.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="295" column="27" selection-start="10393" selection-end="10412" vertical-scroll-proportion="0.0">
+            <state line="125" column="21" selection-start="5233" selection-end="5233" vertical-scroll-proportion="0.1821366">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StorageEngineCookie.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineCookie.js">
+      <file leaf-file-name="getAWSSignedUrl.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/getAWSSignedUrl.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="134" column="31" selection-start="3865" selection-end="3865" vertical-scroll-proportion="0.0">
+            <state line="0" column="5" selection-start="5" selection-end="5" vertical-scroll-proportion="-0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StorageEngineGears.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineGears.js">
+      <file leaf-file-name="test.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/css/test.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="191" column="34" selection-start="5755" selection-end="5783" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StorageEngineSWF.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineSWF.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="172" column="28" selection-start="4822" selection-end="4822" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StorageEngineHTML5.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineHTML5.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="109" selection-start="1112" selection-end="1112" vertical-scroll-proportion="15.6">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_ajaxObject.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/test_ajaxObject.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="298" column="14" selection-start="9105" selection-end="9105" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_xml.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test_xml.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="0" selection-start="313" selection-end="313" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dom.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/dom.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="3" selection-start="174" selection-end="174" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="object.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/native-ext/object.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="119" column="38" selection-start="3687" selection-end="3687" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="storage.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/storage.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="208" column="43" selection-start="8577" selection-end="8577" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="layout.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/css/layout.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="15" selection-start="0" selection-end="5593" vertical-scroll-proportion="0.0">
+            <state line="7" column="13" selection-start="92" selection-end="92" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -224,25 +155,7 @@
       <file leaf-file-name="base.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/css/base.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="108" column="0" selection-start="1127" selection-end="1127" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="general.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/css/general.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="16" selection-start="133" selection-end="133" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="reset.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/css/reset.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="57" column="24" selection-start="1257" selection-end="1257" vertical-scroll-proportion="0.0">
+            <state line="260" column="16" selection-start="4607" selection-end="4607" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -258,20 +171,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/assets/js/widget/CheckboxList_Y3.js" />
-        <option value="$PROJECT_DIR$/assets/js/widget/CheckboxList.js" />
-        <option value="$PROJECT_DIR$/test/test_formCheckboxListWidget.html" />
-        <option value="$PROJECT_DIR$/assets/css/reset.css" />
-        <option value="$PROJECT_DIR$/assets/css/base.css" />
-        <option value="$PROJECT_DIR$/assets/css/general.css" />
-        <option value="$PROJECT_DIR$/build.xml" />
-        <option value="$PROJECT_DIR$/tests/testvalues.js" />
-        <option value="$PROJECT_DIR$/tests/storage.html" />
-        <option value="$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineCookie.js" />
-        <option value="$PROJECT_DIR$/test/test_storageCookie.html" />
-        <option value="$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineHTML5.js" />
         <option value="$PROJECT_DIR$/test_zipcode_ca.php" />
         <option value="$PROJECT_DIR$/test/test_storageUtilityForCaZipcodes.html" />
+        <option value="$PROJECT_DIR$/test/test_number.html" />
+        <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/number.js" />
+        <option value="$PROJECT_DIR$/assets/js/yahoo-ext/lang.js" />
+        <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/formErrorManager.js" />
+        <option value="$PROJECT_DIR$/test/test_formErrorManager.html" />
+        <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/form.js" />
+        <option value="$PROJECT_DIR$/assets/js/yahoo-ext/formElementSerializer.js" />
+        <option value="$PROJECT_DIR$/assets/css/base.css" />
+        <option value="$PROJECT_DIR$/assets/css/test.css" />
+        <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-xml.js" />
+        <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-json.js" />
+        <option value="$PROJECT_DIR$/getAWSSignedUrl.php" />
+        <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js" />
+        <option value="$PROJECT_DIR$/test/test_aws.html" />
       </list>
     </option>
   </component>
@@ -316,29 +231,49 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane />
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="Favorites" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="MemberChooser.sorted" value="false" />
     <property name="options.lastSelected" value="preferences.sourceCode.General" />
+    <property name="MemberChooser.sorted" value="false" />
     <property name="last_opened_file_path" value="C:\dev\svn\trunk\modules\web\src\mint\web\view" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="GoToClass.includeJavaFiles" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="GoToClass.includeJavaFiles" value="false" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager">
+    <configuration default="true" type="PhpRunConfigurationType" factoryName="PHP" break_at_first_line="false" browser="DEFAULT" open_page_automatically="true" session_id="" session_after_first_page="false" web_path="">
+      <option name="mappings">
+        <list />
+      </option>
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" class_file="" class="" directory="" file="" method_file="" method="" scope="Class">
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -348,6 +283,14 @@
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" air_descriptor_path="" air_program_params="" air_publisher_id="" air_root_dir_path="" class_name="" html_or_swf_file_path="" main_class_name="" method_name="" module_name="" output_log_level="" package_name="" port="0" run_mode="HtmlOrSwfFile" scope="Class" socket_policy_port="0" url_to_launch="http://">
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
@@ -481,6 +424,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+      <changelist id="c1df7342-9b06-4bd7-bb4f-9a922d9401bc" name="Default" comment="" />
       <created>1256844695453</created>
       <updated>1256844695453</updated>
     </task>
@@ -506,11 +450,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-4" width="1288" height="778" extended-state="0" />
+    <frame x="1" y="1" width="1278" height="769" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32897958" sideWeight="0.5" order="3" side_tool="false" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
+      <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32869992" sideWeight="0.5" order="3" side_tool="false" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924962" sideWeight="0.5" order="8" side_tool="false" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2489796" sideWeight="0.6646248" order="1" side_tool="false" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" />
@@ -520,13 +464,13 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32951757" sideWeight="0.5" order="5" side_tool="false" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30656934" sideWeight="0.66096425" order="0" side_tool="false" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30662307" sideWeight="0.66096425" order="0" side_tool="false" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32" sideWeight="0.5" order="1" side_tool="false" />
-      <window_info id="Tapestry" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31852987" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" />
+      <window_info id="Tapestry" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3281493" sideWeight="0.5" order="11" side_tool="false" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" />
       <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" />
@@ -614,226 +558,138 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test/test_ajaxObject.html">
+    <entry file="file://$PROJECT_DIR$/assets/js/widget/CheckboxList_Y3.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="298" column="14" selection-start="9105" selection-end="9105" vertical-scroll-proportion="0.0">
+        <state line="239" column="7" selection-start="4780" selection-end="4802" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-2.8/swfdetect.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="16" selection-start="219" selection-end="219" vertical-scroll-proportion="0.23923445" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/form.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="10" selection-start="991" selection-end="1128" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_xml.xml">
+    <entry file="file://$PROJECT_DIR$/test/test_formErrorManager.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="313" selection-end="313" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/dom.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="3" selection-start="174" selection-end="174" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/native-ext/object.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="119" column="38" selection-start="3687" selection-end="3687" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/storage.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="208" column="43" selection-start="8577" selection-end="8577" vertical-scroll-proportion="0.0">
+        <state line="24" column="49" selection-start="667" selection-end="667" vertical-scroll-proportion="-0.13636364">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/css/layout.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="15" selection-start="0" selection-end="5593" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/css/base.css">
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/formElementSerializer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="108" column="0" selection-start="1127" selection-end="1127" vertical-scroll-proportion="0.0">
+        <state line="92" column="30" selection-start="3282" selection-end="3296" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/css/general.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="16" selection-start="133" selection-end="133" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/css/reset.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="24" selection-start="1257" selection-end="1257" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/event.js">
-      <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageManager.js">
+    <entry file="file://$PROJECT_DIR$/assets/css/base.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="31" selection-start="35" selection-end="36" vertical-scroll-proportion="0.0">
+        <state line="260" column="16" selection-start="4607" selection-end="4607" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/StorageEngineHTML5.js">
+    <entry file="file://$PROJECT_DIR$/assets/css/test.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="109" selection-start="1112" selection-end="1112" vertical-scroll-proportion="15.6">
+        <state line="7" column="13" selection-start="92" selection-end="92" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/YUIDataStorage/Storage.js">
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/formErrorManager.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="214" column="20" selection-start="5629" selection-end="5629" vertical-scroll-proportion="0.0">
+        <state line="123" column="42" selection-start="2678" selection-end="3041" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_number.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="9" selection-start="1044" selection-end="1044" vertical-scroll-proportion="-0.6818182">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/thirdparty/gears_init.js">
+    <entry file="file://$PROJECT_DIR$/getAWSSignedUrl.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="0" column="5" selection-start="5" selection-end="5" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_zipcode_ca.php">
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="994" column="7" selection-start="28513" selection-end="28518" vertical-scroll-proportion="-19.09091">
+        <state line="134" column="4" selection-start="3513" selection-end="5318" vertical-scroll-proportion="-6.6">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_storageUtilityForCaZipcodes.html">
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-json.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="110" column="59" selection-start="3695" selection-end="3695" vertical-scroll-proportion="2.8896673">
+        <state line="253" column="4" selection-start="10056" selection-end="10415" vertical-scroll-proportion="-46.08">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_aws.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="125" column="21" selection-start="5233" selection-end="5233" vertical-scroll-proportion="0.1821366">
           <folding />
         </state>
       </provider>
     </entry>
   </component>
   <component name="masterDetails">
-    <option name="states">
-      <map>
-        <entry key="Copyright.UI">
-          <value>
-            <UIState>
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <UIState>
+          <splitter-proportions>
+            <SplitterProportionsDataImpl>
               <option name="proportions">
-                <SplitterProportionsDataImpl />
+                <list>
+                  <option value="0.2" />
+                </list>
               </option>
-            </UIState>
-          </value>
-        </entry>
-        <entry key="Errors.UI">
-          <value>
-            <UIState>
-              <option name="proportions">
-                <SplitterProportionsDataImpl />
-              </option>
-            </UIState>
-          </value>
-        </entry>
-        <entry key="ProjectJDKs.UI">
-          <value>
-            <UIState>
-              <option name="proportions">
-                <SplitterProportionsDataImpl>
-                  <option name="proportions">
-                    <list>
-                      <option value="0.2" />
-                    </list>
-                  </option>
-                </SplitterProportionsDataImpl>
-              </option>
-              <option name="lastEditedConfigurable" value="1.5" />
-            </UIState>
-          </value>
-        </entry>
-        <entry key="ScopeChooserConfigurable.UI">
-          <value>
-            <UIState>
-              <option name="proportions">
-                <SplitterProportionsDataImpl>
-                  <option name="proportions">
-                    <list>
-                      <option value="0.2" />
-                    </list>
-                  </option>
-                </SplitterProportionsDataImpl>
-              </option>
-            </UIState>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="myStates">
-      <map>
-        <entry key="Copyright.UI">
-          <value>
-            <UIState>
-              <option name="proportions">
-                <SplitterProportionsDataImpl />
-              </option>
-            </UIState>
-          </value>
-        </entry>
-        <entry key="Errors.UI">
-          <value>
-            <UIState>
-              <option name="proportions">
-                <SplitterProportionsDataImpl />
-              </option>
-            </UIState>
-          </value>
-        </entry>
-        <entry key="ProjectJDKs.UI">
-          <value>
-            <UIState>
-              <option name="proportions">
-                <SplitterProportionsDataImpl>
-                  <option name="proportions">
-                    <list>
-                      <option value="0.2" />
-                    </list>
-                  </option>
-                </SplitterProportionsDataImpl>
-              </option>
-              <option name="lastEditedConfigurable" value="1.5" />
-            </UIState>
-          </value>
-        </entry>
-        <entry key="ScopeChooserConfigurable.UI">
-          <value>
-            <UIState>
-              <option name="proportions">
-                <SplitterProportionsDataImpl>
-                  <option name="proportions">
-                    <list>
-                      <option value="0.2" />
-                    </list>
-                  </option>
-                </SplitterProportionsDataImpl>
-              </option>
-            </UIState>
-          </value>
-        </entry>
-      </map>
-    </option>
+            </SplitterProportionsDataImpl>
+          </splitter-proportions>
+          <settings />
+        </UIState>
+      </state>
+      <state key="Copyright.UI">
+        <UIState>
+          <splitter-proportions>
+            <SplitterProportionsDataImpl />
+          </splitter-proportions>
+        </UIState>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <UIState>
+          <splitter-proportions>
+            <SplitterProportionsDataImpl />
+          </splitter-proportions>
+          <settings />
+        </UIState>
+      </state>
+    </states>
   </component>
 </project>
 

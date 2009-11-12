@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+    <title>Test Page - Amazon Web Services (AWS)</title>
+
+	<link href="/assets/css/reset.css" type="text/css" rel="stylesheet"/>
+	<link href="/assets/css/base.css" type="text/css" rel="stylesheet"/>
+	<link href="/assets/css/general.css" type="text/css" rel="stylesheet"/>
+	<link href="/assets/css/test.css" type="text/css" rel="stylesheet"/>
+
+	<style type="text/css">
+    </style>
+</head>
+
+<body id="project"><div id="doc">
+
+	<h1>Test Page - Amazon Web Services (AWS)</h1>
+
+	<p>.</p>
+
+	<div id="content">
+		<div id="form-aws"><form action="#" method="post" title="the form 1 is submitted"><fieldset>
+			<legend>AWS UPC Form</legend>
+			<dl>
+				<dt><label for="form-aws-upc">UPC:</label></dt>
+				<dd><input id="form-aws-upc" type="text" tabindex="1" name="username" class="txt"/></dd>
+				<dt><label for="form-aws-responseGroup">ResponseGroup:</label></dt>
+				<dd><select id="form-aws-responseGroup" tabindex="2" name="responseGroup">
+					<option value="Request">Request</option>
+					<option value="ItemIds">ItemIds</option>
+					<option value="Small" selected="selected">Small</option>
+					<option value="Medium">Medium</option>
+					<option value="Large">Large</option>
+					<option value="Offers">Offers</option>
+					<option value="OfferFull">OfferFull</option>
+					<option value="OfferSummary">OfferSummary</option>
+					<option value="OfferListings">OfferListings</option>
+					<option value="PromotionSummary">PromotionSummary</option>
+					<option value="PromotionDetails">PromotionDetails</option>
+					<option value="Variations">Variations</option>
+					<option value="VariationImages">VariationImages</option>
+					<option value="VariationMinimum">VariationMinimum</option>
+					<option value="VariationSummary">VariationSummary</option>
+					<option value="TagsSummary">TagsSummary</option>
+					<option value="Tags">Tags</option>
+					<option value="VariationMatrix">VariationMatrix</option>
+					<option value="VariationOffers">VariationOffers</option>
+					<option value="ItemAttributes">ItemAttributes</option>
+					<option value="MerchantItemAttributes">MerchantItemAttributes</option>
+					<option value="Tracks">Tracks</option>
+					<option value="Accessories">Accessories</option>
+					<option value="EditorialReview">EditorialReview</option>
+					<option value="SalesRank">SalesRank</option>
+					<option value="BrowseNodes">BrowseNodes</option>
+					<option value="Images">Images</option>
+					<option value="Similarities">Similarities</option>
+					<option value="Subjects">Subjects</option>
+					<option value="Reviews">Reviews</option>
+					<option value="ListmaniaLists">ListmaniaLists</option>
+					<option value="SearchInside">SearchInside</option>
+					<option value="PromotionalTag">PromotionalTag</option>
+					<option value="AlternateVersions">AlternateVersions</option>
+					<option value="Collections">Collections</option>
+					<option value="ShippingCharges">ShippingCharges</option>
+					<option value="RelatedItems">RelatedItems</option>
+				</select></dd>
+				<dt><label>ResponseType</label></dt>
+				<dd><select id="form-aws-responseType">
+					<option value="json">json</option>
+					<option value="xml" selected="selected">xml</option>
+				</select></dd>
+				<dt><label>Operation</label></dt>
+				<dd><select id="form-aws-operation">
+					<option value="ItemLookup" selected="selected">ItemLookup</option>
+					<option value="ItemSearch">ItemSearch</option>
+					<option value="ListLookup">ListLookup</option>
+					<option value="SimilarityLookup">SimilarityLookup</option>
+				</select></dd>
+				<dd class="buttons">
+					<input id="form-aws-submit" name="submit" tabindex="3" type="submit" value="submit"/>
+				</dd>
+			</dl>
+		</fieldset></form></div>
+
+		<textarea id="form-aws-results" rows="10" cols="60"></textarea>
+
+	</div>
+
+	<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js" type="text/javascript"></script>
+	<script type="text/javascript">YUI({
+		filter:'raw',
+		combine: true,
+		timeout: 10000,
+		modules: {
+			'gallery-aws': {
+//				fullpath: 'http://yui.yahooapis.com/gallery-2009.11.02-20/build/gallery-form/gallery-form.js',
+				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/aws.js',
+				requires: ['io-base', 'io-xdr', 'json-parse', 'collection', 'dataschema', 'datatype-xml'],
+				optional: [],
+				supersedes: []
+			},
+			'gallery-aws-json': {
+				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/aws-json.js',
+				requires: ['oop', 'datatype-json', 'gallery-aws'],
+				optional: [],
+				supersedes: []
+			}
+		}
+	}).use('node', 'json-stringify', 'gallery-aws', 'gallery-aws-json', function(Y) {
+		var results = Y.one('#form-aws-results'),
+			responseGroup = Y.one('#form-aws-responseGroup')._node,
+			responseType = Y.one('#form-aws-responseType')._node,
+			operation = Y.one('#form-aws-operation')._node,
+			upc = Y.one('#form-aws-upc');
+
+		function _getSelectedValue(node) {
+			return node.options[node.selectedIndex].value;
+		}
+
+		Y.one('#form-aws form').on('submit', function(e) {
+			e.halt();
+			var aws = new Y.Aws({
+				responseGroup: _getSelectedValue(responseGroup),
+				operation: _getSelectedValue(operation)
+			}), data;
+
+			switch (_getSelectedValue(operation)) {
+				case 'ItemLookup':
+				case 'SimilarityLookup':
+					data = {ItemId:upc.get('value'), IdType: 'UPC'};
+				break;
+				case 'ItemSearch':
+					data = {Keywords:upc.get('value')};
+				break;
+				default:
+					alert('Operation not yet supported');
+					return;
+			}
+
+			if ('xml' == _getSelectedValue(responseType)) {
+				aws.getXML(data, function(id, o) {
+					results.set('value', Y.DataType.XML.format(o.responseXML));
+				});
+			}
+			else {
+				aws.getJSON(data, function(id, o) {
+					results.set('value', Y.JSON.stringify(o.responseJSON));
+				});
+			}
+		});
+	});</script>
+</div></body>
+</html>

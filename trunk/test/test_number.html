@@ -1,0 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Storage Utility Zipcode Test Page</title>
+
+	<!--
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/fonts/fonts-min.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css">
+-->
+<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js" type="text/javascript"></script>
+
+<!--end custom header content for this example-->
+
+</head><body class="yui-skin-sam">
+
+<script type="text/javascript">
+YUI({combine: true, timeout: 10000, modules: {
+        'gallery-number': {
+            fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/number.js',
+//            fullpath: 'http://yui.yahooapis.com/gallery-2009.10.27/build/gallery-accordion/gallery-accordion-min.js',
+            requires: [],
+            optional: [],
+            supersedes: []
+        }
+    }
+}).use("node", "console", "test", "gallery-number", function (Y) {
+
+    Y.namespace("example.test");
+
+    Y.example.test.GalleryNumberTestCase = new Y.Test.Case({
+
+        //the name of the test case - if not provided, one is automatically generated
+        name: "Gallery Number Tests",
+
+        /*
+         * Specifies tests that "should" be doing something other than the expected.
+         */
+        _should: {
+
+            /*
+             * Tests listed in here should fail, meaning that if they fail, the test
+             * has passed. This is used mostly for YuiTest to test itself, but may
+             * be helpful in other cases.
+             */
+            fail: {
+
+                //the test named "testFail" should fail
+                testFail: false
+
+            },
+
+            /*
+             * Tests listed here should throw an error of some sort. If they throw an
+             * error, then they are considered to have passed.
+             */
+            error: {
+
+                /*
+                 * You can specify "true" for each test, in which case any error will
+                 * cause the test to pass.
+                 */
+                testGenericError: true,
+
+                /*
+                 * You can specify an error message, in which case the test passes only
+                 * if the error thrown matches the given message.
+                 */
+                testStringError: "I'm a specific error message.",
+                testStringError2: "I'm a specific error message.",
+
+                /*
+                 * You can also specify an error object, in which case the test passes only
+                 * if the error thrown is on the same type and has the same message.
+                 */
+                testObjectError: new TypeError("Number expected."),
+                testObjectError2: new TypeError("Number expected."),
+                testObjectError3: new TypeError("Number expected.")
+
+            },
+
+            /*
+             * Tests listed here should be ignored when the test case is run. For these tests,
+             * setUp() and tearDown() are not called.
+             */
+            ignore : {
+
+                testIgnore: true
+
+            }
+        },
+
+        //-------------------------------------------------------------------------
+        // Basic tests - all method names must begin with "test"
+        //-------------------------------------------------------------------------
+
+        testAbs : function() {
+			Y.Assert.areEqual(0, Y.Number.abs(0));
+            Y.Assert.areEqual(1, Y.Number.abs(1));
+            Y.Assert.areEqual(1, Y.Number.abs(-1));
+            Y.Assert.areEqual(1.0001, Y.Number.abs(1.0001));
+            Y.Assert.areEqual(1.0001, Y.Number.abs(-1.0001));
+            Y.Assert.areEqual(228.01, Y.Number.abs(15.1 * 15.1));
+			Y.Assert.isNaN(Y.Number.abs('asdf'));
+        },
+
+        testCeil : function() {
+			Y.Assert.areEqual(0, Y.Number.ceil(0));
+			Y.Assert.areEqual(1, Y.Number.ceil(0.1));
+			Y.Assert.areEqual(-1, Y.Number.ceil(-1.1));
+            Y.Assert.areEqual(2, Y.Number.ceil(1.0001));
+            Y.Assert.areEqual(-1, Y.Number.ceil(-1.0001));
+            Y.Assert.areEqual(229, Y.Number.ceil(15.1 * 15.1));
+			Y.Assert.isNaN(Y.Number.ceil('asdf'));
+        },
+
+        testFloor : function() {
+			Y.Assert.areEqual(0, Y.Number.floor(0));
+			Y.Assert.areEqual(0, Y.Number.floor(0.1));
+			Y.Assert.areEqual(-2, Y.Number.floor(-1.1));
+            Y.Assert.areEqual(1, Y.Number.floor(1.0001));
+            Y.Assert.areEqual(-2, Y.Number.floor(-1.0001));
+            Y.Assert.areEqual(228, Y.Number.floor(15.1 * 15.1));
+			Y.Assert.isNaN(Y.Number.floor('asdf'));
+        },
+
+		testFormat : function() {
+			Y.Assert.areEqual('0', Y.Number.format(0, '0'));
+			Y.Assert.areEqual('0.00', Y.Number.format(0));
+			Y.Assert.areEqual('0.01', Y.Number.format(0.011));
+			Y.Assert.areEqual('1000', Y.Number.format(1000, '0'));
+			Y.Assert.areEqual('1,000', Y.Number.format(1000, '0,0'));
+			Y.Assert.areEqual('1,000.00', Y.Number.format(1000));
+			Y.Assert.areEqual('10,000,000.00', Y.Number.format(10000000));
+			Y.Assert.areEqual('$1,000', Y.Number.format(1000, '$0,0'));
+		},
+
+		testGetPrecision: function() {
+			Y.Assert.areEqual(0, Y.Number.getPrecision(0));
+			Y.Assert.areEqual(0, Y.Number.getPrecision(1000));
+			Y.Assert.areEqual(2, Y.Number.getPrecision(1000.01));
+			Y.Assert.areEqual(4, Y.Number.getPrecision(1000.0001));
+			Y.Assert.areEqual(8, Y.Number.getPrecision(1000.00000001));
+			Y.Assert.isNaN(Y.Number.getPrecision('asdf'));
+		},
+
+		testIsBetween: function() {
+			Y.Assert.isTrue(Y.Number.isBetween(1, 0, 2), '1');
+			Y.Assert.isTrue(Y.Number.isBetween(0, 0, 2, true), '2');
+			Y.Assert.isTrue(Y.Number.isBetween(2, 0, 2, true), '3');
+			Y.Assert.isTrue(Y.Number.isBetween(-1, -0, -2), '4');
+			Y.Assert.isTrue(Y.Number.isBetween(-0, 0, -2, true), '5');
+			Y.Assert.isTrue(Y.Number.isBetween(-2, 0, -2, true), '6');
+			Y.Assert.isTrue(Y.Number.isBetween(-1.1, -1, -2), '7');
+			Y.Assert.isTrue(Y.Number.isBetween(1.1, 1, 2), '8');
+			Y.Assert.isFalse(Y.Number.isBetween(1, 1, 2), '9');
+			Y.Assert.isFalse(Y.Number.isBetween(-1, -1, -2), '10');
+		},
+
+		testIsNotBetween: function() {
+			Y.Assert.isTrue(Y.Number.isNotBetween(0, 0, 2), '1');
+			Y.Assert.isFalse(Y.Number.isNotBetween(0, 0, 2, true), '2');
+			Y.Assert.isFalse(Y.Number.isNotBetween(2, 0, 2, true), '3');
+			Y.Assert.isTrue(Y.Number.isNotBetween(-2, -0, -2), '4');
+			Y.Assert.isFalse(Y.Number.isNotBetween(-0, 0, -2, true), '5');
+			Y.Assert.isFalse(Y.Number.isNotBetween(-2, 0, -2, true), '6');
+			Y.Assert.isTrue(Y.Number.isNotBetween(-0.1, -1, -2), '7');
+			Y.Assert.isTrue(Y.Number.isNotBetween(0.1, 1, 2), '8');
+			Y.Assert.isTrue(Y.Number.isNotBetween(1, 1, 2), '9');
+			Y.Assert.isTrue(Y.Number.isNotBetween(-1, -1, -2), '10');
+		},
+
+		testRandom: function() {
+			Y.Assert.isTrue(Y.Number.isBetween(Y.Number.random(0), 0, 1, true));
+			Y.Assert.isTrue(Y.Number.isBetween(Y.Number.random(1), 0, 1, true));
+			Y.Assert.areEqual(100, Y.Number.random(100, 100));
+			Y.Assert.isTrue(Y.Number.isBetween(Y.Number.random(100, 50), 50, 100, true));
+			Y.Assert.isTrue(Y.Number.isBetween(Y.Number.random(-100, -50), -50, -100, true));
+		},
+
+        testRound : function() {
+			Y.Assert.areEqual(0, Y.Number.round(0));
+			Y.Assert.areEqual(0, Y.Number.round(0.1));
+			Y.Assert.areEqual(1, Y.Number.round(0.5));
+			Y.Assert.areEqual(-1, Y.Number.round(-1.1));
+			Y.Assert.areEqual(-2, Y.Number.round(-1.51));
+            Y.Assert.areEqual(1, Y.Number.round(1.0001));
+            Y.Assert.areEqual(-1, Y.Number.round(-1.0001));
+            Y.Assert.areEqual(228, Y.Number.round(15.1 * 15.1));
+			Y.Assert.isNaN(Y.Number.round('asdf'));
+        },
+
+		testRoundToPrecision: function() {
+			Y.Assert.areEqual(1, Y.Number.roundToPrecision(0));
+			Y.Assert.areEqual(1, Y.Number.roundToPrecision(-10));
+			Y.Assert.areEqual(10, Y.Number.roundToPrecision(2));
+			Y.Assert.areEqual(20, Y.Number.roundToPrecision(11));
+			Y.Assert.areEqual(2, Y.Number.roundToPrecision(2, 1));
+			Y.Assert.areEqual(11, Y.Number.roundToPrecision(11, 1));
+			Y.Assert.areEqual(100, Y.Number.roundToPrecision(11, 100));
+			Y.Assert.areEqual(1200, Y.Number.roundToPrecision(1111, 100));
+		},
+
+        testSqrt : function() {
+			Y.Assert.areEqual(0, Y.Number.sqrt(0));
+			Y.Assert.areEqual(2, Y.Number.sqrt(4));
+			Y.Assert.isNaN(Y.Number.sqrt(-16));
+			Y.Assert.isNaN(Y.Number.sqrt('asdf'));
+        }
+
+    });
+
+
+    //create the console
+    var r = new Y.Console({
+        newestOnTop : false,
+        style: 'block' // to anchor in the example content
+    });
+
+    r.render('#testLogger');
+
+    Y.Test.Runner.add(Y.example.test.GalleryNumberTestCase);
+
+    //run the tests
+    Y.Test.Runner.run();
+});
+
+</script>
+
+</body></html>
