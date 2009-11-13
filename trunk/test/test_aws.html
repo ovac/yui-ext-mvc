@@ -83,6 +83,13 @@
 			</dl>
 		</fieldset></form></div>
 
+		<div id="aws-results">
+			<p><label>Title: </label><span id="aws-results-title"></span></p>
+			<p><label>ASIN: </label><span id="aws-results-asin"></span></p>
+			<p><label>Amazon URL: </label><span id="aws-results-url"></span></p>
+			<p><label>AWS URL: </label><span id="aws-results-awsurl"></span></p>
+		</div>
+
 		<textarea id="form-aws-results" rows="10" cols="60"></textarea>
 
 	</div>
@@ -101,7 +108,7 @@
 				supersedes: []
 			},
 			'gallery-aws-json': {
-				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/aws-json.js',
+				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/aws-json.js?r1',
 				requires: ['oop', 'datatype-json', 'gallery-aws'],
 				optional: [],
 				supersedes: []
@@ -112,6 +119,10 @@
 			responseGroup = Y.one('#form-aws-responseGroup')._node,
 			responseType = Y.one('#form-aws-responseType')._node,
 			operation = Y.one('#form-aws-operation')._node,
+			resultTitle = Y.one('#aws-results-title'),
+			resultAsin = Y.one('#aws-results-asin'),
+			resultUrl = Y.one('#aws-results-url'),
+			resultAWSUrl = Y.one('#aws-results-awsurl'),
 			upc = Y.one('#form-aws-upc');
 
 		function _getSelectedValue(node) {
@@ -121,6 +132,7 @@
 		Y.one('#form-aws form').on('submit', function(e) {
 			e.halt();
 			var aws = new Y.Aws({
+				ioSWFURL: '/assets/files/io.swf',
 				responseGroup: _getSelectedValue(responseGroup),
 				operation: _getSelectedValue(operation)
 			}), data;
@@ -137,17 +149,21 @@
 					alert('Operation not yet supported');
 					return;
 			}
+			
+			aws.getJSON(data, function(id, o) {
+				var isXML = 'xml' == _getSelectedValue(responseType),
+					json = o.responseJSON,
+					result = json.results[0];
 
-			if ('xml' == _getSelectedValue(responseType)) {
-				aws.getXML(data, function(id, o) {
-					results.set('value', Y.DataType.XML.format(o.responseXML));
-				});
-			}
-			else {
-				aws.getJSON(data, function(id, o) {
-					results.set('value', Y.JSON.stringify(o.responseJSON));
-				});
-			}
+				results.set('value', isXML ? Y.DataType.XML.format(o.responseXML) : Y.JSON.stringify(o.responseJSON, null, 4));
+				resultAWSUrl.set('href', o.awsURL);
+				resultAWSUrl.set('innerHTML', o.awsURL ? '<a href="' + o.awsURL + '">AWS URL</a>' : '');
+
+				resultUrl.set('href', result ? result.detailPageURL : '');
+				resultUrl.set('innerHTML', result && result.detailPageURL ? '<a href="' + result.detailPageURL + '">Amazon URL</a>' : '');
+				resultTitle.set('innerHTML', result ? result.title : '');
+				resultAsin.set('innerHTML', result ? result.asin : '');
+			});
 		});
 	});</script>
 </div></body>

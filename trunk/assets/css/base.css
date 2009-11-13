@@ -254,10 +254,6 @@ legend {
 	font-weight: bold;
 }
 
-form dl {
-	width: 40em;
-}
-
 form dd.buttons,
 form dt {
 	clear:left;
@@ -266,12 +262,6 @@ form dt {
 form dt label {
 	display: block;
 	width: 8em;
-}
-
-form dt,
-form dd {
-	float: left;
-	height: 2.5em;
 }
 
 /**

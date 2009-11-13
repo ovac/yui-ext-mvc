@@ -7,3 +7,13 @@
 #doc textarea {
 	width: 98%;
 }
+
+form dl {
+	width: 40em;
+}
+
+form dt,
+form dd {
+	float: left;
+	height: 2.5em;
+}
