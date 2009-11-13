@@ -166,6 +166,7 @@ Y.extend(Aws, Y.Base, {
 						// this is intentional, I cannot get "Y.DataSchema.XML" to work with namespaces
 						var responseText = o.responseText.replace(/xmlns=".*?"/, ''), code, msg; // remove the namespace
 						o.responseXML = Y.DataType.XML.parse(responseText); // convert to XML
+						o.awsURL = data.aws_request;
 
 						code = o.responseXML.getElementsByTagName('Code')[0];
 						msg = o.responseXML.getElementsByTagName('Message')[0];

@@ -96,57 +96,57 @@ var META_FIELDS = { // from the Request ResponseGroup
 			resultListLocator: "Item",
 			resultFields: [
 				{key:"asin", locator:'ASIN'},
-				{key:"amazonMaximumAge", locator:'//AmazonMaximumAge'},
-				{key:"amazonMinimumAge ", locator:'//AmazonMinimumAge'},
-				{key:"amazonMaximumAgeUnits", locator:'//AmazonMaximumAge/@Units'},
-				{key:"amazonMinimumAgeUnits ", locator:'//AmazonMinimumAge/@Units'},
-				{key:"batteriesIncluded ", locator:'//BatteriesIncluded'},
-				{key:"binding ", locator:'//Binding'},
-				{key:"brand ", locator:'//Brand'},
-				{key:"ean ", locator:'//EAN'},
-				{key:"edition ", locator:'//Edition'},
-				{key:"esrbAgeRating ", locator:'//ESRBAgeRating'},
-				{key:"genre ", locator:'//Genre'},
-				{key:"hardwarePlatform ", locator:'//HardwarePlatform'},
-				{key:"isAutographed ", locator:'//IsAutographed'},
-				{key:"isMemorabilia ", locator:'//IsMemorabilia'},
-				{key:"height", locator:'//ItemDimensions/Height'},
-				{key:"length", locator:'//ItemDimensions/Length'},
-				{key:"width", locator:'//ItemDimensions/Width'},
-				{key:"weight", locator:'//ItemDimensions/Weight'},
-				{key:"heightUnits", locator:'//ItemDimensions/Height/@Units'},
-				{key:"lengthUnits", locator:'//ItemDimensions/Length/@Units'},
-				{key:"widthUnits", locator:'//ItemDimensions/Width/@Units'},
-				{key:"weightUnits", locator:'//ItemDimensions/Weight/@Units'},
-				{key:"label", locator:'//Label'},
-				{key:"primaryLanguage", locator:'//Language/Name'},
-				{key:"legalDisclaimer", locator:'//LegalDisclaimer'},
-				{key:"listPriceAmount", locator:'//ListPrice/Amount'},
-				{key:"listPriceCurrencyCode", locator:'//ListPrice/CurrencyCode'},
-				{key:"listPriceFormattedPrice", locator:'//ListPrice/FormattedPrice'},
-				{key:"manufacturer", locator:'Manufacturer'},
-				{key:"model", locator:'//Model'},
-				{key:"mpn", locator:'//MPN'},
-				{key:"numberOfItems", locator:'//NumberOfItems'},
-				{key:"operatingSystem", locator:'//OperatingSystem'},
-				{key:"packageHeight", locator:'//PackageDimensions/Height'},
-				{key:"packageLength", locator:'//PackageDimensions/Length'},
-				{key:"packageWidth", locator:'//PackageDimensions/Width'},
-				{key:"packageWeight", locator:'//PackageDimensions/Weight'},
-				{key:"packageHeightUnits", locator:'//PackageDimensions/Height/@Units'},
-				{key:"packageLengthUnits", locator:'//PackageDimensions/Length/@Units'},
-				{key:"packageWidthUnits", locator:'//PackageDimensions/Width/@Units'},
-				{key:"packageWeightUnits", locator:'//PackageDimensions/Weight/@Units'},
-				{key:"packageQuantity", locator:'//PackageQuantity'},
-				{key:"platform", locator:'//Platform'},
-				{key:"productGroup", locator:'//ProductGroup'},
-				{key:"productTypeName", locator:'//ProductTypeName'},
-				{key:"publicationDate", locator:'//PublicationDate'},
-				{key:"publisher", locator:'//Publisher'},
-				{key:"releaseDate", locator:'//ReleaseDate'},
-				{key:"studio", locator:'//Studio'},
-				{key:"title", locator:'//Title'},
-				{key:"upc", locator:'//UPC'}
+				{key:"amazonMaximumAge", locator:'ItemAttributes/AmazonMaximumAge'},
+				{key:"amazonMinimumAge ", locator:'ItemAttributes/AmazonMinimumAge'},
+				{key:"amazonMaximumAgeUnits", locator:'ItemAttributes/AmazonMaximumAge/@Units'},
+				{key:"amazonMinimumAgeUnits ", locator:'ItemAttributes/AmazonMinimumAge/@Units'},
+				{key:"batteriesIncluded ", locator:'ItemAttributes/BatteriesIncluded'},
+				{key:"binding ", locator:'ItemAttributes/Binding'},
+				{key:"brand ", locator:'ItemAttributes/Brand'},
+				{key:"ean ", locator:'ItemAttributes/EAN'},
+				{key:"edition ", locator:'ItemAttributes/Edition'},
+				{key:"esrbAgeRating ", locator:'ItemAttributes/ESRBAgeRating'},
+				{key:"genre ", locator:'ItemAttributes/Genre'},
+				{key:"hardwarePlatform ", locator:'ItemAttributes/HardwarePlatform'},
+				{key:"isAutographed ", locator:'ItemAttributes/IsAutographed'},
+				{key:"isMemorabilia ", locator:'ItemAttributes/IsMemorabilia'},
+				{key:"height", locator:'ItemAttributes/ItemDimensions/Height'},
+				{key:"length", locator:'ItemAttributes/ItemDimensions/Length'},
+				{key:"width", locator:'ItemAttributes/ItemDimensions/Width'},
+				{key:"weight", locator:'ItemAttributes/ItemDimensions/Weight'},
+				{key:"heightUnits", locator:'ItemAttributes/ItemDimensions/Height/@Units'},
+				{key:"lengthUnits", locator:'ItemAttributes/ItemDimensions/Length/@Units'},
+				{key:"widthUnits", locator:'ItemAttributes/ItemDimensions/Width/@Units'},
+				{key:"weightUnits", locator:'ItemAttributes/ItemDimensions/Weight/@Units'},
+				{key:"label", locator:'ItemAttributes/Label'},
+				{key:"primaryLanguage", locator:'ItemAttributes/Language/Name'},
+				{key:"legalDisclaimer", locator:'ItemAttributes/LegalDisclaimer'},
+				{key:"listPriceAmount", locator:'ItemAttributes/ListPrice/Amount'},
+				{key:"listPriceCurrencyCode", locator:'ItemAttributes/ListPrice/CurrencyCode'},
+				{key:"listPriceFormattedPrice", locator:'ItemAttributes/ListPrice/FormattedPrice'},
+				{key:"manufacturer", locator:'ItemAttributes/Manufacturer'},
+				{key:"model", locator:'ItemAttributes/Model'},
+				{key:"mpn", locator:'ItemAttributes/MPN'},
+				{key:"numberOfItems", locator:'ItemAttributes/NumberOfItems'},
+				{key:"operatingSystem", locator:'ItemAttributes/OperatingSystem'},
+				{key:"packageHeight", locator:'ItemAttributes/PackageDimensions/Height'},
+				{key:"packageLength", locator:'ItemAttributes/PackageDimensions/Length'},
+				{key:"packageWidth", locator:'ItemAttributes/PackageDimensions/Width'},
+				{key:"packageWeight", locator:'ItemAttributes/PackageDimensions/Weight'},
+				{key:"packageHeightUnits", locator:'ItemAttributes/PackageDimensions/Height/@Units'},
+				{key:"packageLengthUnits", locator:'ItemAttributes/PackageDimensions/Length/@Units'},
+				{key:"packageWidthUnits", locator:'ItemAttributes/PackageDimensions/Width/@Units'},
+				{key:"packageWeightUnits", locator:'ItemAttributes/PackageDimensions/Weight/@Units'},
+				{key:"packageQuantity", locator:'ItemAttributes/PackageQuantity'},
+				{key:"platform", locator:'ItemAttributes/Platform'},
+				{key:"productGroup", locator:'ItemAttributes/ProductGroup'},
+				{key:"productTypeName", locator:'ItemAttributes/ProductTypeName'},
+				{key:"publicationDate", locator:'ItemAttributes/PublicationDate'},
+				{key:"publisher", locator:'ItemAttributes/Publisher'},
+				{key:"releaseDate", locator:'ItemAttributes/ReleaseDate'},
+				{key:"studio", locator:'ItemAttributes/Studio'},
+				{key:"title", locator:'ItemAttributes/Title'},
+				{key:"upc", locator:'ItemAttributes/UPC'}
 			]
 		},
 
@@ -154,6 +154,12 @@ var META_FIELDS = { // from the Request ResponseGroup
 			metaFields: META_FIELDS,
 			resultListLocator: "Item",
 			resultFields: [{key:"asin", locator:'ASIN'}]
+		},
+
+		Large: {
+			metaFields: META_FIELDS,
+			resultListLocator: "Item",
+			resultFields: []
 		},
 
 		Medium: {
@@ -164,41 +170,41 @@ var META_FIELDS = { // from the Request ResponseGroup
 
 		Offers: {
 			metaFields: {
-				lowestNewPriceAmount:'//LowestNewPrice/Amount',
-				lowestNewPriceCurrencyCode:'//LowestNewPrice/CurrencyCode',
-				lowestNewPriceFormattedPrice:'//LowestNewPrice/FormattedPrice',
-				lowestUsedPriceAmount:'//LowestUsedPrice/Amount',
-				lowestUsedPriceCurrencyCode:'//LowestUsedPrice/CurrencyCode',
-				lowestUsedPriceFormattedPrice:'//LowestUsedPrice/FormattedPrice',
-				lowestCollectiblePriceAmount:'//LowestCollectiblePrice/Amount',
-				lowestCollectiblePriceCurrencyCode:'//LowestCollectiblePrice/CurrencyCode',
-				lowestCollectiblePriceFormattedPrice:'//LowestCollectiblePrice/FormattedPrice',
-				totalNew:'//TotalNew',
-				totalUsed:'//TotalUsed',
-				totalCollectible:'//TotalCollectible',
-				totalRefurbished:'//TotalRefurbished',
-				totalOffers:'//TotalOffers',
-				totalOfferPages:'//TotalOfferPages'
+				lowestNewPriceAmount:'OfferSummary/LowestNewPrice/Amount',
+				lowestNewPriceCurrencyCode:'OfferSummary/LowestNewPrice/CurrencyCode',
+				lowestNewPriceFormattedPrice:'OfferSummary/LowestNewPrice/FormattedPrice',
+				lowestUsedPriceAmount:'OfferSummary/LowestUsedPrice/Amount',
+				lowestUsedPriceCurrencyCode:'OfferSummary/LowestUsedPrice/CurrencyCode',
+				lowestUsedPriceFormattedPrice:'OfferSummary/LowestUsedPrice/FormattedPrice',
+				lowestCollectiblePriceAmount:'OfferSummary/LowestCollectiblePrice/Amount',
+				lowestCollectiblePriceCurrencyCode:'OfferSummary/LowestCollectiblePrice/CurrencyCode',
+				lowestCollectiblePriceFormattedPrice:'OfferSummary/LowestCollectiblePrice/FormattedPrice',
+				totalNew:'OfferSummary/TotalNew',
+				totalUsed:'OfferSummary/TotalUsed',
+				totalCollectible:'OfferSummary/TotalCollectible',
+				totalRefurbished:'OfferSummary/TotalRefurbished',
+				totalOffers:'Offers/TotalOffers',
+				totalOfferPages:'Offers/TotalOfferPages'
 			},
 			resultListLocator: "Item",
 			resultFields: [
-				{key:'merchantId',locator:'//MerchantId'},
-				{key:'glancePage',locator:'//GlancePage'},
-				{key:'averageFeedbackRating',locator:'//AverageFeedbackRating'},
-				{key:'totalFeedback',locator:'//TotalFeedback'},
-				{key:'condition',locator:'//Condition'},
-				{key:'subCondition',locator:'//SubCondition'},
-				{key:'offerListingId',locator:'//OfferListingId'},
-				{key:'priceAmount',locator:'//Amount'},
-				{key:'priceCurrencyCode',locator:'//CurrencyCode'},
-				{key:'priceFormattedPrice',locator:'//FormattedPrice'},
-				{key:'availability',locator:'//Availability'},
-				{key:'availabilityType',locator:'//AvailabilityType'},
-				{key:'minimumHours',locator:'//MinimumHours'},
-				{key:'maximumHours',locator:'//MaximumHours'},
-				{key:'quantity',locator:'//Quantity'},
-				{key:'quantityLimit',locator:'//QuantityLimit'},
-				{key:'isEligibleForSuperSaverShipping',locator:'//IsEligibleForSuperSaverShipping'},
+				{key:'merchantId',locator:'Offers/Merchant/MerchantId'},
+				{key:'glancePage',locator:'Offers/Merchant/GlancePage'},
+				{key:'averageFeedbackRating',locator:'Offers/Merchant/AverageFeedbackRating'},
+				{key:'totalFeedback',locator:'Offers/Merchant/TotalFeedback'},
+				{key:'condition',locator:'Offers/OfferAttributes/Condition'},
+				{key:'subCondition',locator:'Offers/OfferAttributes/SubCondition'},
+				{key:'offerListingId',locator:'Offers/OfferListing/OfferListingId'},
+				{key:'priceAmount',locator:'Offers/OfferListing/Price/Amount'},
+				{key:'priceCurrencyCode',locator:'Offers/OfferListing/Price/CurrencyCode'},
+				{key:'priceFormattedPrice',locator:'Offers/OfferListing/Price/FormattedPrice'},
+				{key:'availability',locator:'Offers/OfferListing/Availability'},
+				{key:'availabilityType',locator:'Offers/OfferListing/AvailabilityAttributes/AvailabilityType'},
+				{key:'minimumHours',locator:'Offers/OfferListing/AvailabilityAttributes/MinimumHours'},
+				{key:'maximumHours',locator:'Offers/OfferListing/AvailabilityAttributes/MaximumHours'},
+				{key:'quantity',locator:'Offers/OfferListing/Quantity'},
+				{key:'quantityLimit',locator:'Offers/OfferListing/QuantityRestriction/QuantityLimit'},
+				{key:'isEligibleForSuperSaverShipping',locator:'Offers/OfferListing/IsEligibleForSuperSaverShipping'}
 			]
 		},
 
@@ -220,31 +226,43 @@ var META_FIELDS = { // from the Request ResponseGroup
 		Small: {
 			metaFields: META_FIELDS,
 			resultListLocator: "Item",
-			resultFields: [				
+			resultFields: [
 				{key:"actor", locator:'Actor'},
 				{key:"artist", locator:'Artist'},
 				{key:"asin", locator:'ASIN'},
 				{key:"author", locator:'Author'},
-				{key:"correctedQuery", locator:'CorrectedQuery'},
 				{key:"creator", locator:'Creator'},
 				{key:"detailPageURL", locator:'DetailPageURL'},
 				{key:"director", locator:'Director'},
 				{key:"keywords", locator:'Keywords'},
-				{key:"manufacturer", locator:'Manufacturer'},
+				{key:"manufacturer", locator:'ItemAttributes/Manufacturer'},
 				{key:"message", locator:'Message'},
-				{key:"productGroup", locator:'ProductGroup'},
+				{key:"productGroup", locator:'ItemAttributes/ProductGroup'},
 				{key:"role", locator:'Role'},
-				{key:"title", locator:'Title'}
+				{key:"title", locator:'ItemAttributes/Title'}
+			]
+		},
+
+		TagsSummary: {
+			metaFields: META_FIELDS,
+			resultListLocator: "Item",
+			resultFields: [
+				{key:"asin", locator:'ASIN'},
+				{key: 'totalUsage', locator: 'Tags/TotalUsages'},
+				{key: 'tagName', locator: 'Tags/Tag/Name'}
 			]
 		}
 	},
 	NAME_RESPONSE_GROUP = 'ResponseGroup';
 
-// update schemas that inherit
+// update schemas that inherit 
 AWS_SCHEMA.Small.resultFields = AWS_SCHEMA.Small.resultFields.concat(RESULT_FIELDS_LINKS);
 AWS_SCHEMA.Medium.resultFields = AWS_SCHEMA.Small.resultFields.concat(AWS_SCHEMA.Medium.resultFields)
 	.concat(AWS_SCHEMA.ItemAttributes.resultFields).concat(AWS_SCHEMA.EditorialReview.resultFields)
 	.concat(AWS_SCHEMA.Images.resultFields).concat(AWS_SCHEMA.SalesRank.resultFields);
+AWS_SCHEMA.Large.resultFields = AWS_SCHEMA.Medium.resultFields.concat(AWS_SCHEMA.Offers.resultFields)
+	/*.concat(AWS_SCHEMA.ItemAttributes.resultFields).concat(AWS_SCHEMA.EditorialReview.resultFields)
+	.concat(AWS_SCHEMA.Images.resultFields).concat(AWS_SCHEMA.SalesRank.resultFields)*/;
 Y.aggregate(AWS_SCHEMA.Offers.metaFields,META_FIELDS);
 
 // add RESULT_FIELDS_LINKS to schemas where duplication would occur
