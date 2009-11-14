@@ -3,12 +3,9 @@
   <component name="ChangeListManager" verified="true">
     <list default="true" readonly="true" id="c1df7342-9b06-4bd7-bb4f-9a922d9401bc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core.iws" afterPath="$PROJECT_DIR$/core.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js" afterPath="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test_aws.html" afterPath="$PROJECT_DIR$/test/test_aws.html" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-3-ext/formErrorManager.js" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-3-ext/form.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/css/base.css" afterPath="$PROJECT_DIR$/assets/css/base.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/css/test.css" afterPath="$PROJECT_DIR$/assets/css/test.css" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/test_formErrorManager.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-json.js" afterPath="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-json.js" />
     </list>
@@ -105,10 +102,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="aws.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="aws.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="167" column="50" selection-start="4642" selection-end="4650" vertical-scroll-proportion="0.61937714">
+            <state line="43" column="42" selection-start="1060" selection-end="1060" vertical-scroll-proportion="-15.84">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="storage.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/storage.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="71" column="18" selection-start="2700" selection-end="2700" vertical-scroll-proportion="-2.0212767">
               <folding />
             </state>
           </provider>
@@ -117,16 +123,16 @@
       <file leaf-file-name="aws-json.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-json.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="243" column="10" selection-start="10648" selection-end="10887" vertical-scroll-proportion="0.0">
+            <state line="63" column="34" selection-start="1991" selection-end="1991" vertical-scroll-proportion="6.96">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_aws.html" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="test_aws.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/test_aws.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="110" column="85" selection-start="4827" selection-end="4827" vertical-scroll-proportion="-7.489362">
+            <state line="100" column="71" selection-start="5005" selection-end="5005" vertical-scroll-proportion="-0.2181501">
               <folding />
             </state>
           </provider>
@@ -135,7 +141,7 @@
       <file leaf-file-name="getAWSSignedUrl.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/getAWSSignedUrl.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="5" selection-start="5" selection-end="5" vertical-scroll-proportion="24.574469">
+            <state line="133" column="18" selection-start="5584" selection-end="5584" vertical-scroll-proportion="-8.617022">
               <folding />
             </state>
           </provider>
@@ -179,11 +185,11 @@
         <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/form.js" />
         <option value="$PROJECT_DIR$/assets/js/yahoo-ext/formElementSerializer.js" />
         <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-xml.js" />
-        <option value="$PROJECT_DIR$/getAWSSignedUrl.php" />
         <option value="$PROJECT_DIR$/assets/css/base.css" />
         <option value="$PROJECT_DIR$/assets/css/test.css" />
         <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js" />
         <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-json.js" />
+        <option value="$PROJECT_DIR$/getAWSSignedUrl.php" />
         <option value="$PROJECT_DIR$/test/test_aws.html" />
       </list>
     </option>
@@ -448,7 +454,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1" y="1" width="1278" height="769" extended-state="0" />
+    <frame x="1" y="1" width="1278" height="771" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32869992" sideWeight="0.5" order="3" side_tool="false" />
@@ -627,30 +633,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_aws.html">
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="110" column="85" selection-start="4827" selection-end="4827" vertical-scroll-proportion="-7.489362">
+        <state line="43" column="42" selection-start="1060" selection-end="1060" vertical-scroll-proportion="-15.84">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/storage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="71" column="18" selection-start="2700" selection-end="2700" vertical-scroll-proportion="-2.0212767">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-json.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="243" column="10" selection-start="10648" selection-end="10887" vertical-scroll-proportion="0.0">
+        <state line="63" column="34" selection-start="1991" selection-end="1991" vertical-scroll-proportion="6.96">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/getAWSSignedUrl.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="5" selection-start="5" selection-end="5" vertical-scroll-proportion="24.574469">
+        <state line="133" column="18" selection-start="5584" selection-end="5584" vertical-scroll-proportion="-8.617022">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js">
+    <entry file="file://$PROJECT_DIR$/test/test_aws.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="167" column="50" selection-start="4642" selection-end="4650" vertical-scroll-proportion="0.61937714">
+        <state line="100" column="71" selection-start="5005" selection-end="5005" vertical-scroll-proportion="-0.2181501">
           <folding />
         </state>
       </provider>
