@@ -61,47 +61,67 @@ var META_FIELDS = { // from the Request ResponseGroup
 		},
 
 		/**
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&AssociateTag=[Associate ID]&Operation=ItemLookup&IdType=ASIN&ItemId=B00008OE6I&ResponseGroup=Accessories&Version=2007-10-29
-		 <Accessories>
+&Operation=ItemLookup&IdType=ASIN&ItemId=B00008OE6I&ResponseGroup=Accessories
+		 <Item>
+		  <ASIN>#</ASIN>
+		  <Accessories>
 			<Accessory>
 			  <ASIN>B00003G1RG</ASIN>
 			  <Title>Viking 128 MB CompactFlash Card (CF128M)</Title>
 			</Accessory>
 		 	...
 		  </Accessories>
+		 </Item>
 		 */
 		Accessories: {
 			metaFields: META_FIELDS,
 			resultListLocator: "Item",
 			resultFields:[
-				{key:"accessoryAsin", locator:'Accessories/Accessory/ASIN'},
-				{key:"accessoryTitle", locator:'Accessories/Accessory/Title'}
+				{key:"asin", locator:'ASIN'}
+			]
+		},
+		AccessoriesItem: {
+			metaFields: {},
+			resultListLocator: "Accessory",
+			resultFields:[
+				{key:"asin", locator:'ASIN'},
+				{key:"title", locator:'Title'}
 			]
 		},
 
 		/**
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&Operation=ItemSearch&AWSAccessKeyId=[AWS Access Key ID]&AssociateTag=ws&SearchIndex=Books&Keywords=potter&MerchantId=All&ResponseGroup=AlternateVersions&Version=2007-10-29
-		 <AlternateVersions>
-		  <AlternateVersion>
-			<ASIN>030728364X</ASIN>
-			<Title>Harry Potter and the Half-Blood Prince (Book 6)</Title>
-			<Binding>Audio Cassette</Binding>
-		  </AlternateVersion>
-		  ...
-		 </AlternateVersions>
+&SearchIndex=Books&Keywords=potter&MerchantId=All&ResponseGroup=AlternateVersions
+		 <Item>
+			 <ASIN>#</ASIN>
+			 <AlternateVersions>
+			  <AlternateVersion>
+				<ASIN>030728364X</ASIN>
+				<Title>Harry Potter and the Half-Blood Prince (Book 6)</Title>
+				<Binding>Audio Cassette</Binding>
+			  </AlternateVersion>
+			  ...
+			 </AlternateVersions>
+		 </Item>
 		 */
 		AlternateVersions: {
 			metaFields: META_FIELDS,
 			resultListLocator: "Item",
 			resultFields:[
-				{key:"alternativeVersionAsin", locator:'AlternateVersions/AlternateVersion/ASIN'},
-				{key:"alternativeVersionTitle", locator:'AlternateVersions/AlternateVersion/Title'},
-				{key:"alternativeVersionBinding", locator:'AlternateVersions/AlternateVersion/Binding'}
+				{key:"asin", locator:'ASIN'}
+			]
+		},
+		AlternateVersionsItem: {
+			metaFields: {},
+			resultListLocator: "AlternateVersion",
+			resultFields:[
+				{key:"asin", locator:'ASIN'},
+				{key:"title", locator:'Title'},
+				{key:"binding", locator:'Binding'}
 			]
 		},
 
 		/**
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=BrowseNodeLookup&BrowseNodeId=11232&ResponseGroup=BrowseNodeInfo&Version=2007-10-29
+&Operation=BrowseNodeLookup&BrowseNodeId=11232&ResponseGroup=BrowseNodeInfo
 		<BrowseNodes>
 		  <BrowseNode>
 		  <BrowseNodeId>11232</BrowseNodeId>
@@ -146,7 +166,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		},
 
 		/*
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=BrowseNodeLookup&SearchIndex=Books&Keywords=Potter&ResponseGroup=BrowseNodes&Version=2007-10-29
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=BrowseNodeLookup&SearchIndex=Books&Keywords=Potter&ResponseGroup=BrowseNodes
 <BrowseNodes>
 	<BrowseNode>
 		<BrowseNodeId>63926</BrowseNodeId>
@@ -195,7 +215,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		},
 
 		/*
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&AssociateId=ws&Operation=CartCreate&Item.1.ASIN=B000062TU1&MergeCart=True&Item.1.Quantity=2&ResponseGroup=Cart&Version=2007-10-29
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&AssociateId=ws&Operation=CartCreate&Item.1.ASIN=B000062TU1&MergeCart=True&Item.1.Quantity=2&ResponseGroup=Cart
 <Cart>
 	<Request>
 		<IsValid>True</IsValid>
@@ -256,7 +276,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		},
 
 		/*
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&AssociateId=ws&Operation=CartCreate&Item.1.ASIN=B000062TU1&MergeCart=True&Item.1.Quantity=2&ResponseGroup=CartNewReleases&Version=2007-10-29
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&AssociateId=ws&Operation=CartCreate&Item.1.ASIN=B000062TU1&MergeCart=True&Item.1.Quantity=2&ResponseGroup=CartNewReleases
 		<NewReleases>
 			<NewRelease>
 				<ASIN>B00005JOFQ</ASIN>
@@ -275,7 +295,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		},
 
 		/*
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&AssociateId=ws&Operation=CartCreate&Item.1.ASIN=B000062TU1&MergeCart=True&Item.1.Quantity=2&ResponseGroup=CartTopSellers&Version=2007-10-29
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&AssociateId=ws&Operation=CartCreate&Item.1.ASIN=B000062TU1&MergeCart=True&Item.1.Quantity=2&ResponseGroup=CartTopSellers
 		<TopSellers>
 			<TopSeller>
 				<ASIN>B00005JOFQ</ASIN>
@@ -294,7 +314,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		},
 
 		/*
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&AssociateId=ws&Operation=CartCreate&Item.1.ASIN=B000062TU1&MergeCart=True&Item.1.Quantity=2&ResponseGroup=CartSimilarities&Version=2007-10-29
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&AssociateId=ws&Operation=CartCreate&Item.1.ASIN=B000062TU1&MergeCart=True&Item.1.Quantity=2&ResponseGroup=CartSimilarities
 		<SimilarProducts>
 			<SimilarProduct>
 				<ASIN>B00008DDXC</ASIN>
@@ -331,7 +351,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		},
 
 		/**
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKey=[Access Key ID]&Operation=ItemLookup&ItemId=B000ALMQ9C&ResponseGroup=ItemIds,Collections&Version=2007-10-29
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKey=[Access Key ID]&Operation=ItemLookup&ItemId=B000ALMQ9C&ResponseGroup=ItemIds,Collections
 		 * <Collections>
 		 *	  <Collection>
 		 *		<CollectionParent>
@@ -348,17 +368,23 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKey=[Acce
 		 */
 		Collections: {
 			metaFields: META_FIELDS,
+			/* As documented */ /*
 			resultListLocator: "Item",
 			resultFields:[
 				{key:"collectionParentAsin", locator:'Collections/Collection/CollectionParent/ASIN'},
 				{key:"collectionParentAsin", locator:'Collections/Collection/CollectionParent/Title'},
 				{key:"collectionItemAsin", locator:'Collections/Collection/CollectionItem/ASIN'},
 				{key:"collectionItemAsin", locator:'Collections/Collection/CollectionItem/Title'}
+			]*/
+			/* As experienced */
+			resultListLocator: "Item",
+			resultFields:[
+				{key:"collectionItemAsin", locator:'ASIN'}
 			]
 		},
 
 		/*
-			uses CustomerInfo, CustomerLists, and CostomerReviews
+			uses CustomerInfo, CustomerLists, and CustomerReviews
 		 */
 		CustomerFull: {
 			metaFields: META_FIELDS,
@@ -367,7 +393,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKey=[Acce
 		},
 
 		/*
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=CustomerContentLookup&CustomerId=[Customer ID]&ResponseGroup=CustomerInfo&Version=2007-10-29
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=CustomerContentLookup&CustomerId=[Customer ID]&ResponseGroup=CustomerInfo
 		<Customer>
 			<CustomerId>ABCDEFG12345</CustomerId>
 			<Nickname>jeff</Nickname>
@@ -383,7 +409,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		},
 
 		/*
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=CustomerContentLookup&CustomerId=ABCDEF123456&ResponseGroup=CustomerLists&Version=2007-10-29
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=CustomerContentLookup&CustomerId=ABCDEF123456&ResponseGroup=CustomerLists
 		<Customer>
 			<CustomerId>ABCDEFG12345</CustomerId>
 			<WishListId>123456ABCDEF</WishListId>
@@ -399,7 +425,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		},
 
 		/*
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=CustomerContentLookup&CustomerId=ABCDEF123456&ResponseGroup=CustomerReviews&Version=2007-10-29
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=CustomerContentLookup&CustomerId=ABCDEF123456&ResponseGroup=CustomerReviews
 		<Customer>
 			<CustomerId>ABCDEFG12345</CustomerId>
 			<CustomerReviews>
@@ -636,6 +662,170 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 			]
 		},
 
+		/*
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=ItemSearch&Condition=All&SearchIndex=Blended&Keywords=Brando&Merchant=All&ResponseGroup=Subjects
+<Item>
+ <ASIN>9589393314</ASIN>
+ <Subjects>
+   <Subject>Central America</Subject>
+   ...
+ </Subjects>
+</Item>
+		 */
+		Subjects: {
+			metaFields: META_FIELDS,
+			resultListLocator: "Item",
+			resultFields: [
+				{key:"asin", locator:'ASIN'},
+				{key:"asin", locator:'Subjects/Subject'}
+			]
+		},
+
+		/*
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[Access Key ID]&AssociateTag=[Associate Tag]&Operation=TagLookup&ItemId=0545010225&ResponseGroup=TaggedGuides&Marketplace=us&TagName=tai
+<Tags>
+  <Tag>
+    <Name>tai</Name>
+    <TagType>Guides</TagType>
+    <TotalUsages>0</TotalUsages>
+  </Tag>
+  ...
+</Tags>
+		 */
+		TaggedGuides: {
+			metaFields: META_FIELDS,
+			resultListLocator: "Tags/Tag",
+			resultFields: [
+				{key: 'name', locator: 'Name'},
+				{key: 'tagType', locator: 'TagType'},
+				{key: 'totalUsages', locator: 'TotalUsages'}
+			]
+		},
+
+		/*
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[Access Key ID]&AssociateTag=[Associate Tag]&Operation=TagLookup&ItemId=0545010225&ResponseGroup=TaggedItems&Marketplace=us&TagName=japan
+<Tags>
+  <Tag>
+    <Name>japan</Name>
+    <TagType>Items</TagType>
+    <TotalUsages>1779</TotalUsages>
+    <TaggedItems>
+      <List>
+        <ListId>15HSHKBGFT9PR</ListId>
+      </List>
+      <DistinctUsers>10</DistinctUsers>
+      <TotalUsages>10</TotalUsages>
+      <FirstTagging>
+        <UserId>AKYNIMNI8LOBP</UserId>
+        <Time>2007 01 01 16:16:54</Time>
+      </FirstTagging>
+      <LastTagging>
+        <UserId>AKYNIMNI8LOBP</UserId>
+        <Time>2007 01 01 16:16:54</Time>
+      </LastTagging>
+    </TaggedItems>
+    <TaggedListmaniaLists>
+      <List>
+        <ListId>1H6IBS7W62367</ListId>
+      </List>
+      <DistinctUsers>1</DistinctUsers>
+      <TotalUsages>1</TotalUsages>
+      <FirstTagging>
+        <UserId>A3F9988KGE684U</UserId>
+        <Time>2007 03 29 17:03:33</Time>
+      </FirstTagging>
+      <LastTagging>
+        <UserId>A3F9988KGE684U</UserId>
+        <Time>2007 03 29 17:03:33</Time>
+      </LastTagging>
+    </TaggedListmaniaLists>
+  </Tag>
+  ...
+</Tags>
+		 */
+		TaggedItems: {
+			metaFields: META_FIELDS,
+			resultListLocator: "Tags/Tag",
+			resultFields: [
+				{key: 'taggedItemsListId', locator: 'TaggedItems/List/ListId'},
+				{key: 'taggedItemsDistinctUsers', locator: 'TaggedItems/DistinctUsers'},
+				{key: 'taggedItemsTotalUsages', locator: 'TaggedItems/TotalUsages'},
+				{key: 'taggedItemsFirstUserId', locator: 'TaggedItems/FirstTagging/UserId'},
+				{key: 'taggedItemsFirstTime', locator: 'TaggedItems/FirstTagging/Time'},
+				{key: 'taggedItemsLastUserId', locator: 'TaggedItems/LastTagging/UserId'},
+				{key: 'taggedItemsLastTime', locator: 'TaggedItems/LastTagging/Time'}
+			]
+		},
+
+		TaggedListmaniaLists: {
+			metaFields: META_FIELDS,
+			resultListLocator: "Tags/Tag",
+			resultFields: [
+				{key: 'taggedListmaniaListsDistinctUsers', locator: 'TaggedListmaniaLists/DistinctUsers'},
+				{key: 'taggedListmaniaListsTotalUsages', locator: 'TaggedListmaniaLists/TotalUsages'},
+				{key: 'taggedListmaniaListsFirstUserId', locator: 'TaggedListmaniaLists/FirstTagging/UserId'},
+				{key: 'taggedListmaniaListsFirstTime', locator: 'TaggedListmaniaLists/FirstTagging/Time'},
+				{key: 'taggedListmaniaListsLastUserId', locator: 'TaggedListmaniaLists/LastTagging/UserId'},
+				{key: 'taggedListmaniaListsLastTime', locator: 'TaggedListmaniaLists/LastTagging/Time'}
+			]
+		},
+		
+		/*
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[Access Key ID]&AssociateTag=[Associate Tag]&Operation=TagLookup&ItemId=0545010225&ResponseGroup=Tags&Marketplace=us&TagName=tai&CustomerId=[Customer ID]
+<Tags>
+...
+<Tag>
+  TagsSummary
+  <DistinctItems>1</DistinctItems> 
+  <DistinctUsers>1</DistinctUsers> 
+  <FirstTagging>
+    <EntityId>B00005A1UV</EntityId> 
+    <UserId>A2ELLA3OQ06A6Z</UserId> 
+    <Time>2005-12-07 14:41:52</Time> 
+  </FirstTagging>
+  <LastTagging>
+    <EntityId>B00005A1UV</EntityId> 
+    <UserId>A2ELLA3OQ06A6Z</UserId> 
+    <Time>2005-12-07 14:41:52</Time> 
+  </LastTagging>
+  ...
+</Tag>
+...
+</Tags>
+		 */
+		Tags: {
+			metaFields: META_FIELDS,
+			resultListLocator: "Tags/Tag",
+			resultFields: [
+				{key: 'distinctItems', locator: 'DistinctItems'},
+				{key: 'distinctUsers', locator: 'DistinctUsers'},
+				{key: 'taggedItemsFirstEntityId', locator: 'FirstTagging/EntityId'},
+				{key: 'taggedItemsFirstUserId', locator: 'FirstTagging/UserId'},
+				{key: 'taggedItemsFirstTime', locator: 'FirstTagging/Time'},
+				{key: 'taggedItemsLastEntityId', locator: 'LastTagging/EntityId'},
+				{key: 'taggedItemsLastUserId', locator: 'LastTagging/UserId'},
+				{key: 'taggedItemsLastTime', locator: 'LastTagging/Time'},
+				{key: 'taggedItemsASIN', locator: 'TaggedItems/Item/ASIN'}
+			]
+		},
+		
+		/*
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[Access Key ID]&AssociateTag=[Associate Tag]&Operation=TagLookup&ItemId=0545010225&ResponseGroup=Tags&Marketplace=us&TagName=tai&CustomerId=[Customer ID]
+<Tags>
+...
+<Tag>
+  TaggedGuides
+  
+  <TaggedItems>
+    <Item>
+      <ASIN>B00005A1UV</ASIN> 
+    </Item>
+  </TaggedItems>
+  ...
+</Tag>
+...
+</Tags>
+		 */
 		TagsSummary: {
 			metaFields: META_FIELDS,
 			resultListLocator: "Item",
@@ -643,6 +833,23 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 				{key:"asin", locator:'ASIN'},
 				{key: 'totalUsage', locator: 'Tags/TotalUsages'},
 				{key: 'tagName', locator: 'Tags/Tag/Name'}
+			]
+		},
+
+		/*
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=BrowseNodeLookup&BrowseNodeId=20&ResponseGroup=TopSellers
+<TopSeller>
+  <ASIN>0446578622</ASIN>
+  <Title>The Notebook Girls</Title>
+</TopSeller>
+...
+		 */
+		TopSellers: {
+			metaFields: META_FIELDS,
+			resultListLocator: "TopSeller",
+			resultFields: [
+				{key: 'asin', locator: 'ASIN'},
+				{key: 'title', locator: 'Title'}
 			]
 		},
 
@@ -663,6 +870,148 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 				{key: 'track', locator: 'Tracks/Disc/Track'},
 				{key: 'position', locator: 'Tracks/Disc/Track/@Number'}
 			]
+		},
+
+		/*
+http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=TransactionLookup&TransactionId=011-6222227-3333335&ResponseGroup=TransactionDetails
+<Transactions>
+ <Transaction>
+  <TransactionId>00269664477138425</TransactionId>
+  <SellerId>ATVPDKIKX0DER</SellerId>
+  <Condition>Complete</Condition>
+  <TransactionDate>20050608T19:19:27</TransactionDate>
+  <TransactionDateEpoch>1118258367</TransactionDateEpoch>
+  <SellerName>Amazon.com</SellerName>
+  <Totals>
+    <Total>
+      <Amount>1879</Amount>
+      <CurrencyCode>USD</CurrencyCode>
+      <FormattedPrice>$18.79</FormattedPrice>
+    </Total>
+    <Subtotal>
+      <Amount>1485</Amount>
+      <CurrencyCode>USD</CurrencyCode>
+      <FormattedPrice>$14.85</FormattedPrice>
+    </Subtotal>
+    <Tax>
+      <Amount>144</Amount>
+      <CurrencyCode>USD</CurrencyCode>
+      <FormattedPrice>$1.44</FormattedPrice>
+    </Tax>
+    <ShippingCharge>
+      <Amount>399</Amount>
+      <CurrencyCode>USD</CurrencyCode>
+      <FormattedPrice>$3.99</FormattedPrice>
+    </ShippingCharge>
+    <Promotion>
+      <Amount>149</Amount>
+      <CurrencyCode>USD</CurrencyCode>
+      <FormattedPrice>$1.49</FormattedPrice>
+    </Promotion>
+  </Totals>
+  <TransactionItems>
+    <TransactionItem>
+      <TransactionItemId>jooloslsnpl</TransactionItemId>
+      <Quantity>1</Quantity>
+      <UnitPrice>
+        <Amount>1485</Amount>
+        <CurrencyCode>USD</CurrencyCode>
+        <FormattedPrice>$14.85</FormattedPrice>
+      </UnitPrice>
+      <TotalPrice>
+        <Amount>1485</Amount>
+        <CurrencyCode>USD</CurrencyCode>
+        <FormattedPrice>$14.85</FormattedPrice>
+      </TotalPrice>
+    </TransactionItem>
+    ...
+  </TransactionItems>
+  <Shipments>
+    <Shipment>
+      <Condition>Shipped</Condition>
+      <ShipmentItems>
+        <TransactionItemId>jooloslsnpl</TransactionItemId>
+      </ShipmentItems>
+    </Shipment>
+    ...
+  </Shipments>
+ </Transaction>
+ ...
+</Transactions>
+		 */
+		TransactionDetails: {
+			metaFields: META_FIELDS,
+			resultListLocator: "Transaction",
+			resultFields: [
+				{key: "transactionId", locator:'TransactionId'},
+				{key: "sellerId", locator:'SellerId'},
+				{key: "condition", locator:'Condition'},
+				{key: "transactionDate", locator:'TransactionDate'},
+				{key: "transactionDateEpoch", locator:'TransactionDateEpoch'},
+				{key: "sellerName", locator:'SellerName'},
+				{key: 'condition', locator: 'Shipments/Shipment/Condition'},
+				{key: 'shipmentTransactionItemId', locator: 'Shipments/Shipment/ShipmentItems/TransactionItemId'},
+				{key: 'totalAmount', locator: 'Totals/Total/Amount'},
+				{key: 'totalCurrencyCode', locator: 'Totals/Total/CurrencyCode'},
+				{key: 'totalFormattedPrice', locator: 'Totals/Total/FormattedPrice'},
+				{key: 'subtotalAmount', locator: 'Totals/Subtotal/Amount'},
+				{key: 'subtotalCurrencyCode', locator: 'Totals/Subtotal/CurrencyCode'},
+				{key: 'subtotalFormattedPrice', locator: 'Totals/Subtotal/FormattedPrice'},
+				{key: 'taxAmount', locator: 'Totals/Tax/Amount'},
+				{key: 'taxCurrencyCode', locator: 'Totals/Tax/CurrencyCode'},
+				{key: 'taxFormattedPrice', locator: 'Totals/Tax/FormattedPrice'},
+				{key: 'shippingChargeAmount', locator: 'Totals/ShippingCharge/Amount'},
+				{key: 'shippingChargeCurrencyCode', locator: 'Totals/ShippingCharge/CurrencyCode'},
+				{key: 'shippingChargeFormattedPrice', locator: 'Totals/ShippingCharge/FormattedPrice'},
+				{key: 'promotionAmount', locator: 'Totals/Promotion/Amount'},
+				{key: 'promotionCurrencyCode', locator: 'Totals/Promotion/CurrencyCode'},
+				{key: 'promotionFormattedPrice', locator: 'Totals/Promotion/FormattedPrice'},
+				{key: 'transactionItemId', locator: 'TransactionItems/TransactionItemId'},
+				{key: 'transactionItemQuantity', locator: 'TransactionItems/Quantity'},
+				{key: 'transactionItemTotalPriceAmount', locator: 'TransactionItems/TotalPrice/Amount'},
+				{key: 'transactionItemTotalPriceCurrencyCode', locator: 'TransactionItems/TotalPrice/CurrencyCode'},
+				{key: 'transactionItemTotalPriceFormattedPrice', locator: 'TransactionItems/TotalPrice/FormattedPrice'},
+				{key: 'transactionItemUnitPriceAmount', locator: 'TransactionItems/UnitPrice/Amount'},
+				{key: 'transactionItemUnitPriceCurrencyCode', locator: 'TransactionItems/UnitPrice/CurrencyCode'},
+				{key: 'transactionItemUnitPriceFormattedPrice', locator: 'TransactionItems/UnitPrice/FormattedPrice'}
+			]
+		},
+
+		/*
+&Operation=ItemSearch&Condition=All&SearchIndex=Apparel&Keywords=Shirt&ResponseGroup=VariationMinimum
+		 */
+		VariationMinimum: {
+			metaFields: {asin: 'ASIN'},
+			resultListLocator: "Item",
+			resultFields: [
+				{key: 'asin', locator: 'ASIN'}
+			]
+		},
+
+		/*
+&Operation=ItemSearch&Condition=All&SearchIndex=Apparel&Keywords=Shirt&ResponseGroup=VariationDimensions
+		 */
+		VariationDimensions: {
+			metaFields: META_FIELDS,
+			resultListLocator: "Item",
+			resultFields: [
+			]
+		},
+
+		/*
+&Operation=ItemSearch&Condition=All&SearchIndex=Apparel&Keywords=Shirt&ResponseGroup=Variations
+<ItemSearchRequest>
+  <Keywords>Hooded Short Down Jacket</Keywords>
+  <ResponseGroup>Variations</ResponseGroup>
+  <SearchIndex>Apparel</SearchIndex>
+</ItemSearchRequest>
+		 */
+		Variations: {
+			metaFields: META_FIELDS,
+			resultListLocator: "Item",
+			resultFields: [
+				{key: 'asin', locator: 'ASIN'}
+			]
 		}
 	},
 	NAME_RESPONSE_GROUP = 'ResponseGroup';
@@ -676,8 +1025,13 @@ AWS_SCHEMA.Large.resultFields = AWS_SCHEMA.Medium.resultFields.concat(AWS_SCHEMA
 	/*.concat(AWS_SCHEMA.ItemAttributes.resultFields).concat(AWS_SCHEMA.EditorialReview.resultFields)
 	.concat(AWS_SCHEMA.Images.resultFields).concat(AWS_SCHEMA.SalesRank.resultFields)*/;
 AWS_SCHEMA.CustomerFull.resultFields = AWS_SCHEMA.CustomerFull.resultFields.concat(AWS_SCHEMA.CustomerInfo.resultFields)
-	.concat(AWS_SCHEMA.CustomerLists.resultFields).concat(AWS_SCHEMA.CostomerReviews.resultFields);
+	.concat(AWS_SCHEMA.CustomerLists.resultFields).concat(AWS_SCHEMA.CustomerReviews.resultFields);
+AWS_SCHEMA.TaggedItems.resultFields = AWS_SCHEMA.TaggedItems.resultFields.concat(AWS_SCHEMA.TaggedGuides.resultFields)
+	.concat(AWS_SCHEMA.TaggedListmaniaLists.resultFields);
+AWS_SCHEMA.TagsSummary.resultFields = AWS_SCHEMA.TagsSummary.resultFields.concat(AWS_SCHEMA.TaggedGuides.resultFields);
+AWS_SCHEMA.Tags.resultFields = AWS_SCHEMA.Tags.resultFields.concat(AWS_SCHEMA.TagsSummary.resultFields);
 Y.aggregate(AWS_SCHEMA.Offers.metaFields,META_FIELDS);
+Y.aggregate(AWS_SCHEMA.VariationMinimum.metaFields,META_FIELDS);
 
 // add RESULT_FIELDS_LINKS to schemas where duplication would occur
 AWS_SCHEMA.ItemAttributes.resultFields = AWS_SCHEMA.ItemAttributes.resultFields.concat(RESULT_FIELDS_LINKS);
@@ -688,11 +1042,24 @@ Y.mix(Y.Aws.prototype, {
 			response = '',
 			responseGroup = Y.Array.find(args.results, function(arg) {
 				return NAME_RESPONSE_GROUP === arg.name;
-			});
+			}),
+			schemaName = responseGroup.value;
 
 
-		if (responseGroup.value) {
-			response = Y.DataSchema.XML.apply(AWS_SCHEMA[responseGroup.value], doc);
+		if (schemaName) {
+			response = Y.DataSchema.XML.apply(AWS_SCHEMA[schemaName], doc);
+			var name = schemaName + AWS_SCHEMA[schemaName].resultListLocator,
+				schema = AWS_SCHEMA[name],
+				items;
+
+			if (schema) {
+				items = doc.getElementsByTagName(AWS_SCHEMA[schemaName].resultListLocator);
+
+				Y.each(items, function(item, i) {
+					var iresponse = Y.DataSchema.XML.apply(AWS_SCHEMA[name], item);
+					response.results[i][schemaName] = iresponse.results;
+				});
+			}
 		}
 
 		return response;
