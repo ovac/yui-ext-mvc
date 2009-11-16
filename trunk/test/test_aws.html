@@ -4,9 +4,7 @@
 <head>
     <title>Test Page - Amazon Web Services (AWS)</title>
 
-	<link href="/assets/css/reset.css" type="text/css" rel="stylesheet"/>
-	<link href="/assets/css/base.css" type="text/css" rel="stylesheet"/>
-	<link href="/assets/css/general.css" type="text/css" rel="stylesheet"/>
+	<link href="http://www.mattsnider.com//assets/css/library.css" type="text/css" rel="stylesheet"/>
 	<link href="/assets/css/test.css" type="text/css" rel="stylesheet"/>
 
 	<style type="text/css">
@@ -32,7 +30,9 @@
 			<legend>AWS UPC Form</legend>
 			<dl>
 				<dt><label for="form-aws-upc">UPC:</label></dt>
-				<dd><input id="form-aws-upc" type="text" tabindex="1" name="username" class="txt"/></dd>
+				<dd><input id="form-aws-upc" type="text" tabindex="1" name="upc" class="txt"/></dd>
+				<dt class="displayNone"><label for="form-aws-keywords">Keywords:</label></dt>
+				<dd class="displayNone"><input id="form-aws-keywords" type="text" tabindex="1" name="keywords" class="txt"/></dd>
 				<dt><label for="form-aws-responseGroup">ResponseGroup:</label></dt>
 				<dd><select id="form-aws-responseGroup" tabindex="2" name="responseGroup">
 					<option value="Request">Request</option>
@@ -74,18 +74,29 @@
 					<option value="RelatedItems">RelatedItems</option>
 				</select></dd>
 				<dt><label for="form-aws-responseType">ResponseType</label></dt>
-				<dd><select id="form-aws-responseType">
+				<dd><select id="form-aws-responseType" tabindex="3">
 					<option value="json">json</option>
 					<option value="xml" selected="selected">xml</option>
 				</select></dd>
 				<dt><label for="form-aws-operation">Operation</label></dt>
-				<dd><select id="form-aws-operation">
+				<dd><select id="form-aws-operation" tabindex="4">
+					<option value="BrowseNodeLookup">BrowseNodeLookup</option>
+					<option value="CartCreate">CartCreate</option>
+					<option value="CustomerContentLookup">CustomerContentLookup</option>
 					<option value="ItemLookup" selected="selected">ItemLookup</option>
 					<option value="ItemSearch">ItemSearch</option>
+					<option value="ListLookup">ListLookup</option>
 					<option value="SimilarityLookup">SimilarityLookup</option>
+					<option value="TagLookup">TagLookup</option>
+					<option value="TransactionLookup">TransactionLookup</option>
 				</select></dd>
+				<dt><label for="form-aws-other">Other Parameters</label></dt>
+				<dd>
+					<input id="form-aws-other" type="text" tabindex="5" name="other" class="txt"/><br/>
+					<small>If you know what you are doing and have additional parameters (&key=value...).</small>
+				</dd>
 				<dd class="buttons">
-					<input id="form-aws-submit" name="submit" tabindex="3" type="submit" value="submit"/>
+					<input id="form-aws-submit" name="submit" tabindex="6" type="submit" value="submit"/>
 				</dd>
 			</dl>
 		</fieldset></form></div>
@@ -109,68 +120,102 @@
 		modules: {
 			'gallery-aws': {
 //				fullpath: 'http://yui.yahooapis.com/gallery-2009.11.02-20/build/gallery-form/gallery-form.js',
-				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/aws.js?r2',
+				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/aws.js?r7',
 				requires: ['io-base', 'io-xdr', 'json-parse', 'collection', 'dataschema', 'datatype-xml'],
 				optional: [],
 				supersedes: []
 			},
 			'gallery-aws-json': {
-				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/aws-json.js?r2',
+				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/aws-json.js?r7',
 				requires: ['oop', 'datatype-json', 'gallery-aws'],
 				optional: [],
 				supersedes: []
 			}
 		}
 	}).use('node', 'json-stringify', 'gallery-aws', 'gallery-aws-json', function(Y) {
-		var results = Y.one('#form-aws-results'),
-			responseGroup = Y.one('#form-aws-responseGroup')._node,
-			responseType = Y.one('#form-aws-responseType')._node,
-			operation = Y.one('#form-aws-operation')._node,
-			resultTitle = Y.one('#aws-results-title'),
-			resultAsin = Y.one('#aws-results-asin'),
-			resultUrl = Y.one('#aws-results-url'),
-			resultAWSUrl = Y.one('#aws-results-awsurl'),
-			upc = Y.one('#form-aws-upc');
+		var _domResults = Y.one('#form-aws-results'),
+			_domResponseGroup = Y.one('#form-aws-responseGroup'),
+			_domResponseType = Y.one('#form-aws-responseType'),
+			_domOperation = Y.one('#form-aws-operation'),
+			_domOther = Y.one('#form-aws-other'),
+			_domResultTitle = Y.one('#aws-results-title'),
+			_domResultAsin = Y.one('#aws-results-asin'),
+			_domResultUrl = Y.one('#aws-results-url'),
+			_domResultAWSUrl = Y.one('#aws-results-awsurl'),
+			_domKeywords = Y.one('#form-aws-keywords'),
+			_domUpc = Y.one('#form-aws-upc');
 
 		function _getSelectedValue(node) {
-			return node.options[node.selectedIndex].value;
+			var selectedIndex = node.get('selectedIndex'),
+				option;
+
+			node.get('options').each(function(node) {
+					if (node.get('index') === selectedIndex) {
+						option = node;
+					}
+				});
+
+			return option.get('value');
 		}
 
+		// hanlde the form submission
 		Y.one('#form-aws form').on('submit', function(e) {
 			e.halt();
 			var aws = new Y.Aws({
 				ioSWFURL: '/assets/files/io.swf',
-				responseGroup: _getSelectedValue(responseGroup),
-				operation: _getSelectedValue(operation)
-			}), data;
+				responseGroup: _getSelectedValue(_domResponseGroup),
+				operation: _getSelectedValue(_domOperation),
+				awsSignedUrl: '/getAWSSignedUrl.php?' + _domOther.get('value')
+			}), data, value = _getSelectedValue(_domOperation);
 
-			switch (_getSelectedValue(operation)) {
+			switch (value) {
 				case 'ItemLookup':
 				case 'SimilarityLookup':
-					data = {ItemId:upc.get('value'), IdType: 'ASIN'};
+					data = {ItemId:_domUpc.get('value'), IdType: 'ASIN'};
 				break;
 				case 'ItemSearch':
-					data = {Keywords:upc.get('value')};
+					data = {Keywords:_domKeywords.get('value')};
 				break;
 				default:
-					alert('Operation not yet supported');
+					alert('Operation "' + value + '" not yet supported');
 					return;
 			}
 			
 			aws.getJSON(data, function(id, o) {
-				var isXML = 'xml' == _getSelectedValue(responseType),
+				var isXML = 'xml' == _getSelectedValue(_domResponseType),
 					json = o.responseJSON,
 					result = json.results[0];
 
-				results.set('value', isXML ? Y.DataType.XML.format(o.responseXML) : Y.JSON.stringify(o.responseJSON, null, 4));
-				resultAWSUrl.set('href', o.awsURL);
-				resultAWSUrl.set('innerHTML', o.awsURL ? '<a href="' + o.awsURL + '">AWS URL</a>' : '');
+				_domResults.set('value', isXML ? Y.DataType.XML.format(o.responseXML) : Y.JSON.stringify(o.responseJSON, null, 4));
+				_domResultAWSUrl.set('href', o.awsURL);
+				_domResultAWSUrl.set('innerHTML', o.awsURL ? '<a href="' + o.awsURL + '">AWS URL</a>' : '');
 
-				resultUrl.set('href', result ? result.detailPageURL : '');
-				resultUrl.set('innerHTML', result && result.detailPageURL ? '<a href="' + result.detailPageURL + '">Amazon URL</a>' : '');
-				resultTitle.set('innerHTML', result ? result.title : '');
-				resultAsin.set('innerHTML', result ? result.asin : '');
+				_domResultUrl.set('href', result ? result.detailPageURL : '');
+				_domResultUrl.set('innerHTML', result && result.detailPageURL ? '<a href="' + result.detailPageURL + '">Amazon URL</a>' : '');
+				_domResultTitle.set('innerHTML', result ? result.title : '');
+				_domResultAsin.set('innerHTML', result ? result.asin : '');
 			});
+		});
+
+		// update the form to handle operation
+		_domOperation.on('change', function() {
+			var value = _getSelectedValue(_domOperation);
+			switch (value) {
+				case 'ItemSearch':
+					_domKeywords.get('parentNode').removeClass('displayNone');
+					_domKeywords.get('parentNode').previous().removeClass('displayNone');
+					_domUpc.get('parentNode').addClass('displayNone');
+					_domUpc.get('parentNode').previous().addClass('displayNone');
+					break;
+				case 'ItemLookup':
+				case 'SimilarityLookup':
+					_domKeywords.get('parentNode').addClass('displayNone');
+					_domKeywords.get('parentNode').previous().addClass('displayNone');
+					_domUpc.get('parentNode').removeClass('displayNone');
+					_domUpc.get('parentNode').previous().removeClass('displayNone');
+					break;
+				default: alert('Operation "' + value + '" not yet supported');
+			}
 		});
 	});</script>
 </div></body>
