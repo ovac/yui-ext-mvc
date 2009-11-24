@@ -8,6 +8,37 @@
 	<link href="/assets/css/test.css" type="text/css" rel="stylesheet"/>
 
 	<style type="text/css">
+	#form-aws .BrowseNodeLookup,
+	#form-aws .CartAdd,
+	#form-aws .CartCreate,
+	#form-aws .CartModify,
+	#form-aws .CartGet,
+	#form-aws .CartClear,
+	#form-aws .CustomerContentLookup,
+	#form-aws .CustomerContentSearch,
+	#form-aws .ItemLookup,
+	#form-aws .ItemSearch,
+	#form-aws .ListLookup,
+	#form-aws .ListSearch,
+	#form-aws .SimilarityLookup {
+		display: none;
+	}
+	
+	#form-aws.BrowseNodeLookup .BrowseNodeLookup,
+	#form-aws.CartAdd .CartAdd,
+	#form-aws.CartCreate .CartCreate,
+	#form-aws.CartModify .CartModify,
+	#form-aws.CartGet .CartGet,
+	#form-aws.CartClear .CartClear,
+	#form-aws.CustomerContentLookup .CustomerContentLookup,
+	#form-aws.CustomerContentSearch .CustomerContentSearch,
+	#form-aws.ItemLookup .ItemLookup,
+	#form-aws.ItemSearch .ItemSearch,
+	#form-aws.ListLookup .ListLookup,
+	#form-aws.ListSearch .ListSearch,
+	#form-aws.SimilarityLookup .SimilarityLookup {
+		display: block;
+	}
     </style>
 </head>
 
@@ -26,52 +57,69 @@
 	a UPC code. If you use ItemSearch, then the UPC field is actually a keyword search.</p>
 
 	<div id="content">
-		<div id="form-aws"><form action="#" method="post" title="the form 1 is submitted"><fieldset>
+		<div class="ItemLookup" id="form-aws"><form action="#" method="post" title="the form 1 is submitted"><fieldset>
 			<legend>AWS UPC Form</legend>
 			<dl>
-				<dt><label for="form-aws-upc">UPC:</label></dt>
-				<dd><input id="form-aws-upc" type="text" tabindex="1" name="upc" class="txt"/></dd>
-				<dt class="displayNone"><label for="form-aws-keywords">Keywords:</label></dt>
-				<dd class="displayNone"><input id="form-aws-keywords" type="text" tabindex="1" name="keywords" class="txt"/></dd>
+				<dt class="ItemLookup"><label for="form-aws-upc">UPC:</label></dt>
+				<dt class="ListLookup"><label for="form-aws-upc">ListId:</label></dt>
+				<dd class="ItemLookup ListLookup"><input id="form-aws-upc" type="text" tabindex="1" name="upc" class="txt"/></dd>
+				<dt class="BrowseNodeLookup"><label for="form-aws-node">Node Id:</label></dt>
+				<dd class="BrowseNodeLookup"><input id="form-aws-node" type="text" tabindex="1" name="node" class="txt"/></dd>
+				<dt class="CustomerContentLookup"><label for="form-aws-customer">Customer Id:</label></dt>
+				<dd class="CustomerContentLookup"><input id="form-aws-customer" type="text" tabindex="1" name="customerId" class="txt"/></dd>
+				<dt class="ItemSearch CustomerContentSearch ListSearch"><label for="form-aws-keywords">Keywords:</label></dt>
+				<dd class="ItemSearch CustomerContentSearch ListSearch"><input id="form-aws-keywords" type="text" tabindex="1" name="keywords" class="txt"/></dd>
 				<dt><label for="form-aws-responseGroup">ResponseGroup:</label></dt>
 				<dd><select id="form-aws-responseGroup" tabindex="2" name="responseGroup">
-					<option value="Request">Request</option>
+					<option value="Accessories">Accessories</option>
+					<option value="AlternateVersions">AlternateVersions</option>
+					<option value="BrowseNodeInfo">BrowseNodeInfo</option>
+					<option value="BrowseNodes">BrowseNodes</option>
+					<option class="disabled"disabled="disabled" value="Cart">Cart</option>
+					<option class="disabled"disabled="disabled" value="CartNewReleases">CartNewReleases</option>
+					<option value="Collections">Collections</option>
+					<option value="CustomerFull">CustomerFull</option>
+					<option value="CustomerInfo">CustomerInfo</option>
+					<option value="CustomerLists">CustomerLists</option>
+					<option value="CustomerReviews">CustomerReviews</option>
+					<option value="EditorialReview">EditorialReview</option>
+					<option value="Images">Images</option>
+					<option value="ItemAttributes">ItemAttributes</option>
 					<option value="ItemIds">ItemIds</option>
-					<option value="Small" selected="selected">Small</option>
+					<option value="ListFull">ListFull</option>
+					<option value="ListInfo">ListInfo</option>
+					<option value="ListItems">ListItems</option>
+					<option value="ListmaniaLists">ListmaniaLists</option>
+					<option value="ListMinimum">ListMinimum</option>
 					<option value="Medium">Medium</option>
+					<option value="MerchantItemAttributes">MerchantItemAttributes</option>
+					<option value="NewReleases">NewReleases</option>
 					<option value="Large">Large</option>
-					<option value="Offers">Offers</option>
 					<option value="OfferFull">OfferFull</option>
-					<option value="OfferSummary">OfferSummary</option>
 					<option value="OfferListings">OfferListings</option>
-					<option value="PromotionSummary">PromotionSummary</option>
+					<option value="Offers">Offers</option>
+					<option value="OfferSummary">OfferSummary</option>
 					<option value="PromotionDetails">PromotionDetails</option>
+					<option value="PromotionSummary">PromotionSummary</option>
+					<option value="PromotionalTag">PromotionalTag</option>
+					<option value="RelatedItems">RelatedItems</option>
+					<option value="Request">Request</option>
+					<option value="Reviews">Reviews</option>
+					<option value="SalesRank">SalesRank</option>
+					<option value="SearchInside">SearchInside</option>
+					<option value="ShippingCharges">ShippingCharges</option>
+					<option value="Similarities">Similarities</option>
+					<option value="Small" selected="selected">Small</option>
+					<option value="Subjects">Subjects</option>
+					<option value="Tags">Tags</option>
+					<option value="TagsSummary">TagsSummary</option>
+					<option value="Tracks">Tracks</option>
 					<option value="Variations">Variations</option>
 					<option value="VariationImages">VariationImages</option>
-					<option value="VariationMinimum">VariationMinimum</option>
-					<option value="VariationSummary">VariationSummary</option>
-					<option value="TagsSummary">TagsSummary</option>
-					<option value="Tags">Tags</option>
 					<option value="VariationMatrix">VariationMatrix</option>
+					<option value="VariationMinimum">VariationMinimum</option>
 					<option value="VariationOffers">VariationOffers</option>
-					<option value="ItemAttributes">ItemAttributes</option>
-					<option value="MerchantItemAttributes">MerchantItemAttributes</option>
-					<option value="Tracks">Tracks</option>
-					<option value="Accessories">Accessories</option>
-					<option value="EditorialReview">EditorialReview</option>
-					<option value="SalesRank">SalesRank</option>
-					<option value="BrowseNodes">BrowseNodes</option>
-					<option value="Images">Images</option>
-					<option value="Similarities">Similarities</option>
-					<option value="Subjects">Subjects</option>
-					<option value="Reviews">Reviews</option>
-					<option value="ListmaniaLists">ListmaniaLists</option>
-					<option value="SearchInside">SearchInside</option>
-					<option value="PromotionalTag">PromotionalTag</option>
-					<option value="AlternateVersions">AlternateVersions</option>
-					<option value="Collections">Collections</option>
-					<option value="ShippingCharges">ShippingCharges</option>
-					<option value="RelatedItems">RelatedItems</option>
+					<option value="VariationSummary">VariationSummary</option>
 				</select></dd>
 				<dt><label for="form-aws-responseType">ResponseType</label></dt>
 				<dd><select id="form-aws-responseType" tabindex="3">
@@ -81,14 +129,20 @@
 				<dt><label for="form-aws-operation">Operation</label></dt>
 				<dd><select id="form-aws-operation" tabindex="4">
 					<option value="BrowseNodeLookup">BrowseNodeLookup</option>
-					<option value="CartCreate">CartCreate</option>
+					<option class="disabled" disabled="disabled" value="CartAdd">CartAdd</option>
+					<option class="disabled" disabled="disabled" value="CartClear">CartClear</option>
+					<option class="disabled" disabled="disabled" value="CartCreate">CartCreate</option>
+					<option class="disabled" disabled="disabled" value="CartGet">CartGet</option>
+					<option class="disabled" disabled="disabled" value="CartModify">CartModify</option>
 					<option value="CustomerContentLookup">CustomerContentLookup</option>
+					<option value="CustomerContentSearch">CustomerContentSearch</option>
 					<option value="ItemLookup" selected="selected">ItemLookup</option>
 					<option value="ItemSearch">ItemSearch</option>
 					<option value="ListLookup">ListLookup</option>
+					<option value="ListSearch">ListSearch</option>
 					<option value="SimilarityLookup">SimilarityLookup</option>
-					<option value="TagLookup">TagLookup</option>
-					<option value="TransactionLookup">TransactionLookup</option>
+					<option class="disabled" disabled="disabled" value="TagLookup">TagLookup</option>
+					<option class="disabled" disabled="disabled" value="TransactionLookup">TransactionLookup</option>
 				</select></dd>
 				<dt><label for="form-aws-other">Other Parameters</label></dt>
 				<dd>
@@ -112,28 +166,38 @@
 		<textarea id="form-aws-results" rows="10" cols="60"></textarea>
 	</div>
 
-	<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js" type="text/javascript"></script>
-	<script type="text/javascript">YUI({
+	<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui.js" type="text/javascript"></script>
+	<script type="text/javascript">var r = '63';
+	YUI({
 		filter:'raw',
 		combine: true,
 		timeout: 10000,
 		modules: {
 			'gallery-aws': {
 //				fullpath: 'http://yui.yahooapis.com/gallery-2009.11.02-20/build/gallery-form/gallery-form.js',
-				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/aws.js?r7',
-				requires: ['io-base', 'io-xdr', 'json-parse', 'collection', 'dataschema', 'datatype-xml'],
+				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/aws.js?r' + r,
+				requires: ['base', 'io-base', 'io-xdr', 'json-parse', 'collection', 'datatype-xml'],
 				optional: [],
 				supersedes: []
 			},
 			'gallery-aws-json': {
-				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/aws-json.js?r7',
-				requires: ['oop', 'datatype-json', 'gallery-aws'],
+				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/aws-json.js?r' + r,
+				requires: ['oop', 'datatype-json', 'dataschema-xml2', 'gallery-aws'],
+				optional: [],
+				supersedes: []
+			},
+			'dataschema-xml2': {
+				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/dataschema-xml2.js?r' + r,
+				requires: ['dataschema-base'],
 				optional: [],
 				supersedes: []
 			}
 		}
 	}).use('node', 'json-stringify', 'gallery-aws', 'gallery-aws-json', function(Y) {
-		var _domResults = Y.one('#form-aws-results'),
+		var _domCustomerId = Y.one('#form-aws-customer'),
+			_domForm = Y.one('#form-aws'),
+			_domNodeId = Y.one('#form-aws-node'),
+			_domResults = Y.one('#form-aws-results'),
 			_domResponseGroup = Y.one('#form-aws-responseGroup'),
 			_domResponseType = Y.one('#form-aws-responseType'),
 			_domOperation = Y.one('#form-aws-operation'),
@@ -169,12 +233,32 @@
 			}), data, value = _getSelectedValue(_domOperation);
 
 			switch (value) {
+				case 'BrowseNodeLookup':
+					data = {BrowseNodeId:_domNodeId.get('value')};
+				break;
+			/*
+				case 'CartAdd':
+				case 'CartCreate':
+				case 'CartModify':
+				case 'CartGet':
+				case 'CartClear':
+					data = '';
+					*/
+				break;
+				case 'CustomerContentLookup':
+				case 'CustomerContentSearch':
+					data = {CustomerId:_domCustomerId.get('value')};
+				break;
 				case 'ItemLookup':
 				case 'SimilarityLookup':
 					data = {ItemId:_domUpc.get('value'), IdType: 'ASIN'};
 				break;
 				case 'ItemSearch':
+				case 'ListSearch':
 					data = {Keywords:_domKeywords.get('value')};
+				break;
+				case 'ListLookup':
+					data = {ListId:_domUpc.get('value'), IdType: 'ListId'};
 				break;
 				default:
 					alert('Operation "' + value + '" not yet supported');
@@ -200,22 +284,7 @@
 		// update the form to handle operation
 		_domOperation.on('change', function() {
 			var value = _getSelectedValue(_domOperation);
-			switch (value) {
-				case 'ItemSearch':
-					_domKeywords.get('parentNode').removeClass('displayNone');
-					_domKeywords.get('parentNode').previous().removeClass('displayNone');
-					_domUpc.get('parentNode').addClass('displayNone');
-					_domUpc.get('parentNode').previous().addClass('displayNone');
-					break;
-				case 'ItemLookup':
-				case 'SimilarityLookup':
-					_domKeywords.get('parentNode').addClass('displayNone');
-					_domKeywords.get('parentNode').previous().addClass('displayNone');
-					_domUpc.get('parentNode').removeClass('displayNone');
-					_domUpc.get('parentNode').previous().removeClass('displayNone');
-					break;
-				default: alert('Operation "' + value + '" not yet supported');
-			}
+			_domForm.set('className', value);
 		});
 	});</script>
 </div></body>
