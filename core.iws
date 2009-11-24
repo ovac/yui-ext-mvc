@@ -3,15 +3,16 @@
   <component name="ChangeListManager" verified="true">
     <list default="true" readonly="true" id="c1df7342-9b06-4bd7-bb4f-9a922d9401bc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core.iws" afterPath="$PROJECT_DIR$/core.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js" afterPath="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/getAWSSignedUrl.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test_aws.html" afterPath="$PROJECT_DIR$/test/test_aws.html" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-3-ext/formErrorManager.js" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/js/yahoo-3-ext/form.js" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/test_formErrorManager.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/css/test.css" afterPath="$PROJECT_DIR$/assets/css/test.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-json.js" afterPath="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-json.js" />
     </list>
-    <ignored path=".idea/workspace.xml" />
     <ignored path="core.iws" />
+    <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,16 +107,7 @@
       <file leaf-file-name="aws.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="21" selection-start="1152" selection-end="1172" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="storage.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/storage.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="71" column="18" selection-start="2700" selection-end="2700" vertical-scroll-proportion="0.0">
+            <state line="108" column="117" selection-start="2615" selection-end="2615" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -124,7 +116,16 @@
       <file leaf-file-name="aws-json.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-json.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1051" column="42" selection-start="37435" selection-end="37435" vertical-scroll-proportion="0.5277778">
+            <state line="812" column="44" selection-start="29371" selection-end="29371" vertical-scroll-proportion="0.251634">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dataschema-xml2.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/dataschema-xml2.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="257" column="57" selection-start="8656" selection-end="8656" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -133,7 +134,7 @@
       <file leaf-file-name="test_aws.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test_aws.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="122" column="80" selection-start="6143" selection-end="6143" vertical-scroll-proportion="-6.7727275">
+            <state line="76" column="64" selection-start="4272" selection-end="4272" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -142,7 +143,7 @@
       <file leaf-file-name="getAWSSignedUrl.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/getAWSSignedUrl.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="118" column="32" selection-start="5356" selection-end="5356" vertical-scroll-proportion="0.0">
+            <state line="119" column="20" selection-start="4907" selection-end="4907" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -176,7 +177,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/test_zipcode_ca.php" />
         <option value="$PROJECT_DIR$/test/test_storageUtilityForCaZipcodes.html" />
         <option value="$PROJECT_DIR$/test/test_number.html" />
         <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/number.js" />
@@ -187,9 +187,10 @@
         <option value="$PROJECT_DIR$/assets/js/yahoo-ext/formElementSerializer.js" />
         <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-xml.js" />
         <option value="$PROJECT_DIR$/assets/css/base.css" />
+        <option value="$PROJECT_DIR$/assets/css/test.css" />
         <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js" />
         <option value="$PROJECT_DIR$/getAWSSignedUrl.php" />
-        <option value="$PROJECT_DIR$/assets/css/test.css" />
+        <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/dataschema-xml2.js" />
         <option value="$PROJECT_DIR$/test/test_aws.html" />
         <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-json.js" />
       </list>
@@ -236,12 +237,12 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane />
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Favorites" />
       <pane id="Scope" />
+      <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -258,8 +259,8 @@
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="PhpRunConfigurationType" factoryName="PHP" break_at_first_line="false" browser="DEFAULT" open_page_automatically="true" session_id="" session_after_first_page="false" web_path="">
@@ -455,7 +456,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-4" width="1288" height="778" extended-state="0" />
+    <frame x="-4" y="-4" width="1288" height="778" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32869992" sideWeight="0.5" order="3" side_tool="false" />
@@ -468,14 +469,14 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32951757" sideWeight="0.5" order="5" side_tool="false" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" />
-      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30662307" sideWeight="0.66096425" order="0" side_tool="false" />
+      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31852987" sideWeight="0.5" order="1" side_tool="false" />
-      <window_info id="Tapestry" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" />
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" />
+      <window_info id="Tapestry" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3281493" sideWeight="0.5" order="11" side_tool="false" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" />
       <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" />
@@ -563,11 +564,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/assets/js/widget/CheckboxList_Y3.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="239" column="7" selection-start="4780" selection-end="4802" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/yahoo-2.8/swfdetect.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="14" column="16" selection-start="219" selection-end="219" vertical-scroll-proportion="0.23923445" />
@@ -593,6 +589,11 @@
         <state line="123" column="42" selection-start="2678" selection-end="3041" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/tests/storage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="71" column="18" selection-start="2700" selection-end="2700" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test/test_number.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="23" column="9" selection-start="1044" selection-end="1044" vertical-scroll-proportion="0.0" />
@@ -610,19 +611,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/aws.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="21" selection-start="1152" selection-end="1172" vertical-scroll-proportion="0.0" />
+        <state line="108" column="117" selection-start="2615" selection-end="2615" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/storage.html">
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/dataschema-xml2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="18" selection-start="2700" selection-end="2700" vertical-scroll-proportion="0.0" />
+        <state line="257" column="57" selection-start="8656" selection-end="8656" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_aws.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="76" column="64" selection-start="4272" selection-end="4272" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/getAWSSignedUrl.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="118" column="32" selection-start="5356" selection-end="5356" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="119" column="20" selection-start="4907" selection-end="4907" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/css/test.css">
@@ -635,16 +641,9 @@
         <state line="264" column="1" selection-start="4654" selection-end="4654" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_aws.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="122" column="80" selection-start="6143" selection-end="6143" vertical-scroll-proportion="-6.7727275">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-json.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1051" column="42" selection-start="37435" selection-end="37435" vertical-scroll-proportion="0.5277778">
+        <state line="812" column="44" selection-start="29371" selection-end="29371" vertical-scroll-proportion="0.251634">
           <folding />
         </state>
       </provider>

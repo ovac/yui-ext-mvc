@@ -96,19 +96,24 @@ Y.mix(Aws, {
 	 * @type Array
 	 * @static
 	 */
-	OPERATION: ['ItemLookup', 'ItemSearch', 'ListLookup', 'SimilarityLookup'],
+	OPERATION: ['BrowseNodeLookup', 'CartAdd', 'CartCreate', 'CartClear', 'CardGet', 'CartModify',
+		'CustomerContentLookup', 'CustomerContentSearch',
+		'ItemLookup', 'ItemSearch', 'ListLookup', 'ListSearch', 'SimilarityLookup'],
 
 	/**
 	 * @property Aws.RESPONSE_GROUP
 	 * @type Array
 	 * @static
 	 */
-	RESPONSE_GROUP: ['Request', 'ItemIds', 'Small', 'Medium', 'Large', 'Offers', 'OfferFull', 'OfferSummary',
-		'OfferListings', 'PromotionSummary', 'PromotionDetails', 'Variations', 'VariationImages', 'VariationMinimum',
-		'VariationSummary', 'TagsSummary', 'Tags', 'VariationMatrix', 'VariationOffers', 'ItemAttributes',
-		'MerchantItemAttributes', 'Tracks', 'Accessories', 'EditorialReview', 'SalesRank', 'BrowseNodes', 'Images',
-		'Similarities', 'Subjects', 'Reviews', 'ListmaniaLists', 'SearchInside', 'PromotionalTag',
-		'AlternateVersions', 'Collections', 'ShippingCharges', 'RelatedItems']
+	RESPONSE_GROUP: ['Accessories', 'AlternateVersions', 'BrowseNodes', 'BrowseNodeInfo', 'Cart', 'CartNewReleases',
+		'Collections', 'CustomerFull', 'CustomerInfo', 'CustomerLists', 'CustomerReviews', 'EditorialReview', 'Images',
+		'ItemAttributes','ItemIds', 'Large', 'ListFull', 'ListInfo', 'ListItems', 'ListmaniaLists', 'ListMinimum',
+		'MerchantItemAttributes', 'NewReleases', 
+		'Medium', 'OfferFull', 'OfferListings', 'Offers', 'OfferSummary', 'Request', 
+		'PromotionSummary', 'PromotionDetails', 'Small', 'Variations', 'VariationImages', 'VariationMinimum',
+		'VariationSummary', 'TagsSummary', 'Tags', 'VariationMatrix', 'VariationOffers', 
+		'Tracks', 'SalesRank', 'Images', 'Similarities', 'Subjects', 'Reviews', 'SearchInside',
+		'PromotionalTag', 'ShippingCharges', 'RelatedItems']
 });
 
 Y.extend(Aws, Y.Base, {
@@ -121,7 +126,8 @@ Y.extend(Aws, Y.Base, {
 	 * @protected
 	 */
 	_validateUrl: function(val) {
-		return ('' + val).match(RX_URL);
+		return true;
+//		return ('' + val).match(RX_URL);
 	},
 
 	/**
@@ -199,4 +205,4 @@ Y.on('io:xdrReady', function() {
 }, this);
 
 Y.Aws = Aws;
-}, {requires: ['io-base', 'io-xdr', 'json-parse', 'collection', 'dataschema', 'datatype-xml']});
+}, {requires: ['base', 'io-base', 'io-xdr', 'json-parse', 'collection', 'datatype-xml']});

@@ -8,6 +8,8 @@ YUI.add('gallery-aws-json', function(Y) {
 * <p>
 * The widget currently supports all 'ItemLookup' Operations..
 * </p>
+
+All, Apparel, Automotive, Baby, Beauty, Blended, Books, Classical, DVD, DigitalMusic, Electronics, GourmetFood, Grocery, HealthPersonalCare, HomeGarden, Industrial, Jewelry, KindleStore, Kitchen, MP3Downloads, Magazines, Marketplace, Merchants, Miscellaneous, Music, MusicTracks, MusicalInstruments, OfficeProducts, OutdoorLiving, PCHardware, PetSupplies, Photo, Shoes, SilverMerchants, Software, SportingGoods, Tools, Toys, UnboxVideo, VHS, Video, VideoGames, Watches, Wireless, WirelessAccessories
 *
 * @module aws-json
 */
@@ -24,11 +26,27 @@ function AwsJSON() {
 //	AwsJSON.superclass.constructor.apply(this,arguments);
 }
 
-var META_FIELDS = { // from the Request ResponseGroup
+// setup some parsers
+Y.Parsers = Y.namespace("Parsers");
+Y.Parsers.integer = function(val) {
+	return parseInt(val, 10);
+};
+Y.Parsers.decimal = function(val) {
+	return parseFloat(val);
+};
+Y.Parsers.bool = function(val) {
+	return val ? true : false;
+};
+
+var ITEM_ATTRIBUTES_PFX = 'ItemAttributes/',
+	OPERATIONS_CART = ['CartAdd', 'CartCreate', 'CartModify', 'CartGet'],
+	OPERATIONS_CUSTOMER = ['CustomerContentLookup'],
+	OPERATIONS_LOOKUP = ['ItemLookup', 'ItemSearch', 'ListLookup', 'SimilarityLookup'],
+	META_FIELDS = { // from the Request ResponseGroup
 		condition:"//Condition",
 		deliveryMethod:"//DeliveryMethod",
 		idType:"//IdType",
-		isValid:"//IsValid",
+		isValid:{locator: "//IsValid", parser: 'bool'},
 		itemId:"//ItemId",
 		merchantId:"//MerchantId",
 		offerPage:"//OfferPage",
@@ -38,8 +56,13 @@ var META_FIELDS = { // from the Request ResponseGroup
 		reviewSort:"//ReviewSort",
 		searchIndex:"//SearchIndex",
 		variationPage:"//VariationPage",
-		totalPages:"//List/TotalPages",
-		totalResults:"//List/TotalResults"
+		totalPages:{locator: "//TotalPages", parser: 'integer'},
+		totalResults:{locator: "//TotalResults", parser: 'integer'}
+	},
+	META_FIELDS_CUSTOMER = {
+		customerId:"//CustomerContentLookupRequest/CustomerId",
+		isValid:{locator: "//IsValid", parser: 'bool'},
+		responseGroup:"//CustomerContentLookupRequest/ResponseGroup"
 	},
 	RESULT_FIELDS_LINKS = [
 		{key:"technicalDetailsURL", locator:'//ItemLinks/ItemLink[1]/URL'}, // [1] may need to change to [0] in IE
@@ -75,17 +98,18 @@ var META_FIELDS = { // from the Request ResponseGroup
 		 */
 		Accessories: {
 			metaFields: META_FIELDS,
+			operations: OPERATIONS_LOOKUP,
 			resultListLocator: "Item",
 			resultFields:[
-				{key:"asin", locator:'ASIN'}
-			]
-		},
-		AccessoriesItem: {
-			metaFields: {},
-			resultListLocator: "Accessory",
-			resultFields:[
 				{key:"asin", locator:'ASIN'},
-				{key:"title", locator:'Title'}
+				{key:"accessories", schema: {
+					allowEmpty: true,
+					resultListLocator: "Accessory",
+					resultFields:[
+						{key:"asin", locator:'ASIN'},
+						{key:"title", locator:'Title'}
+					]
+				}}
 			]
 		},
 
@@ -105,18 +129,19 @@ var META_FIELDS = { // from the Request ResponseGroup
 		 */
 		AlternateVersions: {
 			metaFields: META_FIELDS,
+			operations: OPERATIONS_LOOKUP,
 			resultListLocator: "Item",
 			resultFields:[
-				{key:"asin", locator:'ASIN'}
-			]
-		},
-		AlternateVersionsItem: {
-			metaFields: {},
-			resultListLocator: "AlternateVersion",
-			resultFields:[
 				{key:"asin", locator:'ASIN'},
-				{key:"title", locator:'Title'},
-				{key:"binding", locator:'Binding'}
+				{key: 'alternateVersions', schema: {
+					allowEmpty: true,
+					resultListLocator: "AlternateVersion",
+					resultFields:[
+						{key:"asin", locator:'ASIN'},
+						{key:"title", locator:'Title'},
+						{key:"binding", locator:'Binding'}
+					]
+				}}
 			]
 		},
 
@@ -155,18 +180,29 @@ var META_FIELDS = { // from the Request ResponseGroup
 		</BrowseNodes>
 		 */
 		BrowseNodeInfo: {
-			metaFields: META_FIELDS,
-			resultListLocator: "Item",
+			metaFields: {
+				browseNodeId:{locator: "//BrowseNodeLookupRequest/BrowseNodeId", parser: 'integer'},
+				isValid:{locator: "//IsValid", parser: 'bool'},
+				responseGroup:"//BrowseNodeLookupRequest/ResponseGroup"
+			},
+			operations: ['BrowserNodeLookup'],
+			resultListLocator: "//BrowseNodes/BrowseNode",
 			resultFields:[
-				{key:"browseNodeId", locator:'BrowseNodes/BrowseNode/BrowseNodeId'},
-				{key:"browseNodeName", locator:'BrowseNodes/BrowseNode/Name'},
-				{key:"childrenBrowseNodeId", locator:'BrowseNodes/Children/BrowseNode/BrowseNodeId'},
-				{key:"childrenBrowseNodeName", locator:'BrowseNodes/Children/BrowseNode/Name'},
-			]
+				/* also includes BrowseNodes */
+				{key:'children', schema: {
+					resultListLocator: "//Children/BrowseNode",
+					resultFields:[
+						{key:"browseNodeId", locator:'BrowseNodeId', parser: 'integer'},
+						{key:"name", locator:'Name'}
+					],
+					useXPath: true
+				}}
+			],
+			useXPath: true
 		},
 
 		/*
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=BrowseNodeLookup&SearchIndex=Books&Keywords=Potter&ResponseGroup=BrowseNodes
+&Operation=BrowseNodeLookup&SearchIndex=Books&Keywords=Potter&ResponseGroup=BrowseNodes
 <BrowseNodes>
 	<BrowseNode>
 		<BrowseNodeId>63926</BrowseNodeId>
@@ -184,34 +220,30 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 			</BrowseNode>
 		</Ancestors>
 	</BrowseNode>
-	<BrowseNode>
-		<BrowseNodeId>598176</BrowseNodeId>
-		<Name>Hard Bop</Name>
-		<Ancestors>
-			<BrowseNode>
-				<BrowseNodeId>598174</BrowseNodeId>
-				<Name>Bebop</Name>
-				<Ancestors>
-					<BrowseNode>
-						<BrowseNodeId>34</BrowseNodeId>
-						<Name>Jazz</Name>
-						<Ancestors>
-							<BrowseNode>
-								<BrowseNodeId>301668</BrowseNodeId>
-								<Name>Styles</Name>
-							</BrowseNode>
-						</Ancestors>
-					</BrowseNode>
-				</Ancestors>
-			</BrowseNode>
-		</Ancestors>
-	</BrowseNode>
+	...
 </BrowseNodes>
 		 */
 		BrowseNodes: {
-			metaFields: META_FIELDS,
-			resultListLocator: "Item",
-			resultFields:[ /* not sure how to parse yet */]
+			metaFields: {
+				browseNodeId:{locator: "//BrowseNodeLookupRequest/BrowseNodeId", parser: 'integer'},
+				isValid:{locator: "//IsValid", parser: 'bool'},
+				responseGroup:"//BrowseNodeLookupRequest/ResponseGroup"
+			},
+			operations: OPERATIONS_LOOKUP,
+			resultListLocator: "//BrowseNodes/BrowseNode",
+			resultFields:[
+				{key:"browseNodeId", locator:'BrowseNodeId', parser: 'integer'},
+				{key:"name", locator:'Name'},
+				{key:'ancestors', schema: {
+					resultListLocator: "Ancestors",
+					resultFields:[
+						{key:"browseNodeId", locator:'BrowseNode/BrowseNodeId', parser: 'integer'},
+						{key:"isCategoryRoot", locator:'BrowseNode/IsCategoryRoot', parser: 'bool'},
+						{key:"name", locator:'BrowseNode/Name'}
+					]
+				}}
+			],
+			useXPath: true
 		},
 
 		/*
@@ -269,6 +301,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		 */
 		Cart: {
 			metaFields: META_FIELDS,
+			operations: OPERATIONS_CART.concat(['CartClear']),
 			resultListLocator: "Item",
 			resultFields:[
 				/* Not currently supporting */
@@ -276,7 +309,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		},
 
 		/*
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&AssociateId=ws&Operation=CartCreate&Item.1.ASIN=B000062TU1&MergeCart=True&Item.1.Quantity=2&ResponseGroup=CartNewReleases
+&Operation=CartCreate&Item.1.ASIN=B000062TU1&MergeCart=True&Item.1.Quantity=2&ResponseGroup=CartNewReleases
 		<NewReleases>
 			<NewRelease>
 				<ASIN>B00005JOFQ</ASIN>
@@ -287,6 +320,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		 */
 		CartNewReleases: {
 			metaFields: META_FIELDS,
+			operations: OPERATIONS_CART,
 			resultListLocator: "Item",
 			resultFields:[
 				{key:"newReleaseAsin", locator:'NewReleases/NewRelease/ASIN'},
@@ -295,7 +329,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		},
 
 		/*
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&AssociateId=ws&Operation=CartCreate&Item.1.ASIN=B000062TU1&MergeCart=True&Item.1.Quantity=2&ResponseGroup=CartTopSellers
+Operation=CartCreate&Item.1.ASIN=B000062TU1&MergeCart=True&Item.1.Quantity=2&ResponseGroup=CartTopSellers
 		<TopSellers>
 			<TopSeller>
 				<ASIN>B00005JOFQ</ASIN>
@@ -306,6 +340,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		 */
 		CartTopSellers: {
 			metaFields: META_FIELDS,
+			operations: OPERATIONS_CART,
 			resultListLocator: "Item",
 			resultFields:[
 				{key:"collectionParentAsin", locator:'TopSellers/TopSeller/ASIN'},
@@ -314,7 +349,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		},
 
 		/*
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&AssociateId=ws&Operation=CartCreate&Item.1.ASIN=B000062TU1&MergeCart=True&Item.1.Quantity=2&ResponseGroup=CartSimilarities
+Operation=CartCreate&Item.1.ASIN=B000062TU1&MergeCart=True&Item.1.Quantity=2&ResponseGroup=CartSimilarities
 		<SimilarProducts>
 			<SimilarProduct>
 				<ASIN>B00008DDXC</ASIN>
@@ -339,6 +374,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		 */
 		CartSimilarities: {
 			metaFields: META_FIELDS,
+			operations: OPERATIONS_CART,
 			resultListLocator: "Item",
 			resultFields:[
 				{key:"similarProductAsin", locator:'SimilarProducts/SimilarProduct/ASIN'},
@@ -351,7 +387,7 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 		},
 
 		/**
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKey=[Access Key ID]&Operation=ItemLookup&ItemId=B000ALMQ9C&ResponseGroup=ItemIds,Collections
+Operation=ItemLookup&ItemId=B000ALMQ9C&ResponseGroup=ItemIds,Collections
 		 * <Collections>
 		 *	  <Collection>
 		 *		<CollectionParent>
@@ -387,171 +423,542 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKey=[Acce
 			uses CustomerInfo, CustomerLists, and CustomerReviews
 		 */
 		CustomerFull: {
-			metaFields: META_FIELDS,
-			resultListLocator: "Item",
+			metaFields: META_FIELDS_CUSTOMER,
+			operations: OPERATIONS_CART,
+			resultListLocator: "Customer",
 			resultFields:[]
 		},
 
 		/*
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=CustomerContentLookup&CustomerId=[Customer ID]&ResponseGroup=CustomerInfo
-		<Customer>
-			<CustomerId>ABCDEFG12345</CustomerId>
-			<Nickname>jeff</Nickname>
-		</Customer>
+&Operation=CustomerContentLookup&CustomerId=A2JM0EQJELFL69&ResponseGroup=CustomerInfo
+		<Customers>
+			<Customer>
+				<CustomerId>ABCDEFG12345</CustomerId>
+				<Nickname>jeff</Nickname>
+			</Customer>
+			...
+		<Customers>
 		 */
 		CustomerInfo: {
-			metaFields: META_FIELDS,
-			resultListLocator: "Item",
+			metaFields: META_FIELDS_CUSTOMER,
+			operations: OPERATIONS_CART.concat('CustomerContentSearch'),
+			resultListLocator: "Customer",
 			resultFields:[
-				{key:"customerId", locator:'Customer/CustomerId'},
-				{key:"nickname", locator:'Customer/Nickname'}
+				{key:"customerId", locator:'CustomerId'},
+				{key:"nickname", locator:'Nickname'}
 			]
 		},
 
 		/*
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=CustomerContentLookup&CustomerId=ABCDEF123456&ResponseGroup=CustomerLists
-		<Customer>
-			<CustomerId>ABCDEFG12345</CustomerId>
-			<WishListId>123456ABCDEF</WishListId>
-		</Customer>
+&Operation=CustomerContentLookup&CustomerId=A2JM0EQJELFL69&ResponseGroup=CustomerLists
+		<Customers>
+			<Customer>
+				<CustomerId>ABCDEFG12345</CustomerId>
+				<WishListId>123456ABCDEF</WishListId>
+			</Customer>
+			...
+		<Customers>
 		 */
 		CustomerLists: {
-			metaFields: META_FIELDS,
-			resultListLocator: "Item",
+			metaFields: META_FIELDS_CUSTOMER,
+			operations: OPERATIONS_CART,
+			resultListLocator: "Customer",
 			resultFields:[
-				{key:"customerId", locator:'Customer/CustomerId'},
-				{key:"wishListId", locator:'Customer/WishListId'}
+				{key:"customerId", locator:'CustomerId'},
+				{key:"wishListId", locator:'WishListId'}
 			]
 		},
 
 		/*
-http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AWS Access Key ID]&Operation=CustomerContentLookup&CustomerId=ABCDEF123456&ResponseGroup=CustomerReviews
-		<Customer>
-			<CustomerId>ABCDEFG12345</CustomerId>
-			<CustomerReviews>
-				<TotalReviews>8</TotalReviews>
-				<TotalReviewPages>1</TotalReviewPages>
-				<Review>
-					<ASIN>6305692688</ASIN>
-					<Rating>1</Rating>
-					<HelpfulVotes>21</HelpfulVotes>
-					<TotalVotes>35</TotalVotes>
-					<Date>2000-02-29</Date>
-					<Summary>one star is indeed one too many</Summary>
-					<Content>CONTENT</Content>
-				</Review>
-				...
-			</CustomerReviews>
-		</Customer>
+Operation=CustomerContentLookup&CustomerId=ABCDEF123456&ResponseGroup=CustomerReviews
+		<Customers>
+			<Customer>
+				<CustomerId>ABCDEFG12345</CustomerId>
+				<CustomerReviews>
+					<TotalReviews>8</TotalReviews>
+					<TotalReviewPages>1</TotalReviewPages>
+					<Review>
+						<ASIN>6305692688</ASIN>
+						<Rating>1</Rating>
+						<HelpfulVotes>21</HelpfulVotes>
+						<TotalVotes>35</TotalVotes>
+						<Date>2000-02-29</Date>
+						<Summary>one star is indeed one too many</Summary>
+						<Content>CONTENT</Content>
+					</Review>
+					...
+				</CustomerReviews>
+			</Customer>
+			...
+		<Customers>
 		 */
 		CustomerReviews: {
-			metaFields: META_FIELDS,
-			resultListLocator: "Item",
+			metaFields: META_FIELDS_CUSTOMER,
+			operations: OPERATIONS_CART,
+			resultListLocator: "Customer",
 			resultFields:[
-				{key:"customerId", locator:'Customer/CustomerId'},
-				{key:"totalReviews", locator:'Customer/CustomerReviews/TotalReviews'},
-				{key:"totalReviewPages", locator:'Customer/CustomerReviews/TotalReviewPages'},
-				{key:"reviewAsin", locator:'Customer/CustomerReviews/Review/ASIN'},
-				{key:"reviewRating", locator:'Customer/CustomerReviews/Review/Rating'},
-				{key:"reviewHelpfulVotes", locator:'Customer/CustomerReviews/Review/HelpfulVotes'},
-				{key:"reviewDate", locator:'Customer/CustomerReviews/Review/Date'},
-				{key:"reviewSummary", locator:'Customer/CustomerReviews/Review/Summary'},
-				{key:"reviewContent", locator:'Customer/CustomerReviews/Review/Content'}
+				{key:"customerId", locator:'CustomerId'},
+				{key:"totalReviews", locator:'//TotalReviews', parser: 'integer'},
+				{key:"totalReviewPages", locator:'//TotalReviewPages', parser: 'integer'},
+				{key:'reviews', schema: {
+					allowEmpty: true,
+					resultListLocator: "Review",
+					resultFields:[
+						{key:"asin", locator:'ASIN'},
+						{key:"rating", locator:'Rating', parser: 'integer'},
+						{key:"helpfulVotes", locator:'HelpfulVotes', parser: 'integer'},
+						{key:"date", locator:'Date'},
+						{key:"reviewerCustomerId", locator:'Reviewer/CustomerId'},
+						{key:"reviewerName", locator:'Reviewer/Name'},
+						{key:"totalVotes", locator:'TotalVotes', parser: 'integer'},
+						{key:"summary", locator:'Summary'},
+						{key:"content", locator:'Content'}
+					]
+				}}
 			]
 		},
 
+		/*
+		<Item>
+			<ASIN>#</ASIN>
+			<EditorialReviews>
+				<EditorialReview>
+					<Source>TEXT</Source>
+					<Content>TEXT</Content>
+				</EditorialReview>
+				...
+			</EditorialReviews>
+		</Item>
+		 */
 		EditorialReview: {
-			metaFields: META_FIELDS,
+			metaFields: {
+				isValid:{locator: "//IsValid", parser: 'bool'},
+				keywords:"//ItemSearchRequest/Keywords",
+				responseGroup:"//ItemSearchRequest/ResponseGroup",
+				searchIndex:"//ItemSearchRequest/SearchIndex"
+			},
+			operations: OPERATIONS_LOOKUP,
 			resultListLocator: "Item",
 			resultFields:[
-				{key:"description", locator:'EditorialReviews/EditorialReview[1]/Content'},
-				{key:"review", locator:'EditorialReviews/EditorialReview[2]/Content'}
+				{key:"asin", locator:'ASIN'},
+				{key:"editorialReviews", schema:{
+					resultListLocator: "EditorialReview",
+					resultFields:[
+						{key:"content", locator:'Content'},
+						{key:"source", locator:'Source'}
+					]
+				}}
 			]
 		},
 
+		/*
+Operation=Help&HelpType=Operation&About=CustomerContentLookup&
+Very prelimiary, needs more exploration
+		 */
+		Help: {
+			resultListLocator: "OperationInformation",
+			resultFields:[
+				{key:"name", locator:'Name'},
+				{key:"requiredParameters", schema: {
+					resultListLocator: "RequiredParameters/Parameter",
+					resultFields:[
+						{key:"value", locator:'.'}
+					],
+					useXPath: true
+				}},
+				{key:"availableParameters", schema: {
+					resultListLocator: "AvailableParameters/Parameter",
+					resultFields:[
+						{key:"value", locator:'.'}
+					],
+					useXPath: true
+				}},
+				{key:"defaultResponseGroups", schema: {
+					resultListLocator: "DefaultResponseGroups/ResponseGroup",
+					resultFields:[
+						{key:"value", locator:'.'}
+					],
+					useXPath: true
+				}},
+				{key:"availableResponseGroups", schema: {
+					resultListLocator: "AvailableResponseGroups/ResponseGroup",
+					resultFields:[
+						{key:"value", locator:'.'}
+					],
+					useXPath: true
+				}}
+			]
+		},
+
+		/*
+Operation=ItemSearch&Condition=All&ResponseGroup=Images&SearchIndex=Blended&Keywords=GodSmack&Merchant=All&
+		 */
 		Images: {
 			metaFields: META_FIELDS,
+			operations: OPERATIONS_LOOKUP,
 			resultListLocator: "Item",
 			resultFields:[
-				{key:"smallImageURL", locator:'//SmallImage/URL'},
-				{key:"smallImageWidth", locator:'//SmallImage/Width'},
-				{key:"smallImageHeight", locator:'//SmallImage/Height'},
-				{key:"smallImageWidthUnits", locator:'//SmallImage/Width/@Units'},
-				{key:"smallImageHeightUnits", locator:'//SmallImage/Height/@Units'},
-				{key:"mediumImageURL", locator:'//MediumImage/URL'},
-				{key:"mediumImageWidth", locator:'//MediumImage/Width'},
-				{key:"mediumImageHeight", locator:'//MediumImage/Height'},
-				{key:"mediumImageWidthUnits", locator:'//MediumImage/Width/@Units'},
-				{key:"mediumImageHeightUnits", locator:'//MediumImage/Height/@Units'},
-				{key:"largeImageURL", locator:'//LargeImage/URL'},
-				{key:"largeImageWidth", locator:'//LargeImage/Width'},
-				{key:"largeImageHeight", locator:'//LargeImage/Height'},
-				{key:"largeImageWidthUnits", locator:'//LargeImage/Width/@Units'},
-				{key:"largeImageHeightUnits", locator:'//LargeImage/Height/@Units'}
+				{key:"asin", locator:'ASIN'},
+				{key:"merchantId", locator:'ImageSets/MerchantId'},
+				{key:"smallImageURL", locator:'SmallImage/URL'},
+				{key:"smallImageWidth", locator:'SmallImage/Width', parser: 'integer'},
+				{key:"smallImageHeight", locator:'SmallImage/Height', parser: 'integer'},
+				{key:"smallImageWidthUnits", locator:'SmallImage/Width/@Units'},
+				{key:"smallImageHeightUnits", locator:'SmallImage/Height/@Units'},
+				{key:"mediumImageURL", locator:'MediumImage/URL'},
+				{key:"mediumImageWidth", locator:'MediumImage/Width', parser: 'integer'},
+				{key:"mediumImageHeight", locator:'MediumImage/Height', parser: 'integer'},
+				{key:"mediumImageWidthUnits", locator:'MediumImage/Width/@Units'},
+				{key:"mediumImageHeightUnits", locator:'MediumImage/Height/@Units'},
+				{key:"largeImageURL", locator:'LargeImage/URL'},
+				{key:"largeImageWidth", locator:'LargeImage/Width', parser: 'integer'},
+				{key:"largeImageHeight", locator:'LargeImage/Height', parser: 'integer'},
+				{key:"largeImageWidthUnits", locator:'LargeImage/Width/@Units'},
+				{key:"largeImageHeightUnits", locator:'LargeImage/Height/@Units'},
+				{key:"imageSets", schema: {
+					resultListLocator: 'ImageSet',
+					resultFields:[
+						{key:"category", locator:'@Category'},
+						{key:"swatchImageURL", locator:'SwatchImage/URL'},
+						{key:"swatchImageWidth", locator:'SwatchImage/Width', parser: 'integer'},
+						{key:"swatchImageHeight", locator:'SwatchImage/Height', parser: 'integer'},
+						{key:"swatchImageWidthUnits", locator:'SwatchImage/Width/@Units'},
+						{key:"swatchImageHeightUnits", locator:'SwatchImage/Height/@Units'},
+						{key:"smallImageURL", locator:'SmallImage/URL'},
+						{key:"smallImageWidth", locator:'SmallImage/Width', parser: 'integer'},
+						{key:"smallImageHeight", locator:'SmallImage/Height', parser: 'integer'},
+						{key:"smallImageWidthUnits", locator:'SmallImage/Width/@Units'},
+						{key:"smallImageHeightUnits", locator:'SmallImage/Height/@Units'},
+						{key:"thumbnailImageURL", locator:'ThumbnailImage/URL'},
+						{key:"thumbnailImageWidth", locator:'ThumbnailImage/Width', parser: 'integer'},
+						{key:"thumbnailImageHeight", locator:'ThumbnailImage/Height', parser: 'integer'},
+						{key:"thumbnailImageWidthUnits", locator:'ThumbnailImage/Width/@Units'},
+						{key:"thumbnailImageHeightUnits", locator:'ThumbnailImage/Height/@Units'},
+						{key:"tinyImageURL", locator:'TinyImage/URL'},
+						{key:"tinyImageWidth", locator:'TinyImage/Width', parser: 'integer'},
+						{key:"tinyImageHeight", locator:'TinyImage/Height', parser: 'integer'},
+						{key:"tinyImageWidthUnits", locator:'TinyImage/Width/@Units'},
+						{key:"tinyImageHeightUnits", locator:'TinyImage/Height/@Units'},
+						{key:"mediumImageURL", locator:'MediumImage/URL'},
+						{key:"mediumImageWidth", locator:'MediumImage/Width', parser: 'integer'},
+						{key:"mediumImageHeight", locator:'MediumImage/Height', parser: 'integer'},
+						{key:"mediumImageWidthUnits", locator:'MediumImage/Width/@Units'},
+						{key:"mediumImageHeightUnits", locator:'MediumImage/Height/@Units'},
+						{key:"largeImageURL", locator:'LargeImage/URL'},
+						{key:"largeImageWidth", locator:'LargeImage/Width', parser: 'integer'},
+						{key:"largeImageHeight", locator:'LargeImage/Height', parser: 'integer'},
+						{key:"largeImageWidthUnits", locator:'LargeImage/Width/@Units'},
+						{key:"largeImageHeightUnits", locator:'LargeImage/Height/@Units'},
+					]
+				}}
 			]
 		},
 
 		ItemAttributes: {
 			metaFields: META_FIELDS,
+			operations: OPERATIONS_LOOKUP,
 			resultListLocator: "Item",
 			resultFields: [
 				{key:"asin", locator:'ASIN'},
-				{key:"amazonMaximumAge", locator:'ItemAttributes/AmazonMaximumAge'},
-				{key:"amazonMinimumAge ", locator:'ItemAttributes/AmazonMinimumAge'},
-				{key:"amazonMaximumAgeUnits", locator:'ItemAttributes/AmazonMaximumAge/@Units'},
-				{key:"amazonMinimumAgeUnits ", locator:'ItemAttributes/AmazonMinimumAge/@Units'},
-				{key:"batteriesIncluded ", locator:'ItemAttributes/BatteriesIncluded'},
-				{key:"binding ", locator:'ItemAttributes/Binding'},
-				{key:"brand ", locator:'ItemAttributes/Brand'},
-				{key:"ean ", locator:'ItemAttributes/EAN'},
-				{key:"edition ", locator:'ItemAttributes/Edition'},
-				{key:"esrbAgeRating ", locator:'ItemAttributes/ESRBAgeRating'},
-				{key:"genre ", locator:'ItemAttributes/Genre'},
-				{key:"hardwarePlatform ", locator:'ItemAttributes/HardwarePlatform'},
-				{key:"isAutographed ", locator:'ItemAttributes/IsAutographed'},
-				{key:"isMemorabilia ", locator:'ItemAttributes/IsMemorabilia'},
-				{key:"height", locator:'ItemAttributes/ItemDimensions/Height'},
-				{key:"length", locator:'ItemAttributes/ItemDimensions/Length'},
-				{key:"width", locator:'ItemAttributes/ItemDimensions/Width'},
-				{key:"weight", locator:'ItemAttributes/ItemDimensions/Weight'},
-				{key:"heightUnits", locator:'ItemAttributes/ItemDimensions/Height/@Units'},
-				{key:"lengthUnits", locator:'ItemAttributes/ItemDimensions/Length/@Units'},
-				{key:"widthUnits", locator:'ItemAttributes/ItemDimensions/Width/@Units'},
-				{key:"weightUnits", locator:'ItemAttributes/ItemDimensions/Weight/@Units'},
-				{key:"label", locator:'ItemAttributes/Label'},
-				{key:"primaryLanguage", locator:'ItemAttributes/Language/Name'},
-				{key:"legalDisclaimer", locator:'ItemAttributes/LegalDisclaimer'},
-				{key:"listPriceAmount", locator:'ItemAttributes/ListPrice/Amount'},
-				{key:"listPriceCurrencyCode", locator:'ItemAttributes/ListPrice/CurrencyCode'},
-				{key:"listPriceFormattedPrice", locator:'ItemAttributes/ListPrice/FormattedPrice'},
-				{key:"manufacturer", locator:'ItemAttributes/Manufacturer'},
-				{key:"model", locator:'ItemAttributes/Model'},
-				{key:"mpn", locator:'ItemAttributes/MPN'},
-				{key:"numberOfItems", locator:'ItemAttributes/NumberOfItems'},
-				{key:"operatingSystem", locator:'ItemAttributes/OperatingSystem'},
-				{key:"packageHeight", locator:'ItemAttributes/PackageDimensions/Height'},
-				{key:"packageLength", locator:'ItemAttributes/PackageDimensions/Length'},
-				{key:"packageWidth", locator:'ItemAttributes/PackageDimensions/Width'},
-				{key:"packageWeight", locator:'ItemAttributes/PackageDimensions/Weight'},
-				{key:"packageHeightUnits", locator:'ItemAttributes/PackageDimensions/Height/@Units'},
-				{key:"packageLengthUnits", locator:'ItemAttributes/PackageDimensions/Length/@Units'},
-				{key:"packageWidthUnits", locator:'ItemAttributes/PackageDimensions/Width/@Units'},
-				{key:"packageWeightUnits", locator:'ItemAttributes/PackageDimensions/Weight/@Units'},
-				{key:"packageQuantity", locator:'ItemAttributes/PackageQuantity'},
-				{key:"platform", locator:'ItemAttributes/Platform'},
-				{key:"productGroup", locator:'ItemAttributes/ProductGroup'},
-				{key:"productTypeName", locator:'ItemAttributes/ProductTypeName'},
-				{key:"publicationDate", locator:'ItemAttributes/PublicationDate'},
-				{key:"publisher", locator:'ItemAttributes/Publisher'},
-				{key:"releaseDate", locator:'ItemAttributes/ReleaseDate'},
-				{key:"studio", locator:'ItemAttributes/Studio'},
-				{key:"title", locator:'ItemAttributes/Title'},
-				{key:"upc", locator:'ItemAttributes/UPC'}
-			]
+				{key:"actors", schema:{
+					allowEmpty: true,
+					resultListLocator: "Actor",
+					resultFields: [
+						{key:"value", locator:'.'}
+					]
+				}},
+				{key:"address", schema:{
+					allowEmpty: true,
+					resultListLocator: "Address",
+					resultFields: [
+						{key:"country", locator:'Country'}
+					]
+				}},
+				{key:"amazonMaximumAge", locator:ITEM_ATTRIBUTES_PFX + 'AmazonMaximumAge', parser: 'integer'},
+				{key:"amazonMinimumAge", locator:ITEM_ATTRIBUTES_PFX + 'AmazonMinimumAge', parser: 'integer'},
+				{key:"amazonMaximumAgeUnits", locator:ITEM_ATTRIBUTES_PFX + 'AmazonMaximumAge/@Units'},
+				{key:"amazonMinimumAgeUnits", locator:ITEM_ATTRIBUTES_PFX + 'AmazonMinimumAge/@Units'},
+				{key:"apertureModes", locator:'ApertureModes'},
+				{key:"artists", schema:{
+					allowEmpty: true,
+					resultListLocator: "Artist",
+					resultFields: [
+						{key:"value", locator:'.'}
+					]
+				}},
+				{key:"aspectRatio", locator:ITEM_ATTRIBUTES_PFX + 'AspectRatio'},
+				{key:"audienceRating", locator:ITEM_ATTRIBUTES_PFX + 'AudienceRating'},
+				{key:"audioFormat", locator:ITEM_ATTRIBUTES_PFX + 'AudioFormat'},
+				{key:"authors", schema:{
+					allowEmpty: true,
+					resultListLocator: "Author",
+					resultFields: [
+						{key:"value", locator:'.'}
+					]
+				}},
+				{key:"backFinding", locator:ITEM_ATTRIBUTES_PFX + 'BackFinding'},
+				{key:"bandMaterialType", locator:ITEM_ATTRIBUTES_PFX + 'BandMaterialType'},
+				{key:"batteries", locator:ITEM_ATTRIBUTES_PFX + 'Batteries'},
+				{key:"batteriesIncluded", locator:ITEM_ATTRIBUTES_PFX + 'BatteriesIncluded', parser: 'integer'},
+				{key:"batteryDescription", locator:ITEM_ATTRIBUTES_PFX + 'BatteryDescription'},
+				{key:"batteryType", locator:ITEM_ATTRIBUTES_PFX + 'BatteryType'},
+				{key:"bezelMaterialType", locator:ITEM_ATTRIBUTES_PFX + 'BezelMaterialType'},
+				{key:"binding", locator:ITEM_ATTRIBUTES_PFX + 'Binding'},
+				{key:"brand", locator:ITEM_ATTRIBUTES_PFX + 'Brand'},
+				{key:"calendarType", locator:ITEM_ATTRIBUTES_PFX + 'CalendarType'},
+				{key:"cameraManualFeatures", locator:ITEM_ATTRIBUTES_PFX + 'CameraManualFeatures'},
+				{key:"caseDiameter", locator:ITEM_ATTRIBUTES_PFX + 'CaseDiameter'},
+				{key:"caseDiameterUnits", locator:ITEM_ATTRIBUTES_PFX + 'CaseDiameter/@Units'},
+				{key:"caseMaterialType", locator:ITEM_ATTRIBUTES_PFX + 'CaseMaterialType'},
+				{key:"caseThickness", locator:ITEM_ATTRIBUTES_PFX + 'CaseThickness'},
+				{key:"caseType", locator:ITEM_ATTRIBUTES_PFX + 'CaseType'},
+				{key:"cdrwDescription", locator:ITEM_ATTRIBUTES_PFX + 'CDRWDescription'},
+				{key:"chainType", locator:ITEM_ATTRIBUTES_PFX + 'ChainType'},
+				{key:"city", locator:ITEM_ATTRIBUTES_PFX + 'City'},
+				{key:"claspType", locator:ITEM_ATTRIBUTES_PFX + 'ClaspType'},
+				{key:"clothingSize", locator:ITEM_ATTRIBUTES_PFX + 'ClothingSize'},
+				{key:"color", locator:ITEM_ATTRIBUTES_PFX + 'Color'},
+				{key:"compatibility", locator:ITEM_ATTRIBUTES_PFX + 'Compatibility'},
+				{key:"compatibleDevices", schema:{
+					allowEmpty: true,
+					resultListLocator: "CompatibleDevices",
+					resultFields: [
+						{key:"value", locator:'.'}
+					]
+				}},
+				{key:"connectivity", locator:ITEM_ATTRIBUTES_PFX + 'Connectivity'},
+				{key:"country", locator:ITEM_ATTRIBUTES_PFX + 'Country'},
+				{key:"cpuManufacturer", locator:ITEM_ATTRIBUTES_PFX + 'CPUManufacturer'},
+				{key:"cpuSpeed", locator:ITEM_ATTRIBUTES_PFX + 'CPUSpeed', parser: 'decimal'},
+				{key:"cpuSpeedUnits", locator:ITEM_ATTRIBUTES_PFX + 'CPUSpeed/@Units'},
+				{key:"cpuType", locator:ITEM_ATTRIBUTES_PFX + 'CPUType'},
+				{key:"creator", schema:{
+					allowEmpty: true,
+					resultListLocator: "Creator",
+					resultFields: [
+						{key:"value", locator:'.'},
+						{key:"role", locator:'@Role'}
+					]
+				}},
+				{key:"dataLinkProtocol", locator:ITEM_ATTRIBUTES_PFX + 'DataLinkProtocol'},
+				{key:"department", locator:ITEM_ATTRIBUTES_PFX + 'Department'},
+				{key:"deweyDecimalNumber", locator:ITEM_ATTRIBUTES_PFX + 'DeweyDecimalNumber'},
+				{key:"dialColor", locator:ITEM_ATTRIBUTES_PFX + 'DialColor'},
+				{key:"dialWindowMaterialType", locator:ITEM_ATTRIBUTES_PFX + 'DialWindowMaterialType'},
+				{key:"digitalZoom", locator:ITEM_ATTRIBUTES_PFX + 'DigitalZoom'},
+				{key:"digitalZoomUnits", locator:ITEM_ATTRIBUTES_PFX + 'DigitalZoom/@Units'},
+				{key:"directors", schema:{
+					allowEmpty: true,
+					resultListLocator: "Director",
+					resultFields: [
+						{key:"value", locator:'.'}
+					]
+				}},
+				{key:"displaySize", locator:ITEM_ATTRIBUTES_PFX + 'DisplaySize', parser: 'decimal'},
+				{key:"displaySizeUnits", locator:ITEM_ATTRIBUTES_PFX + 'DisplaySize/@Units'},
+				{key:"ean", locator:ITEM_ATTRIBUTES_PFX + 'EAN'},
+				{key:"edition", locator:ITEM_ATTRIBUTES_PFX + 'Edition'},
+				{key:"episodeSequence", locator:ITEM_ATTRIBUTES_PFX + 'EpisodeSequence'},
+				{key:"esrbAgeRating", locator:ITEM_ATTRIBUTES_PFX + 'ESRBAgeRating'},
+				{key:"fabricType", locator:ITEM_ATTRIBUTES_PFX + 'FabricType'},
+				{key:"features", schema:{
+					allowEmpty: true,
+					resultListLocator: "Feature",
+					resultFields: [
+						{key:"value", locator:'.'}
+					]
+				}},
+				{key:"firstIssueLeadTime", locator:ITEM_ATTRIBUTES_PFX + 'FirstIssueLeadTime'},
+				{key:"flavorName", locator:ITEM_ATTRIBUTES_PFX + 'FlavorName'},
+				{key:"floppyDiskDriveDescription", locator:ITEM_ATTRIBUTES_PFX + 'FloppyDiskDriveDescription'},
+				{key:"format", schema:{
+					allowEmpty: true,
+					resultListLocator: "Format",
+					resultFields: [
+						{key:"value", locator:'.'}
+					]
+				}},
+				{key:"formFactor", locator:ITEM_ATTRIBUTES_PFX + 'FormFactor'},
+				{key:"gemType", locator:ITEM_ATTRIBUTES_PFX + 'GemType'},
+				{key:"gemTypeSetElements", schema:{
+					allowEmpty: true,
+					resultListLocator: "GemTypeSetElement",
+					resultFields: [
+						{key:"value", locator:'.'}
+					]
+				}},
+				{key:"genre", locator:ITEM_ATTRIBUTES_PFX + 'Genre'},
+				{key:"graphicsMemorySize", locator:ITEM_ATTRIBUTES_PFX + 'GraphicsMemorySize', parser: 'integer'},
+				{key:"graphicsMemorySizeUnits", locator:ITEM_ATTRIBUTES_PFX + 'GraphicsMemorySize/@Units'},
+				{key:"hardDiskSize", locator:ITEM_ATTRIBUTES_PFX + 'HardDiskSize', parser: 'integer'},
+				{key:"hardDiskSizeUnits", locator:ITEM_ATTRIBUTES_PFX + 'HardDiskSize/@Units'},
+				{key:"hardDiskInterface", locator:ITEM_ATTRIBUTES_PFX + 'HardDiskInterface'},
+				{key:"hardwarePlatform", locator:ITEM_ATTRIBUTES_PFX + 'HardwarePlatform'},
+				{key:"hasRedEyeReduction", locator:ITEM_ATTRIBUTES_PFX + 'HasRedEyeReduction', parser: 'bool'},
+				{key:"includedSoftware", locator:ITEM_ATTRIBUTES_PFX + 'IncludedSoftware'},
+				{key:"ingredients", locator:ITEM_ATTRIBUTES_PFX + 'Ingredients'},
+				{key:"ingredientsSetElement", schema:{
+					allowEmpty: true,
+					resultListLocator: "IngredientsSetElement",
+					resultFields: [
+						{key:"value", locator:'.'}
+					]
+				}},
+				{key:"isAdultProduct", locator:ITEM_ATTRIBUTES_PFX + 'IsAdultProduct', parser: 'bool'},
+				{key:"isAutographed", locator:ITEM_ATTRIBUTES_PFX + 'IsAutographed', parser: 'bool'},
+				{key:"isFragile", locator:ITEM_ATTRIBUTES_PFX + 'IsFragile', parser: 'bool'},
+				{key:"isLabCreated", locator:ITEM_ATTRIBUTES_PFX + 'IsLabCreated', parser: 'bool'},
+				{key:"isMemorabilia", locator:ITEM_ATTRIBUTES_PFX + 'IsMemorabilia', parser: 'bool'},
+				{key:"issuesPerYear", locator:ITEM_ATTRIBUTES_PFX + 'IssuesPerYear', parser: 'integer'},
+				{key:"height", locator:ITEM_ATTRIBUTES_PFX + 'ItemDimensions/Height', parser: 'integer'},
+				{key:"length", locator:ITEM_ATTRIBUTES_PFX + 'ItemDimensions/Length', parser: 'integer'},
+				{key:"width", locator:ITEM_ATTRIBUTES_PFX + 'ItemDimensions/Width', parser: 'integer'},
+				{key:"weight", locator:ITEM_ATTRIBUTES_PFX + 'ItemDimensions/Weight', parser: 'integer'},
+				{key:"heightUnits", locator:ITEM_ATTRIBUTES_PFX + 'ItemDimensions/Height/@Units'},
+				{key:"lengthUnits", locator:ITEM_ATTRIBUTES_PFX + 'ItemDimensions/Length/@Units'},
+				{key:"widthUnits", locator:ITEM_ATTRIBUTES_PFX + 'ItemDimensions/Width/@Units'},
+				{key:"weightUnits", locator:ITEM_ATTRIBUTES_PFX + 'ItemDimensions/Weight/@Units'},
+				{key:"label", locator:ITEM_ATTRIBUTES_PFX + 'Label'},
+				{key:"languages", schema:{
+					allowEmpty: true,
+					resultListLocator: "Language",
+					resultFields: [
+						{key:"name", locator:'Name'},
+						{key:"type", locator:'Type'}
+					]
+				}},
+				{key:"legalDisclaimer", locator:ITEM_ATTRIBUTES_PFX + 'LegalDisclaimer'},
+				{key:"lensType", locator:ITEM_ATTRIBUTES_PFX + 'LensType'},
+				{key:"listPriceAmount", locator:ITEM_ATTRIBUTES_PFX + 'ListPrice/Amount', parser: 'integer'},
+				{key:"listPriceCurrencyCode", locator:ITEM_ATTRIBUTES_PFX + 'ListPrice/CurrencyCode'},
+				{key:"listPriceFormattedPrice", locator:ITEM_ATTRIBUTES_PFX + 'ListPrice/FormattedPrice'},
+				{key:"longSynopsis", locator:ITEM_ATTRIBUTES_PFX + 'LongSynopsis'},
+				{key:"magazineType", locator:ITEM_ATTRIBUTES_PFX + 'MagazineType'},
+				{key:"manufacturer", locator:ITEM_ATTRIBUTES_PFX + 'Manufacturer'},
+				{key:"manufacturerMaximumAge", locator:ITEM_ATTRIBUTES_PFX + 'ManufacturerMaximumAge'},
+				{key:"manufacturerMaximumAgeUnits", locator:ITEM_ATTRIBUTES_PFX + 'ManufacturerMaximumAge/@Units'},
+				{key:"manufacturerMinimumAge", locator:ITEM_ATTRIBUTES_PFX + 'ManufacturerMinimumAge'},
+				{key:"manufacturerMinimumAgeUnits", locator:ITEM_ATTRIBUTES_PFX + 'ManufacturerMinimumAge/@Units'},
+				{key:"materialType", locator:ITEM_ATTRIBUTES_PFX + 'MaterialType'},
+				{key:"materialTypeSetElements", schema:{
+					allowEmpty: true,
+					resultListLocator: "MaterialTypeSetElement",
+					resultFields: [
+						{key:"name", locator:'Name'},
+						{key:"type", locator:'Type'}
+					]
+				}},
+				{key:"maximumFocalLength", locator:ITEM_ATTRIBUTES_PFX + 'MaximumFocalLength'},
+				{key:"maximumFocalLengthUnits", locator:ITEM_ATTRIBUTES_PFX + 'MaximumFocalLength/@Units'},
+				{key:"maximumResolution", locator:ITEM_ATTRIBUTES_PFX + 'MaximumResolution'},
+				{key:"maximumResolutionUnits", locator:ITEM_ATTRIBUTES_PFX + 'MaximumResolution/@Units'},
+				{key:"maximumWeightRecommendation", locator:ITEM_ATTRIBUTES_PFX + 'MaximumWeightRecommendation'},
+				{key:"maximumWeightRecommendationUnits", locator:ITEM_ATTRIBUTES_PFX + 'MaximumWeightRecommendation/@Units'},
+				{key:"mediaType", locator:ITEM_ATTRIBUTES_PFX + 'MediaType'},
+				{key:"metalStamp", locator:ITEM_ATTRIBUTES_PFX + 'MetalStamp'},
+				{key:"metalType", locator:ITEM_ATTRIBUTES_PFX + 'MetalType'},
+				{key:"minimumFocalLength", locator:ITEM_ATTRIBUTES_PFX + 'MinimumFocalLength'},
+				{key:"minimumFocalLengthUnits", locator:ITEM_ATTRIBUTES_PFX + 'MinimumFocalLength/@Units'},
+				{key:"minimumShutterSpeed", locator:ITEM_ATTRIBUTES_PFX + 'MinimumShutterSpeed'},
+				{key:"minimumShutterSpeedUnits", locator:ITEM_ATTRIBUTES_PFX + 'MinimumShutterSpeed/@Units'},
+				{key:"model", locator:ITEM_ATTRIBUTES_PFX + 'Model'},
+				{key:"monitorSize", locator:ITEM_ATTRIBUTES_PFX + 'MonitorSize'},
+				{key:"monitorSizeUnits", locator:ITEM_ATTRIBUTES_PFX + 'MonitorSize/@Units'},
+				{key:"mpn", locator:ITEM_ATTRIBUTES_PFX + 'MPN'},
+				{key:"nativeResolution", locator:ITEM_ATTRIBUTES_PFX + 'NativeResolution'},
+				{key:"numberOfDiscs", locator:ITEM_ATTRIBUTES_PFX + 'NumberOfDiscs', parser: 'integer'},
+				{key:"numberOfItems", locator:ITEM_ATTRIBUTES_PFX + 'NumberOfItems', parser: 'integer'},
+				{key:"numberOfIssues", locator:ITEM_ATTRIBUTES_PFX + 'NumberOfIssues', parser: 'integer'},
+				{key:"numberOfPages", locator:ITEM_ATTRIBUTES_PFX + 'NumberOfPages', parser: 'integer'},
+				{key:"numberOfStones", locator:ITEM_ATTRIBUTES_PFX + 'NumberOfStones', parser: 'integer'},
+				{key:"operatingSystem", locator:ITEM_ATTRIBUTES_PFX + 'OperatingSystem'},
+				{key:"opticalSensorResolution", locator:ITEM_ATTRIBUTES_PFX + 'OpticalSensorResolution'},
+				{key:"opticalSensorResolutionUnits", locator:ITEM_ATTRIBUTES_PFX + 'OpticalSensorResolution/@Units'},
+				{key:"opticalZoom", locator:ITEM_ATTRIBUTES_PFX + 'OpticalZoom'},
+				{key:"opticalZoomUnits", locator:ITEM_ATTRIBUTES_PFX + 'OpticalZoom/@Units'},
+				{key:"originalAirDate", locator:ITEM_ATTRIBUTES_PFX + 'OriginalAirDate'},
+				{key:"originalReleaseDate", locator:ITEM_ATTRIBUTES_PFX + 'OriginalReleaseDate'},
+				{key:"packageHeight", locator:ITEM_ATTRIBUTES_PFX + 'PackageDimensions/Height', parser: 'integer'},
+				{key:"packageLength", locator:ITEM_ATTRIBUTES_PFX + 'PackageDimensions/Length', parser: 'integer'},
+				{key:"packageWidth", locator:ITEM_ATTRIBUTES_PFX + 'PackageDimensions/Width', parser: 'integer'},
+				{key:"packageWeight", locator:ITEM_ATTRIBUTES_PFX + 'PackageDimensions/Weight', parser: 'integer'},
+				{key:"packageHeightUnits", locator:ITEM_ATTRIBUTES_PFX + 'PackageDimensions/Height/@Units'},
+				{key:"packageLengthUnits", locator:ITEM_ATTRIBUTES_PFX + 'PackageDimensions/Length/@Units'},
+				{key:"packageWidthUnits", locator:ITEM_ATTRIBUTES_PFX + 'PackageDimensions/Width/@Units'},
+				{key:"packageWeightUnits", locator:ITEM_ATTRIBUTES_PFX + 'PackageDimensions/Weight/@Units'},
+				{key:"packageQuantity", locator:ITEM_ATTRIBUTES_PFX + 'PackageQuantity', parser: 'integer'},
+				{key:"pearlLustre", locator:ITEM_ATTRIBUTES_PFX + 'PearlLustre'},
+				{key:"pearlMinimumColor", locator:ITEM_ATTRIBUTES_PFX + 'PearlMinimumColor'},
+				{key:"pearlShape", locator:ITEM_ATTRIBUTES_PFX + 'PearlShape'},
+				{key:"pearlStringingMethod", locator:ITEM_ATTRIBUTES_PFX + 'PearlStringingMethod'},
+				{key:"pearlSurfaceBlemishes", locator:ITEM_ATTRIBUTES_PFX + 'PearlSurfaceBlemishes'},
+				{key:"pearlType", locator:ITEM_ATTRIBUTES_PFX + 'PearlType'},
+				{key:"pearlUniformity", locator:ITEM_ATTRIBUTES_PFX + 'PearlUniformity'},
+				{key:"platforms", schema:{
+					allowEmpty: true,
+					resultListLocator: "Platform",
+					resultFields: [
+						{key:"value", locator:'.'}
+					]
+				}},
+				{key:"processorCount", locator:ITEM_ATTRIBUTES_PFX + 'ProcessorCount', parser: 'integer'},
+				{key:"productGroup", locator:ITEM_ATTRIBUTES_PFX + 'ProductGroup'},
+				{key:"productTypeName", locator:ITEM_ATTRIBUTES_PFX + 'ProductTypeName'},
+				{key:"publicationDate", locator:ITEM_ATTRIBUTES_PFX + 'PublicationDate'},
+				{key:"publisher", locator:ITEM_ATTRIBUTES_PFX + 'Publisher'},
+				{key:"readingLevel", locator:ITEM_ATTRIBUTES_PFX + 'ReadingLevel'},
+				{key:"regionCode", locator:ITEM_ATTRIBUTES_PFX + 'RegionCode', parser: 'integer'},
+				{key:"releaseDate", locator:ITEM_ATTRIBUTES_PFX + 'ReleaseDate'},
+				{key:"removableStorage", locator:ITEM_ATTRIBUTES_PFX + 'RemovableStorage'},
+				{key:"ringSize", locator:ITEM_ATTRIBUTES_PFX + 'RingSize', parser: 'integer'},
+				{key:"ringSizeUnits", locator:ITEM_ATTRIBUTES_PFX + 'RingSize/@Units'},
+				{key:"runningTime", locator:ITEM_ATTRIBUTES_PFX + 'RunningTime', parser: 'integer'},
+				{key:"runningTimeUnits", locator:ITEM_ATTRIBUTES_PFX + 'RunningTime/@Units'},
+				{key:"seasonSequence", locator:ITEM_ATTRIBUTES_PFX + 'SeasonSequence'},
+				{key:"settingType", locator:ITEM_ATTRIBUTES_PFX + 'SettingType'},
+				{key:"shortSynopsis", locator:ITEM_ATTRIBUTES_PFX + 'ShortSynopsis'},
+				{key:"size", locator:ITEM_ATTRIBUTES_PFX + 'Size'},
+				{key:"sizePerPearl", locator:ITEM_ATTRIBUTES_PFX + 'SizePerPearl'},
+				{key:"sku", locator:ITEM_ATTRIBUTES_PFX + 'SKU'},
+				{key:"specialFeatures", schema:{
+					allowEmpty: true,
+					resultListLocator: "SpecialFeatures",
+					resultFields: [
+						{key:"value", locator:'.'}
+					]
+				}},
+				{key:"stoneShape", locator:ITEM_ATTRIBUTES_PFX + 'StoneShape'},
+				{key:"studio", locator:ITEM_ATTRIBUTES_PFX + 'Studio'},
+				{key:"subscriptionLength", locator:ITEM_ATTRIBUTES_PFX + 'SubscriptionLength'},
+				{key:"subscriptionLengthUnits", locator:ITEM_ATTRIBUTES_PFX + 'SubscriptionLength/@Units'},
+				{key:"systemBusSpeed", locator:ITEM_ATTRIBUTES_PFX + 'SystemBusSpeed', parser: 'integer'},
+				{key:"systemBusSpeedUnits", locator:ITEM_ATTRIBUTES_PFX + 'SystemBusSpeed/@Units'},
+				{key:"systemMemorySize", locator:ITEM_ATTRIBUTES_PFX + 'SystemMemorySize', parser: 'integer'},
+				{key:"systemMemorySizeUnits", locator:ITEM_ATTRIBUTES_PFX + 'SystemMemorySize/@Units'},
+				{key:"systemMemoryType", locator:ITEM_ATTRIBUTES_PFX + 'SystemMemoryType'},
+				{key:"theatricalReleaseDate", locator:ITEM_ATTRIBUTES_PFX + 'TheatricalReleaseDate'},
+				{key:"title", locator:ITEM_ATTRIBUTES_PFX + 'Title'},
+				{key:"totalDiamondWeight", locator:ITEM_ATTRIBUTES_PFX + 'TotalDiamondWeight'},
+				{key:"totalDiamondWeightUnits", locator:ITEM_ATTRIBUTES_PFX + 'TotalDiamondWeight/@Units'},
+				{key:"totalGemWeight", locator:ITEM_ATTRIBUTES_PFX + 'TotalGemWeight'},
+				{key:"totalGemWeightUnits", locator:ITEM_ATTRIBUTES_PFX + 'TotalGemWeight/@Units'},
+				{key:"totalMetalWeight", locator:ITEM_ATTRIBUTES_PFX + 'TotalMetalWeight'},
+				{key:"totalMetalWeightUnits", locator:ITEM_ATTRIBUTES_PFX + 'TotalMetalWeight/@Units'},
+				{key:"trackSequence", locator:ITEM_ATTRIBUTES_PFX + 'TrackSequence'},
+				{key:"upc", locator:ITEM_ATTRIBUTES_PFX + 'UPC'},
+				{key:"warranty", locator:ITEM_ATTRIBUTES_PFX + 'Warranty'},
+				{key:"watchMovementType", locator:ITEM_ATTRIBUTES_PFX + 'WatchMovementType'},
+				{key:"waterResistanceDepth", locator:ITEM_ATTRIBUTES_PFX + 'WaterResistanceDepth'},
+				{key:"waterResistanceDepthUnits", locator:ITEM_ATTRIBUTES_PFX + 'WaterResistanceDepth/@Units'}
+			].concat(RESULT_FIELDS_LINKS)
 		},
 
+/*
+Operation=ItemLookup&ItemId=B000A3UB2O&ResponseGroup=ItemIds
+ */
 		ItemIds: {
 			metaFields: META_FIELDS,
+			operations: OPERATIONS_LOOKUP,
 			resultListLocator: "Item",
 			resultFields: [{key:"asin", locator:'ASIN'}]
 		},
@@ -561,50 +968,307 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 			resultListLocator: "Item",
 			resultFields: []
 		},
+		
+		ListFull: {
+			metaFields: META_FIELDS,
+			operations: ['ListLookup'],
+			resultListLocator: "List",
+			resultFields: []
+		},
+
+/*
+Operation=ListSearch&ListType=WishList&Name=John%20Smith&ResponseGroup=ListInfo
+<List>
+	<ListId>2H09LAC20BQ12</ListId>
+	<ListURL>http://www.amazon.com/gp/registry/wishlist/2H09LAC20BQ12</ListURL>
+	<ListName>Wish List</ListName>
+	<ListType>WishList</ListType>
+	<TotalItems>1444</TotalItems>
+	<TotalPages>145</TotalPages>
+	<DateCreated>2006-01-07</DateCreated>
+	<LastModified>2009-11-07</LastModified>
+	<CustomerName>john smith</CustomerName>
+</List>
+ */
+		ListInfo: {
+			metaFields: META_FIELDS,
+			operations: ['ListLookup', 'ListSearch'],
+			resultListLocator: "List",
+			resultFields: [
+				{key:"listId", locator:'ListId'},
+				{key:"listURL", locator:'ListURL'},
+				{key:"listType", locator:'ListType'},
+				{key:"totalItems", locator:'TotalItems', parser: 'integer'},
+				{key:"totalPages", locator:'TotalPages', parser: 'integer'},
+				{key:"dateCreated", locator:'DateCreated'},
+				{key:"lastModified", locator:'LastModified'},
+				{key:"customerName", locator:'CustomerName'},
+			]
+		},
+
+/*
+Operation=ListLookup&ListType=Listmania&ListId=2WYHF5M2L9142&ResponseGroup=ListItems&
+<List>
+	<ListId>2WYHF5M2L9142</ListId>
+	<ListName>Popular Christmas Books For Young and Old</ListName>
+	<TotalItems>25</TotalItems>
+	<TotalPages>1</TotalPages>
+	<ListItem>
+		<ListItemId>RI12NH0FJAU5DPX</ListItemId>
+		<Item>
+			<ASIN>0385508417</ASIN>
+			<ItemAttributes>
+				<Title>Skipping Christmas</Title>
+			</ItemAttributes>
+		</Item>
+	</ListItem>
+</List>
+ */
+		ListItems: {
+			metaFields: META_FIELDS,
+			operations: ['ListLookup'],
+			resultListLocator: "List",
+			resultFields: [
+				{key:"listId", locator:'ListId'},
+				{key:"totalItems", locator:'TotalItems', parser: 'integer'},
+				{key:"totalPages", locator:'TotalPages', parser: 'integer'},
+				{key:'ListItems', schema: {
+					resultListLocator: "ListItem",
+					resultFields: [
+						{key:"listItemId", locator:'ListItemId'},
+						{key:"asin", locator:'Item/ASIN'},
+						{key:"title", locator:'Item/ItemAttributes/Title'}
+					]
+				}}
+			]
+		},
+
+/*
+Operation=ItemLookup&ItemId=0545010225&IdType=ASIN&ResponseGroup=ListmaniaList
+<ListmaniaLists>
+  <ListmaniaList>
+    <ListId>R1XB8VAK6TI229</ListId> 
+    <ListName>Mike's Dumb List</ListName> 
+  </ListmaniaList>
+	...
+</ListmaniaLists>
+ */
+		ListmaniaLists: {
+			metaFields: META_FIELDS,
+			operations: OPERATIONS_LOOKUP,
+			resultListLocator: "Item",
+			resultFields: [
+				{key: 'asin', locator: 'ASIN'},
+				{key: 'listmaniaLists', schema: {
+					resultListLocator: "ListmaniaList",
+					resultFields: [
+						{key: 'listId', locator: 'ListId'},
+						{key: 'listName', locator: 'ListName'}
+					]
+				}}
+			]
+		},
+
+/*
+Operation=ListSearch&ListType=WishList&Name=John%20Smith&ResponseGroup=ListMinimum
+<TotalResults>557</TotalResults> 
+<TotalPages>56</TotalPages> 
+<List>
+  <ListId>2AAAAAAAAAA6B</ListId> 
+  <ListName>Wishlist</ListName> 
+  <TotalItems>73</TotalItems> 
+  <TotalPages>8</TotalPages> 
+</List>
+ */
+		ListMinimum: {
+			metaFields: META_FIELDS,
+			operations: ['ListSearch'],
+			resultListLocator: "List",
+			resultFields: [
+				{key: 'listId', locator: 'ListId'},
+				{key: 'listName', locator: 'ListName'},
+				{key: 'totalItems', locator: 'TotalItems'},
+				{key: 'totalPages', locator: 'TotalPages'}
+			]
+		},
 
 		Medium: {
 			metaFields: META_FIELDS,
+			operations: OPERATIONS_LOOKUP,
 			resultListLocator: "Item",
 			resultFields: []
 		},
 
-		Offers: {
-			metaFields: {
-				lowestNewPriceAmount:'OfferSummary/LowestNewPrice/Amount',
-				lowestNewPriceCurrencyCode:'OfferSummary/LowestNewPrice/CurrencyCode',
-				lowestNewPriceFormattedPrice:'OfferSummary/LowestNewPrice/FormattedPrice',
-				lowestUsedPriceAmount:'OfferSummary/LowestUsedPrice/Amount',
-				lowestUsedPriceCurrencyCode:'OfferSummary/LowestUsedPrice/CurrencyCode',
-				lowestUsedPriceFormattedPrice:'OfferSummary/LowestUsedPrice/FormattedPrice',
-				lowestCollectiblePriceAmount:'OfferSummary/LowestCollectiblePrice/Amount',
-				lowestCollectiblePriceCurrencyCode:'OfferSummary/LowestCollectiblePrice/CurrencyCode',
-				lowestCollectiblePriceFormattedPrice:'OfferSummary/LowestCollectiblePrice/FormattedPrice',
-				totalNew:'OfferSummary/TotalNew',
-				totalUsed:'OfferSummary/TotalUsed',
-				totalCollectible:'OfferSummary/TotalCollectible',
-				totalRefurbished:'OfferSummary/TotalRefurbished',
-				totalOffers:'Offers/TotalOffers',
-				totalOfferPages:'Offers/TotalOfferPages'
-			},
+/*
+ItemId=B0000041CG&IdType=ASIN&ResponseGroup=MerchantItemAttributes
+See ItemAttributes
+ */
+		MerchantItemAttributes: {
+			metaFields: META_FIELDS,
+			operations: ['ItemLookup', 'ItemSearch'],
+			resultListLocator: "Item",
+			resultFields: []
+		},
+		
+/*
+Operation=BrowseNodeLookup&BrowseNodeId=4229&ResponseGroup=NewReleases
+<NewReleases>
+  <NewRelease>
+    <ASIN>0446578622</ASIN> 
+    <Title>The Notebook Girls</Title> 
+  </NewRelease>
+  ...
+</NewReleases>
+ */
+		NewReleases: {
+			metaFields: META_FIELDS,
+			operations: ['BrowseNodeLookup'],
+			resultListLocator: "BrowseNode",
+			resultFields: [
+				{key: 'browseNodeId', locator: 'BrowseNodeId'},
+				{key: 'name', locator: 'Name'},
+				{key: 'newReleases', schema: {
+					resultListLocator: "NewRelease",
+					resultFields: [
+						{key: 'asin', locator: 'ASIN'},
+						{key: 'title', locator: 'Title'}
+					]
+				}},
+				{key: 'topItemSets', schema: {
+					resultListLocator: "TopItem",
+					resultFields: [
+						{key: 'asin', locator: 'ASIN'},
+						{key: 'author', locator: 'Author'},
+						{key: 'detailPageURL', locator: 'DetailPageURL'},
+						{key: 'productGroup', locator: 'ProductGroup'},
+						{key: 'title', locator: 'Title'}
+					]
+				}},
+				{key: 'topItemSetType', locator: 'TopItemSet/Type'}
+			]
+		},
+
+/* 
+Operation=ItemSearch&Keywords=sports&ResponseGroup=OfferListings
+<Item>
+	<ASIN>B002OHDZD6</ASIN>
+	<Offers>
+		<TotalOffers>1</TotalOffers>
+		<TotalOfferPages>1</TotalOfferPages>
+		<Offer>
+			<Merchant>
+				<MerchantId>ATVPDKIKX0DER</MerchantId>
+				<GlancePage>http://www.amazon.com/gp/help/seller/home.html?seller=ATVPDKIKX0DER</GlancePage>
+				<AverageFeedbackRating>0.0</AverageFeedbackRating>
+				<TotalFeedback>0</TotalFeedback>
+			</Merchant>
+			<OfferAttributes>
+				<Condition>New</Condition>
+				<SubCondition>new</SubCondition>
+			</OfferAttributes>
+			<OfferListing>
+				<OfferListingId>ooO%2FDZkMPtGJrURWT4zPUyAxvglTDLozNWUbuqArYV1UnPl6WqfROM7bA9IRcYLZWJciWzLV1skkn1Ex6T3h0mMvzoxqrfF8</OfferListingId>
+				<Price>
+					<Amount>1700</Amount>
+					<CurrencyCode>USD</CurrencyCode>
+					<FormattedPrice>$17.00</FormattedPrice>
+				</Price>
+				<Availability>Usually ships in 24 hours</Availability>
+				<AvailabilityAttributes>
+					<AvailabilityType>now</AvailabilityType>
+					<MinimumHours>0</MinimumHours>
+					<MaximumHours>0</MaximumHours>
+				</AvailabilityAttributes>
+				<Quantity>-1</Quantity>
+				<IsEligibleForSuperSaverShipping>1</IsEligibleForSuperSaverShipping>
+			</OfferListing>
+		</Offer>
+	</Offers>
+</Item>
+ */
+		OfferListings: {
+			metaFields: META_FIELDS,
+			operations: OPERATIONS_LOOKUP,
 			resultListLocator: "Item",
 			resultFields: [
-				{key:'merchantId',locator:'Offers/Merchant/MerchantId'},
-				{key:'glancePage',locator:'Offers/Merchant/GlancePage'},
-				{key:'averageFeedbackRating',locator:'Offers/Merchant/AverageFeedbackRating'},
-				{key:'totalFeedback',locator:'Offers/Merchant/TotalFeedback'},
-				{key:'condition',locator:'Offers/OfferAttributes/Condition'},
-				{key:'subCondition',locator:'Offers/OfferAttributes/SubCondition'},
-				{key:'offerListingId',locator:'Offers/OfferListing/OfferListingId'},
-				{key:'priceAmount',locator:'Offers/OfferListing/Price/Amount'},
-				{key:'priceCurrencyCode',locator:'Offers/OfferListing/Price/CurrencyCode'},
-				{key:'priceFormattedPrice',locator:'Offers/OfferListing/Price/FormattedPrice'},
-				{key:'availability',locator:'Offers/OfferListing/Availability'},
-				{key:'availabilityType',locator:'Offers/OfferListing/AvailabilityAttributes/AvailabilityType'},
-				{key:'minimumHours',locator:'Offers/OfferListing/AvailabilityAttributes/MinimumHours'},
-				{key:'maximumHours',locator:'Offers/OfferListing/AvailabilityAttributes/MaximumHours'},
-				{key:'quantity',locator:'Offers/OfferListing/Quantity'},
-				{key:'quantityLimit',locator:'Offers/OfferListing/QuantityRestriction/QuantityLimit'},
-				{key:'isEligibleForSuperSaverShipping',locator:'Offers/OfferListing/IsEligibleForSuperSaverShipping'}
+				{key:"asin", locator:'ASIN'},
+				{key:"offers", schema: {
+					allowEmpty: true,
+					resultListLocator: "Offer",
+					resultFields: [
+						{key:"averageFeedbackRating", locator:'Merchant/AverageFeedbackRating', parser: 'decimal'},
+						{key:"glancePage", locator:'Merchant/GlancePage', parser: 'integer'},
+						{key:"merchantId", locator:'Merchant/MerchantId'},
+						{key:"totalFeedback", locator:'Merchant/TotalFeedback', parser: 'integer'},
+						{key:"condition", locator:'OfferAttributes/Condition'},
+						{key:"subCondition", locator:'OfferAttributes/SubCondition'},
+						{key:"conditionNote", locator:'OfferAttributes/ConditionNote'},
+						{key:"offerListingId", locator:'OfferListing/OfferListingId'},
+						{key:"priceAmount", locator:'OfferListing/Price/Amount', parser: 'integer'},
+						{key:"priceCurrencyCode", locator:'OfferListing/Price/CurrencyCode'},
+						{key:"priceFormattedPrice", locator:'OfferListing/Price/FormattedPrice'},
+						{key:"savedAmount", locator:'OfferListing/AmountSaved/Amount', parser: 'integer'},
+						{key:"savedCurrencyCode", locator:'OfferListing/AmountSaved/CurrencyCode'},
+						{key:"savedFormattedPrice", locator:'OfferListing/AmountSaved/FormattedPrice'},
+						{key:"availability", locator:'OfferListing/Availability'},
+						{key:"availabilityAttributesAvailabilityType", locator:'OfferListing/AvailabilityAttributes/AvailabilityType'},
+						{key:"availabilityAttributesMinimumHours", locator:'OfferListing/AvailabilityAttributes/MinimumHours', parser: 'integer'},
+						{key:"availabilityAttributesMaximumHours", locator:'OfferListing/AvailabilityAttributes/MaximumHours', parser: 'integer'},
+						{key:"quantity", locator:'OfferListing/Quantity'},
+						{key:"isEligibleForSuperSaverShipping", locator:'OfferListing/IsEligibleForSuperSaverShipping', parser: 'bool'}
+					]
+				}}
+			]
+		},
+
+/*
+Operation=ItemLookup&ItemId=B000AYGDIO&MerchantId=All&ResponseGroup=Offers 
+ */
+		Offers: {
+			metaFields: META_FIELDS,
+			operations: OPERATIONS_LOOKUP,
+			resultListLocator: "Item",
+			resultFields: []
+		},
+
+/* 
+Operation=ItemLookup&ItemId=B000A3UB2O&ResponseGroup=OfferSummary
+<Item>
+	<ASIN>B002OHDZD6</ASIN>
+	<OfferSummary>
+		<LowestNewPrice>
+			<Amount>400</Amount>
+			<CurrencyCode>USD</CurrencyCode>
+			<FormattedPrice>$4.00</FormattedPrice>
+		</LowestNewPrice>
+		<LowestUsedPrice>
+			<Amount>317</Amount>
+			<CurrencyCode>USD</CurrencyCode>
+			<FormattedPrice>$3.17</FormattedPrice>
+		</LowestUsedPrice>
+		<TotalNew>31</TotalNew>
+		<TotalUsed>24</TotalUsed>
+		<TotalCollectible>0</TotalCollectible>
+		<TotalRefurbished>0</TotalRefurbished>
+	</OfferSummary>
+</Item>
+ */
+		OfferSummary: {
+			metaFields: META_FIELDS,
+			operations: OPERATIONS_LOOKUP,
+			resultListLocator: "Item",
+			resultFields: [
+				{key:"asin", locator:'ASIN'},
+				{key:"newPriceAmount", locator:'//LowestNewPrice/Amount', parser: 'integer'},
+				{key:"newPriceCurrencyCode", locator:'//LowestNewPrice/CurrencyCode'},
+				{key:"newPriceFormatted", locator:'//LowestNewPrice/FormattedPrice'},
+				{key:"usedPriceAmount", locator:'//LowestUsedPrice/Amount', parser: 'integer'},
+				{key:"usedPriceCurrencyCode", locator:'//LowestUsedPrice/CurrencyCode'},
+				{key:"usedPriceFormatted", locator:'//LowestUsedPrice/FormattedPrice'},
+				{key:"totalNew", locator:'//TotalNew', parser: 'integer'},
+				{key:"totalUsed", locator:'//TotalUsed', parser: 'integer'},
+				{key:"totalCollectible", locator:'//TotalCollectible', parser: 'integer'},
+				{key:"totalRefurbished", locator:'//TotalRefurbished', parser: 'integer'}
 			]
 		},
 
@@ -654,11 +1318,11 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 				{key:"detailPageURL", locator:'DetailPageURL'},
 				{key:"director", locator:'Director'},
 				{key:"keywords", locator:'Keywords'},
-				{key:"manufacturer", locator:'ItemAttributes/Manufacturer'},
+				{key:"manufacturer", locator:ITEM_ATTRIBUTES_PFX + 'Manufacturer'},
 				{key:"message", locator:'Message'},
-				{key:"productGroup", locator:'ItemAttributes/ProductGroup'},
+				{key:"productGroup", locator:ITEM_ATTRIBUTES_PFX + 'ProductGroup'},
 				{key:"role", locator:'Role'},
-				{key:"title", locator:'ItemAttributes/Title'}
+				{key:"title", locator:ITEM_ATTRIBUTES_PFX + 'Title'}
 			]
 		},
 
@@ -1016,7 +1680,18 @@ http://ecs.amazonaws.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=[AW
 	},
 	NAME_RESPONSE_GROUP = 'ResponseGroup';
 
-// update schemas that inherit 
+// update schemas that use other schemas
+AWS_SCHEMA.BrowseNodeInfo.resultFields = AWS_SCHEMA.BrowseNodeInfo.resultFields.concat(AWS_SCHEMA.BrowseNodes.resultFields);
+AWS_SCHEMA.CustomerFull.resultFields = AWS_SCHEMA.CustomerInfo.resultFields.concat(AWS_SCHEMA.CustomerLists.resultFields)
+	.concat(AWS_SCHEMA.CustomerReviews.resultFields);
+AWS_SCHEMA.ListFull.resultFields = AWS_SCHEMA.ListInfo.resultFields.concat(AWS_SCHEMA.ListItems.resultFields);
+AWS_SCHEMA.MerchantItemAttributes.resultFields = AWS_SCHEMA.ItemAttributes.resultFields;
+AWS_SCHEMA.Offers.resultFields = AWS_SCHEMA.OfferSummary.resultFields;
+
+// update meta
+AWS_SCHEMA.OfferListings.metaFields.totalOffers = '//TotalOffers';
+AWS_SCHEMA.OfferListings.metaFields.totalOfferPages = '//TotalOfferPages';
+
 AWS_SCHEMA.Small.resultFields = AWS_SCHEMA.Small.resultFields.concat(RESULT_FIELDS_LINKS);
 AWS_SCHEMA.Medium.resultFields = AWS_SCHEMA.Small.resultFields.concat(AWS_SCHEMA.Medium.resultFields)
 	.concat(AWS_SCHEMA.ItemAttributes.resultFields).concat(AWS_SCHEMA.EditorialReview.resultFields)
@@ -1033,9 +1708,6 @@ AWS_SCHEMA.Tags.resultFields = AWS_SCHEMA.Tags.resultFields.concat(AWS_SCHEMA.Ta
 Y.aggregate(AWS_SCHEMA.Offers.metaFields,META_FIELDS);
 Y.aggregate(AWS_SCHEMA.VariationMinimum.metaFields,META_FIELDS);
 
-// add RESULT_FIELDS_LINKS to schemas where duplication would occur
-AWS_SCHEMA.ItemAttributes.resultFields = AWS_SCHEMA.ItemAttributes.resultFields.concat(RESULT_FIELDS_LINKS);
-
 Y.mix(Y.Aws.prototype, {
 	_parseAWSContent: function(doc) {
 		var args = Y.DataSchema.XML.apply(AWS_SCHEMA.args, doc),
@@ -1045,21 +1717,8 @@ Y.mix(Y.Aws.prototype, {
 			}),
 			schemaName = responseGroup.value;
 
-
 		if (schemaName) {
 			response = Y.DataSchema.XML.apply(AWS_SCHEMA[schemaName], doc);
-			var name = schemaName + AWS_SCHEMA[schemaName].resultListLocator,
-				schema = AWS_SCHEMA[name],
-				items;
-
-			if (schema) {
-				items = doc.getElementsByTagName(AWS_SCHEMA[schemaName].resultListLocator);
-
-				Y.each(items, function(item, i) {
-					var iresponse = Y.DataSchema.XML.apply(AWS_SCHEMA[name], item);
-					response.results[i][schemaName] = iresponse.results;
-				});
-			}
 		}
 
 		return response;
@@ -1093,4 +1752,4 @@ Y.mix(Y.Aws.prototype, {
 	}
 });
 
-}, {requires: ['datatype-json', 'oop', 'gallery-aws']});
+}, {requires: ['oop', 'datatype-json', 'dataschema-xml2', 'gallery-aws']});
