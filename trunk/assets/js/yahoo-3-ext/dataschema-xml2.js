@@ -35,7 +35,7 @@ var LANG = Y.Lang,
 
             if(xmldoc && xmldoc.nodeType && (9 === xmldoc.nodeType || 1 === xmldoc.nodeType || 11 === xmldoc.nodeType) && schema) {
                 // Parse results data
-				data_out = SchemaXML._getParseFunction(schema)(schema, xmldoc, data_out);
+				data_out = SchemaXML._parseResults(schema, xmldoc, data_out);
 
                 // Parse meta data
                 data_out = SchemaXML._parseMeta(schema.metaFields, xmldoc, data_out);
@@ -76,19 +76,6 @@ var LANG = Y.Lang,
 
 			return null;
         },
-		
-		/**
-		 * Fetches the result parsing function by evaluating the resultListLocator.
-		 * 
-		 * @method _getParseFunction
-		 * @param schema {Object} Required. The schema to evaluate.
-		 * @return {Function} The parsing function.
-         * @static
-         * @protected
-		 */
-		_getParseFunction: function(schema) {
-			return SchemaXML[schema.resultListLocator.match(/^[:\-\w]+$/) ? '_parseResults' : '_parseResultsUsingXPath'];
-		},
 
 		/**
 		 * Fetches the XPath-specified result for a given location in an XML node or document.
@@ -102,12 +89,12 @@ var LANG = Y.Lang,
 		 */
 		_getXPathResult: function(locator, context, xmldoc) {
 			// Standards mode
-			if (!LANG.isUndefined(xmldoc.evaluate)) {
+			if (! LANG.isUndefined(xmldoc.evaluate)) {
 				return xmldoc.evaluate(locator, context, xmldoc.createNSResolver(context.ownerDocument ? context.ownerDocument.documentElement : context.documentElement), 0, null);
 			}
             // IE mode
 			else {
-				var values, locatorArray = locator.split("/"), i=0, l=locatorArray.length, location, subloc; 
+				var values=[], locatorArray = locator.split(/\b\/\b/), i=0, l=locatorArray.length, location, subloc, m, isNth;
 				
 				// XPath is supported
 				try {
@@ -118,26 +105,52 @@ var LANG = Y.Lang,
 				// Fallback for DOM nodes and fragments
 				catch (e) {
 					// Iterate over each locator piece
-					for(; i<l; i++) {
+					for (; i<l && context; i++) {
 						location = locatorArray[i];
 
 						// grab nth child []
-						if((location.indexOf("[") > -1) && (location.indexOf("]") > -1)) {
+						if ((location.indexOf("[") > -1) && (location.indexOf("]") > -1)) {
 							subloc = location.slice(location.indexOf("[")+1, location.indexOf("]"));
 							//XPath is 1-based while DOM is 0-based
 							subloc--;
 							context = context.childNodes[subloc];
+							isNth = true;
 						}
-
 						// grab attribute value @
-						if(location.indexOf("@") > -1) {
+						else if (location.indexOf("@") > -1) {
 							subloc = location.substr(location.indexOf("@"));
-							context = subloc ? context.getAttribute(subloc) : context;
+							context = subloc ? context.getAttribute(subloc.replace('@', '')) : context;
+						}
+						// grab that last instance of tagName
+						else if (-1 < location.indexOf("//")) {
+							subloc = context.getElementsByTagName(location.substr(2));
+							context = subloc.length ? subloc[subloc.length - 1] : null;
+						}
+						// find the last matching location in children
+						else if (l != i + 1) {
+							for (m=context.childNodes.length-1; 0 <= m; m-=1) {
+								if (location === context.childNodes[m].tagName) {
+									context = context.childNodes[m];
+									m = -1;
+								}
+							}
 						}
 					}
 					
-					// grab node value
-					values = [context.innerHTML];
+					if (context) {
+						// attribute
+						if (LANG.isString(context)) {
+							values[0] = {value: context};
+						}
+						// nth child
+						else if (isNth) {
+							values[0] = {value: context.innerHTML};
+						}
+						// all children
+						else {
+							values = Y.Array(context.childNodes, 0, true);
+						}
+					}
 				}
 
 				// returning a mock-standard object for IE
@@ -162,7 +175,7 @@ var LANG = Y.Lang,
 							parentNode: result.parentNode,
 							prefix: result.prefix,
 							previousSibling: result.previousSibling,*/
-							textContent: result.value || result.text || null/*,
+							textContent: result.value || result.text || result.innerHTML || null/*,
 							value: result.value*/
 						};
 					},
@@ -172,12 +185,22 @@ var LANG = Y.Lang,
 			}
 		},
 
-		_parseField: function(field, result, node) {
+		/**
+		 * Schema-parsed result field.
+		 *
+		 * @method _parseField
+         * @param field {String | Object} Required. Field definition.
+		 * @param result {Object} Required. Schema parsed data object.
+         * @param context {Object} Required. XML node or document to search within.
+         * @static
+         * @protected
+		 */
+		_parseField: function(field, result, context) {
 			if (field.schema) {
-				result[field.key] = SchemaXML._getParseFunction(field.schema)(field.schema, node, {results:[],meta:{}});
+				result[field.key] = SchemaXML._parseResults(field.schema, context, {results:[],meta:{}}).results;
 			}
 			else {
-				result[field.key || field] = SchemaXML._getLocationValue(field, node);
+				result[field.key || field] = SchemaXML._getLocationValue(field, context);
 			}
 		},
 
@@ -205,6 +228,27 @@ var LANG = Y.Lang,
             return data_out;
         },
 
+		/**
+		 * Schema-parsed result to add to results list.
+		 *
+		 * @method _parseResult
+         * @param fields {Array} Required. A collection of field definition.
+         * @param context {Object} REquired. XML node or document to search within.
+         * @return {Object} Schema-parsed data.
+         * @static
+         * @protected
+		 */
+		_parseResult: function(fields, context) {
+			var result = {}, j;
+
+			// Find each field value
+			for (j=fields.length-1; 0 <= j; j--) {
+				SchemaXML._parseField(fields[j], result, context);
+			}
+
+			return result;
+		},
+
         /**
          * Schema-parsed list of results from full data
          *
@@ -217,80 +261,39 @@ var LANG = Y.Lang,
          * @protected
          */
         _parseResults: function(schema, xmldoc_in, data_out) {
-            if(schema.resultListLocator && LANG.isArray(schema.resultFields)) {
-                var nodeList = xmldoc_in.getElementsByTagName(schema.resultListLocator),
-                    fields = schema.resultFields,
-                    results = [],
-                    node, result, i, j;
+            if (schema.resultListLocator && LANG.isArray(schema.resultFields)) {
+				var xmldoc = xmldoc_in.ownerDocument || xmldoc_in,
+					fields = schema.resultFields,
+					results = [],
+					node, result, nodeList, i=0;
 
-                if(nodeList.length) {
-                    // Loop through each result node
-                    for(i=nodeList.length-1; 0 <= i; i--) {
-                        result = {};
-                        node = nodeList[i];
+				if (schema.resultListLocator.match(/^[:\-\w]+$/)) {
+					nodeList = xmldoc.getElementsByTagName(schema.resultListLocator);
+					
+					// loop through each result node
+					for (i=nodeList.length-1; 0 <= i; i--) {
+						results[i] = SchemaXML._parseResult(fields, nodeList[i]);
+					}
+				}
+				else {
+					nodeList = SchemaXML._getXPathResult(schema.resultListLocator, xmldoc, xmldoc);
 
-                        // Find each field value
-                        for(j=fields.length-1; 0 <= j; j--) {
-							SchemaXML._parseField(fields[j], result, node);
-                        }
-                        results[i] = result;
-                    }
+					// loop through the nodelist
+					while (node = nodeList.iterateNext()) {
+						results[i] = SchemaXML._parseResult(fields, node);
+						i += 1;
+					}
+				}
 
+				if (results.length) {
                     data_out.results = results;
                 }
-                else if (! schema.allowEmpty) {
+                else {
                     data_out.error = new Error("XML schema result nodes retrieval failure");
                 }
             }
             return data_out;
-        },
-
-        /**
-         * Schema-parsed list of results from full data using XPath instead of getElementsByTagName.
-         *
-         * @method _parseResultsUsingXPath
-         * @param schema {Object} Schema to parse against.
-         * @param xmldoc_in {Object} XML document parse.
-         * @param data_out {Object} In-progress schema-parsed data to update.
-         * @return {Object} Schema-parsed data.
-         * @static
-         * @protected
-         */
-        _parseResultsUsingXPath: function(schema, xmldoc_in, data_out) {
-            if(schema.resultListLocator && LANG.isArray(schema.resultFields)) {
-				try {
-					var xmldoc = xmldoc_in.ownerDocument || xmldoc_in,
-						nodeList = SchemaXML._getXPathResult(schema.resultListLocator, xmldoc, xmldoc),
-						fields = schema.resultFields,
-						results = [],
-						node, result, i=0, j;
-
-					while(node = nodeList.iterateNext()) {
-						result = {};
-
-						// Find each field value
-						for(j=fields.length-1; 0 <= j; j--) {
-							SchemaXML._parseField(fields[j], result, node);
-						}
-
-						results[i] = result;
-						i += 1;
-					}
-
-					if (result) {
-                    	data_out.results = results;
-					}
-					else {
-                    	data_out.error = new Error("XML schema result nodes retrieval failure");
-					}
-				}
-				catch(e) {
-					Y.log('SchemaXML._parseResultsUsingXPath failed: ' + e.message);
-				}
-			}
-			
-            return data_out;
-		}
+        }
     };
 
 Y.DataSchema.XML = Y.mix(SchemaXML, Y.DataSchema.Base);
