@@ -167,26 +167,28 @@
 	</div>
 
 	<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui.js" type="text/javascript"></script>
-	<script type="text/javascript">var r = '63';
+	<script type="text/javascript">var r = '71';
 	YUI({
 		filter:'raw',
 		combine: true,
 		timeout: 10000,
 		modules: {
 			'gallery-aws': {
-//				fullpath: 'http://yui.yahooapis.com/gallery-2009.11.02-20/build/gallery-form/gallery-form.js',
+//				fullpath: 'http://yui-ext-mvc.googlecode.com/svn/trunk/assets/js/yahoo-3-ext/aws.js?r' + r,
 				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/aws.js?r' + r,
 				requires: ['base', 'io-base', 'io-xdr', 'json-parse', 'collection', 'datatype-xml'],
 				optional: [],
 				supersedes: []
 			},
 			'gallery-aws-json': {
+//				fullpath: 'http://yui-ext-mvc.googlecode.com/svn/trunk/assets/js/yahoo-3-ext/aws-json.js?r' + r,
 				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/aws-json.js?r' + r,
 				requires: ['oop', 'datatype-json', 'dataschema-xml2', 'gallery-aws'],
 				optional: [],
 				supersedes: []
 			},
 			'dataschema-xml2': {
+//				fullpath: 'http://yui-ext-mvc.googlecode.com/svn/trunk/assets/js/yahoo-3-ext/dataschema-xml2.js?r' + r,
 				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/dataschema-xml2.js?r' + r,
 				requires: ['dataschema-base'],
 				optional: [],
@@ -252,6 +254,7 @@
 				case 'ItemLookup':
 				case 'SimilarityLookup':
 					data = {ItemId:_domUpc.get('value'), IdType: 'ASIN'};
+//					data = {ItemId:_domUpc.get('value'), IdType: 'UPC'};
 				break;
 				case 'ItemSearch':
 				case 'ListSearch':
