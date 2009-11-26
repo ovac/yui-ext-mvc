@@ -26,12 +26,13 @@ var LANG = Y.Lang,
          *
          * @method apply
          * @param schema {Object} Schema to apply.
-         * @param xmldoc {XMLDoc} XML document.
+         * @param data {XMLDoc} XML document.
          * @return {Object} Schema-parsed data.
          * @static
          */
-        apply: function(schema, xmldoc) {
-            var data_out = {results:[],meta:{}};
+        apply: function(schema, data) {
+            var xmldoc = data, // unnecessary variables
+                data_out = {results:[],meta:{}};
 
             if(xmldoc && xmldoc.nodeType && (9 === xmldoc.nodeType || 1 === xmldoc.nodeType || 11 === xmldoc.nodeType) && schema) {
                 // Parse results data
@@ -41,6 +42,7 @@ var LANG = Y.Lang,
                 data_out = SchemaXML._parseMeta(schema.metaFields, xmldoc, data_out);
             }
             else {
+                Y.log("XML data could not be schema-parsed: " + Y.dump(data) + " " + Y.dump(data), "error", "dataschema-xml");
                 data_out.error = new Error("XML schema parse failure");
             }
 
@@ -65,7 +67,7 @@ var LANG = Y.Lang,
             try {
 				result = SchemaXML._getXPathResult(locator, context, xmldoc);
 				while(res = result.iterateNext()) {
-					value = res.textContent;
+					value = res.textContent || res.value || res.text || res.innerHTML || null;
 				}
 
                 return Y.DataSchema.Base.parse(value, field);
@@ -161,23 +163,7 @@ var LANG = Y.Lang,
 						if (this.index >= this.values.length) {return undefined;}
 						var result = this.values[this.index];
 						this.index += 1;
-						return {/* commenting out, as none of these properties are used
-							attributes: result.attributes,
-							baseURI: result.baseURI,
-							childNodes: result.childNodes,
-							firstChild: result.firstChild,
-							lastChild: result.lastChild,
-							localName: result.localName,
-							namespaceURI: result.namespaceURI,
-							nextSibling: result.nextSibling,
-							nodeName: result.nodeName,
-							nodeValue: result.nodeValue,
-							parentNode: result.parentNode,
-							prefix: result.prefix,
-							previousSibling: result.previousSibling,*/
-							textContent: result.value || result.text || result.innerHTML || null/*,
-							value: result.value*/
-						};
+						return result;
 					},
 
 					values: values
@@ -233,7 +219,7 @@ var LANG = Y.Lang,
 		 *
 		 * @method _parseResult
          * @param fields {Array} Required. A collection of field definition.
-         * @param context {Object} REquired. XML node or document to search within.
+         * @param context {Object} Required. XML node or document to search within.
          * @return {Object} Schema-parsed data.
          * @static
          * @protected
@@ -254,21 +240,21 @@ var LANG = Y.Lang,
          *
          * @method _parseResults
          * @param schema {Object} Schema to parse against.
-         * @param xmldoc_in {Object} XML document parse.
+         * @param context {Object} XML node document parse.
          * @param data_out {Object} In-progress schema-parsed data to update.
          * @return {Object} Schema-parsed data.
          * @static
          * @protected
          */
-        _parseResults: function(schema, xmldoc_in, data_out) {
+        _parseResults: function(schema, context, data_out) {
             if (schema.resultListLocator && LANG.isArray(schema.resultFields)) {
-				var xmldoc = xmldoc_in.ownerDocument || xmldoc_in,
+				var xmldoc = context.ownerDocument || context,
 					fields = schema.resultFields,
 					results = [],
 					node, result, nodeList, i=0;
 
 				if (schema.resultListLocator.match(/^[:\-\w]+$/)) {
-					nodeList = xmldoc.getElementsByTagName(schema.resultListLocator);
+					nodeList = context.getElementsByTagName(schema.resultListLocator);
 					
 					// loop through each result node
 					for (i=nodeList.length-1; 0 <= i; i--) {
@@ -276,7 +262,7 @@ var LANG = Y.Lang,
 					}
 				}
 				else {
-					nodeList = SchemaXML._getXPathResult(schema.resultListLocator, xmldoc, xmldoc);
+					nodeList = SchemaXML._getXPathResult(schema.resultListLocator, context, xmldoc);
 
 					// loop through the nodelist
 					while (node = nodeList.iterateNext()) {
