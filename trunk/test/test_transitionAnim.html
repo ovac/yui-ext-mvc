@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>Testing Page - Move and Size Transition Animation</title>
+
+	<!--
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/fonts/fonts-min.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css">
+-->
+
+	<style type="text/css">
+		.tempnode {
+			border: 2px solid red;
+			position: absolute;
+			z-index: 2;
+		}
+
+		#container {
+			background-color: blue;
+			border: 1px black solid;
+			height: 100px;
+			position: absolute;
+			top: 50px;
+			width: 100px;
+			z-index: 1;
+		}
+
+		body {
+			height: 800px;
+			width: 100%;
+		}
+	</style>
+
+<!--end custom header content for this example-->
+
+</head><body class="yui-skin-sam" id="test-body">
+
+<div class="box" id="container"></div>
+
+<p class="copy">This test will move the blue box around the screen depending on where you click the first time and then resize it to where you click the second time.</p>
+
+<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js" type="text/javascript"></script>
+<script type="text/javascript">YUI().use('node', 'anim', 'event', function(Y) {
+	var body = Y.get('#test-body'),
+		container = Y.get('#container'),
+		tempnode = Y.one(document.createElement('div')),
+		mouseMoveHandle, point1, point2, top, left, bottom, right;
+
+	tempnode.addClass('tempnode');
+
+	body.on('click', function(e) {
+		if (mouseMoveHandle) {
+			point2 = [e.pageX, e.pageY];
+			body.removeChild(tempnode);
+			mouseMoveHandle.detach();
+
+			if (point1[0] < point2[0]) {
+				left = point1[0];
+				right = point2[0];
+			}
+			else {
+				right = point1[0];
+				left = point2[0];
+			}
+
+			if (point1[1] < point2[1]) {
+				top = point1[1];
+				bottom = point2[1];
+			}
+			else {
+				bottom = point1[1];
+				top = point2[1];
+			}
+
+			 var myAnim = new Y.Anim({
+					node: container,
+					to: {
+						left: left,
+						top: top,
+						width: right-left,
+						height: bottom-top
+					}
+			});
+
+			myAnim.set('duration', 0.5);
+			myAnim.set('easing', Y.Easing.easeBoth); 
+			myAnim.run();
+
+			mouseMoveHandle = null;
+			point1 = null;
+			point2 = null;
+		}
+		else if (! e.target.ancestor('#container')) {
+			point1 = [e.pageX, e.pageY];
+			tempnode.setXY(point1);
+			tempnode.setStyle('width', '1px');
+			tempnode.setStyle('height', '1px');
+			body.insertBefore(tempnode, container);
+
+			mouseMoveHandle = body.on('mousemove', function(e) {
+				var x, y, width, height;
+
+				if (e.pageX > point1[0]) {
+					x = point1[0];
+					width = e.pageX - point1[0];
+				}
+				else {
+					x = e.pageX;
+					width = point1[0] - e.pageX;
+				}
+
+				if (e.pageY > point1[1]) {
+					y = point1[1];
+					height = e.pageY - point1[1];
+				}
+				else {
+					y = e.pageY;
+					height = point1[1] - e.pageY;
+				}
+
+				tempnode.setXY([x, y]);
+				tempnode.setStyle('width', width + 'px');
+				tempnode.setStyle('height', height + 'px');
+			});
+		}
+	});
+});
+</script>
+
+</body></html>
