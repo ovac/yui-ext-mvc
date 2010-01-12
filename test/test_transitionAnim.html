@@ -3,10 +3,9 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<title>Testing Page - Move and Size Transition Animation</title>
 
-	<!--
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/fonts/fonts-min.css">
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css">
--->
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/fonts/fonts-min.css">
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css">
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/container-core.css">
 
 	<style type="text/css">
 		.tempnode {
@@ -17,38 +16,257 @@
 
 		#container {
 			background-color: blue;
-			border: 1px black solid;
+			border: 1px green solid;
 			height: 100px;
 			position: absolute;
-			top: 50px;
+			top: 150px;
 			width: 100px;
 			z-index: 1;
+		}
+
+		#container img {
+			height: 100%;
+			width: 100%;
 		}
 
 		body {
 			height: 800px;
 			width: 100%;
 		}
+
+		.displayNone {
+			display:none;
+		}
+
+		/* Aqua Panel Skin CSS */
+
+		/* Skin default Panel elements */
+		#pane.yui-panel-container.shadow .underlay {
+			position:absolute;
+			background-color:#000;
+			opacity:0.12;
+			filter:alpha(opacity=12);
+			left:3px;
+			right:-3px;
+			bottom:-3px;
+			top:3px;
+		}
+		#panel2.yui-panel {
+			border:none;
+			overflow:visible;
+			background-color:transparent;
+		}
+
+		/* Apply styles to the close icon to anchor it to the left side of the header */
+		#panel2.yui-panel .container-close {
+			position:absolute;
+			top:3px;
+			left:4px;
+			height:18px;
+			width:17px;
+			background:url(http://developer.yahoo.com/yui/examples/container/assets/img/aqua-hd-close.gif) no-repeat;
+		}
+		/* span:hover not supported on IE6 */
+		#panel2.yui-panel .container-close:hover {
+			background:url(http://developer.yahoo.com/yui/examples/container/assets/img/aqua-hd-close-over.gif) no-repeat;
+		}
+
+		/* Style the header and apply the rounded corners, center the text */
+		#panel2.yui-panel .hd {
+			padding:0;
+			border:none;
+			background:url(http://developer.yahoo.com/yui/examples/container/assets/img/aqua-hd-bg.gif) repeat-x;
+			color:#000;
+			height:22px;
+			margin-left:7px;
+			margin-right:7px;
+			text-align:center;
+			overflow:visible;
+		}
+		/* Style the body and footer */
+		#panel2.yui-panel .bd {
+			overflow:hidden;
+			padding:4px;
+			border:1px solid #aeaeae;
+			background-color:#FFF;
+		}
+		#panel2.yui-panel .ft {
+			font-size:75%;
+			color:#666;
+			padding:2px;
+			overflow:hidden;
+			border:1px solid #aeaeae;
+			border-top:none;
+			background-color:#dfdfdf;
+		}
+
+		/* Skin custom elements */
+		#panel2.yui-panel .hd span {
+			vertical-align:middle;
+			line-height:22px;
+			font-weight:bold;
+		}
+		#panel2.yui-panel .hd .tl {
+			width:7px;
+			height:22px;
+			top:0;
+			left:0;
+			background:url(http://developer.yahoo.com/yui/examples/container/assets/img/aqua-hd-lt.gif) no-repeat;
+			position:absolute;
+		}
+		#panel2.yui-panel .hd .tr {
+			width:7px;
+			height:22px;
+			top:0;
+			right:0;
+			background:url(http://developer.yahoo.com/yui/examples/container/assets/img/aqua-hd-rt.gif) no-repeat;
+			position:absolute;
+		}
+		
 	</style>
 
 <!--end custom header content for this example-->
 
 </head><body class="yui-skin-sam" id="test-body">
 
+<div class="buttons">
+	<label for="field-duration">Duration: </label>
+	<input id="field-duration" type="text" value="0.5"/>
+	<label for="field-content">Content: </label>
+	<select id="field-content">
+		<option value="simple" selected="selected">Simple Box</option>
+		<option value="image">Image Box</option>
+		<option value="complex">Complex DOM Box</option>
+	</select>
+	<label for="field-easing">Easing: </label>
+	<select id="field-easing">
+		<option value="backBoth">backBoth</option>
+		<option value="backIn">backIn</option>
+		<option value="backOut">backOut</option>
+		<option value="bounceBoth">bounceBoth</option>
+		<option value="bounceIn">bounceIn</option>
+		<option value="bounceOut">bounceOut</option>
+		<option value="easeBoth">easeBoth</option>
+		<option value="easeBothStrong">easeBothStrong</option>
+		<option value="easeIn">easeIn</option>
+		<option value="easeInStrong">easeInStrong</option>
+		<option value="easeNone">easeNone</option>
+		<option value="easeOut">easeOut</option>
+		<option value="easeOutStrong">easeOutStrong</option>
+		<option value="elasticBoth">elasticBoth</option>
+		<option value="elasticIn">elasticIn</option>
+		<option value="elasticOut">elasticOut</option>
+	</select>
+</div>
+
 <div class="box" id="container"></div>
 
-<p class="copy">This test will move the blue box around the screen depending on where you click the first time and then resize it to where you click the second time.</p>
+<img alt="you should see an image here" class="displayNone" id="img-snoopy" src="/assets/images/snoopy.jpg"/>
+
+<div class="yui-panel-container shadow show-scrollbars displayNone" id="panel" style="z-index: 2; visibility: visible; width: 100%; height: 100%">
+	<div id="panel2" class="yui-module yui-overlay yui-panel" style="visibility: inherit; width: 100%;">
+		<div class="hd" style="cursor: move;" id="panel2_h">
+			<div class="tl"></div>
+			<span>Test Panel</span>
+			<div class="tr"></div>
+		</div>
+		<div class="bd">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in suscipit augue. Etiam sollicitudin ultrices orci, ac vestibulum magna faucibus id. Nulla facilisi. Mauris sed consequat nunc. Morbi consequat arcu id mi sodales et ultrices augue convallis. In gravida sodales ipsum, non convallis neque varius at. Vestibulum orci orci, tincidunt non aliquam sit amet, suscipit id enim. Vestibulum bibendum commodo nibh a ullamcorper. Suspendisse porttitor gravida mi pretium pulvinar. Proin mattis erat non mauris congue egestas. Maecenas quis ante odio, eget faucibus nisi.</div>
+		<div class="ft"><span>End of Test Panel</span></div>
+		<a class="container-close" href="#">Close</a>
+	</div>
+	<div class="underlay"></div>
+</div>
+
+<p class="copy">
+	This test will perform a transitional animation moving a div from one position to another, while also scaling its dimensions.
+	To begin click anywhere on the screen to begin drawing a rectangle, then move the mouse, dragging the rectangle into the desired shape and click again.
+	Your second click will begin the animation.</p>
+
+<p class="copy">Above are options you can use to modify the behavior: duration changes the time it takes for the animation to complete (in seconds),
+	content is makeup of the container being animated, and easing is the YUI animation easing method to use.</p>
 
 <script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js" type="text/javascript"></script>
-<script type="text/javascript">YUI().use('node', 'anim', 'event', function(Y) {
+<script type="text/javascript">YUI({
+	filter: 'raw',
+	combine: true,
+	timeout: 10000,
+	modules: {
+
+		'gallery-node-field': {
+			fullpath: '/assets/js/yahoo-3-ext/NodeField.js',
+			requires: ['base', 'node'],
+			optional: [],
+			supersedes: []
+		}
+	}
+}).use('node', 'anim', 'event', 'gallery-node-field', function(Y) {
 	var body = Y.get('#test-body'),
 		container = Y.get('#container'),
+		fldContent = Y.get('#field-content'),
+		fldDuration = Y.get('#field-duration'),
+		fldEasing = Y.get('#field-easing'),
+		imgSnoopy = Y.get('#img-snoopy'),
+		panel = Y.get('#panel'),
 		tempnode = Y.one(document.createElement('div')),
-		mouseMoveHandle, point1, point2, top, left, bottom, right;
+		mouseMoveHandle, point1, point2, top, left, bottom, right,
+
+	getNormalizedContent = function() {
+		var value = Y.NodeFieldSerializer.selectOne(fldContent)[1];
+
+		switch (value) {
+			case 'simple':
+			case 'image':
+			case 'complex':
+			return value;
+
+			default: return 'simple';
+		}
+	},
+
+	getNormalizedDuration = function() {
+		var value = fldDuration.get('value');
+		return 0 < value ? parseFloat(value) : 0.5;
+	},
+
+	getNormalizedEasing = function() {
+		var value = Y.NodeFieldSerializer.selectOne(fldEasing)[1],
+			easing = Y.Easing[value];
+		return easing ? easing : Y.Easing.easeBoth;
+	};
 
 	tempnode.addClass('tempnode');
 
-	body.on('click', function(e) {
+	var handleChange = function(e) {
+		var classTask = 'addClass';
+		container.set('innerHTML', '');
+
+		switch (getNormalizedContent()) {
+			case 'simple':
+				break;
+
+			case 'image':
+				container.appendChild(imgSnoopy);
+				classTask = 'removeClass';
+				break;
+
+			case 'complex':
+				container.appendChild(panel);
+				classTask = 'removeClass';
+				break;
+		}
+
+		if (container.get('firstChild')) {
+			container.get('firstChild')[classTask]('displayNone');
+		}
+	};
+
+	fldContent.on('change', handleChange);
+	handleChange();
+
+	body.on('mousedown', function(e) {
+		var targ = e.target._node;
+		if (fldDuration._node == targ || fldContent._node == targ || fldContent._node == targ.parentNode || fldEasing._node == targ || fldEasing._node == targ.parentNode) {return;}
+
 		if (mouseMoveHandle) {
 			point2 = [e.pageX, e.pageY];
 			body.removeChild(tempnode);
@@ -72,7 +290,7 @@
 				top = point2[1];
 			}
 
-			 var myAnim = new Y.Anim({
+			var myAnim = new Y.Anim({
 					node: container,
 					to: {
 						left: left,
@@ -82,15 +300,15 @@
 					}
 			});
 
-			myAnim.set('duration', 0.5);
-			myAnim.set('easing', Y.Easing.easeBoth); 
+			myAnim.set('duration', getNormalizedDuration());
+			myAnim.set('easing', getNormalizedEasing());
 			myAnim.run();
 
 			mouseMoveHandle = null;
 			point1 = null;
 			point2 = null;
 		}
-		else if (! e.target.ancestor('#container')) {
+		else {
 			point1 = [e.pageX, e.pageY];
 			tempnode.setXY(point1);
 			tempnode.setStyle('width', '1px');
