@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager" verified="true">
     <list default="true" readonly="true" id="c1df7342-9b06-4bd7-bb4f-9a922d9401bc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core.ipr" afterPath="$PROJECT_DIR$/core.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core.iws" afterPath="$PROJECT_DIR$/core.iws" />
     </list>
-    <ignored path=".idea/workspace.xml" />
     <ignored path="core.iws" />
+    <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +73,7 @@
       <file leaf-file-name="test_number.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test_number.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="648" vertical-scroll-proportion="0.0">
+            <state line="0" column="0" selection-start="0" selection-end="648" vertical-scroll-proportion="-0.0">
               <folding />
             </state>
           </provider>
@@ -84,15 +83,6 @@
         <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/form.js">
           <provider selected="true" editor-type-id="text-editor">
             <state line="138" column="43" selection-start="4989" selection-end="4989" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="formElement.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/formElement.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="224" column="58" selection-start="8021" selection-end="8021" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -110,7 +100,7 @@
       <file leaf-file-name="test_ajaxObject.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test_ajaxObject.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="1" selection-start="462" selection-end="462" vertical-scroll-proportion="0.0">
+            <state line="16" column="1" selection-start="462" selection-end="462" vertical-scroll-proportion="-1.8947369">
               <folding />
             </state>
           </provider>
@@ -119,7 +109,7 @@
       <file leaf-file-name="test_transitionAnim.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/test_transitionAnim.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="23" selection-start="745" selection-end="745" vertical-scroll-proportion="0.013392857">
+            <state line="331" column="49" selection-start="9751" selection-end="9751" vertical-scroll-proportion="1.647919">
               <folding />
             </state>
           </provider>
@@ -155,7 +145,25 @@
       <file leaf-file-name="CheckboxList_Y3.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/js/widget/CheckboxList_Y3.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="20" selection-start="0" selection-end="4847" vertical-scroll-proportion="0.0">
+            <state line="36" column="38" selection-start="835" selection-end="835" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="formElement.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/formElement.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="224" column="58" selection-start="8021" selection-end="8021" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NodeField.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/NodeField.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="209" column="21" selection-start="5483" selection-end="5502" vertical-scroll-proportion="-31.807692">
               <folding />
             </state>
           </provider>
@@ -180,7 +188,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/assets/js/yahoo-ext/lang.js" />
         <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/formErrorManager.js" />
         <option value="$PROJECT_DIR$/test/test_formErrorManager.html" />
         <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/form.js" />
@@ -195,6 +202,7 @@
         <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-json.js" />
         <option value="$PROJECT_DIR$/assets/js/yahoo-ext/dom.js" />
         <option value="$PROJECT_DIR$/test/test_ajaxObject.html" />
+        <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/NodeField.js" />
         <option value="$PROJECT_DIR$/test/test_transitionAnim.html" />
       </list>
     </option>
@@ -240,20 +248,13 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="Favorites" />
       <pane id="PackagesPane">
         <subPane />
       </pane>
-      <pane id="Scope" />
       <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
+        <subPane />
       </pane>
     </panes>
   </component>
@@ -337,15 +338,6 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" air_descriptor_path="" air_program_params="" air_publisher_id="" air_root_dir_path="" air_run_mode="AppDescriptor" class_name="" html_or_swf_file_path="" main_class_name="" method_name="" module_name="" output_log_level="" package_name="" port="0" run_mode="HtmlOrSwfFile" scope="Class" socket_policy_port="0" url_to_launch="http://">
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="FtpUpload" enabled="false" />
-        <option name="Make" enabled="true" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
     <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
       <JSDebuggerConfigurationSettings>
         <option name="engineId" value="embedded" />
@@ -355,6 +347,15 @@
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
         <option name="FtpUpload" enabled="false" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" air_descriptor_path="" air_program_params="" air_publisher_id="" air_root_dir_path="" air_run_mode="AppDescriptor" class_name="" html_or_swf_file_path="" main_class_name="" method_name="" module_name="" output_log_level="" package_name="" port="0" run_mode="HtmlOrSwfFile" scope="Class" socket_policy_port="0" url_to_launch="http://">
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="FtpUpload" enabled="false" />
+        <option name="Make" enabled="true" />
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
@@ -489,7 +490,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="24" width="1900" height="1097" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -497,19 +498,19 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924962" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.325054" sideWeight="0.66096425" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32451403" sideWeight="0.66096425" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Web Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32951757" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32951757" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32869992" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31852987" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3281493" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3281493" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -596,11 +597,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/dataschema-xml2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="257" column="57" selection-start="8656" selection-end="8656" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/test_aws.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="76" column="64" selection-start="4272" selection-end="4272" vertical-scroll-proportion="0.0" />
@@ -626,26 +622,9 @@
         <state line="0" column="0" selection-start="0" selection-end="648" vertical-scroll-proportion="-0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/form.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="138" column="43" selection-start="4989" selection-end="4989" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/formElement.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="224" column="58" selection-start="8021" selection-end="8021" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/native-ext/array.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="321" column="37" selection-start="10856" selection-end="10856" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_ajaxObject.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="1" selection-start="462" selection-end="462" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/formElementSerializer.js">
@@ -663,19 +642,47 @@
         <state line="470" column="11" selection-start="16723" selection-end="16723" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/widget/CheckboxList_Y3.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="20" selection-start="0" selection-end="4847" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/event.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/form.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="138" column="43" selection-start="4989" selection-end="4989" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/widget/CheckboxList_Y3.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="38" selection-start="835" selection-end="835" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/formElement.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="224" column="58" selection-start="8021" selection-end="8021" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/NodeField.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="209" column="21" selection-start="5483" selection-end="5502" vertical-scroll-proportion="-31.807692">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_ajaxObject.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="1" selection-start="462" selection-end="462" vertical-scroll-proportion="-1.8947369">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test/test_transitionAnim.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="23" selection-start="745" selection-end="745" vertical-scroll-proportion="0.013392857">
+        <state line="331" column="49" selection-start="9751" selection-end="9751" vertical-scroll-proportion="1.647919">
           <folding />
         </state>
       </provider>
