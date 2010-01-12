@@ -73,7 +73,6 @@
   </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
-    <option name="DEPLOY_AFTER_MAKE" value="0" />
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -317,6 +316,7 @@
           </option>
           <option name="IGNORE_DEPRECATED" value="false" />
           <option name="IGNORE_JAVADOC_PERIOD" value="true" />
+          <option name="IGNORE_DUPLICATED_THROWS" value="false" />
           <option name="myAdditionalJavadocTags" value="depreciated" />
         </inspection_tool>
         <inspection_tool class="JpaModelErrorInspection" level="ERROR" enabled="false" />
@@ -407,11 +407,12 @@
     <option name="PROJECT_PROFILE" value="Project Default" />
     <option name="USE_PROJECT_PROFILE" value="true" />
     <version value="1.0" />
-    <list size="4">
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="INFO" />
-      <item index="1" class="java.lang.String" itemvalue="WARNING" />
-      <item index="2" class="java.lang.String" itemvalue="ERROR" />
-      <item index="3" class="java.lang.String" itemvalue="SERVER PROBLEM" />
+      <item index="1" class="java.lang.String" itemvalue="TYPO" />
+      <item index="2" class="java.lang.String" itemvalue="WARNING" />
+      <item index="3" class="java.lang.String" itemvalue="ERROR" />
+      <item index="4" class="java.lang.String" itemvalue="SERVER PROBLEM" />
     </list>
   </component>
   <component name="JavacSettings">
@@ -645,6 +646,20 @@
         <entry key="$PROJECT_DIR$">
           <value>
             <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://yui-ext-mvc.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://yui-ext-mvc.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="branchUrls">
                 <list>
                   <option value="https://yui-ext-mvc.googlecode.com/svn/branches" />
