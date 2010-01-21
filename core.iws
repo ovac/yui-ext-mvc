@@ -70,109 +70,46 @@
   <component name="FileColors" enabled="false" enabledForTabs="false" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="test_number.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/test_number.html">
+      <file leaf-file-name="test_radialMenu.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/test_radialMenu.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="648" vertical-scroll-proportion="-0.0">
+            <state line="37" column="38" selection-start="1232" selection-end="1232" vertical-scroll-proportion="0.21290323">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="form.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/form.js">
+      <file leaf-file-name="number.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/native-ext/number.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="138" column="43" selection-start="4989" selection-end="4989" vertical-scroll-proportion="0.0">
+            <state line="196" column="8" selection-start="6988" selection-end="7379" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="array.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/native-ext/array.js">
+      <file leaf-file-name="RadialMenu.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/RadialMenu.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="321" column="37" selection-start="10856" selection-end="10856" vertical-scroll-proportion="0.0">
+            <state line="101" column="0" selection-start="2103" selection-end="2103" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_ajaxObject.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/test_ajaxObject.html">
+      <file leaf-file-name="radialMenu.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/css/radialMenu.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="1" selection-start="462" selection-end="462" vertical-scroll-proportion="-1.8947369">
+            <state line="27" column="0" selection-start="426" selection-end="426" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_transitionAnim.html" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/test/test_transitionAnim.html">
+      <file leaf-file-name="RadialMenuPanel.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/RadialMenuPanel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="331" column="49" selection-start="9751" selection-end="9751" vertical-scroll-proportion="1.647919">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="formElementSerializer.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/formElementSerializer.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="92" column="30" selection-start="3282" selection-end="3282" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="constant.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/constant.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dom.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/dom.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="470" column="11" selection-start="16723" selection-end="16723" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CheckboxList_Y3.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/widget/CheckboxList_Y3.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="38" selection-start="835" selection-end="835" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="formElement.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/formElement.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="224" column="58" selection-start="8021" selection-end="8021" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NodeField.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/NodeField.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="209" column="21" selection-start="5483" selection-end="5502" vertical-scroll-proportion="-31.807692">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="event.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/event.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="63" column="39" selection-start="1228" selection-end="1228" vertical-scroll-proportion="-21.192308">
               <folding />
             </state>
           </provider>
@@ -188,10 +125,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/formErrorManager.js" />
-        <option value="$PROJECT_DIR$/test/test_formErrorManager.html" />
-        <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/form.js" />
-        <option value="$PROJECT_DIR$/assets/js/yahoo-ext/formElementSerializer.js" />
         <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-xml.js" />
         <option value="$PROJECT_DIR$/assets/css/base.css" />
         <option value="$PROJECT_DIR$/assets/css/test.css" />
@@ -204,6 +137,10 @@
         <option value="$PROJECT_DIR$/test/test_ajaxObject.html" />
         <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/NodeField.js" />
         <option value="$PROJECT_DIR$/test/test_transitionAnim.html" />
+        <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/RadialMenuPanel.js" />
+        <option value="$PROJECT_DIR$/assets/css/radialMenu.css" />
+        <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/RadialMenu.js" />
+        <option value="$PROJECT_DIR$/test/test_radialMenu.html" />
       </list>
     </option>
   </component>
@@ -248,12 +185,19 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Favorites" />
-      <pane id="PackagesPane">
-        <subPane />
-      </pane>
+      <pane id="Scope" />
       <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane">
         <subPane />
       </pane>
     </panes>
@@ -267,7 +211,7 @@
     <property name="options.searchVisible" value="true" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="last_opened_file_path" value="C:\dev\svn\trunk\modules\web\src\mint\web\view" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../dev/svn/trunk/modules/web/WebContent/sc/dev000/js/lib" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="GoToClass.includeLibraries" value="false" />
@@ -338,6 +282,15 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
+    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" air_descriptor_path="" air_program_params="" air_publisher_id="" air_root_dir_path="" air_run_mode="AppDescriptor" class_name="" html_or_swf_file_path="" main_class_name="" method_name="" module_name="" output_log_level="" package_name="" port="0" run_mode="HtmlOrSwfFile" scope="Class" socket_policy_port="0" url_to_launch="http://">
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="FtpUpload" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
     <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
       <JSDebuggerConfigurationSettings>
         <option name="engineId" value="embedded" />
@@ -347,15 +300,6 @@
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
         <option name="FtpUpload" enabled="false" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
-    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" air_descriptor_path="" air_program_params="" air_publisher_id="" air_root_dir_path="" air_run_mode="AppDescriptor" class_name="" html_or_swf_file_path="" main_class_name="" method_name="" module_name="" output_log_level="" package_name="" port="0" run_mode="HtmlOrSwfFile" scope="Class" socket_policy_port="0" url_to_launch="http://">
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="FtpUpload" enabled="false" />
-        <option name="Make" enabled="true" />
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
@@ -498,19 +442,19 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924962" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32451403" sideWeight="0.66096425" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32397407" sideWeight="0.66096425" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Web Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32951757" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32869992" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31852987" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3281493" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -597,41 +541,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test/test_aws.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="64" selection-start="4272" selection-end="4272" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/css/test.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="12" selection-start="117" selection-end="117" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/css/base.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="264" column="1" selection-start="4654" selection-end="4654" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/aws-json.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="812" column="44" selection-start="29371" selection-end="29371" vertical-scroll-proportion="0.251634" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_number.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="648" vertical-scroll-proportion="-0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/native-ext/array.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="321" column="37" selection-start="10856" selection-end="10856" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/formElementSerializer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="92" column="30" selection-start="3282" selection-end="3282" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/constant.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
@@ -642,47 +551,98 @@
         <state line="470" column="11" selection-start="16723" selection-end="16723" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/event.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/form.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="138" column="43" selection-start="4989" selection-end="4989" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/widget/CheckboxList_Y3.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="38" selection-start="835" selection-end="835" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/formElement.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="224" column="58" selection-start="8021" selection-end="8021" vertical-scroll-proportion="0.0">
+        <state line="224" column="58" selection-start="8021" selection-end="8021" vertical-scroll-proportion="0.012847966">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/NodeField.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="209" column="21" selection-start="5483" selection-end="5502" vertical-scroll-proportion="-31.807692">
+        <state line="209" column="21" selection-start="5483" selection-end="5502" vertical-scroll-proportion="0.8988409">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_ajaxObject.html">
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-ext/event.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="1" selection-start="462" selection-end="462" vertical-scroll-proportion="-1.8947369">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/widget/CheckboxList_Y3.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="38" selection-start="835" selection-end="835" vertical-scroll-proportion="0.01264489">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_transitionAnim.html">
+    <entry file="file://$PROJECT_DIR$/assets/js/native-ext/number.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="331" column="49" selection-start="9751" selection-end="9751" vertical-scroll-proportion="1.647919">
+        <state line="196" column="8" selection-start="6988" selection-end="7379" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_eventCapture.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_controller.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_datastore.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_YStorage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_geoLocation.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/RadialMenuPanel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="63" column="39" selection-start="1228" selection-end="1228" vertical-scroll-proportion="-21.192308">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/css/radialMenu.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="0" selection-start="426" selection-end="426" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/RadialMenu.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="101" column="0" selection-start="2103" selection-end="2103" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_radialMenu.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="38" selection-start="1232" selection-end="1232" vertical-scroll-proportion="0.21290323">
           <folding />
         </state>
       </provider>

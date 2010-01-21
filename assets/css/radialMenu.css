@@ -1,12 +1,19 @@
+.yui-radialmenu-hidden,
+.yui-radialmenu-hidden .radialMenuPanel {
+	display: none;
+}
+
 .yui-radialmenu {
 	left: 0;
 	position: absolute;
 	top: 0;
+	z-index: 1;
 }
 
 .yui-radialmenu .yui-radialmenu-content {
 	height: 100%;
 	width: 100%;
+	z-index: 2;
 }
 
 .yui-radialmenu .radialMenuPanel {
@@ -17,4 +24,5 @@
 
 .yui-radialmenu .radialMenuPanel-hover {
 	border: 1px solid #333;
+	z-Index: 100 !important;
 }

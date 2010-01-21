@@ -3,6 +3,9 @@
 
 <head>
     <title>Test Page - Radial Menu</title>
+
+	<link type="text/css" href="http://yui-ext-mvc.googlecode.com/svn/trunk/assets/css/radialMenu.css" rel="stylesheet"/>
+	<!--<link type="text/css" href="/assets/css/radialMenu.css" rel="stylesheet"/>-->
 	
 	<style type="text/css">
     </style>
@@ -16,18 +19,30 @@
 		This page is demonstrates the Y3 radio menu widget, inspired by BioWare's menu in the game DragonAge.
 	</p>
 
+	<div class="buttons">
+		<label for="textPanelCount">Number of Panels:</label>
+		<input id="textPanelCount" type="text"/>
+		<label for="textPanelDiameter">Menu Diameter:</label>
+		<input id="textPanelDiameter" type="text"/>
+		<input id="btnRadialMenu" type="button" value=" Show Menu "/>
+	</div>
+
+	<div id="messages"></div>
+
     <script type="text/javascript" src="http://yui.yahooapis.com/3.0.0b1/build/yui/yui.js"></script>
 	<script type="text/javascript">YUI({
 		filter:'raw',
 		modules: {
 			'gallery-radial-menu': {
-				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/RadialMenu.js',
+				fullpath: 'http://yui-ext-mvc.googlecode.com/svn/trunk/assets/js/yahoo-3-ext/RadialMenu.js',
+//				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/RadialMenu.js',
 				requires: ['widget', 'radialMenuPanel'],
 				optional: [],
 				supersedes: []
 			},
 			'gallery-radial-menu-panel': {
-				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/RadialMenuPanel.js',
+				fullpath: 'http://yui-ext-mvc.googlecode.com/svn/trunk/assets/js/yahoo-3-ext/RadialMenuPanel.js',
+//				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/RadialMenuPanel.js',
 				requires: ['base'],
 				optional: [],
 				supersedes: []
@@ -36,19 +51,98 @@
 	}).use('gallery-radial-menu', 'gallery-radial-menu-panel', function(Y) {
 		var container = Y.get("#project").appendChild(document.createElement('div')),
 			radioMenu = new Y.RadialMenu({boundingBox: container, diameter: 200, panels: [
-				new Y.RadialMenuPanel({styles: {backgroundColor: 'yellow'}}),
-				new Y.RadialMenuPanel({styles: {backgroundColor: 'green'}}),
-				new Y.RadialMenuPanel({styles: {backgroundColor: '#090'}}),
-				new Y.RadialMenuPanel({styles: {backgroundColor: 'blue'}}),
-				new Y.RadialMenuPanel({styles: {backgroundColor: 'purple'}}),
-				new Y.RadialMenuPanel({styles: {backgroundColor: '#909'}}),
-				new Y.RadialMenuPanel({styles: {backgroundColor: 'red'}}),
-				new Y.RadialMenuPanel({styles: {backgroundColor: 'orange'}}),
-				new Y.RadialMenuPanel({styles: {backgroundColor: '#933'}})
+				new Y.RadialMenuPanel({styles: {backgroundColor: 'yellow'}, content: '0'}),
+				new Y.RadialMenuPanel({styles: {backgroundColor: 'green'}, content: '1'}),
+				new Y.RadialMenuPanel({styles: {backgroundColor: 'blue'}, content: '2'}),
+				new Y.RadialMenuPanel({styles: {backgroundColor: 'purple'}, content: '3'}),
+				new Y.RadialMenuPanel({styles: {backgroundColor: 'red'}, content: '4'}),
+				new Y.RadialMenuPanel({styles: {backgroundColor: 'orange'}, content: '5'})
 			]});
+
+		var random = function(m, n) {
+            var offset = 0;
+
+            // compute min/max
+            if (Y.Lang.isNumber(n) && n !== m) {
+                var max = (n < m) ? m : n,
+                    min = n === max ? m : n;
+
+                offset = min;
+                m = max - min;
+            }
+
+            return offset + Math.floor(Math.random() * m + 1);
+        };
+
+		var hex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f'],
+			getHex = function() {
+				return '#' + hex[random(15)] + hex[random(15)] + hex[random(15)];
+			},
+			_handlePanelCount = function() {
+				var value = Y.get('#textPanelCount').get('value');
+
+				if (1 > value) {
+					return false;
+				}
+				else {
+					var j = parseInt(value, 10),
+						panels = [];
+
+					for (var i=0; i < j; i += 1) {
+						panels.push(new Y.RadialMenuPanel({content: '' + i, styles:{backgroundColor: getHex()}}));
+					}
+
+					radioMenu.set('panels', panels);
+					return true;
+				}
+			},
+			_handlePanelDiameter = function() {
+				var value = Y.get('#textPanelDiameter').get('value');
+
+				if (100 > value) {
+					return false;
+				}
+				else {
+					radioMenu.set('diameter', parseInt(value, 10));
+					return true;
+				}
+			};
+
+		radioMenu.hide();
+		_handlePanelCount();
+		_handlePanelDiameter();
 		radioMenu.render();
 		radioMenu.subscribe('panelClicked1', function() {
-			alert('test');
+			alert('click on Panel 1');
+		});
+		radioMenu.subscribe('panelClicked', function(e) {
+			var message = new Y.Node(document.createElement('p')),
+				panel = e.details[1];
+			
+			message.set('innerHTML', 'clicked on panel ' + panel.get('content'));
+			Y.get('#messages').appendChild(message);
+		});
+
+		Y.get('#btnRadialMenu').on('click', function() {
+			radioMenu.show();
+		});
+
+		Y.get('#textPanelDiameter').on('change', function(e) {
+			if (_handlePanelDiameter()) {
+				radioMenu.syncUI();
+			}
+			else {
+				alert('Diameter is too small');
+			}
+		});
+
+		Y.get('#textPanelCount').on('change', function(e) {
+			if (_handlePanelCount()) {
+				radioMenu.syncUI();
+			}
+			else {
+				alert('There must be at least one panel');
+			}
 		});
 	});</script>
 </body>
