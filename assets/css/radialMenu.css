@@ -1,0 +1,20 @@
+.yui-radialmenu {
+	left: 0;
+	position: absolute;
+	top: 0;
+}
+
+.yui-radialmenu .yui-radialmenu-content {
+	height: 100%;
+	width: 100%;
+}
+
+.yui-radialmenu .radialMenuPanel {
+	height: 50px;
+	position: absolute;
+	width: 50px;
+}
+
+.yui-radialmenu .radialMenuPanel-hover {
+	border: 1px solid #333;
+}
