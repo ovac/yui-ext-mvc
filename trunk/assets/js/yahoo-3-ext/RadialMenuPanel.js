@@ -75,6 +75,7 @@ var Lang = Y.Lang,
 				styles = this.get('styles'),
 				units = this.get('units');
 
+			if (! styles.zIndex) {styles.zIndex = i + 3;}
 			node.setStyles(styles);
 			node.addClass(RadialMenuPanel.NAME);
 

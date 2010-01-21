@@ -26,9 +26,17 @@ var Lang = Y.Lang,
 		RadialMenu.superclass.constructor.apply(this, arguments);
 	};
 
-	Y.Get.css('/assets/css/radialMenu.css');
-
 	RadialMenu.ATTRS = {
+
+		/**
+		 * @attribute closeOnClick
+		 * @type Boolean
+		 * @default false
+		 * @description Whether the menu should close on any click event or not.
+		 */
+		closeOnClick: {
+			value: true
+		},
 
 		/**
 		 * @attribute diameter
@@ -81,11 +89,18 @@ var Lang = Y.Lang,
 		 * @private
 		 */
 		_handleClick: function(e) {
-			var panel = _getPanel(e.target);
+			var node = _getPanel(e.target),
+				panel, i;
 
-			if (panel) {
-				this.fire('panelClicked' + Y.Node.getDOMNode(panel)._radialIndex);
+			if (node) {
+				e.halt();
+				i = Y.Node.getDOMNode(node)._radialIndex;
+				panel = this.get('panels')[i];
+				this.fire('panelClicked', node, panel);
+				this.fire('panelClicked' + i, node, panel);
 			}
+
+			if (this.get('closeOnClick')) {this.hide();}
 		},
 
 		/**
@@ -134,8 +149,8 @@ var Lang = Y.Lang,
 		 */
 		bindUI: function() {
 			var contentBox = this.get('contentBox');
-			this._nodeClickHandle = contentBox.on("click", Y.bind(this._handleClick, this));
-			this._nodeMouseMoveHandle = contentBox.on("mousemove", Y.bind(this._handleMouseMove, this));
+			this._nodeClickHandle = contentBox.on("click", this._handleClick, this, true);
+			this._nodeMouseMoveHandle = contentBox.on("mousemove", this._handleMouseMove, this, true);
 		},
 
 		/**
@@ -162,6 +177,7 @@ var Lang = Y.Lang,
 
 			boundingBox.setStyle('height', (viewport.height - 5) + 'px');
 			boundingBox.setStyle('width', (viewport.width - 5) + 'px');
+			countentBox.set('innerHTML', '');
 
 			Y.each(panels, function(panel, i) {
 				a = (angle * i - 90) * Math.PI / 180;
