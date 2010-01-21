@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager" verified="true">
-    <list default="true" readonly="true" id="c1df7342-9b06-4bd7-bb4f-9a922d9401bc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core.iws" afterPath="$PROJECT_DIR$/core.iws" />
-    </list>
+    <list default="true" readonly="true" id="c1df7342-9b06-4bd7-bb4f-9a922d9401bc" name="Default" comment="" />
     <ignored path="core.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -70,10 +68,10 @@
   <component name="FileColors" enabled="false" enabledForTabs="false" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="test_radialMenu.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="test_radialMenu.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test_radialMenu.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="38" selection-start="1232" selection-end="1232" vertical-scroll-proportion="0.21290323">
+            <state line="76" column="31" selection-start="2781" selection-end="2781" vertical-scroll-proportion="-15.157895">
               <folding />
             </state>
           </provider>
@@ -88,10 +86,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RadialMenu.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="RadialMenu.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/RadialMenu.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="101" column="0" selection-start="2103" selection-end="2103" vertical-scroll-proportion="0.0">
+            <state line="123" column="13" selection-start="2636" selection-end="2636" vertical-scroll-proportion="0.6712329">
               <folding />
             </state>
           </provider>
@@ -139,8 +137,8 @@
         <option value="$PROJECT_DIR$/test/test_transitionAnim.html" />
         <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/RadialMenuPanel.js" />
         <option value="$PROJECT_DIR$/assets/css/radialMenu.css" />
-        <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/RadialMenu.js" />
         <option value="$PROJECT_DIR$/test/test_radialMenu.html" />
+        <option value="$PROJECT_DIR$/assets/js/yahoo-3-ext/RadialMenu.js" />
       </list>
     </option>
   </component>
@@ -633,16 +631,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/RadialMenu.js">
+    <entry file="file://$PROJECT_DIR$/test/test_radialMenu.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="0" selection-start="2103" selection-end="2103" vertical-scroll-proportion="0.0">
+        <state line="76" column="31" selection-start="2781" selection-end="2781" vertical-scroll-proportion="-15.157895">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_radialMenu.html">
+    <entry file="file://$PROJECT_DIR$/assets/js/yahoo-3-ext/RadialMenu.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="38" selection-start="1232" selection-end="1232" vertical-scroll-proportion="0.21290323">
+        <state line="123" column="13" selection-start="2636" selection-end="2636" vertical-scroll-proportion="0.6712329">
           <folding />
         </state>
       </provider>

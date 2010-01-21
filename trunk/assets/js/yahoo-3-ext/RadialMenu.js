@@ -113,10 +113,11 @@ var Lang = Y.Lang,
 			var panel = _getPanel(e.target),
 				hoverClass = this.get('hoverClass');
 
+			if (this._lastPanel) {
+				this._lastPanel.removeClass(hoverClass);
+			}
+
 			if (panel) {
-				if (this._lastPanel) {
-					this._lastPanel.removeClass(hoverClass);
-				}
 
 				this._lastPanel = panel;
 				panel.addClass(hoverClass);
