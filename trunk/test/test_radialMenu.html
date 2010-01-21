@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+    <title>Test Page - Radial Menu</title>
+	
+	<style type="text/css">
+    </style>
+</head>
+
+<body id="project">
+
+	<h1>Test Page - Radial Menu</h1>
+
+	<p class="copy">
+		This page is demonstrates the Y3 radio menu widget, inspired by BioWare's menu in the game DragonAge.
+	</p>
+
+    <script type="text/javascript" src="http://yui.yahooapis.com/3.0.0b1/build/yui/yui.js"></script>
+	<script type="text/javascript">YUI({
+		filter:'raw',
+		modules: {
+			'gallery-radial-menu': {
+				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/RadialMenu.js',
+				requires: ['widget', 'radialMenuPanel'],
+				optional: [],
+				supersedes: []
+			},
+			'gallery-radial-menu-panel': {
+				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/RadialMenuPanel.js',
+				requires: ['base'],
+				optional: [],
+				supersedes: []
+			}
+		}
+	}).use('gallery-radial-menu', 'gallery-radial-menu-panel', function(Y) {
+		var container = Y.get("#project").appendChild(document.createElement('div')),
+			radioMenu = new Y.RadialMenu({boundingBox: container, diameter: 200, panels: [
+				new Y.RadialMenuPanel({styles: {backgroundColor: 'yellow'}}),
+				new Y.RadialMenuPanel({styles: {backgroundColor: 'green'}}),
+				new Y.RadialMenuPanel({styles: {backgroundColor: '#090'}}),
+				new Y.RadialMenuPanel({styles: {backgroundColor: 'blue'}}),
+				new Y.RadialMenuPanel({styles: {backgroundColor: 'purple'}}),
+				new Y.RadialMenuPanel({styles: {backgroundColor: '#909'}}),
+				new Y.RadialMenuPanel({styles: {backgroundColor: 'red'}}),
+				new Y.RadialMenuPanel({styles: {backgroundColor: 'orange'}}),
+				new Y.RadialMenuPanel({styles: {backgroundColor: '#933'}})
+			]});
+		radioMenu.render();
+		radioMenu.subscribe('panelClicked1', function() {
+			alert('test');
+		});
+	});</script>
+</body>
+</html>
