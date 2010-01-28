@@ -28,6 +28,8 @@ Version: 1.0.01
 	<property name="js_home" value="${basedir}/assets/js"/>
 	<property name="cssdir" value="${basedir}/assets/css"/>
 	<property name="builddir" value="${basedir}/build"/>
+	<property name="rhino.jar" value="${basedir}/bin/rhino-1.7R2.jar"/>
+	<property name="jslint.js" value="${basedir}/bin/jslint.js"/>
 
     <!--
     setup file documenting locations of your yuidoc install
@@ -119,7 +121,7 @@ Version: 1.0.01
 	</target>
 	
 	<target name="consolidate.yahoo.js" depends="reconsolidate.yahoo.js.check" unless="yahoo.js.uptodate">
-		<echo message="processing yahoo.js"/>
+		<echo message="consolidating yahoo.js"/>
         
         <concat destfile="${builddir}/js/yahoo.js">
 			<filelist dir="${js_home}/yahoo-${yuiversion}">
@@ -144,6 +146,7 @@ Version: 1.0.01
 			</filelist>
 		</concat>
 
+		<echo message="Compressing yahoo.js"/>
 		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/js/yahoo-min.js">
 			<arg value="--charset" />
 			<arg value="UTF-8" />
@@ -170,7 +173,7 @@ Version: 1.0.01
 	</target>
 
 	<target name="consolidate.yui-ext.js" depends="reconsolidate.yui-ext.js.check" unless="yui-ext.js.uptodate">
-		<echo message="processing yui-ext.js"/>
+		<echo message="consolidating yui-ext.js"/>
         
         <concat destfile="${builddir}/js/yahoo-ext.js">
 			<filelist dir="${js_home}/yahoo-ext">
@@ -184,6 +187,17 @@ Version: 1.0.01
 			</filelist>
 		</concat>
 
+		<echo message="JSLinting yahoo-ext.js"/>
+		<apply executable="java" parallel="false">
+			<filelist dir="${builddir}/js">
+				<file name="yahoo-ext.js"/>
+			</filelist>
+			<arg line="-jar"/>
+			<arg path="${rhino.jar}"/>
+			<arg path="${jslint.js}"/>
+		</apply>
+
+		<echo message="Compressing yahoo-ext.js"/>
 		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/js/yahoo-ext-min.js">
 			<arg value="--charset" />
 			<arg value="UTF-8" />
@@ -210,7 +224,7 @@ Version: 1.0.01
 	</target>
 
 	<target name="consolidate.native-ext.js" depends="reconsolidate.native-ext.js.check" unless="native-ext.js.uptodate">
-		<echo message="processing native-ext.js"/>
+		<echo message="consolidating native-ext.js"/>
         
         <concat destfile="${builddir}/js/native-ext.js">
 			<filelist dir="${js_home}/native-ext">
@@ -224,6 +238,17 @@ Version: 1.0.01
 			</filelist>
 		</concat>
 
+		<echo message="JSLinting native-ext.js"/>
+		<apply executable="java" parallel="false">
+			<filelist dir="${builddir}/js">
+				<file name="native-ext.js"/>
+			</filelist>
+			<arg line="-jar"/>
+			<arg path="${rhino.jar}"/>
+			<arg path="${jslint.js}"/>
+		</apply>
+
+		<echo message="Compressing native-ext.js"/>
 		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/js/native-ext-min.js">
 			<arg value="--charset" />
 			<arg value="UTF-8" />
@@ -247,7 +272,7 @@ Version: 1.0.01
 	</target>
 
 	<target name="consolidate.mvc.js" depends="reconsolidate.mvc.js.check" unless="mvc.js.uptodate">
-        <echo message="processing mvc.js"/>
+        <echo message="consolidating mvc.js"/>
 
         <concat destfile="${builddir}/js/mvc.js">
 			<filelist dir="${js_home}/mvc">
@@ -258,6 +283,17 @@ Version: 1.0.01
 			</filelist>
 		</concat>
 
+		<echo message="JSLinting mvc.js"/>
+		<apply executable="java" parallel="false">
+			<filelist dir="${builddir}/js">
+				<file name="mvc.js"/>
+			</filelist>
+			<arg line="-jar"/>
+			<arg path="${rhino.jar}"/>
+			<arg path="${jslint.js}"/>
+		</apply>
+
+		<echo message="Compressing mvc.js"/>
 		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/js/mvc-min.js">
 			<arg value="--charset" />
 			<arg value="UTF-8" />
@@ -285,7 +321,7 @@ Version: 1.0.01
 	</target>
 
 	<target name="consolidate.storage.js" depends="reconsolidate.storage.js.check" unless="storage.js.uptodate">
-        <echo message="processing storage.js"/>
+        <echo message="consolidating storage.js"/>
 
         <concat destfile="${builddir}/js/storage.js">
 			<filelist dir="${js_home}/YUIDataStorage">
@@ -300,6 +336,17 @@ Version: 1.0.01
 			</filelist>
 		</concat>
 
+		<echo message="JSLinting storage.js"/>
+		<apply executable="java" parallel="false">
+			<filelist dir="${builddir}/js">
+				<file name="storage.js"/>
+			</filelist>
+			<arg line="-jar"/>
+			<arg path="${rhino.jar}"/>
+			<arg path="${jslint.js}"/>
+		</apply>
+
+		<echo message="Compressing storage.js"/>
 		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/js/storage-min.js">
 			<arg value="--charset" />
 			<arg value="UTF-8" />
@@ -323,7 +370,7 @@ Version: 1.0.01
 	</target>
 
 	<target name="consolidate.library.js" depends="reconsolidate.library.js.check" unless="library.js.uptodate">
-		<echo message="processing library.js"/>
+		<echo message="consolidating library.js"/>
         
         <concat destfile="${builddir}/js/library.js">
 			<filelist dir="${builddir}/js/">
@@ -358,7 +405,7 @@ Version: 1.0.01
 	</target>
 
 	<target name="consolidate.library.css" depends="reconsolidate.library.css.check" unless="library.css.uptodate">
-		<echo message="processing library.css"/>
+		<echo message="consolidating library.css"/>
 
         <concat destfile="${builddir}/css/library.css">
 			<filelist dir="${cssdir}/">
