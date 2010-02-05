@@ -63,6 +63,8 @@ var Lang = Y.Lang,
 
 	Y.extend(RadialMenuPanel, Y.Base, {
 
+		_node: null,
+
 		/**
 		 * Render the panel into the contentBox.
 		 * @method render
@@ -72,8 +74,7 @@ var Lang = Y.Lang,
 		 */
 		render: function(parent, i) {
 			var node = new Y.Node(document.createElement(this.get('tagName'))),
-				styles = this.get('styles'),
-				units = this.get('units');
+				styles = this.get('styles');
 
 			if (! styles.zIndex) {styles.zIndex = i + 3;}
 			node.setStyles(styles);
@@ -83,6 +84,7 @@ var Lang = Y.Lang,
 			Y.Node.getDOMNode(node)._radialIndex = i;
 
 			parent.appendChild(node);
+			this._node = node;
 		}
 	});
 
