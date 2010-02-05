@@ -4,6 +4,13 @@
  */
 
 /**
+ * There are three major improvements I would like to make to this widget. The first is to leverage the existing overlay infrastructure
+ * that is built into YUI3. This way we can leverage existing shimming and positioning architecture. The second is to animate the menu.
+ * I believe the menu should rotate out from the center when opened and rotate in the center when closed. Lastly, the menu needs keyboard support.
+ * Although the keyboard is not the same as a gaming controller, I believe the RadialMenu lends itself to keyboard interaction. 
+ */
+
+/**
  * The RadialMenu classes manages a the radio menu.
  * @class RadialMenu
  */
@@ -79,6 +86,7 @@ var Lang = Y.Lang,
 
 	Y.extend(RadialMenu, Y.Widget, {
 		_lastPanel: null,
+		_lastPoint: null,
 		_nodeClickHandle: null,
 		_nodeMouseMoveHandle: null,
 
@@ -179,6 +187,7 @@ var Lang = Y.Lang,
 			boundingBox.setStyle('height', (viewport.height - 5) + 'px');
 			boundingBox.setStyle('width', (viewport.width - 5) + 'px');
 			countentBox.set('innerHTML', '');
+			this._lastPoint = pt;
 
 			Y.each(panels, function(panel, i) {
 				a = (angle * i - 90) * Math.PI / 180;
@@ -194,4 +203,4 @@ var Lang = Y.Lang,
 	});
 
 Y.RadialMenu = RadialMenu;
-}, '1.0.01' ,{requires:['widget', 'gallery-radial-menu-panel'], use: []});
+}, '1.0.01' ,{requires:['widget', 'gallery-radial-menu-panel'], use: [], optional: ['gallery-radial-menu-anim']});
