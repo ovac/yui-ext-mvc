@@ -22,6 +22,10 @@ var Lang = Y.Lang,
 		return node.hasClass(Y.RadialMenuPanel.NAME) ? node : node.ancestor('.' + Y.RadialMenuPanel.NAME);
 	},
 
+	_isBetween = function(i, lowerBounds, upperBounds) {
+		return i > lowerBounds && i < upperBounds;
+	},
+
     /**
      * The RadialMenu constructor.
      * @method RadialMenu
@@ -70,6 +74,17 @@ var Lang = Y.Lang,
 		},
 
 		/**
+		 * @attribute keyHoldTimeout
+		 * @type Number
+		 * @default 500
+ 		 * @description The timeout when holding down a key.
+		 */
+		keyHoldTimeout: {
+			value: 500,
+			validator: Lang.isNumber
+		},
+
+		/**
 		 * @attribute panels
 		 * @type Array
 		 * @default []
@@ -85,10 +100,19 @@ var Lang = Y.Lang,
 
 
 	Y.extend(RadialMenu, Y.Widget, {
+		_isKeyPressed: false,
+
+		_lastNode: null,
 		_lastPanel: null,
 		_lastPoint: null,
+		
 		_nodeClickHandle: null,
 		_nodeMouseMoveHandle: null,
+
+		_keyDownHandle: null,
+		_keyUpHandle: null,
+
+		_timerKeyDown: null,
 
 		/**
 		 * Callback function for clicking inside the widget node.
@@ -112,6 +136,122 @@ var Lang = Y.Lang,
 		},
 
 		/**
+		 * Callback function for pressing a key while the menu is open.
+		 * @method _handleKeyDown
+		 * @param e {Event} Required. The triggered `keydown` JavaScript event.
+		 * @private
+		 */
+		_handleKeyDown: function(e) {
+			var panels = this.get('panels'),
+				lastPanel = this._lastPanel,
+				i = lastPanel ? lastPanel.getRadialIndex() : 0,
+				n = panels.length,
+				isValid = false,
+				hoverClass = this.get('hoverClass'),
+				m, l=n%2;
+
+			switch (e.keyCode) {
+				case 38: // up
+					if (0 != i) {
+					isValid = true;
+						if (n / 2 > i) {
+							i -= 1;
+						}
+						else {
+							i += 1;
+						}
+					}
+				break;
+
+				case 39: // right
+					m = n / 4;
+
+					if (m != i && ! (l && _isBetween(i, m-1, m+1))) {
+					isValid = true;
+						if (m >= i + 1 || n - m <= i) {
+							i += 1;
+						}
+						else if (m <= i - 1) {
+							i -= 1;
+						}
+					}
+				break;
+
+				case 40: // down
+					m = n / 2;
+
+					if (m != i && ! (l && _isBetween(i, m-1, m+1))) {
+					isValid = true;
+						if (m >= i + 1) {
+							i += 1;
+						}
+						else if (m <= i - 1) {
+							i -= 1;
+						}
+					}
+				break;
+
+				case 37: // left
+					m = n / 4;
+
+					if (n - m != i && ! (l && _isBetween(i, n-m-1, n-m+1))) {
+					isValid = true;
+						if (m < i && n - m >= i + 1) {
+							i += 1;
+						}
+						else if (n - m <= i - 1 || i <= m) {
+							i -= 1;
+						}
+					}
+				break;
+
+				case 13: // enter
+					if (lastPanel) {
+						e.target = lastPanel._node;
+						this._handleClick(e);
+					}
+				break;
+
+				case 27: // escape
+					this.hide();
+				break;
+			}
+
+			if (isValid) {
+				if (this._timerKeyDown) {this._timerKeyDown.cancel();}
+
+				if (0 > i){
+					i = n - 1;
+				}
+				else if (n - 1 < i) {
+					i = 0;
+				}
+
+
+				n = this.get('keyHoldTimeout');
+				if (0 < n) {
+					this._timerKeyDown = Y.later(n, this, this._handleKeyDown, e);
+				}
+				if (lastPanel) {lastPanel._node.removeClass(hoverClass);}
+				lastPanel = panels[i];
+				this._lastPanel = lastPanel;
+				lastPanel._node.addClass(hoverClass);
+				this._isKeyPressed = true;
+			}
+		},
+
+		/**
+		 * Callback function for releasing a key while the menu is open.
+		 * @method _handleKeyUp
+		 * @param e {Event} Required. The triggered `keyup` JavaScript event.
+		 * @private
+		 */
+		_handleKeyUp: function(e) {
+			if (this._timerKeyDown) {this._timerKeyDown.cancel();}
+			this._isKeyPressed = false;
+		},
+
+		/**
 		 * Callback function for handling the mouse move inside the widget node.
 		 * @method _handleMouseMove
 		 * @param e {Event} Required. The triggered `mousemove` JavaScript event.
@@ -121,14 +261,16 @@ var Lang = Y.Lang,
 			var panel = _getPanel(e.target),
 				hoverClass = this.get('hoverClass');
 
-			if (this._lastPanel) {
-				this._lastPanel.removeClass(hoverClass);
+			if (this._lastNode) {
+				this._lastNode.removeClass(hoverClass);
 			}
 
 			if (panel) {
-
-				this._lastPanel = panel;
+				this._lastNode = panel;
 				panel.addClass(hoverClass);
+			}
+			else {
+				this._lastNode = null;
 			}
 		},
 
@@ -138,8 +280,41 @@ var Lang = Y.Lang,
 		 * @public
 		 */
 		destructor: function() {
-			this._nodeClickHandle.detach();
-			this._nodeMouseMoveHandle.detach();
+			var hoverClass = this.get('hoverClass');
+			if (this._nodeClickHandle) {
+				this._nodeClickHandle.detach();
+				this._nodeClickHandle = null;
+			}
+			if (this._keyDownHandle) {
+				this._keyDownHandle.detach();
+				this._keyDownHandle = null;
+			}
+			if (this._keyUpHandle) {
+				this._keyUpHandle.detach();
+				this._keyUpHandle = null;
+			}
+			if (this._nodeMouseMoveHandle) {
+				this._nodeMouseMoveHandle.detach();
+				this._nodeMouseMoveHandle = null;
+			}
+			if (this._timerKeyDown) {
+				this._timerKeyDown.cancel();
+				this._timerKeyDown = null;
+			}
+			if (this._lastNode) {this._lastNode.removeClass(hoverClass);}
+			if (this._lastPanel) {this._lastPanel._node.removeClass(hoverClass);}
+			this._lastNode = null;
+			this._lastPanel = null;
+		},
+
+		/**
+		 * Capture the hide function and remove key listeners, before delegating to superclass.
+		 * @method hide
+		 * @public
+		 */
+		hide: function() {
+			this.destructor();
+			RadialMenu.superclass.hide.apply(this, arguments);
 		},
 
 		/**
@@ -157,7 +332,11 @@ var Lang = Y.Lang,
 		 * @public
 		 */
 		bindUI: function() {
-			var contentBox = this.get('contentBox');
+			var contentBox = this.get('contentBox'),
+				doc = new Y.Node(document);
+			
+			this._keyDownHandle = doc.on('keydown', this._handleKeyDown, this, true);
+			this._keyUpHandle = doc.on('keyup', this._handleKeyUp, this, true);
 			this._nodeClickHandle = contentBox.on("click", this._handleClick, this, true);
 			this._nodeMouseMoveHandle = contentBox.on("mousemove", this._handleMouseMove, this, true);
 		},
@@ -168,6 +347,16 @@ var Lang = Y.Lang,
 		 * @public
 		 */
 		renderUI: function() {
+		},
+
+		/**
+		 * Capture the show function and add key listeners, before delegating to superclass.
+		 * @method show
+		 * @public
+		 */
+		show: function() {
+			if (! this._keyDownHandle) {this.bindUI();}
+			RadialMenu.superclass.show.apply(this, arguments);
 		},
 
 		syncUI: function() {
