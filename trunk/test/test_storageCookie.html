@@ -44,6 +44,8 @@ body {
 
 </head><body class="yui-skin-sam">
 
+<input type="text" id="myElementId"/>
+
 
 <h1>Advanced Storage Example With Cookie</h1>
 
@@ -94,6 +96,11 @@ body {
      * Pointer to the Storage instance
      */
     var storage;
+
+	YAHOO.util.Event.on('myElementId', 'keypress', function(e) {
+		alert(e.charCode);
+		var test = '';
+	});
         
     YAHOO.util.StorageEngineSWF.SWFURL = 'swfstore.swf';
 

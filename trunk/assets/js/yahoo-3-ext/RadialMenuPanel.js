@@ -66,6 +66,16 @@ var Lang = Y.Lang,
 		_node: null,
 
 		/**
+		 * Fetches the radial index of the panel.
+		 * @method getRadialIndex
+		 * @return {Integer} The radial index.
+		 * @public
+		 */
+		getRadialIndex: function() {
+			return Y.Node.getDOMNode(this._node)._radialIndex;
+		},
+
+		/**
 		 * Render the panel into the contentBox.
 		 * @method render
 		 * @param parent {Node} Required. The RadioMenu contentBox.

@@ -4,10 +4,13 @@
 <head>
     <title>Test Page - Radial Menu</title>
 
-	<link type="text/css" href="http://yui-ext-mvc.googlecode.com/svn/trunk/assets/css/radialMenu.css" rel="stylesheet"/>
-	<!--<link type="text/css" href="/assets/css/radialMenu.css" rel="stylesheet"/>-->
+	<!--<link type="text/css" href="http://yui-ext-mvc.googlecode.com/svn/trunk/assets/css/radialMenu.css" rel="stylesheet"/>-->
+	<link type="text/css" href="/assets/css/radialMenu.css" rel="stylesheet"/>
 	
 	<style type="text/css">
+		.yui-radialmenu div.radialMenuPanel-hover {
+			/*background-color: white !important;*/
+		}
     </style>
 </head>
 
@@ -40,15 +43,16 @@
 
 	<div id="messages"></div>
 
-    <!--<script type="text/javascript" src="http://yui.yahooapis.com/3.0.0b1/build/yui/yui.js"></script>    -->
-    <script type="text/javascript" src="/assets/js/yahoo-3/yui/yui.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/3.0.0b1/build/yui/yui.js"></script>
+    <!--<script type="text/javascript" src="/assets/js/yahoo-3/yui/yui.js"></script>-->
 	<script type="text/javascript">YUI({
-//		base: '/assets/js/yahoo-3/',
+		base: '/assets/js/yahoo-3/',
+		rollup: true,
 		filter:'raw',
 		modules: {
 			'gallery-radial-menu': {
 				fullpath: 'http://yui-ext-mvc.googlecode.com/svn/trunk/assets/js/yahoo-3-ext/RadialMenu.js',
-//				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/RadialMenu.js',
+//				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/RadialMenu.js?r=5',
 				requires: ['widget', 'gallery-radial-menu-panel'],
 				optional: ['gallery-radial-menu-anim'],
 				supersedes: []
