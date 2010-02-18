@@ -50,6 +50,25 @@ var Y = YAHOO.util,
 			cfg.attributes.flashVars.useCompression = 'true';
 			cfg.attributes.version = 9.115;
 			_driver = new YAHOO.widget.SWF(cfg.containerID, cfg.swfURL, cfg.attributes);
+
+			// subscribe to save for info
+			_driver.subscribe('save', function(o) {
+				YAHOO.log(o.message, 'info');
+			});
+
+			// subscribe to errors
+			_driver.subscribe('quotaExceededError', function(o) {
+				YAHOO.log(o.message, 'error');
+			});
+			_driver.subscribe('inadequateDimensions', function(o) {
+				YAHOO.log(o.message, 'error');
+			});
+			_driver.subscribe('error', function(o) {
+				YAHOO.log(o.message, 'error');
+			});
+			_driver.subscribe('securityError', function(o) {
+				YAHOO.log(o.message, 'error');
+			});
 		}
 	},
 
