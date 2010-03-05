@@ -93,35 +93,11 @@ YUI({combine: true, timeout: 10000, modules: {
         // Basic tests - all method names must begin with "test"
         //-------------------------------------------------------------------------
 
-        testAbs : function() {
-			Y.Assert.areEqual(0, Y.Number.abs(0));
-            Y.Assert.areEqual(1, Y.Number.abs(1));
-            Y.Assert.areEqual(1, Y.Number.abs(-1));
-            Y.Assert.areEqual(1.0001, Y.Number.abs(1.0001));
-            Y.Assert.areEqual(1.0001, Y.Number.abs(-1.0001));
-            Y.Assert.areEqual(228.01, Y.Number.abs(15.1 * 15.1));
-			Y.Assert.isNaN(Y.Number.abs('asdf'));
-        },
-
-        testCeil : function() {
-			Y.Assert.areEqual(0, Y.Number.ceil(0));
-			Y.Assert.areEqual(1, Y.Number.ceil(0.1));
-			Y.Assert.areEqual(-1, Y.Number.ceil(-1.1));
-            Y.Assert.areEqual(2, Y.Number.ceil(1.0001));
-            Y.Assert.areEqual(-1, Y.Number.ceil(-1.0001));
-            Y.Assert.areEqual(229, Y.Number.ceil(15.1 * 15.1));
-			Y.Assert.isNaN(Y.Number.ceil('asdf'));
-        },
-
-        testFloor : function() {
-			Y.Assert.areEqual(0, Y.Number.floor(0));
-			Y.Assert.areEqual(0, Y.Number.floor(0.1));
-			Y.Assert.areEqual(-2, Y.Number.floor(-1.1));
-            Y.Assert.areEqual(1, Y.Number.floor(1.0001));
-            Y.Assert.areEqual(-2, Y.Number.floor(-1.0001));
-            Y.Assert.areEqual(228, Y.Number.floor(15.1 * 15.1));
-			Y.Assert.isNaN(Y.Number.floor('asdf'));
-        },
+		testDegrees: function() {
+			Y.Assert.isTrue(isNaN(Y.Number.degrees('a')), '1');
+			Y.Assert.areEqual(180, Y.Number.degrees(Math.PI), '2');
+			Y.Assert.areEqual(2, Y.Number.degrees(2 * Math.PI /180), '2');
+		},
 
 		testFormat : function() {
 			Y.Assert.areEqual('0', Y.Number.format(0, '0'));
@@ -169,6 +145,28 @@ YUI({combine: true, timeout: 10000, modules: {
 			Y.Assert.isTrue(Y.Number.isNotBetween(-1, -1, -2), '10');
 		},
 
+		testIsPrime: function() {
+			Y.Assert.isFalse(Y.Number.isPrime(0), '1');
+			Y.Assert.isFalse(Y.Number.isPrime(1), '2');
+			Y.Assert.isTrue(Y.Number.isPrime(2), '3');
+			Y.Assert.isTrue(Y.Number.isPrime(3), '4');
+			Y.Assert.isTrue(Y.Number.isPrime(5), '5');
+			Y.Assert.isTrue(Y.Number.isPrime(7), '6');
+			Y.Assert.isTrue(Y.Number.isPrime(17), '7');
+			Y.Assert.isFalse(Y.Number.isPrime(25), '8');
+			Y.Assert.isFalse(Y.Number.isPrime(63), '9');
+			Y.Assert.isTrue(Y.Number.isPrime(199), '10');
+			Y.Assert.isFalse(Y.Number.isPrime(817), '11');
+			Y.Assert.isTrue(Y.Number.isPrime(997), '12');
+		},
+
+		testRadians: function() {
+			Y.Assert.isTrue(isNaN(Y.Number.radians('a')), '1');
+			Y.Assert.areEqual(Math.PI, Y.Number.radians(180), '2');
+			Y.Assert.areEqual(Math.PI / 2, Y.Number.radians(90), '3');
+			Y.Assert.areEqual(Math.PI * 2, Y.Number.radians(360), '4');
+		},
+
 		testRandom: function() {
 			Y.Assert.isTrue(Y.Number.isBetween(Y.Number.random(0), 0, 1, true));
 			Y.Assert.isTrue(Y.Number.isBetween(Y.Number.random(1), 0, 1, true));
@@ -176,18 +174,6 @@ YUI({combine: true, timeout: 10000, modules: {
 			Y.Assert.isTrue(Y.Number.isBetween(Y.Number.random(100, 50), 50, 100, true));
 			Y.Assert.isTrue(Y.Number.isBetween(Y.Number.random(-100, -50), -50, -100, true));
 		},
-
-        testRound : function() {
-			Y.Assert.areEqual(0, Y.Number.round(0));
-			Y.Assert.areEqual(0, Y.Number.round(0.1));
-			Y.Assert.areEqual(1, Y.Number.round(0.5));
-			Y.Assert.areEqual(-1, Y.Number.round(-1.1));
-			Y.Assert.areEqual(-2, Y.Number.round(-1.51));
-            Y.Assert.areEqual(1, Y.Number.round(1.0001));
-            Y.Assert.areEqual(-1, Y.Number.round(-1.0001));
-            Y.Assert.areEqual(228, Y.Number.round(15.1 * 15.1));
-			Y.Assert.isNaN(Y.Number.round('asdf'));
-        },
 
 		testRoundToPrecision: function() {
 			Y.Assert.areEqual(1, Y.Number.roundToPrecision(0));
@@ -198,14 +184,7 @@ YUI({combine: true, timeout: 10000, modules: {
 			Y.Assert.areEqual(11, Y.Number.roundToPrecision(11, 1));
 			Y.Assert.areEqual(100, Y.Number.roundToPrecision(11, 100));
 			Y.Assert.areEqual(1200, Y.Number.roundToPrecision(1111, 100));
-		},
-
-        testSqrt : function() {
-			Y.Assert.areEqual(0, Y.Number.sqrt(0));
-			Y.Assert.areEqual(2, Y.Number.sqrt(4));
-			Y.Assert.isNaN(Y.Number.sqrt(-16));
-			Y.Assert.isNaN(Y.Number.sqrt('asdf'));
-        }
+		}
 
     });
 

@@ -43,11 +43,11 @@
 
 	<div id="messages"></div>
 
-    <script type="text/javascript" src="http://yui.yahooapis.com/3.0.0b1/build/yui/yui.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui.js"></script>
     <!--<script type="text/javascript" src="/assets/js/yahoo-3/yui/yui.js"></script>-->
 	<script type="text/javascript">YUI({
 		base: '/assets/js/yahoo-3/',
-		rollup: true,
+		combine: true,
 		filter:'raw',
 		modules: {
 			'gallery-radial-menu': {
@@ -80,7 +80,7 @@
 				supersedes: []
 			}
 		}
-	}).use('gallery-radial-menu', 'gallery-radial-menu-panel', 'gallery-radial-menu-anim', 'gallery-node-field', function(Y) {
+	}).use('node', 'gallery-radial-menu', 'gallery-radial-menu-panel', 'gallery-radial-menu-anim', 'gallery-node-field', function(Y) {
 		var container = Y.one("#project").appendChild(document.createElement('div')),
 			radioMenu = new Y.RadialMenu({boundingBox: container, diameter: 200, panels: [
 				new Y.RadialMenuPanel({styles: {backgroundColor: 'yellow'}, content: '0'}),
