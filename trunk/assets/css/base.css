@@ -273,7 +273,7 @@ form dt label {
  */
 
 .displayNone {
-    display: none;
+    display: none!important;
 }
 
 .hidden {
