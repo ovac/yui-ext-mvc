@@ -1,16 +1,7 @@
-/*
-	Copyright (c) 2009, Yahoo! Inc. All rights reserved.
-	Code licensed under the BSD License:
-	http://developer.yahoo.net/yui/license.txt
-	version: 3.0.0
-	build: 1549
-*/
-
 YUI.add('gallery-number', function(Y) {
 
 /**
- * Supplies number manipulation utilities and exposes the more powerful Math
- * methods directly on the Y.Number namespace.
+ * Supplies sorely needed number evaluation and manipulation utilities.
  * This adds additional functionality to what is provided in yui-base, and the
  * methods are applied directly to the YUI instance. This module
  * is useful for sites that manipulate many numbers.
@@ -34,7 +25,7 @@ Y.Number = {
 	 * @method degrees
 	 * @param radian {Number} Required. The number to convert.
 	 * @return {Number} The degrees.
-	 * @public
+	 * @static
 	 */
 	degrees: function(radian) {
 		return _isNumber(radian) ? radian * 180 / Math.PI : nan;
@@ -56,7 +47,7 @@ Y.Number = {
 	 * @param n {Number} Required. A number to convert.
 	 * @param format {String} Required. The way you would like to format this text.
 	 * @return {String} The formatted number.
-	 * @public
+	 * @static
 	 */
 	format: function(n, format) {
 		if (! _isNumber(n)) {return '';}
@@ -116,7 +107,7 @@ Y.Number = {
 	 * @method getPrecision
 	 * @param n {Number} Required. A number to convert.
 	 * @return {Number} The number of significant figures.
-	 * @public
+	 * @static
 	 */
 	getPrecision: function(n) {
 		if (! _isNumber(n)) {return nan;}
@@ -132,12 +123,23 @@ Y.Number = {
 	 * @param j {Number} Required. The upper bound of the range.
 	 * @param inclusive {Boolean} Optional. True if i and j are to be included in the range.
 	 * @return {Boolean} True if i < n < j or j > n > i.
-	 * @public
+	 * @static
 	 */
 	isBetween: function(n, i, j, inclusive) {
 		if (! (_isNumber(n) && _isNumber(i) && _isNumber(j))) {return false;}
 		return inclusive ? ((i <= n && j >= n) || (j <= n && i >= n)) :
 			((i < n && j > n) || (j < n && i > n));
+	},
+
+	/**
+	 * Evaluate if the number is even.
+	 * @method isEven
+	 * @param  n {Number} Required. A number to evaluate.
+	 * @return {Boolean} The number is even.
+	 * @static
+	 */
+	isEven: function(n) {
+		return _isNumber(n) ? 0 ===  n % 2 : nan;
 	},
 
 	/**
@@ -148,10 +150,21 @@ Y.Number = {
 	 * @param j {Number} Required. The upper bound of the range.
 	 * @param inclusive {Boolean} Optional. True if i and j are to be included in the range.
 	 * @return {Boolean} True if i > n || val > j.
-	 * @public
+	 * @static
 	 */
 	isNotBetween: function(n, i, j, inclusive) {
 		return (_isNumber(n) && _isNumber(i) && _isNumber(j)) && ! Y.Number.isBetween(n, i, j, inclusive);
+	},
+
+	/**
+	 * Evaluate if the number is odd.
+	 * @method isOdd
+	 * @param  n {Number} Required. A number to evaluate.
+	 * @return {Boolean} The number is odd.
+	 * @static
+	 */
+	isOdd: function(n) {
+		return _isNumber(n) ? 0 !==  n % 2 : nan;
 	},
 
 	/**
@@ -159,7 +172,7 @@ Y.Number = {
 	 * @methid isPrime
 	 * @param n {Number} Required. A number to evaluate.
 	 * @return {Boolean} Is a prime.
-	 * @public
+	 * @static
 	 */
 	isPrime: function(n) {
 		if (_isNumber(n)) {
@@ -201,7 +214,7 @@ Y.Number = {
 	 * @method radians
 	 * @param degrees {Number} Required. The number to convert.
 	 * @return {Number} The radians.
-	 * @public
+	 * @static
 	 */
 	radians: function(degrees) {
 		return _isNumber(degrees) ? degrees * Math.PI / 180 : nan;
@@ -213,7 +226,7 @@ Y.Number = {
 	 * @param m {Number} Required. The maximum integer.
 	 * @param n {Number} Optional. The minimum integer.
 	 * @return {Number} A random integer.
-	 * @public
+	 * @static
 	 */
 	random: function(m, n) {
 		if (! _isNumber(m)) {return nan;}
@@ -227,18 +240,32 @@ Y.Number = {
 
 	/**
 	 * Rounds to the next whole number at a given precision.
-	 * @method roundToPrecision
+	 * @method roundToDigit
 	 * @param n {Number} Required. A number to convert.
-	 * @param prec {Number} Optional. The precision to round to: 1, 10, 100, etc...; default is 10, which rounds to the nearest tenth.
+	 * @param prec {Number} Required. The precision to round to: 1, 10, 100, etc...; default is 10, which rounds to the nearest tenth.
 	 * @return {Number} The converted number.
-	 * @public
+	 * @static
 	 */
-	roundToPrecision: function(n, prec) {
-		if (! _isNumber(n)) {return nan;}
-		if (1 > n) {return 1;}
-		var pstr = ('' + prec),
-		precision = _isNumber(prec) ? (Math.pow(10, pstr.length) / 10) : 10;
-		return Math.ceil(n / precision) * precision;
+	roundToDigit: function(n, prec) {
+		if (! (_isNumber(n) || _isNumber(prec))) {return nan;}
+		var neg = 0 > n,
+			narr = ('' + Math.abs(n)).split('.'),
+			wnum = narr[0],
+			dnum = narr[1] ? narr[1] : '',
+			plen = ('' + prec).length - 1,
+			wlen = wnum.length,
+			i, rs;
+
+		// pad length of number, if less than precision
+		for (i=wlen; i<plen; i+= 1) {
+			wnum = '0' + wnum;
+		}
+
+		rs = parseFloat(wnum.substr(0, wlen - plen) + '.' + wnum.substr(wlen - plen) + dnum);
+		rs = Math.round(rs);
+		if (neg) {rs *= -1;}
+
+		return 0 === plen ? rs : rs * Math.pow(10, plen);
 	}
 };
 

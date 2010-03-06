@@ -119,6 +119,16 @@ YUI({combine: true, timeout: 10000, modules: {
 			Y.Assert.isNaN(Y.Number.getPrecision('asdf'));
 		},
 
+		testIsEven: function() {
+			Y.Assert.isTrue(Y.Number.isEven(0), '1');
+			Y.Assert.isFalse(Y.Number.isEven(1), '2');
+			Y.Assert.isTrue(Y.Number.isEven(2), '3');
+			Y.Assert.isFalse(Y.Number.isEven(3), '4');
+			Y.Assert.isFalse(Y.Number.isEven(-1), '5');
+			Y.Assert.isTrue(Y.Number.isEven(-12), '6');
+			Y.Assert.isTrue(isNaN(Y.Number.isEven('a')), '7');
+		},
+
 		testIsBetween: function() {
 			Y.Assert.isTrue(Y.Number.isBetween(1, 0, 2), '1');
 			Y.Assert.isTrue(Y.Number.isBetween(0, 0, 2, true), '2');
@@ -143,6 +153,16 @@ YUI({combine: true, timeout: 10000, modules: {
 			Y.Assert.isTrue(Y.Number.isNotBetween(0.1, 1, 2), '8');
 			Y.Assert.isTrue(Y.Number.isNotBetween(1, 1, 2), '9');
 			Y.Assert.isTrue(Y.Number.isNotBetween(-1, -1, -2), '10');
+		},
+
+		testIsOdd: function() {
+			Y.Assert.isFalse(Y.Number.isOdd(0), '1');
+			Y.Assert.isTrue(Y.Number.isOdd(1), '2');
+			Y.Assert.isFalse(Y.Number.isOdd(2), '3');
+			Y.Assert.isTrue(Y.Number.isOdd(3), '4');
+			Y.Assert.isTrue(Y.Number.isOdd(-1), '5');
+			Y.Assert.isFalse(Y.Number.isOdd(-12), '6');
+			Y.Assert.isTrue(isNaN(Y.Number.isOdd('a')), '7');
 		},
 
 		testIsPrime: function() {
@@ -175,15 +195,18 @@ YUI({combine: true, timeout: 10000, modules: {
 			Y.Assert.isTrue(Y.Number.isBetween(Y.Number.random(-100, -50), -50, -100, true));
 		},
 
-		testRoundToPrecision: function() {
-			Y.Assert.areEqual(1, Y.Number.roundToPrecision(0));
-			Y.Assert.areEqual(1, Y.Number.roundToPrecision(-10));
-			Y.Assert.areEqual(10, Y.Number.roundToPrecision(2));
-			Y.Assert.areEqual(20, Y.Number.roundToPrecision(11));
-			Y.Assert.areEqual(2, Y.Number.roundToPrecision(2, 1));
-			Y.Assert.areEqual(11, Y.Number.roundToPrecision(11, 1));
-			Y.Assert.areEqual(100, Y.Number.roundToPrecision(11, 100));
-			Y.Assert.areEqual(1200, Y.Number.roundToPrecision(1111, 100));
+		testRoundToDigit: function() {
+			Y.Assert.areEqual(0, Y.Number.roundToDigit(0, 10), '1');
+			Y.Assert.areEqual(-10, Y.Number.roundToDigit(-10, 10), '2');
+			Y.Assert.areEqual(0, Y.Number.roundToDigit(2, 10), '3');
+			Y.Assert.areEqual(10, Y.Number.roundToDigit(11, 10), '4');
+			Y.Assert.areEqual(2, Y.Number.roundToDigit(2, 1), '5');
+			Y.Assert.areEqual(11, Y.Number.roundToDigit(11, 1), '6');
+			Y.Assert.areEqual(0, Y.Number.roundToDigit(11, 100), '7');
+			Y.Assert.areEqual(1100, Y.Number.roundToDigit(1111, 100), '8');
+			Y.Assert.areEqual(800, Y.Number.roundToDigit(799, 100), '9');
+			Y.Assert.areEqual(1000, Y.Number.roundToDigit(799, 1000), '10');
+			Y.Assert.areEqual(0, Y.Number.roundToDigit(499, 1000), '11');
 		}
 
     });
