@@ -9,7 +9,20 @@
  */
 YUI().add('gallery-radial-menu-panel', function(Y) {
 	// constants
-var Lang = Y.Lang,
+var	Lang = Y.Lang,
+
+	_bind = function(fn, context) {
+		return Y.bind(fn, context);
+	},
+
+	_detach = function(ctx, evt) {
+		var o = ctx[evt];
+
+		if (o) {
+			o.detach();
+			ctx[evt] = null;
+		}
+	},
 
     /**
      * The RadialMenuPanel constructor.
@@ -27,6 +40,17 @@ var Lang = Y.Lang,
 	RadialMenuPanel.ATTRS = {
 
 		/**
+		 * @attribute centerpt
+		 * @type Array
+		 * @default null
+		 * @description The center point for panel.
+		 */
+		centerpt: {
+			value: null,
+			validator: Lang.isArray
+		},
+
+		/**
 		 * @attribute content
 		 * @type String
 		 * @default ''
@@ -35,6 +59,39 @@ var Lang = Y.Lang,
 		content: {
 			value: '',
 			validator: Lang.isString
+		},
+
+		/**
+		 * @attribute hoverClass
+		 * @type String
+		 * @default ''
+		 * @description The hover class.
+		 */
+		hoverClass: {
+			value: 'yui-radialmenupanel-hover',
+			validator: Lang.isString
+		},
+
+		/**
+		 * @attribute index
+		 * @type Number
+		 * @default 0
+		 * @description The panel radial position.
+		 */
+		index: {
+			value: 0,
+			validator: Lang.isNumber
+		},
+
+		/**
+		 * @attribute radialpt
+		 * @type Array
+		 * @default null
+		 * @description The radial point for panel.
+		 */
+		radialpt: {
+			value: null,
+			validator: Lang.isArray
 		},
 
 		/**
@@ -61,42 +118,93 @@ var Lang = Y.Lang,
 	};
 
 
-	Y.extend(RadialMenuPanel, Y.Base, {
-
-		_node: null,
+	Y.extend(RadialMenuPanel, Y.Overlay, {
+		_mouseEnterHandler: null,
+		_mouseLeaveHandler: null,
 
 		/**
-		 * Fetches the radial index of the panel.
-		 * @method getRadialIndex
-		 * @return {Integer} The radial index.
-		 * @public
+		 * Handles the mouse enter event, adding the hover class.
+		 * @method _handleMouseEnter
+		 * @protected
 		 */
-		getRadialIndex: function() {
-			return Y.Node.getDOMNode(this._node)._radialIndex;
+		_handleMouseEnter: function() {
+			this.get('boundingBox').addClass(this.get('hoverClass'));
 		},
 
 		/**
-		 * Render the panel into the contentBox.
-		 * @method render
-		 * @param parent {Node} Required. The RadioMenu contentBox.
-		 * @param i {Number} Required. The radial position.
-		 * @public
+		 * Handles the mouse leave event, removing the hover class.
+		 * @method _handleMouseLeave
+		 * @protected
 		 */
-		render: function(parent, i) {
-			var node = new Y.Node(document.createElement(this.get('tagName'))),
-				styles = this.get('styles');
+		_handleMouseLeave: function() {
+			this.get('boundingBox').removeClass(this.get('hoverClass'));
+		},
 
-			if (! styles.zIndex) {styles.zIndex = i + 3;}
-			node.setStyles(styles);
-			node.addClass(RadialMenuPanel.NAME);
+		/**
+		 * @see Y.Widget.bindUI
+		 */
+		bindUI: function() {
+			var _this = this,
+				node = _this.get('boundingBox');
 
-			node.set('innerHTML', this.get('content'));
-			Y.Node.getDOMNode(node)._radialIndex = i;
+			_this._mouseEnterHandler = node.on('mouseenter', _bind(_this._handleMouseEnter, _this));
+			_this._mouseLeaveHandler = node.on('mouseleave', _bind(_this._handleMouseLeave, _this));
+		},
 
-			parent.appendChild(node);
-			this._node = node;
+		/**
+		 * @see Y.Base.destructor
+		 */
+		destructor: function() {
+			var _this = this,
+				node = _this.get('boundingBox')._node;
+
+			_this.hide();
+			RadialMenuPanel.superclass.destructor.apply(_this, arguments);
+			if (node.parentNode) {node.parentNode.removeChild(node);}
+		},
+
+		/**
+		 * @see Y.Widget.hide
+		 */
+		hide: function() {
+			_detach(this, '_mouseEnterHandler');
+			_detach(this, '_mouseLeaveHandler');
+			RadialMenuPanel.superclass.hide.apply(this, arguments);
+		},
+
+		/**
+		 * @see Y.Base.initializer
+		 */
+		initializer: function(config) {
+			RadialMenuPanel.superclass.initializer.apply(this, arguments);
+		},
+
+		/**
+		 * @see Y.Widget.renderUI
+		 */
+		renderUI: function() {
+			this.hide();
+		},
+
+		/**
+		 * @see Y.Widget.show
+		 */
+		show: function() {
+			this.bindUI();
+			RadialMenuPanel.superclass.show.apply(this, arguments);
+		},
+
+		/**
+		 * @see Y.Widget.syncUI
+		 */
+		syncUI: function() {
+			var content = this.get('content');
+
+			if (content) {
+				this.get('contentBox').set('innerHTML', content);
+			}
 		}
 	});
 
 Y.RadialMenuPanel = RadialMenuPanel;
-}, '1.0.01', {requires: ['base']});
+}, '1.1.00', {requires: ['overlay', 'event-mouseenter']});

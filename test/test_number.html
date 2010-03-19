@@ -100,6 +100,16 @@ YUI({combine: true, timeout: 10000, modules: {
 		},
 
 		testFormat : function() {
+			var n = 1111.11,
+				formatDollars = '$0,0.00',
+				formatPercent = '0.00%',
+				formatRound = '0,000',
+				formatText = 'Please add the $0,0.00 to my tab!';
+
+			Y.Assert.areEqual('$1,111.11', Y.Number.format(n, formatDollars));
+			Y.Assert.areEqual('1111.11%', Y.Number.format(n, formatPercent));
+			Y.Assert.areEqual('1,111', Y.Number.format(n, formatRound));
+			Y.Assert.areEqual('Please add the $1,111.11 to my tab!', Y.Number.format(n, formatText));
 			Y.Assert.areEqual('0', Y.Number.format(0, '0'));
 			Y.Assert.areEqual('0.00', Y.Number.format(0));
 			Y.Assert.areEqual('0.01', Y.Number.format(0.011));

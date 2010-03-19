@@ -11,6 +11,11 @@
 		.yui-radialmenu div.radialMenuPanel-hover {
 			/*background-color: white !important;*/
 		}
+
+		.yui-radialmenu {
+			background-color: #333;
+			opacity: .70;
+		}
     </style>
 </head>
 
@@ -53,14 +58,14 @@
 			'gallery-radial-menu': {
 				fullpath: 'http://yui-ext-mvc.googlecode.com/svn/trunk/assets/js/yahoo-3-ext/RadialMenu.js',
 //				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/RadialMenu.js?r=5',
-				requires: ['widget', 'gallery-radial-menu-panel'],
+				requires: ['overlay', 'collection', 'gallery-radial-menu-panel'],
 				optional: ['gallery-radial-menu-anim'],
 				supersedes: []
 			},
 			'gallery-radial-menu-panel': {
 				fullpath: 'http://yui-ext-mvc.googlecode.com/svn/trunk/assets/js/yahoo-3-ext/RadialMenuPanel.js',
 //				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/RadialMenuPanel.js',
-				requires: ['base'],
+				requires: ['overlay', 'event-mouseenter'],
 				optional: [],
 				supersedes: []
 			},
@@ -81,15 +86,14 @@
 			}
 		}
 	}).use('node', 'gallery-radial-menu', 'gallery-radial-menu-panel', 'gallery-radial-menu-anim', 'gallery-node-field', function(Y) {
-		var container = Y.one("#project").appendChild(document.createElement('div')),
-			radioMenu = new Y.RadialMenu({boundingBox: container, diameter: 200, panels: [
-				new Y.RadialMenuPanel({styles: {backgroundColor: 'yellow'}, content: '0'}),
-				new Y.RadialMenuPanel({styles: {backgroundColor: 'green'}, content: '1'}),
-				new Y.RadialMenuPanel({styles: {backgroundColor: 'blue'}, content: '2'}),
-				new Y.RadialMenuPanel({styles: {backgroundColor: 'purple'}, content: '3'}),
-				new Y.RadialMenuPanel({styles: {backgroundColor: 'red'}, content: '4'}),
-				new Y.RadialMenuPanel({styles: {backgroundColor: 'orange'}, content: '5'})
-			]});
+		var radialMenu = new Y.RadialMenu({diameter: 200, panels: [
+				new Y.RadialMenuPanel({content: '0'}),
+				new Y.RadialMenuPanel({content: '1'}),
+				new Y.RadialMenuPanel({content: '2'}),
+				new Y.RadialMenuPanel({content: '3'}),
+				new Y.RadialMenuPanel({content: '4'}),
+				new Y.RadialMenuPanel({content: '5'})
+			], useMask: true});
 
 		var random = function(m, n) {
             var offset = 0;
@@ -118,13 +122,22 @@
 				}
 				else {
 					var j = parseInt(value, 10),
-						panels = [];
+						panels = radialMenu.get('panels'),
+						i, panel;
 
-					for (var i=0; i < j; i += 1) {
-						panels.push(new Y.RadialMenuPanel({content: '' + i, styles:{backgroundColor: getHex()}}));
+					for (i=panels.length-1; 0<=i; i-=1) {
+						panels[i].destroy();
 					}
 
-					radioMenu.set('panels', panels);
+					panels = [];
+					for (i=0; i < j; i += 1) {
+						panel = new Y.RadialMenuPanel({content: '' + i});
+						panel.get('boundingBox').setStyle('backgroundColor', getHex());
+						panels.push(panel);
+					}
+
+					radialMenu.set('panels', panels);
+					radialMenu.syncUI();
 					return true;
 				}
 			},
@@ -135,13 +148,14 @@
 					return false;
 				}
 				else {
-					radioMenu.set('diameter', parseInt(value, 10));
+					radialMenu.set('diameter', parseInt(value, 10));
+					radialMenu.syncUI();
 					return true;
 				}
 			},
 			_handlePanelAnim = function() {
 				var value = Y.NodeFieldSerializer.selectOne(Y.one('#selectPanelAnimation'))[1],
-					plug = radioMenu.radialMenuAnim;
+					plug = radialMenu.radialMenuAnim;
 
 				if (value && 'None' != value) {
 					plug.enable();
@@ -160,19 +174,19 @@
 				else {
 					plug.disable();
 				}
-				radioMenu.syncUI();
+				radialMenu.syncUI();
 			};
 
-		radioMenu.hide();
+		radialMenu.hide();
 		_handlePanelCount();
 		_handlePanelDiameter();
-		radioMenu.plug(Y.RadialMenuAnim, {animType: 'rotate', easingOut: Y.Easing.easeOut, easingIn: Y.Easing.easeIn});
+		radialMenu.plug(Y.RadialMenuAnim, {animType: 'rotate', easingOut: Y.Easing.easeOut, easingIn: Y.Easing.easeIn});
 		_handlePanelAnim();
-		radioMenu.render();
-		radioMenu.on('panelClicked1', function() {
+		radialMenu.render();
+		radialMenu.on('panelClicked1', function() {
 			alert('click on Panel 1');
 		});
-		radioMenu.on('panelClicked', function(e) {
+		radialMenu.on('panelClicked', function(e) {
 			var message = new Y.Node(document.createElement('p')),
 				panel = e.details[1];
 			
@@ -181,14 +195,14 @@
 		});
 
 		Y.one('#btnRadialMenu').on('click', function() {
-			radioMenu.show();
+			radialMenu.show();
 		});
 
 		Y.one('#selectPanelAnimation').on('change', _handlePanelAnim);
 
 		Y.one('#textPanelDiameter').on('change', function(e) {
 			if (_handlePanelDiameter()) {
-				radioMenu.syncUI();
+				radialMenu.syncUI();
 			}
 			else {
 				alert('Diameter is too small');
@@ -197,7 +211,7 @@
 
 		Y.one('#textPanelCount').on('change', function(e) {
 			if (_handlePanelCount()) {
-				radioMenu.syncUI();
+				radialMenu.syncUI();
 			}
 			else {
 				alert('There must be at least one panel');
