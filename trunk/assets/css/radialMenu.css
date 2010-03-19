@@ -1,28 +1,23 @@
-.yui-radialmenu-hidden,
-.yui-radialmenu-hidden .radialMenuPanel {
+.yui-radialmenupanel-hidden {
+	visibility: hidden;
+}
+
+.yui-radialmenu-hidden {
 	display: none;
 }
 
 .yui-radialmenu {
-	left: 0;
 	position: absolute;
-	top: 0;
-	z-index: 1;
 }
 
-.yui-radialmenu .yui-radialmenu-content {
-	height: 100%;
-	width: 100%;
-	z-index: 2;
-}
-
-.yui-radialmenu .radialMenuPanel {
+.yui-radialmenupanel {
+	background-color: #EFEFEF;
 	height: 50px;
 	position: absolute;
 	width: 50px;
 }
 
-.yui-radialmenu .radialMenuPanel-hover {
+.yui-radialmenupanel-hover {
 	border: 1px solid #333;
 	z-Index: 100 !important;
 }

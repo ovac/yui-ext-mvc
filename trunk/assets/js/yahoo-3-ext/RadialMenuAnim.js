@@ -66,28 +66,17 @@ var Lang = Y.Lang,
 		animClosed: function() {
 			if (!this._enabled) {return;}
 			var host = this.get('host'),
-				pt = host._lastPoint,
 				panels = host.get('panels'),
 				fnName = this.get('animType') + 'In',
 				n = panels.length,
 				duration = this.get('duration'),
 				easing = this.get('easingIn');
-			
-			host.get('boundingBox').removeClass('yui-radialmenu-hidden');
 
 			Y.each(panels,function(panel, i) {
-				var styles = panel.get('styles'),
-					region = panel._node.get('region'),
-					anim = new Y.Anim({duration: duration, easing: easing, node: panel._node});
-
-				this[fnName](anim, pt, region);
-
-				if (i === n-1) {
-					anim.on('end', function(){
-						host.get('boundingBox').addClass('yui-radialmenu-hidden');
-					});
-				}
-				
+				panel.show();
+				var anim = new Y.Anim({duration: duration, easing: easing, node: panel.get('boundingBox')});
+				this[fnName](anim, panel.get('centerpt'), panel.get('radialpt'));
+				anim.on('end', Y.bind(panel.hide, panel));
 				anim.run();
 			}, this);
 		},
@@ -95,17 +84,15 @@ var Lang = Y.Lang,
 		animOpen: function() {
 			if (!this._enabled) {return;}
 			var host = this.get('host'),
-				pt = host._lastPoint,
 				panels = host.get('panels'),
 				fnName = this.get('animType') + 'Out',
 				duration = this.get('duration'),
 				easing = this.get('easingOut');
 
 			Y.each(panels,function(panel) {
-				var styles = panel.get('styles'),
-					anim = new Y.Anim({duration: duration, easing: easing, node: panel._node});
-
-				this[fnName](anim, pt, styles);
+				panel.show();
+				var anim = new Y.Anim({duration: duration, easing: easing, node: panel.get('boundingBox')});
+				this[fnName](anim, panel.get('centerpt'), panel.get('radialpt'));
 				anim.run();
 			}, this);
 		},
@@ -131,57 +118,57 @@ var Lang = Y.Lang,
 			_this.doAfter('show', _this.animOpen);
 		},
 
-		radiateIn: function(anim, pt, region) {
+		radiateIn: function(anim, centerpt, radialpt) {
 			anim.set('to', {
-				left: pt[0] - region.width / 2,
-				top: pt[1] - region.height / 2
+				left: centerpt[0],
+				top: centerpt[1]
 			});
 		},
 
-		radiateOut: function(anim, pt, styles) {
+		radiateOut: function(anim, centerpt, radialpt) {
 			anim.set('to', {
-				left: styles.left,
-				top: styles.top
+				left: radialpt[0],
+				top: radialpt[1]
 			});
 		},
 
-		rotateIn: function(anim, pt, region) {
+		rotateIn: function(anim, centerpt, radialpt) {
 			anim.set('to', {
-				curve: this.rotateInCurve([region.left, region.top], pt)
+				curve: this.rotateInCurve(centerpt, radialpt)
 			})
 		},
 
-		rotateInCurve: function(startPt, endPt) {
+		rotateInCurve: function(centerpt, radialpt) {
 			var radius = this.get('host').get('diameter') / 2,
 				rotation = this.get('rotation'),
-				angle = ((startPt[0] - endPt[0]) / radius),
+				angle = ((centerpt[0] - radialpt[0]) / radius),
 				points = [],
 				i=0, n=10, astep = rotation / n, rstep = radius / n;
 
 			for (0; i < n; i += 1) {
 				points[i] = [
-					Math.floor(endPt[0] + radius * Math.cos(angle)),
-					Math.floor(endPt[1] + radius * Math.sin(angle))
+					Math.floor(centerpt[0] + radius * Math.cos(angle)),
+					Math.floor(centerpt[1] + radius * Math.sin(angle))
 				];
 
 				angle -= astep;
 				radius -= rstep;
 			}
 
-			points[i] = endPt;
+			points[i] = centerpt;
 			return points;
 		},
 
-		rotateOut: function(anim, pt, styles) {
+		rotateOut: function(anim, centerpt, radialpt) {
 			anim.set('to', {
-				curve: this.rotateOutCurve(pt, [styles.left.replace('px', ''), styles.top.replace('px', '')])
+				curve: this.rotateOutCurve(centerpt, radialpt)
 			})
 		},
 
-		rotateOutCurve: function(startPt, endPt) {
+		rotateOutCurve: function(centerpt, radialpt) {
 			var radius = this.get('host').get('diameter') / 2,
 				rotation = this.get('rotation'),
-				angle = ((endPt[0] - startPt[0]) / radius) - rotation,
+				angle = ((radialpt[0] - centerpt[0]) / radius) - rotation,
 				points = [],
 				i=0, n=10, astep = rotation / n, rstep = radius / n;
 
@@ -190,32 +177,26 @@ var Lang = Y.Lang,
 
 			for (1; i < n; i += 1) {
 				points[i] = [
-					Math.floor(startPt[0] + radius * Math.cos(angle)),
-					Math.floor(startPt[1] + radius * Math.sin(angle))
+					Math.floor(centerpt[0] + radius * Math.cos(angle)),
+					Math.floor(centerpt[1] + radius * Math.sin(angle))
 				];
 
 				angle += astep;
 				radius += rstep;
 			}
 
-			points[i] = endPt;
+			points[i] = radialpt;
 			return points;
 		},
 
 		syncUI: function(a) {
 			if (!this._enabled) {return;}
-			var host = this.get('host'),
-				x = host._lastPoint[0],
-				y = host._lastPoint[1];
 			
-			Y.each(host.get('panels'),function(panel) {
-				var node = panel._node,
-					region = node.get('region'),
-					l = x - region.width / 2,
-					t = y - region.height / 2;
-
-				node.setStyle('left', l + 'px');
-				node.setStyle('top', t + 'px');
+			Y.each(this.get('host').get('panels'),function(panel) {
+				var node = panel.get('boundingBox'),
+					centerpt = panel.get('centerpt');
+				node.setStyle('left', centerpt[0] + 'px');
+				node.setStyle('top', centerpt[1] + 'px');
 			});
 		}
 	});

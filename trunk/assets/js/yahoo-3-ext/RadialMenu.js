@@ -15,11 +15,35 @@
  * @class RadialMenu
  */
 YUI().add('gallery-radial-menu', function(Y) {
+	
 	// constants
-var Lang = Y.Lang,
+var	Lang = Y.Lang,
+	CLS_PANEL = 'yui-' + Y.RadialMenuPanel.NAME.toLowerCase(),
 
-	_getPanel = function(node) {
-		return node.hasClass(Y.RadialMenuPanel.NAME) ? node : node.ancestor('.' + Y.RadialMenuPanel.NAME);
+	_bind = function(fn, context) {
+		return Y.bind(fn, context);
+	},
+
+	_cancel = function(timer) {
+		if (timer) {
+			timer.cancel();
+			timer = null;
+		}
+	},
+
+	_detach = function(ctx, evt) {
+		var o = ctx[evt];
+
+		if (o) {
+			o.detach();
+			ctx[evt] = null;
+		}
+	},
+
+	_getPanel = function(panels, node) {
+		return Y.Array.find(panels, function(panel, i) {
+			return panel.get('boundingBox').get('id') == node.get('id');
+		});
 	},
 
 	_isBetween = function(i, lowerBounds, upperBounds) {
@@ -63,17 +87,6 @@ var Lang = Y.Lang,
 		},
 
 		/**
-		 * @attribute hoverClass
-		 * @type String
-		 * @default ''
-		 * @description The hover class.
-		 */
-		hoverClass: {
-			value: Y.RadialMenuPanel.NAME + '-hover',
-			validator: Lang.isString
-		},
-
-		/**
 		 * @attribute keyHoldTimeout
 		 * @type Number
 		 * @default 500
@@ -93,21 +106,40 @@ var Lang = Y.Lang,
 		panels: {
 			value: [],
 			validator: Lang.isArray
+		},
+
+		/**
+		 * @attribute centerPoint
+		 * @type Array
+		 * @default null
+		 * @description A position.
+		 */
+		centerPoint: {
+			value: null,
+			validator: Lang.isArray
+		},
+
+		/**
+		 * @attribute useMask
+		 * @type Boolean
+		 * @default false
+		 * @description When true, mask the viewport.
+		 */
+		useMask: {
+			value: false,
+			validator: Lang.isBoolean
 		}
 	};
 
 	RadialMenu.NAME = "radialMenu";
 
 
-	Y.extend(RadialMenu, Y.Widget, {
+	Y.extend(RadialMenu, Y.Overlay, {
 		_isKeyPressed: false,
 
-		_lastNode: null,
-		_lastPanel: null,
-		_lastPoint: null,
+		_selectedPanel: null,
 		
 		_nodeClickHandle: null,
-		_nodeMouseMoveHandle: null,
 
 		_keyDownHandle: null,
 		_keyUpHandle: null,
@@ -121,15 +153,20 @@ var Lang = Y.Lang,
 		 * @private
 		 */
 		_handleClick: function(e) {
-			var node = _getPanel(e.target),
+			var panels = this.get('panels'),
+				targ = e.target,
+				node = targ.hasClass(CLS_PANEL) ? targ : targ.ancestor('.' + CLS_PANEL),
 				panel, i;
 
 			if (node) {
-				e.halt();
-				i = Y.Node.getDOMNode(node)._radialIndex;
-				panel = this.get('panels')[i];
-				this.fire('panelClicked', node, panel);
-				this.fire('panelClicked' + i, node, panel);
+				panel = _getPanel(panels, node);
+				
+				if (panel) {
+					e.halt();
+					i = panel.get('index');
+					this.fire('panelClicked', panel.get('boundingBox'), panel);
+					this.fire('panelClicked' + i, panel.get('boundingBox'), panel);
+				}
 			}
 
 			if (this.get('closeOnClick')) {this.hide();}
@@ -143,12 +180,13 @@ var Lang = Y.Lang,
 		 */
 		_handleKeyDown: function(e) {
 			var panels = this.get('panels'),
-				lastPanel = this._lastPanel,
-				i = lastPanel ? lastPanel.getRadialIndex() : 0,
+				selectedPanel = this._selectedPanel,
+				i = selectedPanel ? selectedPanel.get('index') : 0,
 				n = panels.length,
 				isValid = false,
-				hoverClass = this.get('hoverClass'),
 				m, l=n%2;
+
+			// todo: this logic could be improved by checking if the next position is further in the direction the user is trying to go; this would fix the corner-case issues
 
 			switch (e.keyCode) {
 				case 38: // up
@@ -206,8 +244,8 @@ var Lang = Y.Lang,
 				break;
 
 				case 13: // enter
-					if (lastPanel) {
-						e.target = lastPanel._node;
+					if (selectedPanel) {
+						e.target = selectedPanel.get('boundingBox');
 						this._handleClick(e);
 					}
 				break;
@@ -218,7 +256,7 @@ var Lang = Y.Lang,
 			}
 
 			if (isValid) {
-				if (this._timerKeyDown) {this._timerKeyDown.cancel();}
+				_cancel(this._timerKeyDown);
 
 				if (0 > i){
 					i = n - 1;
@@ -232,10 +270,10 @@ var Lang = Y.Lang,
 				if (0 < n) {
 					this._timerKeyDown = Y.later(n, this, this._handleKeyDown, e);
 				}
-				if (lastPanel) {lastPanel._node.removeClass(hoverClass);}
-				lastPanel = panels[i];
-				this._lastPanel = lastPanel;
-				lastPanel._node.addClass(hoverClass);
+				if (selectedPanel) {selectedPanel._handleMouseLeave();}
+				selectedPanel = panels[i];
+				this._selectedPanel = selectedPanel;
+				selectedPanel._handleMouseEnter();
 				this._isKeyPressed = true;
 			}
 		},
@@ -247,149 +285,121 @@ var Lang = Y.Lang,
 		 * @private
 		 */
 		_handleKeyUp: function(e) {
-			if (this._timerKeyDown) {this._timerKeyDown.cancel();}
+			_cancel(this._timerKeyDown);
 			this._isKeyPressed = false;
 		},
 
 		/**
-		 * Callback function for handling the mouse move inside the widget node.
-		 * @method _handleMouseMove
-		 * @param e {Event} Required. The triggered `mousemove` JavaScript event.
-		 * @private
+		 * @see Y.Widget.bindUI
 		 */
-		_handleMouseMove: function(e) {
-			var panel = _getPanel(e.target),
-				hoverClass = this.get('hoverClass');
+		bindUI: function() {
+			var _this = this,
+				doc = document;
 
-			if (this._lastNode) {
-				this._lastNode.removeClass(hoverClass);
-			}
-
-			if (panel) {
-				this._lastNode = panel;
-				panel.addClass(hoverClass);
-			}
-			else {
-				this._lastNode = null;
+			if (! _this._keyDownHandle) {
+				_this._keyDownHandle = Y.on('keydown', _bind(_this._handleKeyDown, _this), doc);
+				_this._keyUpHandle = Y.on('keyup', _bind(_this._handleKeyUp, _this), doc);
+				_this._nodeClickHandle = Y.on("click", _bind(_this._handleClick, _this), doc);
 			}
 		},
 
 		/**
-		 * Destroys the widget.
-		 * @method destructor
-		 * @public
+		 * @see Y.Base.destructor
 		 */
 		destructor: function() {
-			var hoverClass = this.get('hoverClass');
-			if (this._nodeClickHandle) {
-				this._nodeClickHandle.detach();
-				this._nodeClickHandle = null;
-			}
-			if (this._keyDownHandle) {
-				this._keyDownHandle.detach();
-				this._keyDownHandle = null;
-			}
-			if (this._keyUpHandle) {
-				this._keyUpHandle.detach();
-				this._keyUpHandle = null;
-			}
-			if (this._nodeMouseMoveHandle) {
-				this._nodeMouseMoveHandle.detach();
-				this._nodeMouseMoveHandle = null;
-			}
-			if (this._timerKeyDown) {
-				this._timerKeyDown.cancel();
-				this._timerKeyDown = null;
-			}
-			if (this._lastNode) {this._lastNode.removeClass(hoverClass);}
-			if (this._lastPanel) {this._lastPanel._node.removeClass(hoverClass);}
-			this._lastNode = null;
-			this._lastPanel = null;
+			this.hide();
 		},
 
 		/**
-		 * Capture the hide function and remove key listeners, before delegating to superclass.
-		 * @method hide
-		 * @public
+		 * @see Y.Widget.hide
 		 */
 		hide: function() {
-			this.destructor();
+			var _this = this;
+
+			_detach(_this, '_nodeClickHandle');
+			_detach(_this, '_keyDownHandle');
+			_detach(_this, '_keyUpHandle');
+			_cancel(_this._timerKeyDown);
+
+			if (_this._selectedPanel) {
+				_this._selectedPanel.syncUI();
+				_this._selectedPanel = null;
+			}
+
+			Y.each(_this.get('panels'), function(panel) {
+				panel.hide();
+			});
+
 			RadialMenu.superclass.hide.apply(this, arguments);
 		},
 
 		/**
-		 * Initialize the widget.
-		 * @method initializer
-		 * @param config {Object} Required. The initialization configuration.
-		 * @public
+		 * @see Y.Base.initializer
 		 */
 		initializer: function(config) {
+			this.get('boundingBox').setStyle('position', 'absolute');
 		},
 
 		/**
-		 * Bind events to the widget.
-		 * @method bindUI
-		 * @public
-		 */
-		bindUI: function() {
-			var contentBox = this.get('contentBox'),
-				doc = new Y.Node(document);
-			
-			this._keyDownHandle = doc.on('keydown', this._handleKeyDown, this, true);
-			this._keyUpHandle = doc.on('keyup', this._handleKeyUp, this, true);
-			this._nodeClickHandle = contentBox.on("click", this._handleClick, this, true);
-			this._nodeMouseMoveHandle = contentBox.on("mousemove", this._handleMouseMove, this, true);
-		},
-
-		/**
-		 * Renders the checklist DOM inside of the block-level node.
-		 * @method renderUI
-		 * @public
-		 */
-		renderUI: function() {
-		},
-
-		/**
-		 * Capture the show function and add key listeners, before delegating to superclass.
-		 * @method show
-		 * @public
+		 * @see Y.Widget.show
 		 */
 		show: function() {
-			if (! this._keyDownHandle) {this.bindUI();}
-			RadialMenu.superclass.show.apply(this, arguments);
+			var _this = this,
+				box, width, height;
+
+			Y.later(1, _this, _this.bindUI);
+			_this.syncUI(true);
+
+			if (_this.get('useMask')) {
+				box = _this.get('boundingBox');
+				height = box.get('docHeight');
+				width = box.get('docWidth');
+
+				box.setStyle('height', height + 'px');
+				box.setStyle('width', width + 'px');
+
+				RadialMenu.superclass.show.apply(_this, arguments);
+			}
 		},
 
-		syncUI: function() {
-			var boundingBox = this.get('boundingBox'),
-				countentBox = this.get('contentBox'),
-				viewport = boundingBox.get('viewportRegion'),
-				panels = this.get('panels'),
-				n = this.get('panels').length,
-				radius = this.get('diameter') / 2,
+		/**
+		 * @see Y.Widget.syncUI
+		 */
+		syncUI: function(isShow) {
+			var _this = this,
+				panels = _this.get('panels'),
+				n = _this.get('panels').length,
+				radius = _this.get('diameter') / 2,
+				pt = _this.get('centerPoint'),
+				angle = 360 / n,
+				a, o, x, y, reg, viewport;
+
+			if (! pt) {
+				viewport = _this.get('boundingBox').get('viewportRegion');
 				pt = [
 					viewport.left + (viewport.width - 5) / 2,
 					viewport.top + (viewport.height - 5) / 2
-				],
-				angle = 360 / n,
-				a, o, x, y;
+				];
+			}
 
-			boundingBox.setStyle('height', (viewport.height - 5) + 'px');
-			boundingBox.setStyle('width', (viewport.width - 5) + 'px');
-			countentBox.set('innerHTML', '');
-			this._lastPoint = pt;
+			if (! isShow) {this.hide();}
 
 			Y.each(panels, function(panel, i) {
+				reg = panel.get('boundingBox').get('region');
 				a = (angle * i - 90) * Math.PI / 180;
 				x = pt[0] + radius * Math.cos(a);
 				y = pt[1] + radius * Math.sin(a);
-				o = panel.get('styles');
-				o.left = x + 'px';
-				o.top = y + 'px';
-				panel.set('styles', o);
-				panel.render(countentBox, i);
-			}, this);
+				panel.set('xy', [x, y]);
+				panel.set('index', i);
+				panel.set('centerpt', [pt[0] - (reg.width / 2), pt[1] - (reg.height / 2)]);
+				panel.set('radialpt', [x,y]);
+				panel[panel.get('rendered') ? 'syncUI' : 'render']();
+				panel[isShow ? 'show' : 'hide']();
+				panel.after(panel._handleMouseEnter, function() {_this._selectedPanel = panel});
+				panel.after(panel._handleMouseLeave, function() {_this._selectedPanel = null});
+			}, _this);
 		}
 	});
 
 Y.RadialMenu = RadialMenu;
-}, '1.0.01' ,{requires:['widget', 'gallery-radial-menu-panel'], use: [], optional: ['gallery-radial-menu-anim']});
+}, '1.1.00' ,{requires:['overlay', 'collection', 'gallery-radial-menu-panel'], use: [], optional: ['gallery-radial-menu-anim']});
