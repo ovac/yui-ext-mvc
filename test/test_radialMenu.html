@@ -48,14 +48,24 @@
 
 	<div id="messages"></div>
 
-    <script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui.js"></script> 
     <!--<script type="text/javascript" src="http://yui.yahooapis.com/3.1.0pr1/build/yui/yui.js"></script>-->
     <!--<script type="text/javascript" src="/assets/js/yahoo-3/yui/yui.js"></script>-->
 	<script type="text/javascript">YUI({
 		base: '/assets/js/yahoo-3/',
 		combine: true,
 		filter:'raw',
+		loadOptional: true,
 		modules: {
+
+			'gallery-radialmenu': {
+//				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/gallery-radialmenu.js?r=5',
+				fullpath: 'http://github.com/mattsnider/yui3-gallery/raw/master/build/gallery-radialmenu/gallery-radialmenu-min.js',
+				requires: ['overlay', 'collection', 'event-mouseenter', 'node'],
+				optional: ['plugin', 'anim'],
+				supersedes: []
+			},
+/*
 			'gallery-radial-menu': {
 				fullpath: 'http://yui-ext-mvc.googlecode.com/svn/trunk/assets/js/yahoo-3-ext/RadialMenu.js',
 //				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/RadialMenu.js?r=5',
@@ -77,7 +87,7 @@
 				optional: [],
 				supersedes: []
 			},
-
+*/
 			'gallery-node-field': {
 				fullpath: 'http://yui-ext-mvc.googlecode.com/svn/trunk/assets/js/yahoo-3-ext/NodeField.js',
 //				fullpath: '/assets/js/yahoo-3-ext/NodeField.js',
@@ -86,7 +96,7 @@
 				supersedes: []
 			}
 		}
-	}).use('node', 'gallery-radial-menu', 'gallery-radial-menu-panel', 'gallery-radial-menu-anim', 'gallery-node-field', function(Y) {
+	}).use('node', 'gallery-radialmenu', /*'gallery-radial-menu', 'gallery-radial-menu-panel', 'gallery-radial-menu-anim',*/ 'gallery-node-field', function(Y) {
 		var radialMenu = new Y.RadialMenu({diameter: 200, panels: [
 				new Y.RadialMenuPanel({content: '0'}),
 				new Y.RadialMenuPanel({content: '1'}),

@@ -64,6 +64,17 @@ var	Lang = Y.Lang,
 	RadialMenu.ATTRS = {
 
 		/**
+		 * @attribute centerPoint
+		 * @type Array
+		 * @default null
+		 * @description A position.
+		 */
+		centerPoint: {
+			value: null,
+			validator: Lang.isArray
+		},
+
+		/**
 		 * @attribute closeOnClick
 		 * @type Boolean
 		 * @default false
@@ -105,17 +116,6 @@ var	Lang = Y.Lang,
 		 */
 		panels: {
 			value: [],
-			validator: Lang.isArray
-		},
-
-		/**
-		 * @attribute centerPoint
-		 * @type Array
-		 * @default null
-		 * @description A position.
-		 */
-		centerPoint: {
-			value: null,
 			validator: Lang.isArray
 		},
 
@@ -395,6 +395,7 @@ var	Lang = Y.Lang,
 				panel.set('radialpt', [x,y]);
 				panel[panel.get('rendered') ? 'syncUI' : 'render']();
 				panel[isShow ? 'show' : 'hide']();
+				panel.set('zIndex', 100 + i);
 				panel.after(panel._handleMouseEnter, function() {_this._selectedPanel = panel});
 				panel.after(panel._handleMouseLeave, function() {_this._selectedPanel = null});
 			}, _this);
