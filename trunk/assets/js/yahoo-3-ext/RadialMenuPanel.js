@@ -43,7 +43,7 @@ var	Lang = Y.Lang,
 		 * @attribute centerpt
 		 * @type Array
 		 * @default null
-		 * @description The center point for panel.
+		 * @description The center point for panel; used internally.
 		 */
 		centerpt: {
 			value: null,
@@ -76,7 +76,7 @@ var	Lang = Y.Lang,
 		 * @attribute index
 		 * @type Number
 		 * @default 0
-		 * @description The panel radial position.
+		 * @description The panel radial position; used internally.
 		 */
 		index: {
 			value: 0,
@@ -87,33 +87,11 @@ var	Lang = Y.Lang,
 		 * @attribute radialpt
 		 * @type Array
 		 * @default null
-		 * @description The radial point for panel.
+		 * @description The radial point for panel; used internally.
 		 */
 		radialpt: {
 			value: null,
 			validator: Lang.isArray
-		},
-
-		/**
-		 * @attribute styles
-		 * @type Object
-		 * @default null
-		 * @description The style overrides for this panel.
-		 */
-		styles: {
-			value: null,
-			validator: Lang.isObject
-		},
-
-		/**
-		 * @attribute tagName
-		 * @type String
-		 * @default "div"
-		 * @description The tag to use for panels.
-		 */
-		tagName: {
-			value: 'div',
-			validator: Lang.isString
 		}
 	};
 
