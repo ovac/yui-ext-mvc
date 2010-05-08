@@ -1237,7 +1237,7 @@ var W = window,
 
 	// mock the DOM object
 	Y.DOM = {
-		byId: function(id) {document.getElementById(id);},
+		byId: function(id) {return document.getElementById(id);},
 
 		/**
 		 * Searches the element by the given axis for the first matching element.
