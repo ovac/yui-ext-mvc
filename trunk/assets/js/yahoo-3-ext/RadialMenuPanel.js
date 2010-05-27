@@ -92,6 +92,13 @@ var	Lang = Y.Lang,
 		radialpt: {
 			value: null,
 			validator: Lang.isArray
+		},
+
+		/**
+		 * @see Widget.ATTRS.value
+		 */
+		visible: {
+			value: false
 		}
 	};
 
