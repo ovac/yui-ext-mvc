@@ -27,6 +27,8 @@
 		This page is demonstrates the Y3 radio menu widget, inspired by BioWare's menu in the game DragonAge.
 	</p>
 
+	<p>There is one known bug, where if you click the Show Menu button before the Overlay logic has completed building the DOM, then the panels may open and then immediately hide.</p>
+
 	<p class="copy update">
 		I have added a plugin to allow animating the opening and closing of the widget. Unfortunately, the rotation animation has a tendency to hang;
 		probably because the movement along a curve animation requires a lot of browser rendering computation.
@@ -52,15 +54,15 @@
     <!--<script type="text/javascript" src="http://yui.yahooapis.com/3.1.0pr1/build/yui/yui.js"></script>-->
     <!--<script type="text/javascript" src="/assets/js/yahoo-3/yui/yui.js"></script>-->
 	<script type="text/javascript">YUI({
-		base: '/assets/js/yahoo-3/',
+//		base: '/assets/js/yahoo-3/',
 		combine: true,
 		filter:'raw',
 		loadOptional: true,
 		modules: {
 
 			'gallery-radialmenu': {
-//				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/gallery-radialmenu.js?r=5',
-				fullpath: 'http://github.com/mattsnider/yui3-gallery/raw/master/build/gallery-radialmenu/gallery-radialmenu-min.js',
+				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/gallery-radialmenu.js?r=5',
+//				fullpath: 'http://github.com/mattsnider/yui3-gallery/raw/master/build/gallery-radialmenu/gallery-radialmenu-min.js',
 				requires: ['overlay', 'collection', 'event-mouseenter', 'node'],
 				optional: ['plugin', 'anim'],
 				supersedes: []
@@ -126,31 +128,27 @@
 				return '#' + hex[random(15)] + hex[random(15)] + hex[random(15)];
 			},
 			_handlePanelCount = function() {
-				var value = Y.one('#textPanelCount').get('value');
+				var value = Y.one('#textPanelCount').get('value'),
+					panels = radialMenu.get('panels'),
+					j, i, panel;
 
-				if (1 > value) {
-					return false;
+				if (2 > value) {value = panels.length;}
+				j = parseInt(value, 10);
+
+				for (i=panels.length-1; 0<=i; i-=1) {
+					panels[i].destroy();
 				}
-				else {
-					var j = parseInt(value, 10),
-						panels = radialMenu.get('panels'),
-						i, panel;
 
-					for (i=panels.length-1; 0<=i; i-=1) {
-						panels[i].destroy();
-					}
-
-					panels = [];
-					for (i=0; i < j; i += 1) {
-						panel = new Y.RadialMenuPanel({content: '' + i});
-						panel.get('boundingBox').setStyle('backgroundColor', getHex());
-						panels.push(panel);
-					}
-
-					radialMenu.set('panels', panels);
-					radialMenu.syncUI();
-					return true;
+				panels = [];
+				for (i=0; i < j; i += 1) {
+					panel = new Y.RadialMenuPanel({content: '' + i});
+					panel.get('boundingBox').setStyle('backgroundColor', getHex());
+					panels.push(panel);
 				}
+
+				radialMenu.set('panels', panels);
+				radialMenu.syncUI();
+				return true;
 			},
 			_handlePanelDiameter = function() {
 				var value = Y.one('#textPanelDiameter').get('value');

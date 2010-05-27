@@ -195,8 +195,7 @@ var Lang = Y.Lang,
 			Y.each(this.get('host').get('panels'),function(panel) {
 				var node = panel.get('boundingBox'),
 					centerpt = panel.get('centerpt');
-				node.setStyle('left', centerpt[0] + 'px');
-				node.setStyle('top', centerpt[1] + 'px');
+					panel.set('xy', centerpt);
 			});
 		}
 	});

@@ -128,6 +128,13 @@ var	Lang = Y.Lang,
 		useMask: {
 			value: false,
 			validator: Lang.isBoolean
+		},
+
+		/**
+		 * @see Widget.ATTRS.value
+		 */
+		visible: {
+			value: false
 		}
 	};
 
@@ -293,13 +300,16 @@ var	Lang = Y.Lang,
 		 * @see Y.Widget.bindUI
 		 */
 		bindUI: function() {
-			var _this = this,
-				doc = document;
+			// only bind the UI if it is visible
+			if (this.get('visible')) {
+				var _this = this,
+					doc = document;
 
-			if (! _this._keyDownHandle) {
-				_this._keyDownHandle = Y.on('keydown', _bind(_this._handleKeyDown, _this), doc);
-				_this._keyUpHandle = Y.on('keyup', _bind(_this._handleKeyUp, _this), doc);
-				_this._nodeClickHandle = Y.on("click", _bind(_this._handleClick, _this), doc);
+				if (! _this._keyDownHandle) {
+					_this._keyDownHandle = Y.on('keydown', _bind(_this._handleKeyDown, _this), doc);
+					_this._keyUpHandle = Y.on('keyup', _bind(_this._handleKeyUp, _this), doc);
+					_this._nodeClickHandle = Y.on("click", _bind(_this._handleClick, _this), doc);
+				}
 			}
 		},
 
@@ -347,8 +357,7 @@ var	Lang = Y.Lang,
 			var _this = this,
 				box, width, height;
 
-			Y.later(1, _this, _this.bindUI);
-			_this.syncUI(true);
+			_this.syncUI();
 
 			if (_this.get('useMask')) {
 				box = _this.get('boundingBox');
@@ -357,15 +366,18 @@ var	Lang = Y.Lang,
 
 				box.setStyle('height', height + 'px');
 				box.setStyle('width', width + 'px');
-
-				RadialMenu.superclass.show.apply(_this, arguments);
 			}
+
+			Y.each(_this.get('panels'), function(panel) {panel.show();});
+			RadialMenu.superclass.show.apply(_this, arguments);
+
+			Y.later(200, _this, _this.bindUI);
 		},
 
 		/**
 		 * @see Y.Widget.syncUI
 		 */
-		syncUI: function(isShow) {
+		syncUI: function() {
 			var _this = this,
 				panels = _this.get('panels'),
 				n = _this.get('panels').length,
@@ -382,8 +394,6 @@ var	Lang = Y.Lang,
 				];
 			}
 
-			if (! isShow) {this.hide();}
-
 			Y.each(panels, function(panel, i) {
 				reg = panel.get('boundingBox').get('region');
 				a = (angle * i - 90) * Math.PI / 180;
@@ -394,7 +404,6 @@ var	Lang = Y.Lang,
 				panel.set('centerpt', [pt[0] - (reg.width / 2), pt[1] - (reg.height / 2)]);
 				panel.set('radialpt', [x,y]);
 				panel[panel.get('rendered') ? 'syncUI' : 'render']();
-				panel[isShow ? 'show' : 'hide']();
 				panel.set('zIndex', 100 + i);
 				panel.after(panel._handleMouseEnter, function() {_this._selectedPanel = panel});
 				panel.after(panel._handleMouseLeave, function() {_this._selectedPanel = null});

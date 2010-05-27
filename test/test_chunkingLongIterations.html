@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+    <title>Test Page - Chunking Long Iterations</title>
+
+	<!--<link type="text/css" href="http://yui-ext-mvc.googlecode.com/svn/trunk/assets/css/radialMenu.css" rel="stylesheet"/>-->
+	<link type="text/css" href="/assets/css/radialMenu.css" rel="stylesheet"/>
+	
+	<style type="text/css">
+    </style>
+</head>
+
+<body id="project">
+
+	<h1>Test Page - Chunking Long Iterations</h1>
+
+	<p class="copy">
+		This page shows how the UI behaves when JavaScript is performing a long operation
+		(AKA bubble sort) on a large array. When you click the button without checking
+		the chunking toggle, you will see the button animate to the clicked state, where it
+		will remain animated until the iteration completes. If you check the chunking checkbox
+		then the button UI will update almost immediately.
+	</p>
+
+	<div class="buttons">
+		<label for="chkboxChunkToggle"> Toggle Chunk On: </label>
+		<input id="chkboxChunkToggle" type="checkbox"/><br/>
+		<label for="btnStartProcess"> Start Long Operation: </label>
+		<input id="btnStartProcess" type="button" value=" Start! "/>
+	</div>
+
+    <script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui.js"></script> 
+	<script type="text/javascript">YUI({
+//		base: '/assets/js/yahoo-3/',
+		combine: true,
+		filter:'raw'
+	}).use('node', 'gallery-radialmenu', function(Y) {
+		function chunkIteration(arrayToChunk, index, lengthOfChunk, operationFx) {
+			var j, l = arrayToChunk.length;
+
+			for (j = index + lengthOfChunk; index < j && index < l; index += 1) {
+				operationFx(arrayToChunk[index]);
+			}
+
+			if (l > index) {
+				setTimeout(function() {
+					console.log('timeout-' + index);
+					chunkIteration(arrayToChunk, index, lengthOfChunk, operationFx);
+				}, 10);
+			}
+			else {
+				alert('chunk sorted');
+			}
+		}
+
+		function bubblesort(ranarray) {
+			var x, y, holder;
+
+			// The Bubble Sort method.
+			for(x = 0; x < ranarray.length; x++) {
+				for(y = 0; y < (ranarray.length-1); y++) {
+					if(ranarray[y] > ranarray[y+1]) {
+						holder = ranarray[y+1];
+						ranarray[y+1] = ranarray[y];
+						ranarray[y] = holder;
+					}
+				}
+			}
+
+			alert('sorted');
+		}
+
+		function chunkedbubblesort(ranarray) {
+			var y, holder;
+
+			function fn() {
+				for(y = 0; y < (ranarray.length-1); y++) {
+					if(ranarray[y] > ranarray[y+1]) {
+						holder = ranarray[y+1];
+						ranarray[y+1] = ranarray[y];
+						ranarray[y] = holder;
+					}
+				}
+			}
+
+			chunkIteration(ranarray, 0, 100, fn);
+		}
+
+		var myarray = [];
+		for (var i=0; i < 5000; i += 1) {
+			myarray[i] = parseInt(Math.random() * 1000, 10);
+		}
+
+		Y.one('#btnStartProcess').on('click', function() {
+			if (Y.one('#chkboxChunkToggle').get('checked')) {
+				chunkedbubblesort(myarray);
+			}
+			else {
+				bubblesort(myarray);
+			}
+		});
+	});</script>
+<div id="basicmenu" class="yuimenu">
+	<div class="bd">
+		<ul class="first-of-type">
+			<li class="yuimenuitem">
+				<a class="yuimenuitemlabel" href="url1">
+					Item 1
+				</a>
+			</li>
+			<li class="yuimenuitem">
+				<a class="yuimenuitemlabel" href="url2">
+					Item 2
+				</a>
+			</li>
+			<li class="yuimenuitem">
+				<a class="yuimenuitemlabel" href="url3">
+					Item 3
+				</a>
+			</li>
+			...
+		</ul>
+	</div>
+</div>
+</body>
+</html>
