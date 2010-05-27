@@ -73,20 +73,17 @@ var Lang = Y.Lang,
 								name = nodes.item(0).get(NAME);
 							}
 
-							// find labels
-							if (this.get(USE_LABEL)) {
-								labels = box.all('label');
+							labels = box.all('label');
 
-								if (labels.size()) {
-									if (labels.size() == nodes.size()) {
-										nodes.each(function(node, i) {
-											node.label = labels.item(i);
-										});
-									}
-									else {
-										Y.log('There needs to be 1 label per radio input', 'error');
-										return;
-									}
+							if (labels.size()) {
+								if (labels.size() == nodes.size()) {
+									nodes.each(function(node, i) {
+										node.label = labels.item(i);
+									});
+								}
+								else {
+									Y.log('There needs to be 1 label per radio input', 'error');
+									return;
 								}
 							}
 
