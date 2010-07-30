@@ -1,0 +1,52 @@
+.card {
+	height: 96px;
+	width: 72px;
+}
+
+.one {
+	background: #FFF url(../images/game/classicCard/1.png);
+}
+
+.two {
+	background: #FFF url(../images/game/classicCard/2.png);
+}
+
+.three {
+	background: #FFF url(../images/game/classicCard/3.png);
+}
+
+.four {
+	background: #FFF url(../images/game/classicCard/4.png);
+}
+
+.five {
+	background: #FFF url(../images/game/classicCard/5.png);
+}
+
+.copy {
+	margin-bottom: 1em;
+}
+
+.six {
+	background: #FFF url(../images/game/classicCard/6.png);
+}
+
+.seven {
+	background: #FFF url(../images/game/classicCard/7.png);
+}
+
+.eight {
+	background: #FFF url(../images/game/classicCard/8.png);
+}
+
+.nine {
+	background: #FFF url(../images/game/classicCard/9.png);
+}
+
+.ten {
+	background: #FFF url(../images/game/classicCard/10.png);
+}
+
+body {
+	background-color: #EFEFEF;
+}

@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<head>
+	<title>Test Page - Simple JavaScript Function To Include CSS</title>
+
+	<style type="text/css">
+		.actions a {
+			display: block;
+		}
+
+		.none {
+			display: none;
+		}
+	</style>
+</head>
+
+<body id="project">
+
+<h1>Test Page - Simple JavaScript Function To Include CSS</h1>
+
+<p class="copy">
+	This page showcases a rudimentary CSS include function that evaluates the height of
+	an inserted node to know when all the rules in the CSS file have finished loading.
+</p>
+
+<div class="actions" id="actions">
+	<a href="javascript://" id="cssIncludeTest1">include cssIncludeTest1.css</a>
+	<a href="javascript://" id="cssIncludeTest2">include cssIncludeTest2.css</a>
+	<a href="javascript://" id="cssIncludeTest3">include cssIncludeTest3.css</a>
+</div>
+
+<script type="text/javascript">
+	function includeCSS(conf) {
+		if (! (conf && conf.href && conf.id && conf.fx)) {
+			throw new Error("Missing configuration for includeCSS functions.");
+		}
+
+		var pfx = conf.prefix || 'js_',
+				id = pfx + conf.id,
+				elEvalNode = document.createElement('div'),
+				elLinkNode = document.createElement('link'),
+				iIntervalId;
+
+		if (includeCSS.oIncludedField[id] && ! conf.force) {return false;}
+		includeCSS.oIncludedField[id] = true;
+
+		// setup eval node
+		elEvalNode.id = id;
+		elEvalNode.visiblity = 'hidden';
+		elEvalNode.className = conf.className;
+		includeCSS.elBody.appendChild(elEvalNode);
+
+		// setup link node
+		elLinkNode.charset = conf.charset || "utf-8";
+		elLinkNode.href = conf.href;
+		elLinkNode.rel = "stylesheet";
+		elLinkNode.type = "text/css";
+		includeCSS.elHead.appendChild(elLinkNode);
+
+		iIntervalId = setInterval(function() {
+			if (0 < elEvalNode.offsetHeight) {
+				clearInterval(iIntervalId);
+				elEvalNode.parentNode.removeChild(elEvalNode);
+				conf.fx.call(conf.ctx || this, conf.id, conf.data);
+			}
+		}, 250);
+
+		return true;
+	}
+
+	includeCSS.elBody = document.getElementsByTagName("body")[0];
+	includeCSS.elHead = document.getElementsByTagName("head")[0];
+	includeCSS.oIncludedField = {};
+</script>
+
+<script type="text/javascript" src="http://yui.yahooapis.com/combo?3.1.1/build/yui/yui-min.js"></script>
+<script type="text/javascript">YUI().use('event', 'node', 'overlay', function(Y) {
+	function handleCallback(fileName) {
+		alert("The CSS file (" + fileName + ") has finished loading.");
+	}
+
+	Y.all('#actions a').on('click', function(e) {
+		var name = e.target.get('id');
+		if (! includeCSS({href: '/assets/css/' + name + '.css', id: name, fx: handleCallback})) {
+			alert('CSS file (' + name + ') is already included.');
+		}
+	});
+});</script>
+</body>
+</html>

@@ -2,10 +2,10 @@
 <HTML>
 
 <head>
-    <title>Test Page - Mac Preference Radio Buttons</title>
+	<title>Test Page - Mac Preference Radio Buttons</title>
 
-	<link rel="stylesheet" type="text/css" href="http://yui-ext-mvc.googlecode.com/svn/trunk/assets/css/macprefradio.css">
-	
+	<link rel="stylesheet" type="text/css" href="/assets/css/macprefradio.css">
+
 	<style type="text/css">
 		.module {
 			border: 1px solid #CCC;
@@ -35,43 +35,44 @@
 		.none {
 			display: none;
 		}
-    </style>
+	</style>
 </head>
 
 <body id="project">
 
-	<h1>Test Page - Mac Preference Radio Buttons</h1>
+<h1>Test Page - Mac Preference Radio Buttons</h1>
 
-	<p class="copy">
-		The Mac OS and iPhone uses nice rounded corner, easy to see and interact with buttons instead of web-like radio buttons.
-		This widget styles the radio buttons to look like the MAC OS and manages radio button-related events. A
-		The premier focus of this feature is to replace on/off, or yes/no radio buttons.
-		However, there is an option to have 3 or more radios, which use a slightly different style.
-	</p>
+<p class="copy">
+	The Mac OS and iPhone uses nice rounded corner, easy to see and interact with buttons instead of web-like radio buttons.
+	This widget styles the radio buttons to look like the MAC OS and manages radio button-related events. A
+	The premier focus of this feature is to replace on/off, or yes/no radio buttons.
+	However, there is an option to have 3 or more radios, which use a slightly different style.
+</p>
 
-	<p class="copy">
-		The first example shows the widget being rendered from the exact same markup that it would generate.
-		The second shows the converting a list of radio buttons into Mac Preference Buttons. The third shows
-		the buttons being rendered server-side. And the fourth shows an interactive example where the buttons
-		are used to control the content of a module.
-	</p>
+<p class="copy">
+	The first example shows the widget being rendered from the exact same markup that it would generate.
+	The second shows the converting a list of radio buttons into Mac Preference Buttons. The third shows
+	the buttons being rendered server-side. And the fourth shows an interactive example where the buttons
+	are used to control the content of a module.
+</p>
 
-	<div class="yui3-macprefradio" id="renderFromExactMarkup">
-		<div class="yui3-macprefradio-button yui3-macprefradio-left" title="yes">On</div>
-		<div class="yui3-macprefradio-button yui3-macprefradio-right checked" title="no">Off</div>
-		<input name="radio1" type="hidden" value=""/>
-	</div>
+<div class="yui3-macprefradio" id="renderFromExactMarkup">
+	<div class="yui3-macprefradio-button yui3-macprefradio-left" title="yes">On</div>
+	<div class="yui3-macprefradio-button yui3-macprefradio-right checked" title="no">Off</div>
+	<input name="radio1" type="hidden" value=""/>
+</div>
 
-	<div id="renderFromRadioMarkup">
-		<input name="radio2" type="radio" value="On"/>
-		<input checked="checked" name="radio2" type="radio" value="Other"/>
-		<input name="radio2" type="radio" value="Off"/>
-	</div>
+<div id="renderFromRadioMarkup">
+	<input name="radio2" type="radio" value="On"/>
+	<input checked="checked" name="radio2" type="radio" value="Other"/>
+	<input name="radio2" type="radio" value="Off"/>
+</div>
 
-	<div id="renderFromJavaScript"></div>
+<div id="renderFromJavaScript"></div>
 
-	<div class="module">
-		<div class="hd"><div id="renderFromRadioMarkup2">
+<div class="module">
+	<div class="hd">
+		<div id="renderFromRadioMarkup2">
 			<label>One</label>
 			<input checked="checked" name="radio3" type="radio" value="1"/>
 			<label>Two</label>
@@ -80,46 +81,47 @@
 			<input name="radio3" type="radio" value="3"/>
 			<label>Four</label>
 			<input name="radio3" type="radio" value="4"/>
-		</div></div>
-		<div class="bd">
-			<div id="panel1">1</div>
-			<div class="none" id="panel2">2</div>
-			<div class="none" id="panel3">3</div>
-			<div class="none" id="panel4">4</div>
 		</div>
 	</div>
+	<div class="bd">
+		<div id="panel1">1</div>
+		<div class="none" id="panel2">2</div>
+		<div class="none" id="panel3">3</div>
+		<div class="none" id="panel4">4</div>
+	</div>
+</div>
 
-    <script type="text/javascript" src="http://yui.yahooapis.com/combo?3.1.1/build/yui/yui-min.js"></script> 
-	<script type="text/javascript">YUI({
-//		base: '/assets/js/yahoo-3/',
-		combine: true,
-		filter:'raw',
-		modules: {
-			'gallery-macprefradio': {
-				fullpath: 'http://yui-ext-mvc.googlecode.com/svn/trunk/assets/js/yahoo-3-ext/macprefradio.js',
-//				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/macprefradio.js',
-				requires: ['widget','node','dom']
-			}
+<script type="text/javascript" src="http://yui.yahooapis.com/combo?3.1.1/build/yui/yui-min.js"></script>
+<script type="text/javascript">YUI({
+	//		base: '/assets/js/yahoo-3/',
+	combine: true,
+	filter:'raw',
+	modules: {
+		'gallery-macprefradio': {
+			fullpath: 'http://yui-ext-mvc.googlecode.com/svn/trunk/assets/js/yahoo-3-ext/macprefradio.js',
+			//				fullpath: 'http://core.localhost/assets/js/yahoo-3-ext/macprefradio.js',
+			requires: ['widget','node','dom']
 		}
-	}).use('node', 'gallery-macprefradio', function(Y) {
-		var radio1 = new Y.MacPrefRadio({boundingBox: '#renderFromExactMarkup'});
-		radio1.render();
-		var radio2 = new Y.MacPrefRadio({boundingBox: '#renderFromRadioMarkup'});
-		radio2.render();
-		var radio3 = new Y.MacPrefRadio({boundingBox: '#renderFromRadioMarkup2'});
-		radio3.render();
-		var radio4 = new Y.MacPrefRadio({name: 'radio4', radios: [
-			{value: 'a', text: 'A'},
-			{checked: true, value: 'b', text: 'B'},
-			{value: 'c', text: 'C'},
-			{value: 'd', text: 'D'}
-		]});
-		radio4.render('#renderFromJavaScript');
+	}
+}).use('node', 'gallery-macprefradio', function(Y) {
+	var radio1 = new Y.MacPrefRadio({boundingBox: '#renderFromExactMarkup'});
+	radio1.render();
+	var radio2 = new Y.MacPrefRadio({boundingBox: '#renderFromRadioMarkup'});
+	radio2.render();
+	var radio3 = new Y.MacPrefRadio({boundingBox: '#renderFromRadioMarkup2'});
+	radio3.render();
+	var radio4 = new Y.MacPrefRadio({name: 'radio4', radios: [
+		{value: 'a', text: 'A'},
+		{checked: true, value: 'b', text: 'B'},
+		{value: 'c', text: 'C'},
+		{value: 'd', text: 'D'}
+	]});
+	radio4.render('#renderFromJavaScript');
 
-		radio3.on('checked', function(e) {
-			if (e.details[0].oldvalue) {Y.one('#panel' + e.details[0].oldvalue).addClass('none');}
-			Y.one('#panel' + e.details[0].value).removeClass('none');
-		});
-	});</script>
+	radio3.on('checked', function(e) {
+		if (e.details[0].oldvalue) {Y.one('#panel' + e.details[0].oldvalue).addClass('none');}
+		Y.one('#panel' + e.details[0].value).removeClass('none');
+	});
+});</script>
 </body>
 </html>

@@ -1,0 +1,32 @@
+body {
+	background-color: #CCC;
+	color: #0F0;
+}
+
+p {
+	font-size: 140%;
+}
+
+a {
+	color: #090;
+}
+
+h1 {
+	font-variant: small-caps;
+}
+
+.actions {
+	background-color: #999;
+	border: 1px solid #EFEFEF;
+}
+
+.copy {
+	color: #3C3;
+}
+
+/* this style notifies the JavaScript that file is loaded
+and should be the last rule in the CSS file */
+
+#js_cssIncludeTest2 {
+	height: 10px;
+}
