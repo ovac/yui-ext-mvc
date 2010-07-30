@@ -10,75 +10,91 @@ Version: 1.0.01
 	-->
 	<property environment="env"/>
 
-    <!--
-    location of the YUI compressor relative to the base dir; available @ http://developer.yahoo.com/yui/compressor/
-    -->
-    <property name="yuicompressor" value="${basedir}/bin/yuicompressor-2.4.2.jar"/>
+	<!--
+		location of the YUI compressor relative to the base dir; available @ http://developer.yahoo.com/yui/compressor/
+		-->
+	<property name="yuicompressor" value="${basedir}/bin/yuicompressor-2.4.2.jar"/>
 
 	<!--
 	if not set in environment (ie. a developer build) this is the default build number
 	-->
 	<property name="env.BUILD_NUMBER" value="dev"/>
 
-    <!--
-    general file locations
-    -->
+	<!--
+		general file locations
+		-->
 	<!-- <property name="drive_home" value="/cygdrive/c"/> -->
 	<property name="drive_home" value="C:"/>
 	<property name="js_home" value="${basedir}/assets/js"/>
+	<property name="lib_home" value="${basedir}/lib"/>
 	<property name="cssdir" value="${basedir}/assets/css"/>
 	<property name="builddir" value="${basedir}/build"/>
 	<property name="rhino.jar" value="${basedir}/bin/rhino-1.7R2.jar"/>
 	<property name="jslint.js" value="${basedir}/bin/jslint.js"/>
 
-    <!--
-    setup file documenting locations of your yuidoc install
-    -->
+	<!--
+		setup file documenting locations of your yuidoc install
+		-->
 	<property name="build_docjs" value="${builddir}/docs/js"/>
 	<property name="build_doccss" value="${builddir}/docs/css"/>
 	<property name="yuidoc_home" value="${drive_home}/projects/yuidoc"/>
 	<property name="python_home" value="${drive_home}/Python_2.5.1"/>
 	<property name="doc_home" value="${builddir}/docs"/>
 
-    <!--
-    The location of the files to parse.  Parses subdirectories, but will fail if there are duplicate file
-    names in these directories.  You can specify multiple source trees:
-    parser_in="%HOME/www/yui/src %HOME/www/event/src"
-    -->
+	<!--
+	inlcude ant contrib, which adds much needed ant tasks
+	-->
+	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${lib_home}/ant-contrib-1.0b3.jar"/>
+
+	<!--
+		data URI setup
+		-->
+	<property name="datauri.jar" value="${lib_home}/cssembed-0.3.3.jar"/>
+	<property name="datauri.charset" value="UTF-8"/>
+	<property name="datauri.inputdir" value="${cssdir}"/>
+	<property name="datauri.mhtmlroot" value="http://core.localhost/assets/css/"/>
+	<property name="datauri.outputdir" value="${builddir}/css"/>
+	<property name="datauri.root" value="http://core.localhost/assets/css/"/>
+
+	<!--
+		The location of the files to parse.  Parses subdirectories, but will fail if there are duplicate file
+		names in these directories.  You can specify multiple source trees:
+		parser_in="%HOME/www/yui/src %HOME/www/event/src"
+		-->
 	<!-- <property name="parser_in" value="${js_home}/window ${js_home}/yahoo-2.6 ${js_home}/yahoo-ext"/> -->
 	<property name="parser_in" value="${build_docjs}/animation ${build_docjs}/autocomplete ${build_docjs}/connection
 	${build_docjs}/datasource ${build_docjs}/dom ${build_docjs}/event ${build_docjs}/json ${build_docjs}/yahoo
 	${build_docjs}/window ${build_docjs}/form ${build_docjs}/mvc ${build_docjs}/ystorage"/>
 
-    <!--
-    The location to output the parser data.  This output is a file containing a json string, and copies of the parsed files.
-    -->
+	<!--
+		The location to output the parser data.  This output is a file containing a json string, and copies of the parsed files.
+		-->
 	<property name="parser_out" value="${doc_home}/parser"/>
 
-    <!--
-    The directory to put the html file outputted by the generator.
-    -->
+	<!--
+		The directory to put the html file outputted by the generator.
+		-->
 	<property name="generator_out" value="${doc_home}/generator"/>
 
-    <!--
-    The location of the template files.  Any subdirectories here will be copied verbatim to the destination directory.
-    -->
+	<!--
+		The location of the template files.  Any subdirectories here will be copied verbatim to the destination directory.
+		-->
 	<property name="template" value="${yuidoc_home}/template"/>
 
-    <!--
-    The version of your project to display within the documentation.
-    -->
+	<!--
+		The version of your project to display within the documentation.
+		-->
 	<property name="version" value="1.0.01"/>
 
-    <!--
-    The version of YUI the project is using.  This effects the output for YUI configuration attributes.
-    This should start with '2' or '3'.
-    -->
+	<!--
+		The version of YUI the project is using.  This effects the output for YUI configuration attributes.
+		This should start with '2' or '3'.
+		-->
 	<property name="yuiversion" value="2.7"/>
 
-    <!--
-    which tier am I
-    -->
+	<!--
+		which tier am I
+		-->
 	<property name="tier" value="web"/>
 
 	<!--
@@ -88,23 +104,54 @@ Version: 1.0.01
 	<target name="clean" description="Deletes all the generated artifacts">
 		<delete dir="${builddir}/"/>
 	</target>
-	
+
+	<target name="create.css.datauri">
+		<for param="file">
+			<fileset dir="${datauri.inputdir}" id="css.datauri.files">
+				<include name="*.css"/>
+			</fileset>
+			<sequential>
+				<propertyregex property="datauri.filename" input="@{file}" regexp="(\w+\.css)" select="\1" override="true"/>
+				<echo message="converting ${datauri.filename} to datauri"/>
+				<java jar="${datauri.jar}" fork="true" failonerror="true">
+					<arg value="-o"/>
+					<arg value="${datauri.outputdir}/${datauri.filename}"/>
+					<arg value="--charset"/>
+					<arg value="${datauri.charset}"/>
+					<arg value="--root"/>
+					<arg value="${datauri.root}"/>
+					<arg value="@{file}"/>
+				</java>
+				<java jar="${datauri.jar}" fork="true" failonerror="true">
+					<arg value="-o"/>
+					<arg value="${datauri.outputdir}/ie-${datauri.filename}"/>
+					<arg value="--mhtml"/>
+					<arg value="--mhtmlroot"/>
+					<arg value="${datauri.mhtmlroot}"/>
+					<arg value="--charset"/>
+					<arg value="${datauri.charset}"/>
+					<arg value="@{file}"/>
+				</java>
+			</sequential>
+		</for>
+	</target>
+
 	<target name="create.consolidate.build.directories">
 		<!-- javascript build directories -->
 		<mkdir dir="${builddir}/js"/>
-        
-        <!-- css build directories -->
+
+		<!-- css build directories -->
 		<mkdir dir="${builddir}/css"/>
 	</target>
 
-    <!-- @start consolidate YAHOO -->
-    <target name="reconsolidate.yahoo.js.check">
+	<!-- @start consolidate YAHOO -->
+	<target name="reconsolidate.yahoo.js.check">
 		<condition property="yahoo.js.uptodate">
 			<uptodate targetfile="${builddir}/js/yahoo.js">
 				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="animation.js"/>
 				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="autocomplete.js"/>
 				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="connection.js"/>
-                 <!--<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="cookie.js"/>-->
+				<!--<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="cookie.js"/>-->
 				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="datasource.js"/>
 				<!-- <srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="deconcept.js"/> -->
 				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="dom.js"/>
@@ -112,53 +159,53 @@ Version: 1.0.01
 				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="event.js"/>
 				<!--<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="flashadapter.js"/>-->
 				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="json.js"/>
-				 <!--<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="element.js"/>-->
+				<!--<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="element.js"/>-->
 				<!-- <srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="slider.js"/> -->
 				<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="yahoo.js"/>
-				 <!--<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="yuiloader.js"/>-->
+				<!--<srcfiles dir="${js_home}/yahoo-${yuiversion}" includes="yuiloader.js"/>-->
 			</uptodate>
 		</condition>
 	</target>
-	
+
 	<target name="consolidate.yahoo.js" depends="reconsolidate.yahoo.js.check" unless="yahoo.js.uptodate">
 		<echo message="consolidating yahoo.js"/>
-        
-        <concat destfile="${builddir}/js/yahoo.js">
+
+		<concat destfile="${builddir}/js/yahoo.js">
 			<filelist dir="${js_home}/yahoo-${yuiversion}">
 				<file name="yahoo.js"/>
 				<file name="dom.js"/>
 				<file name="event.js"/>
 				<file name="json.js"/>
 
-                 <!--<file name="yuiloader.js"/>-->
-                 <!--<file name="cookie.js"/>-->
+				<!--<file name="yuiloader.js"/>-->
+				<!--<file name="cookie.js"/>-->
 
 				<file name="animation.js"/>
 				<file name="connection.js"/>
 
-                <file name="datasource.js"/>
-                 <!--<file name="element.js"/>-->
-                 <!--<file name="deconcept.js"/>-->
-                 <!--<file name="flashadapter.js"/>-->
-                <!-- <file name="dragdrop.js"/> -->
-                <file name="autocomplete.js"/>
-                <!-- <file name="slider.js"/> -->
+				<file name="datasource.js"/>
+				<!--<file name="element.js"/>-->
+				<!--<file name="deconcept.js"/>-->
+				<!--<file name="flashadapter.js"/>-->
+				<!-- <file name="dragdrop.js"/> -->
+				<file name="autocomplete.js"/>
+				<!-- <file name="slider.js"/> -->
 			</filelist>
 		</concat>
 
 		<echo message="Compressing yahoo.js"/>
 		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/js/yahoo-min.js">
-			<arg value="--charset" />
-			<arg value="UTF-8" />
-			<arg value="--line-break" />
-			<arg value="0" />
-			<arg value="${builddir}/js/yahoo.js" />
+			<arg value="--charset"/>
+			<arg value="UTF-8"/>
+			<arg value="--line-break"/>
+			<arg value="0"/>
+			<arg value="${builddir}/js/yahoo.js"/>
 		</java>
 	</target>
-    <!-- @end consolidate YAHOO -->
+	<!-- @end consolidate YAHOO -->
 
-    <!-- @start consolidate YAHOO-ext -->
-    <target name="reconsolidate.yui-ext.js.check">
+	<!-- @start consolidate YAHOO-ext -->
+	<target name="reconsolidate.yui-ext.js.check">
 		<condition property="yui-ext.js.uptodate">
 			<uptodate targetfile="${builddir}/js/yahoo-ext.js">
 				<srcfiles dir="${js_home}/yahoo-ext" includes="lang.js"/>
@@ -174,8 +221,8 @@ Version: 1.0.01
 
 	<target name="consolidate.yui-ext.js" depends="reconsolidate.yui-ext.js.check" unless="yui-ext.js.uptodate">
 		<echo message="consolidating yui-ext.js"/>
-        
-        <concat destfile="${builddir}/js/yahoo-ext.js">
+
+		<concat destfile="${builddir}/js/yahoo-ext.js">
 			<filelist dir="${js_home}/yahoo-ext">
 				<file name="lang.js"/>
 				<file name="constant.js"/>
@@ -199,17 +246,17 @@ Version: 1.0.01
 
 		<echo message="Compressing yahoo-ext.js"/>
 		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/js/yahoo-ext-min.js">
-			<arg value="--charset" />
-			<arg value="UTF-8" />
-			<arg value="--line-break" />
-			<arg value="0" />
-			<arg value="${builddir}/js/yahoo-ext.js" />
+			<arg value="--charset"/>
+			<arg value="UTF-8"/>
+			<arg value="--line-break"/>
+			<arg value="0"/>
+			<arg value="${builddir}/js/yahoo-ext.js"/>
 		</java>
 	</target>
-    <!-- @end consolidate YAHOO-ext -->
+	<!-- @end consolidate YAHOO-ext -->
 
-    <!-- @start consolidate native-ext -->
-    <target name="reconsolidate.native-ext.js.check">
+	<!-- @start consolidate native-ext -->
+	<target name="reconsolidate.native-ext.js.check">
 		<condition property="native-ext.js.uptodate">
 			<uptodate targetfile="${builddir}/js/native-ext.js">
 				<srcfiles dir="${js_home}/native-ext" includes="array.js"/>
@@ -225,8 +272,8 @@ Version: 1.0.01
 
 	<target name="consolidate.native-ext.js" depends="reconsolidate.native-ext.js.check" unless="native-ext.js.uptodate">
 		<echo message="consolidating native-ext.js"/>
-        
-        <concat destfile="${builddir}/js/native-ext.js">
+
+		<concat destfile="${builddir}/js/native-ext.js">
 			<filelist dir="${js_home}/native-ext">
 				<file name="array.js"/>
 				<file name="boolean.js"/>
@@ -250,17 +297,17 @@ Version: 1.0.01
 
 		<echo message="Compressing native-ext.js"/>
 		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/js/native-ext-min.js">
-			<arg value="--charset" />
-			<arg value="UTF-8" />
-			<arg value="--line-break" />
-			<arg value="0" />
-			<arg value="${builddir}/js/native-ext.js" />
+			<arg value="--charset"/>
+			<arg value="UTF-8"/>
+			<arg value="--line-break"/>
+			<arg value="0"/>
+			<arg value="${builddir}/js/native-ext.js"/>
 		</java>
 	</target>
-    <!-- @end consolidate native-ext -->
+	<!-- @end consolidate native-ext -->
 
-    <!-- @start consolidate mvc -->
-    <target name="reconsolidate.mvc.js.check">
+	<!-- @start consolidate mvc -->
+	<target name="reconsolidate.mvc.js.check">
 		<condition property="mvc.js.uptodate">
 			<uptodate targetfile="${builddir}/js/mvc.js">
 				<srcfiles dir="${js_home}/mvc/lib" includes="core.js"/>
@@ -272,9 +319,9 @@ Version: 1.0.01
 	</target>
 
 	<target name="consolidate.mvc.js" depends="reconsolidate.mvc.js.check" unless="mvc.js.uptodate">
-        <echo message="consolidating mvc.js"/>
+		<echo message="consolidating mvc.js"/>
 
-        <concat destfile="${builddir}/js/mvc.js">
+		<concat destfile="${builddir}/js/mvc.js">
 			<filelist dir="${js_home}/mvc">
 				<file name="lib/core.js"/>
 				<file name="lib/controller.js"/>
@@ -295,17 +342,17 @@ Version: 1.0.01
 
 		<echo message="Compressing mvc.js"/>
 		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/js/mvc-min.js">
-			<arg value="--charset" />
-			<arg value="UTF-8" />
-			<arg value="--line-break" />
-			<arg value="0" />
-			<arg value="${builddir}/js/mvc.js" />
+			<arg value="--charset"/>
+			<arg value="UTF-8"/>
+			<arg value="--line-break"/>
+			<arg value="0"/>
+			<arg value="${builddir}/js/mvc.js"/>
 		</java>
 	</target>
-    <!-- @end consolidate mvc -->
+	<!-- @end consolidate mvc -->
 
-    <!-- @start consolidate storage -->
-    <target name="reconsolidate.storage.js.check">
+	<!-- @start consolidate storage -->
+	<target name="reconsolidate.storage.js.check">
 		<condition property="storage.js.uptodate">
 			<uptodate targetfile="${builddir}/js/storage.js">
 				<srcfiles dir="${js_home}/YUIDataStorage" includes="StorageEvent.js"/>
@@ -321,9 +368,9 @@ Version: 1.0.01
 	</target>
 
 	<target name="consolidate.storage.js" depends="reconsolidate.storage.js.check" unless="storage.js.uptodate">
-        <echo message="consolidating storage.js"/>
+		<echo message="consolidating storage.js"/>
 
-        <concat destfile="${builddir}/js/storage.js">
+		<concat destfile="${builddir}/js/storage.js">
 			<filelist dir="${js_home}/YUIDataStorage">
 				<file name="StorageEvent.js"/>
 				<file name="StorageManager.js"/>
@@ -348,17 +395,18 @@ Version: 1.0.01
 
 		<echo message="Compressing storage.js"/>
 		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/js/storage-min.js">
-			<arg value="--charset" />
-			<arg value="UTF-8" />
-			<arg value="--line-break" />
-			<arg value="0" />
-			<arg value="${builddir}/js/storage.js" />
+			<arg value="--charset"/>
+			<arg value="UTF-8"/>
+			<arg value="--line-break"/>
+			<arg value="0"/>
+			<arg value="${builddir}/js/storage.js"/>
 		</java>
 	</target>
-    <!-- @end consolidate storage -->
+	<!-- @end consolidate storage -->
 
-    <!-- @start consolidate library.js; this is a compilation of the other 4 packages -->
-    <target name="reconsolidate.library.js.check" depends="create.consolidate.build.directories, consolidate.yahoo.js, consolidate.yui-ext.js, consolidate.native-ext.js, consolidate.mvc.js">
+	<!-- @start consolidate library.js; this is a compilation of the other 4 packages -->
+	<target name="reconsolidate.library.js.check"
+			depends="create.consolidate.build.directories, consolidate.yahoo.js, consolidate.yui-ext.js, consolidate.native-ext.js, consolidate.mvc.js">
 		<condition property="library.js.uptodate">
 			<uptodate targetfile="${builddir}/js/library.js">
 				<srcfiles dir="${builddir}/js" includes="yahoo.js"/>
@@ -371,8 +419,8 @@ Version: 1.0.01
 
 	<target name="consolidate.library.js" depends="reconsolidate.library.js.check" unless="library.js.uptodate">
 		<echo message="consolidating library.js"/>
-        
-        <concat destfile="${builddir}/js/library.js">
+
+		<concat destfile="${builddir}/js/library.js">
 			<filelist dir="${builddir}/js/">
 				<file name="yahoo.js"/>
 				<file name="yahoo-ext.js"/>
@@ -382,19 +430,19 @@ Version: 1.0.01
 		</concat>
 
 		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/js/library-min.js">
-			<arg value="--charset" />
-			<arg value="UTF-8" />
-			<arg value="--line-break" />
-			<arg value="0" />
-			<arg value="${builddir}/js/library.js" />
+			<arg value="--charset"/>
+			<arg value="UTF-8"/>
+			<arg value="--line-break"/>
+			<arg value="0"/>
+			<arg value="${builddir}/js/library.js"/>
 		</java>
 
-        <copy file="${builddir}/js/library.js" tofile="${js_home}/library.js"/>
+		<copy file="${builddir}/js/library.js" tofile="${js_home}/library.js"/>
 	</target>
-    <!-- @end consolidate library.js -->
+	<!-- @end consolidate library.js -->
 
-    <!-- @start consolidate library.css -->
-    <target name="reconsolidate.library.css.check" depends="create.consolidate.build.directories">
+	<!-- @start consolidate library.css -->
+	<target name="reconsolidate.library.css.check" depends="create.consolidate.build.directories">
 		<condition property="library.css.uptodate">
 			<uptodate targetfile="${builddir}/css/library.css">
 				<srcfiles dir="${basedir}/assets/css" includes="reset.css"/>
@@ -407,7 +455,7 @@ Version: 1.0.01
 	<target name="consolidate.library.css" depends="reconsolidate.library.css.check" unless="library.css.uptodate">
 		<echo message="consolidating library.css"/>
 
-        <concat destfile="${builddir}/css/library.css">
+		<concat destfile="${builddir}/css/library.css">
 			<filelist dir="${cssdir}/">
 				<file name="reset.css"/>
 				<file name="base.css"/>
@@ -416,118 +464,119 @@ Version: 1.0.01
 		</concat>
 
 		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/css/library-min.css">
-			<arg value="--charset" />
-			<arg value="UTF-8" />
-			<arg value="${builddir}/css/library.css" />
+			<arg value="--charset"/>
+			<arg value="UTF-8"/>
+			<arg value="${builddir}/css/library.css"/>
 		</java>
-    </target>
-    <!-- @end consolidate library.css -->
+	</target>
+	<!-- @end consolidate library.css -->
 
-    <!-- @start consolidate mattsnider.com.css -->
-    <target name="reconsolidate.mattsnider.com.css.check" depends="create.consolidate.build.directories">
+	<!-- @start consolidate mattsnider.com.css -->
+	<target name="reconsolidate.mattsnider.com.css.check" depends="create.consolidate.build.directories">
 		<condition property="mattsnider.com.css.uptodate">
 			<uptodate targetfile="${builddir}/css/mattsnider.com.css">
 				<srcfiles dir="${builddir}/css" includes="library.css"/>
-				<srcfiles dir="${basedir}/assets/css" includes="layout.css"/>
+				<!--<srcfiles dir="${basedir}/assets/css" includes="layout.css"/>-->
 			</uptodate>
 		</condition>
 	</target>
 
 	<target name="consolidate.mattsnider.com.css" depends="reconsolidate.mattsnider.com.css.check" unless="mattsnider.com.css.uptodate">
 		<echo message="processing mattsnider.com.css"/>
-        <copy file="${builddir}/css/library.css" tofile="${basedir}/assets/css/library-tmp.css"/>
+		<copy file="${builddir}/css/library.css" tofile="${basedir}/assets/css/library-tmp.css"/>
 
-        <concat destfile="${builddir}/css/mattsnider.com.css">
+		<concat destfile="${builddir}/css/mattsnider.com.css">
 			<filelist dir="${cssdir}/">
 				<file name="library-tmp.css"/>
-				<file name="layout.css"/>
+				<!--<file name="layout.css"/>-->
 			</filelist>
 		</concat>
 
 		<java jar="${yuicompressor}" fork="true" failonerror="true" output="${builddir}/css/mattsnider.com-min.css">
-			<arg value="--charset" />
-			<arg value="UTF-8" />
-			<arg value="${builddir}/css/mattsnider.com.css" />
+			<arg value="--charset"/>
+			<arg value="UTF-8"/>
+			<arg value="${builddir}/css/mattsnider.com.css"/>
 		</java>
 
-        <delete file="${basedir}/assets/css/library-tmp.css"/>
-    </target>
-    <!-- @end consolidate mattsnider.com.css -->
+		<delete file="${basedir}/assets/css/library-tmp.css"/>
+	</target>
+	<!-- @end consolidate mattsnider.com.css -->
 
-    <!-- @start consolidate build documentation -->
+	<!-- @start consolidate build documentation -->
 	<target name="build.javadoc">
 		<delete dir="${doc_home}/"/>
 
-        <!-- animation module -->
-        <copy file="${js_home}/yahoo-${yuiversion}/animation.js" tofile="${build_docjs}/animation/animation.js"/>
+		<!-- animation module -->
+		<copy file="${js_home}/yahoo-${yuiversion}/animation.js" tofile="${build_docjs}/animation/animation.js"/>
 
-        <!-- autocomplete module -->
-        <copy file="${js_home}/yahoo-${yuiversion}/autocomplete.js" tofile="${build_docjs}/autocomplete/autocomplete.js"/>
+		<!-- autocomplete module -->
+		<copy file="${js_home}/yahoo-${yuiversion}/autocomplete.js" tofile="${build_docjs}/autocomplete/autocomplete.js"/>
 
-        <!-- connection module -->
-        <copy file="${js_home}/yahoo-${yuiversion}/connection.js" tofile="${build_docjs}/connection/connection.js"/>
+		<!-- connection module -->
+		<copy file="${js_home}/yahoo-${yuiversion}/connection.js" tofile="${build_docjs}/connection/connection.js"/>
 
-        <!-- datasource module -->
-        <copy file="${js_home}/yahoo-${yuiversion}/datasource.js" tofile="${build_docjs}/datasource/datasource.js"/>
+		<!-- datasource module -->
+		<copy file="${js_home}/yahoo-${yuiversion}/datasource.js" tofile="${build_docjs}/datasource/datasource.js"/>
 
-        <!-- dom module -->
-        <copy file="${js_home}/yahoo-${yuiversion}/dom.js" tofile="${build_docjs}/dom/dom.js"/>
-        <copy file="${js_home}/yahoo-ext/dom.js" tofile="${build_docjs}/dom/dom-ext.js"/>
+		<!-- dom module -->
+		<copy file="${js_home}/yahoo-${yuiversion}/dom.js" tofile="${build_docjs}/dom/dom.js"/>
+		<copy file="${js_home}/yahoo-ext/dom.js" tofile="${build_docjs}/dom/dom-ext.js"/>
 
-        <!-- event module -->
-        <copy file="${js_home}/yahoo-${yuiversion}/event.js" tofile="${build_docjs}/event/event.js"/>
-        <copy file="${js_home}/yahoo-ext/event.js" tofile="${build_docjs}/event/event-ext.js"/>
+		<!-- event module -->
+		<copy file="${js_home}/yahoo-${yuiversion}/event.js" tofile="${build_docjs}/event/event.js"/>
+		<copy file="${js_home}/yahoo-ext/event.js" tofile="${build_docjs}/event/event-ext.js"/>
 
-        <!-- form module -->
-        <copy file="${js_home}/yahoo-ext/form.js" tofile="${build_docjs}/form/form.js"/>
-        <copy file="${js_home}/yahoo-ext/formElement.js" tofile="${build_docjs}/form/formElement.js"/>
-        <copy file="${js_home}/yahoo-ext/formElementSerializer.js" tofile="${build_docjs}/form/formElementSerializer.js"/>
+		<!-- form module -->
+		<copy file="${js_home}/yahoo-ext/form.js" tofile="${build_docjs}/form/form.js"/>
+		<copy file="${js_home}/yahoo-ext/formElement.js" tofile="${build_docjs}/form/formElement.js"/>
+		<copy file="${js_home}/yahoo-ext/formElementSerializer.js" tofile="${build_docjs}/form/formElementSerializer.js"/>
 
-        <!-- json module -->
-        <copy file="${js_home}/yahoo-${yuiversion}/json.js" tofile="${build_docjs}/json/json.js"/>
+		<!-- json module -->
+		<copy file="${js_home}/yahoo-${yuiversion}/json.js" tofile="${build_docjs}/json/json.js"/>
 
-        <!-- mvc module -->
-        <copy file="${js_home}/mvc/lib/core.js" tofile="${build_docjs}/mvc/core.js"/>
-        <copy file="${js_home}/mvc/util/console.js" tofile="${build_docjs}/mvc/console.js"/>
-        <copy file="${js_home}/mvc/util/eventDispatcher.js" tofile="${build_docjs}/mvc/eventDispatcher.js"/>
+		<!-- mvc module -->
+		<copy file="${js_home}/mvc/lib/core.js" tofile="${build_docjs}/mvc/core.js"/>
+		<copy file="${js_home}/mvc/util/console.js" tofile="${build_docjs}/mvc/console.js"/>
+		<copy file="${js_home}/mvc/util/eventDispatcher.js" tofile="${build_docjs}/mvc/eventDispatcher.js"/>
 
-        <!-- window module -->
-        <copy file="${js_home}/window/Array.js" tofile="${build_docjs}/window/array.js"/>
-        <copy file="${js_home}/window/Boolean.js" tofile="${build_docjs}/window/boolean.js"/>
-        <copy file="${js_home}/window/Date.js" tofile="${build_docjs}/window/date.js"/>
-        <copy file="${js_home}/window/Number.js" tofile="${build_docjs}/window/number.js"/>
-        <copy file="${js_home}/window/RegExp.js" tofile="${build_docjs}/window/regexp.js"/>
-        <copy file="${js_home}/yahoo-ext/constant.js" tofile="${build_docjs}/window/constant.js"/>
+		<!-- window module -->
+		<copy file="${js_home}/window/Array.js" tofile="${build_docjs}/window/array.js"/>
+		<copy file="${js_home}/window/Boolean.js" tofile="${build_docjs}/window/boolean.js"/>
+		<copy file="${js_home}/window/Date.js" tofile="${build_docjs}/window/date.js"/>
+		<copy file="${js_home}/window/Number.js" tofile="${build_docjs}/window/number.js"/>
+		<copy file="${js_home}/window/RegExp.js" tofile="${build_docjs}/window/regexp.js"/>
+		<copy file="${js_home}/yahoo-ext/constant.js" tofile="${build_docjs}/window/constant.js"/>
 
-        <!-- yahoo module -->
-        <copy file="${js_home}/yahoo-${yuiversion}/yahoo.js" tofile="${build_docjs}/yahoo/yahoo.js"/>
-        <copy file="${js_home}/yahoo-ext/lang.js" tofile="${build_docjs}/yahoo/lang-ext.js"/>
+		<!-- yahoo module -->
+		<copy file="${js_home}/yahoo-${yuiversion}/yahoo.js" tofile="${build_docjs}/yahoo/yahoo.js"/>
+		<copy file="${js_home}/yahoo-ext/lang.js" tofile="${build_docjs}/yahoo/lang-ext.js"/>
 
-        <!-- yahoo storage module -->
-        <copy file="assets/js/YUIDataStorage/Storage.js" tofile="${build_docjs}/ystorage/Storage.js"/>
-        <copy file="assets/js/YUIDataStorage/StorageManager.js" tofile="${build_docjs}/ystorage/StorageManager.js"/>
-        <copy file="assets/js/YUIDataStorage/StorageEvent.js" tofile="${build_docjs}/ystorage/StorageEvent.js"/>
-        <copy file="assets/js/YUIDataStorage/StorageEngineGears.js" tofile="${build_docjs}/ystorage/StorageEngineGears.js"/>
-        <copy file="assets/js/YUIDataStorage/StorageEngineHTML5.js" tofile="${build_docjs}/ystorage/StorageEngineHTML5.js"/>
-        <copy file="assets/js/YUIDataStorage/StorageEngineKeyed.js" tofile="${build_docjs}/ystorage/StorageEngineKeyed.js"/>
-        <copy file="assets/js/YUIDataStorage/StorageEngineSWF.js" tofile="${build_docjs}/ystorage/StorageEngineSWF.js"/>
+		<!-- yahoo storage module -->
+		<copy file="assets/js/YUIDataStorage/Storage.js" tofile="${build_docjs}/ystorage/Storage.js"/>
+		<copy file="assets/js/YUIDataStorage/StorageManager.js" tofile="${build_docjs}/ystorage/StorageManager.js"/>
+		<copy file="assets/js/YUIDataStorage/StorageEvent.js" tofile="${build_docjs}/ystorage/StorageEvent.js"/>
+		<copy file="assets/js/YUIDataStorage/StorageEngineGears.js" tofile="${build_docjs}/ystorage/StorageEngineGears.js"/>
+		<copy file="assets/js/YUIDataStorage/StorageEngineHTML5.js" tofile="${build_docjs}/ystorage/StorageEngineHTML5.js"/>
+		<copy file="assets/js/YUIDataStorage/StorageEngineKeyed.js" tofile="${build_docjs}/ystorage/StorageEngineKeyed.js"/>
+		<copy file="assets/js/YUIDataStorage/StorageEngineSWF.js" tofile="${build_docjs}/ystorage/StorageEngineSWF.js"/>
 
-        <echo message="${basedir}/python.sh ${yuidoc_home}/bin/yuidoc.py ${parser_in} -p ${parser_out} -o ${generator_out} -t ${template} -v ${version} -Y ${yuiversion}"/>
-        <!-- organize files -->
-        <exec executable="bash" failonerror="true">
-            <arg value="${basedir}/python.sh"/>
-            <arg value="${yuidoc_home}/bin/yuidoc.py"/>
-            <arg value="${parser_in}"/>
-            <arg value="-p ${parser_out}"/>
-            <arg value="-o ${generator_out}"/>
-            <arg value="-t ${template}"/>
-            <arg value="-v ${version}"/>
-            <arg value="-Y ${yuiversion}"/>
-        </exec>
-    </target>
-    <!-- @end consolidate build documentation -->
+		<echo message="${basedir}/python.sh ${yuidoc_home}/bin/yuidoc.py ${parser_in} -p ${parser_out} -o ${generator_out} -t ${template} -v ${version} -Y ${yuiversion}"/>
+		<!-- organize files -->
+		<exec executable="bash" failonerror="true">
+			<arg value="${basedir}/python.sh"/>
+			<arg value="${yuidoc_home}/bin/yuidoc.py"/>
+			<arg value="${parser_in}"/>
+			<arg value="-p ${parser_out}"/>
+			<arg value="-o ${generator_out}"/>
+			<arg value="-t ${template}"/>
+			<arg value="-v ${version}"/>
+			<arg value="-Y ${yuiversion}"/>
+		</exec>
+	</target>
+	<!-- @end consolidate build documentation -->
 
-    <target name="package" description="Produce consolidated and compressed JS and CSS files" depends="consolidate.library.js, consolidate.library.css"  unless="js.and.css.uptodate">
+	<target name="package" description="Produce consolidated and compressed JS and CSS files"
+			depends="consolidate.library.js, consolidate.library.css" unless="js.and.css.uptodate">
 		<!--<copy todir="${basedir}/WebContent/sc/dev000/js/">
 			<fileset file="${builddir}/js-consolidated/*.js"/>
 		</copy>
